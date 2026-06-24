@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import SellModal from './components/SellModal';
 import WishlistDrawer from './components/WishlistDrawer';
 import AuthModal from './components/AuthModal';
+import WelcomeBanner from './components/WelcomeBanner';
 import { FEATURED_LISTINGS } from './data';
 
 export default function HomePage() {
@@ -177,6 +178,8 @@ export default function HomePage() {
         initialMode={authModalConfig.mode}
         initialType={authModalConfig.type}
       />
+
+      <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
 
     </div>
   );
