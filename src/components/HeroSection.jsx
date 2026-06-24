@@ -86,18 +86,40 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.7, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-8"
           >
-            <button
+            <motion.button
               onClick={onExploreClick}
-              className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 hover:scale-[1.03] text-[12px]  tracking-wider"
+              animate={{
+                rotate: [0, -40, 40, -40, 40, -40, 40, -40, 40, -30, 30, -20, 20, -10, 10, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatDelay: 1,
+                ease: "easeInOut",
+              }}
+              whileHover={{ scale: 1.05, rotate: 0 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px]  tracking-wider"
             >
               Ich bin Camper
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={onSellClick}
-              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:scale-[1.03] text-[12px]  tracking-wider"
+              animate={{
+                rotate: [0, 40, -40, 40, -40, 40, -40, 40, -40, 30, -30, 20, -20, 10, -10, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatDelay: 1,
+                ease: "easeInOut",
+              }}
+              whileHover={{ scale: 1.05, rotate: 0 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px]  tracking-wider"
             >
               Ich bin Anbieter
-            </button>
+            </motion.button>
           </motion.div>
 
           {/* Advanced Search Bar Component */}
