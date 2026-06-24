@@ -14,6 +14,7 @@ import SellModal from './components/SellModal';
 import WishlistDrawer from './components/WishlistDrawer';
 import AuthModal from './components/AuthModal';
 import WelcomeBanner from './components/WelcomeBanner';
+import ScrollToTop from './components/ScrollToTop';
 import { FEATURED_LISTINGS } from './data';
 
 export default function HomePage() {
@@ -180,6 +181,7 @@ export default function HomePage() {
       />
 
       <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
+      <ScrollToTop />
 
     </div>
   );
