@@ -1,0 +1,6 @@
+{
+  "name": "Campuna",
+  "description": "Premium Camping-Marktplatz für exklusive Wohnmobile, Zelte, Stellplätze und hochwertiges Zubehör.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

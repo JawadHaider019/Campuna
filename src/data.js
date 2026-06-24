@@ -1,0 +1,484 @@
+export const CATEGORIES = [
+  {
+    id: '1',
+    name: 'Camping Zubehör',
+    count: 31,
+    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
+    slug: 'camping-zubehoer',
+    iconName: 'Tent'
+  },
+  {
+    id: '2',
+    name: 'Wohnmobile & Camper',
+    count: 24,
+    image: 'https://images.unsplash.com/photo-1523987355122-83482224058b?auto=format&fit=crop&w=600&q=80',
+    slug: 'wohnmobile-camper',
+    iconName: 'Truck'
+  },
+  {
+    id: '3',
+    name: 'Zelte & Dachzelte',
+    count: 3,
+    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80',
+    slug: 'zelte-dachzelte',
+    iconName: 'Mountain'
+  },
+  {
+    id: '4',
+    name: 'Fahrräder & Träger',
+    count: 3,
+    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80',
+    slug: 'fahrraeder-traeger',
+    iconName: 'Bike'
+  },
+  {
+    id: '5',
+    name: 'Stellplätze & Campingplätze',
+    count: 15,
+    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80',
+    slug: 'stellplaetze',
+    iconName: 'MapPin'
+  },
+  {
+    id: '6',
+    name: 'Camping Services',
+    count: 9,
+    image: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=600&q=80',
+    slug: 'camping-services',
+    iconName: 'Wrench'
+  },
+  {
+    id: '7',
+    name: 'Tiny Houses',
+    count: 4,
+    image: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=600&q=80',
+    slug: 'tiny-houses',
+    iconName: 'Home'
+  },
+  {
+    id: '8',
+    name: 'Mieten & Vermieten',
+    count: 7,
+    image: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=600&q=80',
+    slug: 'mieten-vermieten',
+    iconName: 'Key'
+  }
+];
+
+export const FEATURED_LISTINGS = [
+  {
+    id: 'lst_1',
+    title: 'VW T6 Camper Van Bulli, G...',
+    category: 'Wohnmobile & Camper',
+    price: 36900,
+    pricePeriod: 'Kaufpreis',
+    location: 'Erfurt, Thüringen',
+    rating: 4.8,
+    reviewsCount: 12,
+    images: [
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Diesel', 'Schaltgetriebe', 'Küche', '4 Schlafplätze'],
+    isExclusive: true
+  },
+  {
+    id: 'lst_2',
+    title: 'Hindermann Four Seasons A...',
+    category: 'Camping Zubehör',
+    price: 75,
+    pricePeriod: 'Preis',
+    location: 'Trebbin, Brandenburg',
+    rating: 4.9,
+    reviewsCount: 8,
+    images: [
+      'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Thermovorhang', 'Winterfest', 'Fenstermatte'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_3',
+    title: 'Ford Transit Randger R 53...',
+    category: 'Wohnmobile & Camper',
+    price: 43500,
+    pricePeriod: 'Kaufpreis',
+    location: 'Dausenau, Rheinland-Pfalz',
+    rating: 4.7,
+    reviewsCount: 5,
+    images: [
+      'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Autark', 'Randger Ausbau', 'Standheizung'],
+    isExclusive: true
+  },
+  {
+    id: 'lst_4',
+    title: '9 Sitzer Bus mieten...',
+    category: 'Mieten & Vermieten',
+    price: 100,
+    pricePeriod: 'pro Tag',
+    location: 'Bruchsal, BW',
+    rating: 5.0,
+    reviewsCount: 20,
+    images: [
+      'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Gewerblicher Anbieter',
+      verified: true,
+      type: 'Gewerblich'
+    },
+    features: ['9 Sitzplätze', 'Viel Stauraum', 'Klimaanlage'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_5',
+    title: 'Carado T-447 mieten...',
+    category: 'Mieten & Vermieten',
+    price: 115,
+    pricePeriod: 'pro Tag',
+    location: 'Bruchsal, BW',
+    rating: 4.9,
+    reviewsCount: 15,
+    images: [
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Gewerblicher Anbieter',
+      verified: true,
+      type: 'Gewerblich'
+    },
+    features: ['Teintegrierter Camper', 'Einzelbetten', 'Große Heckgarage'],
+    isExclusive: true
+  },
+  {
+    id: 'lst_6',
+    title: 'Camper Bus Vivaro zu verm...',
+    category: 'Mieten & Vermieten',
+    price: 100,
+    pricePeriod: 'pro Tag',
+    location: 'Bruchsal, BW',
+    rating: 4.8,
+    reviewsCount: 9,
+    images: [
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80'
+    ],
+    seller: {
+      name: 'Gewerblicher Anbieter',
+      verified: true,
+      type: 'Gewerblich'
+    },
+    features: ['Kompakter Ausbau', 'Ideal für Paare', 'Anhängerkupplung'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_7',
+    title: 'Sonnenschirmständer für S...',
+    category: 'Camping Zubehör',
+    price: 40,
+    pricePeriod: 'Preis',
+    location: 'Trebbin, Brandenburg',
+    rating: 5.0,
+    reviewsCount: 3,
+    images: [
+      'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Stabil', 'Wetterfest'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_8',
+    title: 'Kompakter Outdoortisch we...',
+    category: 'Camping Zubehör',
+    price: 50,
+    pricePeriod: 'Preis',
+    location: 'Trebbin, Brandenburg',
+    rating: 4.6,
+    reviewsCount: 7,
+    images: [
+      'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Klappbar', 'Leichtgewicht'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_9',
+    title: 'Westfield Ambassador 2 Be...',
+    category: 'Camping Zubehör',
+    price: 22,
+    pricePeriod: 'Preis',
+    location: 'Trebbin, Brandenburg',
+    rating: 4.4,
+    reviewsCount: 4,
+    images: [
+      'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Gebraucht', 'Top Zustand'],
+    isExclusive: false
+  },
+  {
+    id: 'lst_10',
+    title: 'Weinsberg Cara two...',
+    category: 'Wohnmobile & Camper',
+    price: 11500,
+    pricePeriod: 'Kaufpreis',
+    location: 'Erfurt, Thüringen',
+    rating: 4.9,
+    reviewsCount: 11,
+    images: [
+      'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Gepflegt', 'Scheckheftgepflegt'],
+    isExclusive: true
+  },
+  {
+    id: 'lst_11',
+    title: 'Wohnwagen Knaus Deseo TR...',
+    category: 'Wohnmobile & Camper',
+    price: 13800,
+    pricePeriod: 'Kaufpreis',
+    location: 'Riegelsberg, Saarland',
+    rating: 4.8,
+    reviewsCount: 6,
+    images: [
+      'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Transport-Caravan', 'Zusatzfenster', 'Kompakt'],
+    isExclusive: true
+  }
+];
+
+export const PROVIDERS = [
+  {
+    id: 'prov_1',
+    name: 'VTMCAMPING',
+    logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=600&q=80',
+    description: 'Wir lieben, was wir tun...',
+    listingsCount: 3,
+    rating: 4.9,
+    location: 'Deutschland'
+  },
+  {
+    id: 'prov_2',
+    name: 'CUBE4LIFE Campingboxen',
+    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80',
+    description: 'CUBE4LIFE – Dein Auto. Deine Freiheit. Dein System.',
+    listingsCount: 3,
+    rating: 4.95,
+    location: 'Bielefeld'
+  },
+  {
+    id: 'prov_3',
+    name: 'DümmerMobile',
+    logo: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80',
+    description: 'Expertise in Wohnmobilen und Campern.',
+    listingsCount: 3,
+    rating: 4.85,
+    location: 'Dümmer'
+  },
+  {
+    id: 'prov_4',
+    name: 'Casamaki',
+    logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1627662236973-4f82591de36d?auto=format&fit=crop&w=800&q=80',
+    description: 'Nr. 1 Partner für Wohnkabinen 🚐 Festaufbau &...',
+    listingsCount: 3,
+    rating: 4.9,
+    location: 'Deutschland'
+  },
+  {
+    id: 'prov_5',
+    name: 'ProVerDa GmbH',
+    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80',
+    description: 'Professionelle Verkaufsdatenbank für Camper.',
+    listingsCount: 1,
+    rating: 4.7,
+    location: 'Gewerblich'
+  },
+  {
+    id: 'prov_6',
+    name: 'LuckyBoxOWL',
+    logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1517423568366-8b83523034fd?auto=format&fit=crop&w=800&q=80',
+    description: 'Wir sind ein kleines, familiengeführtes Unternehmen...',
+    listingsCount: 3,
+    rating: 4.8,
+    location: 'OWL'
+  },
+  {
+    id: 'prov_7',
+    name: 'NALUX | Professionelle Ke...',
+    logo: 'https://images.unsplash.com/photo-1599305445671-ac2c0c1d3bab?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1517482315726-25e243da668d?auto=format&fit=crop&w=800&q=80',
+    description: 'Fahrzeugveredelung - Wohnmobil &...',
+    listingsCount: 3,
+    rating: 4.9,
+    location: 'Deutschland'
+  },
+  {
+    id: 'prov_8',
+    name: 'Trailer Manufaktur NRW',
+    logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80',
+    description: 'Umbauten von PKW Anhänger in...',
+    listingsCount: 1,
+    rating: 4.8,
+    location: 'NRW'
+  },
+  {
+    id: 'prov_9',
+    name: 'LivianEssence',
+    logo: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80',
+    description: 'Livianessence | Tiny House...',
+    listingsCount: 3,
+    rating: 4.95,
+    location: 'Tiny Living'
+  },
+  {
+    id: 'prov_10',
+    name: 'TS Caravanverleih',
+    logo: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=150&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    description: 'Ihre Wohnwagenvermietung in und um Erfurt...',
+    listingsCount: 4,
+    rating: 4.95,
+    location: 'Erfurt'
+  }
+];
+
+export const BLOG_POSTS = [
+  {
+    id: 'blog_1',
+    title: 'Was ist Campuna? | Der Camping-Marktplatz für...',
+    excerpt: 'Campuna ist der spezialisierte Camping-Marktplatz für private und gewerbliche Angebote in Deutschland.',
+    category: 'Campuna blogs',
+    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80',
+    readTime: '6 Min.',
+    date: '09.05.2026',
+    updateDate: 'Mai 9, 2026',
+    author: {
+      name: 'Campuna Team',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'
+    }
+  },
+  {
+    id: 'blog_2',
+    title: 'Wohnwagen gebraucht kaufen: 10 wichtige Tipps vor dem Kauf',
+    excerpt: 'Du möchtest einen Wohnwagen gebraucht kaufen? Beachte diese 10 essentiellen Tipps...',
+    category: 'Campuna blogs',
+    image: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=800&q=80',
+    readTime: '5 Min.',
+    date: '09.06.2026',
+    updateDate: 'Juni 9, 2026',
+    author: {
+      name: 'Experten-Tipp',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'
+    }
+  },
+  {
+    id: 'blog_3',
+    title: 'Dachzelt kaufen: Worauf Anfänger wirklich achten...',
+    excerpt: 'Dachzelte liegen voll im Trend. Aber worauf kommt es beim Kauf wirklich an?',
+    category: 'Campuna blogs',
+    image: 'https://images.unsplash.com/photo-1621293954908-907159247fc8?auto=format&fit=crop&w=800&q=80',
+    readTime: '7 Min.',
+    date: '16.06.2026',
+    updateDate: 'Juni 16, 2026',
+    author: {
+      name: 'Campuna Guide',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80'
+    }
+  },
+  {
+    id: 'blog_4',
+    title: 'Wohnwagen gebraucht kaufen: Die wichtigste Checkliste für...',
+    excerpt: 'Mit unserer Checkliste bist du beim Kauf eines gebrauchten Wohnwagens auf der sicheren Seite.',
+    category: 'Campuna blogs',
+    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    readTime: '10 Min.',
+    date: '02.06.2026',
+    updateDate: 'Juni 2, 2026',
+    author: {
+      name: 'Checklisten-Profi',
+      avatar: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=100&q=80'
+    }
+  }
+];
+
+export const FAQS = [
+  {
+    id: 'faq_1',
+    question: 'Was ist Campuna?',
+    answer: 'Campuna ist Deutschlands spezialisierter Marktplatz für gebrauchte Camping-Ausrüstung. Hier können Camper ihre gebrauchten Zelte, Schlafsäcke, Kocher und Wohnwagen-Zubehör kaufen und verkaufen – einfach, sicher und kostenlos.'
+  },
+  {
+    id: 'faq_2',
+    question: 'Für wen ist Campuna geeignet?',
+    answer: 'Campuna ist ideal für alle Camping-Begeisterten in Deutschland – egal ob Anfänger oder erfahrene Camper. Wer hochwertige Ausrüstung günstig kaufen oder gebrauchte Artikel verkaufen möchte, ist bei uns genau richtig.'
+  },
+  {
+    id: 'faq_3',
+    question: 'Wie kann ich auf Campuna verkaufen?',
+    answer: 'Das Inserieren auf Campuna ist ganz einfach: Registriere dich kostenlos, erstelle dein Inserat mit Fotos und Beschreibung, und schon können Interessenten dich kontaktieren.'
+  },
+  {
+    id: 'faq_4',
+    question: 'Kostet das Inserieren auf Campuna etwas?',
+    answer: 'Nein! Das Einstellen von Inseraten auf Campuna ist komplett kostenlos. Wir glauben daran, dass Camper ohne versteckte Gebühren handeln können sollen.'
+  },
+  {
+    id: 'faq_5',
+    question: 'Welche Camping-Artikel kann ich auf Campuna verkaufen?',
+    answer: 'Du kannst nahezu alle Camping-Artikel verkaufen: Zelte, Schlafsäcke, Isomatten, Campingkocher, Laternen, Rucksäcke, Wohnwagen-Zubehör, Campingmöbel und vieles mehr.'
+  },
+  {
+    id: 'faq_6',
+    question: 'Wie finde ich günstige Camping-Ausrüstung auf Campuna?',
+    answer: 'Nutze einfach die Suchfunktion und filtere nach Kategorie, Preis oder Standort. So findest du schnell das passende Angebot in deiner Nähe oder deutschlandweit.'
+  }
+];
