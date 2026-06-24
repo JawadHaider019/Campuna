@@ -128,7 +128,7 @@ export default function FeaturedListings({
       <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
           {/* Title */}
-          <h3 className="font-display text-lg font-bold text-forest group-hover:text-gold transition-colors duration-200 mb-4 line-clamp-2">
+          <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-4 line-clamp-2">
             {item.title}
           </h3>
 
@@ -180,7 +180,7 @@ export default function FeaturedListings({
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block"
             >   Frisch eingestellt
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-forest">
+            <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-black">
               Neue Anzeigen auf Campuna
             </h2>
           </div>
@@ -306,7 +306,7 @@ export default function FeaturedListings({
                     <span className="bg-gold/25 border border-gold text-forest text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded mb-4 inline-block">
                       {selectedQuickView.seller.type}
                     </span>
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-forest mb-2">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-black mb-2">
                       {selectedQuickView.title}
                     </h3>
                     <div className="flex items-center gap-4 text-xs text-charcoal/70 mb-6">

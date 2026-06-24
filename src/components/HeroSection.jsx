@@ -38,8 +38,8 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           />
         </motion.div>
         {/* Deep luxurious multi-layered gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/60 to-black/40" />
-        <div className="absolute inset-0 bg-radial-at-c from-transparent via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest/60  to-black/40" />
+        {/* <div className="absolute inset-0 bg-radial-at-c from-transparent via-transparent to-black/30" /> */}
       </div>
 
       {/* Floating Sparkles Background Effect */}
@@ -88,13 +88,13 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           >
             <button
               onClick={onExploreClick}
-              className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 hover:scale-[1.03] text-sm uppercase tracking-wider"
+              className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 hover:scale-[1.03] text-[12px]  tracking-wider"
             >
               Ich bin Camper
             </button>
             <button
               onClick={onSellClick}
-              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:scale-[1.03] text-sm uppercase tracking-wider"
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:scale-[1.03] text-[12px]  tracking-wider"
             >
               Ich bin Anbieter
             </button>
@@ -106,12 +106,12 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="bg-sand/15 backdrop-blur-xl border border-white/15 px-3 py-1 rounded-full shadow-2xl max-w-3xl mx-auto mb-16 relative group"
+            className="bg-white/20 backdrop-blur-xl border border-white/15 px-3 py-1 rounded-full shadow-2xl max-w-3xl mx-auto mb-16 relative group"
           >
             <form onSubmit={handleSubmit} className="flex flex-row items-center gap-1">
               {/* Keyword Search Input */}
               <div className="flex items-center space-x-3 px-4 py-2 flex-1 md:border-r border-white/10">
-                <Search className="w-5 h-5 text-gold shrink-0 md:block hidden" />
+
                 <input
                   type="text"
                   placeholder="Z.B. Morelo, Dachzelt, Kabe..."

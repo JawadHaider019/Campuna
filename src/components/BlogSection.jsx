@@ -54,7 +54,7 @@ export default function BlogSection() {
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
               Campuna Ratgeber
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-forest">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-black">
               Camping-Ratgeber & Tipps
             </h2>
           </div>

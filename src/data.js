@@ -76,7 +76,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.8,
     reviewsCount: 12,
     images: [
-      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
+      '/collection/vw t6.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -96,7 +96,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 8,
     images: [
-      'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80'
+      '/collection/Hindemann.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -116,7 +116,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.7,
     reviewsCount: 5,
     images: [
-      'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80'
+      '/collection/ford transit.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -136,7 +136,7 @@ export const FEATURED_LISTINGS = [
     rating: 5.0,
     reviewsCount: 20,
     images: [
-      'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80'
+      '/collection/9 sitzer.avif'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
@@ -156,7 +156,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 15,
     images: [
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'
+      '/collection/carado.avif'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
@@ -176,7 +176,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.8,
     reviewsCount: 9,
     images: [
-      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80'
+      '/collection/camper bus.avif'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
@@ -196,7 +196,7 @@ export const FEATURED_LISTINGS = [
     rating: 5.0,
     reviewsCount: 3,
     images: [
-      'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80'
+      '/collection/sonnenschirmstander.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -216,7 +216,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.6,
     reviewsCount: 7,
     images: [
-      'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80'
+      '/collection/kompakter.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -236,7 +236,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.4,
     reviewsCount: 4,
     images: [
-      'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80'
+      '/collection/westfield.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -256,7 +256,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 11,
     images: [
-      'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80'
+      '/collection/weinsberg.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -276,7 +276,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.8,
     reviewsCount: 6,
     images: [
-      'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80'
+      '/collection/wohnwagen.avif'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -292,8 +292,8 @@ export const PROVIDERS = [
   {
     id: 'prov_1',
     name: 'VTMCAMPING',
-    logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=600&q=80',
+    logo: '/partners/vtmcamping-logo.avif',
+    coverImage: '/partners/vtmcamping-cover.avif',
     description: 'Wir lieben, was wir tun...',
     listingsCount: 3,
     rating: 4.9,
@@ -302,8 +302,8 @@ export const PROVIDERS = [
   {
     id: 'prov_2',
     name: 'CUBE4LIFE Campingboxen',
-    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/cube4life-logo.avif',
+    coverImage: '/partners/cube4life-cover.avif',
     description: 'CUBE4LIFE – Dein Auto. Deine Freiheit. Dein System.',
     listingsCount: 3,
     rating: 4.95,
@@ -312,8 +312,8 @@ export const PROVIDERS = [
   {
     id: 'prov_3',
     name: 'DümmerMobile',
-    logo: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1546412414-8035e1776c9a?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/dummermobile-logo.avif',
+    coverImage: '/partners/dummermobile-cover.avif',
     description: 'Expertise in Wohnmobilen und Campern.',
     listingsCount: 3,
     rating: 4.85,
@@ -322,8 +322,8 @@ export const PROVIDERS = [
   {
     id: 'prov_4',
     name: 'Casamaki',
-    logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1627662236973-4f82591de36d?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/casamaki-logo.avif',
+    coverImage: '/partners/casemaki-cover.avif',
     description: 'Nr. 1 Partner für Wohnkabinen 🚐 Festaufbau &...',
     listingsCount: 3,
     rating: 4.9,
@@ -332,8 +332,8 @@ export const PROVIDERS = [
   {
     id: 'prov_5',
     name: 'ProVerDa GmbH',
-    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/proverdaGmbh-logo.avif',
+    coverImage: '/partners/proverdaGmbh-cover.avif',
     description: 'Professionelle Verkaufsdatenbank für Camper.',
     listingsCount: 1,
     rating: 4.7,
@@ -342,8 +342,8 @@ export const PROVIDERS = [
   {
     id: 'prov_6',
     name: 'LuckyBoxOWL',
-    logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1517423568366-8b83523034fd?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/luckyboxowl-logo.avif',
+    coverImage: '/partners/luckbowlowl-cover.avif',
     description: 'Wir sind ein kleines, familiengeführtes Unternehmen...',
     listingsCount: 3,
     rating: 4.8,
@@ -352,8 +352,8 @@ export const PROVIDERS = [
   {
     id: 'prov_7',
     name: 'NALUX | Professionelle Ke...',
-    logo: 'https://images.unsplash.com/photo-1599305445671-ac2c0c1d3bab?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1517482315726-25e243da668d?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/nalux-logo.avif',
+    coverImage: '/partners/nalux-cover.avif',
     description: 'Fahrzeugveredelung - Wohnmobil &...',
     listingsCount: 3,
     rating: 4.9,
@@ -362,8 +362,8 @@ export const PROVIDERS = [
   {
     id: 'prov_8',
     name: 'Trailer Manufaktur NRW',
-    logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/trailer-logo.avif',
+    coverImage: '/partners/trailer-cover.jpg',
     description: 'Umbauten von PKW Anhänger in...',
     listingsCount: 1,
     rating: 4.8,
@@ -372,8 +372,8 @@ export const PROVIDERS = [
   {
     id: 'prov_9',
     name: 'LivianEssence',
-    logo: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/LivianEssense-logo.avif',
+    coverImage: '/partners/LivianEssense-cover.avif',
     description: 'Livianessence | Tiny House...',
     listingsCount: 3,
     rating: 4.95,
@@ -382,8 +382,8 @@ export const PROVIDERS = [
   {
     id: 'prov_10',
     name: 'TS Caravanverleih',
-    logo: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=150&q=80',
-    coverImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    logo: '/partners/tsCaravanverleih-logo.avif',
+    coverImage: '/partners/tsCaravanverleih-cover.avif',
     description: 'Ihre Wohnwagenvermietung in und um Erfurt...',
     listingsCount: 4,
     rating: 4.95,
@@ -397,7 +397,7 @@ export const BLOG_POSTS = [
     title: 'Was ist Campuna? | Der Camping-Marktplatz für...',
     excerpt: 'Campuna ist der spezialisierte Camping-Marktplatz für private und gewerbliche Angebote in Deutschland.',
     category: 'Campuna blogs',
-    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80',
+    image: '/blogs/Was ist Campuna blog.avif',
     readTime: '6 Min.',
     date: '09.05.2026',
     updateDate: 'Mai 9, 2026',
@@ -411,7 +411,7 @@ export const BLOG_POSTS = [
     title: 'Wohnwagen gebraucht kaufen: 10 wichtige Tipps vor dem Kauf',
     excerpt: 'Du möchtest einen Wohnwagen gebraucht kaufen? Beachte diese 10 essentiellen Tipps...',
     category: 'Campuna blogs',
-    image: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=800&q=80',
+    image: '/blogs/Wohnwagen gebraucht 10  blog.avif',
     readTime: '5 Min.',
     date: '09.06.2026',
     updateDate: 'Juni 9, 2026',
@@ -425,7 +425,7 @@ export const BLOG_POSTS = [
     title: 'Dachzelt kaufen: Worauf Anfänger wirklich achten...',
     excerpt: 'Dachzelte liegen voll im Trend. Aber worauf kommt es beim Kauf wirklich an?',
     category: 'Campuna blogs',
-    image: 'https://images.unsplash.com/photo-1621293954908-907159247fc8?auto=format&fit=crop&w=800&q=80',
+    image: '/blogs/Dachzelt kaufen blog.avif',
     readTime: '7 Min.',
     date: '16.06.2026',
     updateDate: 'Juni 16, 2026',
@@ -439,7 +439,7 @@ export const BLOG_POSTS = [
     title: 'Wohnwagen gebraucht kaufen: Die wichtigste Checkliste für...',
     excerpt: 'Mit unserer Checkliste bist du beim Kauf eines gebrauchten Wohnwagens auf der sicheren Seite.',
     category: 'Campuna blogs',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    image: '/blogs/Wohnwagen gebraucht Die blog.avif',
     readTime: '10 Min.',
     date: '02.06.2026',
     updateDate: 'Juni 2, 2026',

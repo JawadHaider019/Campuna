@@ -6,8 +6,8 @@
   --font-display: "Outfit", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --color-forest: #0F2A1D;
-  --color-sand: #F5F0E8;
+  --color-forest: #00630D;
+  --color-sand: #f7f3ea;
   --color-beige: #E9DDC8;
   --color-gold: #C8A96B;
   --color-charcoal: #1A1A1A;
@@ -30,7 +30,7 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F5F0E8;
+  background: #f7f3ea;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -39,7 +39,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0F2A1D;
+  background: #00630D;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
