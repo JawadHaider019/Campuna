@@ -1,25 +1,27 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ArrowRight, Tent, Sparkles } from 'lucide-react';
+import { ArrowRight, Tent, Sparkles } from 'lucide-react';
 
 export default function WelcomeBanner({ onOpenSellModal }) {
     const [isVisible, setIsVisible] = useState(false);
-    const [isDismissed, setIsDismissed] = useState(false);
 
-    // Delay appearance so page loads first
+    // Show banner when page is scrolled more than 600px
     useEffect(() => {
-        const timer = setTimeout(() => setIsVisible(true), 1800);
-        return () => clearTimeout(timer);
-    }, []);
+        const toggleVisibility = () => {
+            if (window.scrollY > 600) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
 
-    const handleDismiss = () => {
-        setIsDismissed(true);
-        setTimeout(() => setIsVisible(false), 400);
-    };
+        window.addEventListener('scroll', toggleVisibility);
+        return () => window.removeEventListener('scroll', toggleVisibility);
+    }, []);
 
     return (
         <AnimatePresence>
-            {isVisible && !isDismissed && (
+            {isVisible && (
                 <motion.div
                     initial={{ y: 120, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -53,19 +55,11 @@ export default function WelcomeBanner({ onOpenSellModal }) {
 
                         {/* CTA Button */}
                         <button
-                            onClick={() => { handleDismiss(); onOpenSellModal?.(); }}
+
                             className="shrink-0 flex items-center gap-2 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[11px] uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
                             Kostenlos inserieren
                             <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-
-                        {/* Close Button */}
-                        <button
-                            onClick={handleDismiss}
-                            className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white flex items-center justify-center transition-all duration-200"
-                        >
-                            <X className="w-3.5 h-3.5" />
                         </button>
                     </div>
                 </motion.div>
