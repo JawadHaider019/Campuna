@@ -43,7 +43,7 @@ export default function CTASection({ onSellClick }) {
               </button>
 
             </div>
-            <div className='relative lg:col-span-4 flex items-center justify-center lg:justify-end sm:hidden md:hidden lg:block'>
+            <div className='relative lg:col-span-4 hidden lg:block items-center justify-center lg:justify-end'>
 
               <div className="absolute top-0 -right-30   flex items-center justify-center text-gold/80 transform -rotate-12 group-hover:scale-110 transition-all duration-700">
                 <Mail className="w-40 h-40 sm:w-80 sm:h-80 stroke-[1.5]" />

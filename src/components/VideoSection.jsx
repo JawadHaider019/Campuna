@@ -45,7 +45,7 @@ export default function VideoSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative max-w-6xl mx-auto aspect-video rounded-[40px] overflow-hidden shadow-[0_40px_100px_-15px_rgba(0,0,0,0.6)] border border-white/5 bg-black group"
+          className="relative max-w-4xl mx-auto aspect-video rounded-[40px] overflow-hidden shadow-[0_40px_100px_-15px_rgba(0,0,0,0.6)] border border-white/5 bg-black group"
         >
           {/* YouTube Thumbnail Background */}
           <div className="absolute inset-0 z-0">

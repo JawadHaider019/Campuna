@@ -50,7 +50,7 @@ export default function FAQSection() {
                   className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
                 >
                   <div className="flex items-center space-x-5">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-forest text-white' : 'bg-sand text-forest group-hover:bg-forest/5 text-forest/40 group-hover:text-forest'
+                    <div className={`w-10 h-10 shrink-0 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-forest text-white' : 'bg-sand text-forest group-hover:bg-forest/5 text-forest/40 group-hover:text-forest'
                       }`}>
                       <HelpCircle className="w-5 h-5" />
                     </div>
@@ -62,7 +62,7 @@ export default function FAQSection() {
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-gold text-forest' : 'bg-sand/50 text-forest/30'
+                    className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-gold text-forest' : 'bg-sand/50 text-forest/30'
                       }`}
                   >
                     <ChevronDown className="w-5 h-5" />
