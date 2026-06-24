@@ -2,7 +2,7 @@ import { Facebook, Instagram, Youtube, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer id="footer" className="bg-sand text-forest py-12 border-t border-forest/5">
+    <footer id="footer" className="bg-sand text-forest py-12 sm:py-10 border-t border-forest/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
 
         {/* Main Footer Grid */}

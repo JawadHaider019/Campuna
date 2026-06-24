@@ -24,7 +24,7 @@ export default function WhyCampuna() {
   ];
 
   return (
-    <section id="why-campuna" className="py-16 bg-sand relative overflow-hidden">
+    <section id="why-campuna" className="py-10 sm:py-16 bg-sand relative overflow-hidden">
       {/* Subtle Background Elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sand/20 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-gold/5 rounded-full blur-[80px] -z-10" />

@@ -6,7 +6,7 @@ export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section id="video-section" className="py-16 bg-forest relative overflow-hidden">
+    <section id="video-section" className="py-10 sm:py-16 bg-forest relative overflow-hidden">
       {/* Cinematic Glow Effects */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[160px] pointer-events-none opacity-40 shrink-0" />
       <div className="absolute -top-60 -left-60 w-[500px] h-[500px] bg-black/40 rounded-full blur-[100px] pointer-events-none shrink-0" />

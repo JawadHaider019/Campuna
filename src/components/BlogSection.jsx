@@ -46,7 +46,7 @@ export default function BlogSection() {
   );
 
   return (
-    <section id="journal" className="py-16 bg-white overflow-hidden">
+    <section id="journal" className="py-10 sm:py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">

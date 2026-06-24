@@ -16,7 +16,7 @@ export default function SpotlightSection({ onPartnerClick }) {
     const ProviderCard = ({ partner }) => (
         <div
             onClick={() => onPartnerClick?.(partner.name)}
-            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 select-none"
+            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-lg transition-all duration-500 select-none"
         >
             {/* Background Image */}
             <div className="absolute inset-0">
@@ -74,7 +74,7 @@ export default function SpotlightSection({ onPartnerClick }) {
     );
 
     return (
-        <section id="campuna-spotlight" className="py-16 bg-sand relative overflow-hidden">
+        <section id="campuna-spotlight" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden">
             <div className="max-w-8xl mx-auto px-4 md:px-12">
 
                 {/* Section header */}
@@ -102,7 +102,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     <div className="hidden md:block absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
                     <div className="hidden md:block absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
 
-                    <div className="relative overflow-hidden cursor-grab active:cursor-grabbing" ref={rowRef}>
+                    <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing " ref={rowRef}>
                         <motion.div
                             drag="x"
                             dragConstraints={{ right: 0, left: -constraints }}
@@ -115,7 +115,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                                     ease: "linear",
                                 },
                             }}
-                            className="flex gap-8 w-max px-32"
+                            className="flex gap-8 w-max px-32 pb-3"
                         >
                             {[...PROVIDERS, ...PROVIDERS].map((partner, idx) => (
                                 <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />

@@ -11,7 +11,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="pb-16 bg-white relative overflow-hidden">
+    <section id="faq" className="pb-10 sm:pb-16 bg-white relative overflow-hidden">
       {/* Decorative background element */}
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-sand/30 rounded-full blur-3xl pointer-events-none opacity-50" />
 
@@ -54,7 +54,7 @@ export default function FAQSection() {
                       }`}>
                       <HelpCircle className="w-5 h-5" />
                     </div>
-                    <span className={`font-display text-lg md:text-xl font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
+                    <span className={`font-display text-md md:text-lg font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
                       }`}>
                       {faq.question}
                     </span>

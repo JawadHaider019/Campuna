@@ -63,7 +63,7 @@ export default function FeaturedListings({
 
   const ListingCard = ({ item, isWishlisted }) => (
     <div
-      className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-2xl transition-all duration-300 select-none"
+      className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-lg transition-all duration-300 select-none"
     >
       {/* Image Area */}
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
@@ -172,7 +172,7 @@ export default function FeaturedListings({
   );
 
   return (
-    <section id="exclusive-offers" className="py-16 bg-white scroll-mt-20 overflow-hidden">
+    <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-20 overflow-hidden">
       <div className="max-w-8xl mx-auto px-4 md:px-12">
         {/* Section Title */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
@@ -204,13 +204,13 @@ export default function FeaturedListings({
             </button>
           </div>
         ) : (
-          <div className="space-y-12 relative">
+          <div className="space-y-2 relative">
             {/* Fade Overlays - Hidden on Mobile */}
             <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
             {/* Row 1: Draggable Left to Right */}
-            <div className="relative overflow-hidden cursor-grab active:cursor-grabbing" ref={row1Ref}>
+            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row1Ref}>
               <motion.div
                 drag="x"
                 dragConstraints={{ right: 0, left: -row1Constraints }}
@@ -223,7 +223,7 @@ export default function FeaturedListings({
                     ease: "linear",
                   },
                 }}
-                className="flex gap-5 w-max"
+                className="flex gap-5 w-max "
               >
                 {[...firstRow, ...firstRow].map((item, idx) => (
                   <ListingCard key={`${item.id}-${idx}`} item={item} isWishlisted={wishlistedIds.includes(item.id)} />
@@ -232,7 +232,7 @@ export default function FeaturedListings({
             </div>
 
             {/* Row 2: Draggable Right to Left */}
-            <div className="relative overflow-hidden py-1 cursor-grab active:cursor-grabbing" ref={row2Ref}>
+            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
               <motion.div
                 drag="x"
                 dragConstraints={{ right: 0, left: -row2Constraints }}
