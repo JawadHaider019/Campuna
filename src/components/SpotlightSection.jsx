@@ -35,9 +35,9 @@ export default function SpotlightSection({ onPartnerClick }) {
                 {/* Row 1: Title & Logo */}
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-2">
-                        <div className="inline-flex items-center space-x-1.5 bg-gold/90 backdrop-blur-md px-2.5 py-1 rounded-full text-forest shadow-sm">
+                        <div className="inline-flex items-center space-x-1.5 bg-sand backdrop-blur-md px-2.5 py-1 rounded-full text-forest shadow-sm">
                             <ShieldCheck className="w-3 h-3" />
-                            <span className="text-[9px] font-bold uppercase tracking-wider">{partner.listingsCount} Einträge online</span>
+                            <span className="text-[8px] font-bold uppercase tracking-wider">{partner.listingsCount} Einträge online</span>
                         </div>
 
                     </div>
@@ -52,12 +52,12 @@ export default function SpotlightSection({ onPartnerClick }) {
                 </div>
 
                 {/* Row 2: Description & Arrow */}
-                <div className="flex items-end justify-between gap-6">
+                <div className="flex items-end justify-between gap-2">
                     <div>
                         <h3 className="font-display text-2xl font-extrabold text-white tracking-tight leading-none group-hover:text-gold transition-colors duration-300">
                             {partner.name}
                         </h3>
-                        <p className="font-sans text-[13px] text-white/70 line-clamp-2 leading-relaxed font-light italic max-w-[280px]">
+                        <p className="font-sans text-[12px] text-white/70 truncate leading-relaxed font-light italic max-w-[280px]">
                             {partner.description}
                         </p>
                     </div>

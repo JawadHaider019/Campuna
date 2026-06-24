@@ -76,11 +76,11 @@ export default function FeaturedListings({
 
         {/* Top Bar inside image card */}
         <div className="absolute top-4 inset-x-4 flex items-center justify-between">
-          <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
-            <ShieldCheck className="w-3.5 h-3.5 text-gold" />
+          <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
+            <ShieldCheck className="w-3 h-3 text-gold" />
             {item.seller.type}
           </span>
-          <span className="ml-auto" />
+
 
           {/* Wishlist Button */}
           <button
@@ -88,7 +88,7 @@ export default function FeaturedListings({
               e.stopPropagation();
               onToggleWishlist(item.id);
             }}
-            className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
+            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
               ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
               : 'bg-white/70 hover:bg-white text-forest hover:scale-110'
               }`}
@@ -98,15 +98,12 @@ export default function FeaturedListings({
         </div>
 
         {/* Location & Rating overlay */}
-        <div className="absolute bottom-4 inset-x-4 flex items-center justify-between pointer-events-none text-white/90">
-          <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-xs flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5 text-gold shrink-0" />
+        <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
+          <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-gold shrink-0" />
             <span>{item.location}</span>
           </div>
-          <div className="bg-black/40 backdrop-blur-md text-gold px-3 py-1.5 rounded-full text-xs flex items-center gap-1 font-mono">
-            <Star className="w-3.5 h-3.5 fill-current shrink-0" />
-            <span>{item.rating}</span>
-          </div>
+
         </div>
 
         {/* Quick view button */}
@@ -128,7 +125,7 @@ export default function FeaturedListings({
       <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
           {/* Title */}
-          <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-4 line-clamp-2">
+          <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
             {item.title}
           </h3>
 
