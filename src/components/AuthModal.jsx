@@ -33,7 +33,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', init
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-forest/80 backdrop-blur-md"
+                        className="absolute inset-0 bg-forest/30 backdrop-blur-md"
                     />
 
                     {/* Modal Content */}

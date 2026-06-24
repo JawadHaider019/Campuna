@@ -35,7 +35,7 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                         <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-24 h-24 bg-gold/20 rounded-full blur-[32px] pointer-events-none" />
 
                         {/* Icon */}
-                        <div className="shrink-0 w-12 h-12 rounded-2xl bg-gold/15 border border-gold/20 flex items-center justify-center shadow-inner">
+                        <div className="sm:flex hidden shrink-0 w-12 h-12 rounded-2xl bg-forest border border-gold/20 flex items-center justify-center shadow-inner">
                             <Tent className="w-6 h-6 text-sand" />
                         </div>
 
@@ -49,14 +49,14 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                                 </span>
                             </p>
                             <p className="font-sans text-xs text-white/60 mt-0.5 leading-relaxed">
-                                Entdecke Angebote, finde deinen Stellplatz — oder teile dein Camping-Angebot mit anderen.
+                                Entdecke Angebote, finde deinen Stellplatz  oder teile dein Camping-Angebot mit anderen.
                             </p>
                         </div>
 
                         {/* CTA Button */}
                         <button
 
-                            className="shrink-0 flex items-center gap-2 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[11px] uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
+                            className="shrink-0 flex items-center gap-2 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[10px] uppercase tracking-wider px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
                             Kostenlos inserieren
                             <ArrowRight className="w-3.5 h-3.5" />

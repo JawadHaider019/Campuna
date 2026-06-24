@@ -13,7 +13,7 @@ export default function BlogSection() {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: index * 0.1 }}
-      className={`group flex flex-row gap-4 sm:gap-5 cursor-pointer border-b border-forest/5 pb-6 last:border-0 last:pb-0 w-full ${isFirst ? 'lg:hidden' : ''}`}
+      className={`group flex flex-row gap-2 sm:gap-4 cursor-pointer border-b border-forest/5 pb-2 last:border-0 last:pb-0 w-full ${isFirst ? 'lg:hidden' : ''}`}
     >
       <div className="relative w-24 sm:w-32 h-20 sm:h-24 rounded-xl overflow-hidden shrink-0 shadow-md">
         <img
@@ -68,7 +68,7 @@ export default function BlogSection() {
         </div>
 
         {/* Magazine Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 md:gap-4 items-start">
 
           {/* Large Featured Article - ONLY visible on Desktop (lg+) */}
           <motion.div

@@ -42,7 +42,7 @@ export default function WhyCampuna() {
         </div>
 
         {/* Features Cards Grid - Optimized for Tablet/Mobile (1 col) and Desktop (3 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 max-w-2xl lg:max-w-none mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-4 max-w-2xl lg:max-w-none mx-auto">
           {FEATURES.map((item, index) => {
             const Icon = item.icon;
             return (
