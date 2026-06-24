@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, X, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { Play, X, Sparkles } from 'lucide-react';
 
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
 
   return (
     <section id="video-section" className="py-16 bg-forest relative overflow-hidden">
@@ -48,15 +47,12 @@ export default function VideoSection() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative max-w-6xl mx-auto aspect-video rounded-[40px] overflow-hidden shadow-[0_40px_100px_-15px_rgba(0,0,0,0.6)] border border-white/5 bg-black group"
         >
-          {/* Ambient Video Background */}
+          {/* YouTube Thumbnail Background */}
           <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              loop
-              muted={isMuted}
-              playsInline
-              className="w-full h-full object-cover opacity-60 filter brightness-75 group-hover:scale-105 transition-transform duration-[6s] ease-out"
-              src="https://assets.mixkit.co/videos/preview/mixkit-campers-by-the-fire-under-a-starry-night-42173-large.mp4"
+            <img
+              src="https://img.youtube.com/vi/7VLlgt1Rgr4/maxresdefault.jpg"
+              alt="Campuna Video Vorschau"
+              className="w-full h-full object-cover brightness-75 group-hover:scale-105 transition-transform duration-[6s] ease-out"
             />
           </div>
 
@@ -76,13 +72,7 @@ export default function VideoSection() {
             </motion.button>
           </div>
 
-          {/* Mute Control */}
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="absolute bottom-8 right-8 z-30 w-12 h-12  text-white hover:text-gold transition-all"
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
+
         </motion.div>
       </div>
 
@@ -103,7 +93,7 @@ export default function VideoSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 40 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full h-full max-w-7xl rounded-[32px] overflow-hidden shadow-[0_64px_120px_-15px_rgba(0,0,0,0.8)] z-10 bg-black border border-white/5"
+              className="relative w-full max-w-7xl aspect-video rounded-[32px] overflow-hidden shadow-[0_64px_120px_-15px_rgba(0,0,0,0.8)] z-10 bg-black border border-white/5"
             >
               <button
                 onClick={() => setIsPlaying(false)}
@@ -114,7 +104,7 @@ export default function VideoSection() {
 
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/gEreZscu8mI?autoplay=1&rel=0"
+                src="https://www.youtube.com/embed/7VLlgt1Rgr4?autoplay=1&rel=0&start=4"
                 title="Das ist Campuna"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
