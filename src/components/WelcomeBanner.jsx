@@ -29,7 +29,7 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                     transition={{ type: 'spring', damping: 28, stiffness: 260 }}
                     className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-2rem)] max-w-3xl"
                 >
-                    <div className="relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 bg-forest/95 backdrop-blur-xl border border-white/10 rounded-[28px] px-5 py-4 sm:px-7 sm:py-5 shadow-[0_24px_64px_-12px_rgba(0,99,13,0.45)]">
+                    <div className="relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 bg-forest/70 backdrop-blur-xl border border-white/10 rounded-[28px] px-5 py-4 sm:px-7 sm:py-5 shadow-[0_24px_64px_-12px_rgba(0,99,13,0.45)]">
 
                         {/* Left glow accent */}
                         <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-24 h-24 bg-gold/20 rounded-full blur-[32px] pointer-events-none" />
