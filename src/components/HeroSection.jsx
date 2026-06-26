@@ -31,7 +31,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           className="w-full h-full"
         >
           <img
-            src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1920&q=80"
+            src="/hero-campuna.png"
             alt="Cinematic luxury camping under starry night"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
