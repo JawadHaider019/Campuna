@@ -8,20 +8,22 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 400) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <nav
       id="main-navbar"
-      className='fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white py-3 '
+      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-3 ${isScrolled ? 'top-0 shadow-md' : 'top-[52px] sm:top-14'
+        }`}
     >
       <div className="max-w-8xl mx-auto px-2 md:px-12 ">
         <div className="flex items-center justify-between">

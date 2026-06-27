@@ -20,7 +20,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
   return (
     <section
       id="hero"
-      className="relative min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] mt-16 mb-12 mx-4 md:mx-8 lg:mx-12 shadow-2xl border border-forest/10"
+      className="relative min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] mt-30 sm:mt-30 md:mt-36 mb-12 mx-4 md:mx-8 lg:mx-12 shadow-2xl border border-forest/10"
     >
       {/* Background Cinematic Image with Zoom Animation */}
       <div className="absolute inset-0 z-0">
@@ -88,16 +88,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           >
             <motion.button
               onClick={onExploreClick}
-              animate={{
-                rotate: [0, -40, 40, -40, 40, -40, 40, -40, 40, -30, 30, -20, 20, -10, 10, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatDelay: 1,
-                ease: "easeInOut",
-              }}
-              whileHover={{ scale: 1.05, rotate: 0 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px]  tracking-wider"
             >
@@ -105,16 +96,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             </motion.button>
             <motion.button
               onClick={onSellClick}
-              animate={{
-                rotate: [0, 40, -40, 40, -40, 40, -40, 40, -40, 30, -30, 20, -20, 10, -10, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatDelay: 1,
-                ease: "easeInOut",
-              }}
-              whileHover={{ scale: 1.05, rotate: 0 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px]  tracking-wider"
             >
