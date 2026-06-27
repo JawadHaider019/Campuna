@@ -4,6 +4,7 @@ import { ArrowRight, Tent, Sparkles } from 'lucide-react';
 
 export default function WelcomeBanner({ onOpenSellModal }) {
     const [scrolled, setScrolled] = useState(false);
+    const [hideOnFooter, setHideOnFooter] = useState(false);
 
     useEffect(() => {
         const toggleVisibility = () => {
@@ -14,10 +15,29 @@ export default function WelcomeBanner({ onOpenSellModal }) {
             }
         };
 
+        // Create an observer to detect footer
+        const footerObserver = new IntersectionObserver(
+            ([entry]) => {
+                setHideOnFooter(entry.isIntersecting);
+            },
+            {
+                threshold: 0.1,
+                // Adjust rootMargin to hide it slightly before the footer hits the very top
+                rootMargin: '0px 0px 50px 0px'
+            }
+        );
+
+        const footer = document.getElementById('footer');
+        if (footer) footerObserver.observe(footer);
+
         window.addEventListener('scroll', toggleVisibility);
         // Initial check
         toggleVisibility();
-        return () => window.removeEventListener('scroll', toggleVisibility);
+
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+            if (footer) footerObserver.unobserve(footer);
+        };
     }, []);
 
     const isTop = !scrolled;
@@ -34,20 +54,21 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                     className="fixed top-0 left-0 w-full z-[100] bg-forest text-sand py-2 sm:py-3 px-4 shadow-lg border-b border-white/10"
                 >
-                    <div className="max-w-8xl mx-auto flex items-center justify-between gap-0">
-                        <div className="flex items-center gap-2">
-                            <div className="hidden sm:flex shrink-0 w-8 h-8 rounded-lg bg-white/10 items-center justify-center">
+                    <div className="max-w-8xl mx-auto flex items-center justify-center gap-3 sm:gap-8">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="hidden md:flex shrink-0 w-8 h-8 rounded-lg bg-white/10 items-center justify-center">
                                 <Tent className="w-4 h-4 text-gold" />
                             </div>
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                                <p className="font-display text-[10px] sm:text-sm font-bold leading-none flex items-center gap-2">
+                            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-3">
+                                <p className="font-display text-[9px] sm:text-sm font-bold leading-none flex items-center gap-1.5 whitespace-nowrap">
                                     Willkommen bei Campuna 👋
-                                    <span className="bg-gold/20 text-gold text-[8px] font-bold uppercase tracking-tighter px-1.5 py-0.5 rounded border border-gold/20">
+                                    <span className="bg-gold/20 text-gold text-[7px] sm:text-[8px] font-bold uppercase tracking-tighter px-1 rounded border border-gold/20">
                                         Neu
                                     </span>
                                 </p>
-                                <p className="font-sans text-[9px] sm:text-xs text-white/70">
-                                    Entdecke Angebote, finde deinen Stellplatz oder teile dein Camping-Angebot.
+                                <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
+                                <p className="font-sans text-[8px] sm:text-xs text-white/70 whitespace-nowrap">
+                                    Entdecke Angebote, finde deinen Stellplatz oder teile dein Camping-Angebot mit anderen.
                                 </p>
                             </div>
                         </div>
@@ -56,12 +77,12 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                             onClick={onOpenSellModal}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:bg-white text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-3 py-1.5 sm:px-4 sm:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-md whitespace-nowrap"
                         >
-                            Kostenlos inserieren
+                            <span className="hidden sm:inline">Kostenlos</span> inserieren
                             <ArrowRight className="w-3 h-3" />
                         </button>
                     </div>
                 </motion.div>
-            ) : (
+            ) : !hideOnFooter && (
                 // BOTTOM CARD VERSION (original style)
                 <motion.div
                     key="bottom-banner"
