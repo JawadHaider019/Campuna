@@ -163,13 +163,7 @@ export default function HomePage() {
     }
   };
 
-  const handleSelectCategoryFromWidget = (categoryName) => {
-    setSelectedCategory(categoryName);
-    const element = document.getElementById('exclusive-offers');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+
 
   const handleClearFilters = () => {
     setSelectedCategory('');
@@ -218,7 +212,7 @@ export default function HomePage() {
       />
 
       {/* 3. Grid Categories */}
-      <CategoriesSection onSelectCategory={handleSelectCategoryFromWidget} />
+      <CategoriesSection />
 
       {/* 4. Exclusive Offers with filters & interactive search */}
       <FeaturedListings
