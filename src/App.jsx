@@ -1,4 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+const ListingDetailsPage = lazy(() => import('./pages/ListingDetailsPage'));
+
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import CategoriesSection from './components/CategoriesSection';
@@ -18,7 +22,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { FEATURED_LISTINGS } from './data';
 import { getHomepageProducts } from './api/bubbleApi';
 
-export default function HomePage() {
+function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
@@ -189,101 +193,120 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-white min-h-screen relative font-sans text-charcoal">
+    <>
+      <div className="bg-white min-h-screen relative font-sans text-charcoal">
 
-      {/* Navbar with full reactive state */}
-      <Navbar
-        onSearchFocus={handleNavbarSearchClick}
-        onOpenSellModal={() => setIsSellModalOpen(true)}
-        onOpenAuthModal={() => {
-          setAuthModalConfig({ mode: 'login', type: '' });
-          setIsAuthModalOpen(true);
-        }}
-        wishlistCount={wishlistedIds.length}
-        onOpenWishlist={() => setIsWishlistOpen(true)}
-      />
+        {/* Navbar with full reactive state */}
+        <Navbar
+          onSearchFocus={handleNavbarSearchClick}
+          onOpenSellModal={() => setIsSellModalOpen(true)}
+          onOpenAuthModal={() => {
+            setAuthModalConfig({ mode: 'login', type: '' });
+            setIsAuthModalOpen(true);
+          }}
+          wishlistCount={wishlistedIds.length}
+          onOpenWishlist={() => setIsWishlistOpen(true)}
+        />
 
-      {/* 1. Hero Section */}
-      <HeroSection
-        onSearch={handleSearch}
-        onExploreClick={() => {
-          setAuthModalConfig({ mode: 'register', type: 'Camper' });
-          setIsAuthModalOpen(true);
-        }}
-        onSellClick={() => {
-          setAuthModalConfig({ mode: 'register', type: 'Anbieter' });
-          setIsAuthModalOpen(true);
-        }}
-        searchRef={searchRef}
-      />
+        {/* 1. Hero Section */}
+        <HeroSection
+          onSearch={handleSearch}
+          onExploreClick={() => {
+            setAuthModalConfig({ mode: 'register', type: 'Camper' });
+            setIsAuthModalOpen(true);
+          }}
+          onSellClick={() => {
+            setAuthModalConfig({ mode: 'register', type: 'Anbieter' });
+            setIsAuthModalOpen(true);
+          }}
+          searchRef={searchRef}
+        />
 
-      {/* 3. Grid Categories */}
-      <CategoriesSection onSelectCategory={handleSelectCategoryFromWidget} />
+        {/* 3. Grid Categories */}
+        <CategoriesSection onSelectCategory={handleSelectCategoryFromWidget} />
 
-      {/* 4. Exclusive Offers with filters & interactive search */}
-      <FeaturedListings
-        listings={listingsList}
-        wishlistedIds={wishlistedIds}
-        onToggleWishlist={handleToggleWishlist}
-        selectedCategoryFilter={selectedCategory}
-        onClearCategoryFilter={handleClearFilters}
-        searchQuery={searchQuery}
-        searchLocation={searchLocation}
-      />
+        {/* 4. Exclusive Offers with filters & interactive search */}
+        <FeaturedListings
+          listings={listingsList}
+          wishlistedIds={wishlistedIds}
+          onToggleWishlist={handleToggleWishlist}
+          selectedCategoryFilter={selectedCategory}
+          onClearCategoryFilter={handleClearFilters}
+          searchQuery={searchQuery}
+          searchLocation={searchLocation}
+        />
 
-      {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-      <SpotlightSection
-        onPartnerClick={(name) => {
-          const element = document.getElementById('exclusive-offers');
-          element?.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
+        {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
+        <SpotlightSection
+          onPartnerClick={(name) => {
+            const element = document.getElementById('exclusive-offers');
+            element?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
 
-      {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
-      <BlogSection />
+        {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
+        <BlogSection />
 
-      {/* 7. Why Campuna Features Section */}
-      <WhyCampuna />
+        {/* 7. Why Campuna Features Section */}
+        <WhyCampuna />
 
-      {/* 8. High-End Video Display */}
-      <VideoSection />
+        {/* 8. High-End Video Display */}
+        <VideoSection />
 
-      {/* 9. Secondary Seller CTA Section */}
-      <CTASection onSellClick={() => setIsSellModalOpen(true)} />
+        {/* 9. Secondary Seller CTA Section */}
+        <CTASection onSellClick={() => setIsSellModalOpen(true)} />
 
-      {/* 11. Custom FAQ Accordion */}
-      <FAQSection />
+        {/* 11. Custom FAQ Accordion */}
+        <FAQSection />
 
-      {/* 12. Complete Footer */}
-      <Footer />
+        {/* 12. Complete Footer */}
+        <Footer />
 
 
-      {/* Sell Modal Component */}
-      <SellModal
-        isOpen={isSellModalOpen}
-        onClose={() => setIsSellModalOpen(false)}
-        onCreateListing={handleCreateListing}
-      />
+        {/* Sell Modal Component */}
+        <SellModal
+          isOpen={isSellModalOpen}
+          onClose={() => setIsSellModalOpen(false)}
+          onCreateListing={handleCreateListing}
+        />
 
-      {/* Wishlist Sidebar Drawer Component */}
-      <WishlistDrawer
-        isOpen={isWishlistOpen}
-        onClose={() => setIsWishlistOpen(false)}
-        wishlistedIds={wishlistedIds}
-        listingsList={listingsList}
-        onToggleWishlist={handleToggleWishlist}
-      />
+        {/* Wishlist Sidebar Drawer Component */}
+        <WishlistDrawer
+          isOpen={isWishlistOpen}
+          onClose={() => setIsWishlistOpen(false)}
+          wishlistedIds={wishlistedIds}
+          listingsList={listingsList}
+          onToggleWishlist={handleToggleWishlist}
+        />
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        initialMode={authModalConfig.mode}
-        initialType={authModalConfig.type}
-      />
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          initialMode={authModalConfig.mode}
+          initialType={authModalConfig.type}
+        />
 
-      <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
-      <ScrollToTop />
+        <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
+        <ScrollToTop />
 
-    </div>
+      </div>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="w-10 h-10 border-4 border-forest/20 border-t-forest rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/listing_details/:slug" element={<ListingDetailsPage />} />
+      </Routes>
+    </Suspense>
   );
 }

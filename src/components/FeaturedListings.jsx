@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, MapPin, Star, ShieldCheck, Eye, X, Send, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { slugifyListing } from '../utils/slugify';
+
 
 export default function FeaturedListings({
   listings,
@@ -61,6 +64,12 @@ export default function FeaturedListings({
   const firstRow = filteredListings.slice(0, midPoint);
   const secondRow = filteredListings.slice(midPoint);
 
+  const navigate = useNavigate();
+
+  const handleCardClick = (item) => {
+    navigate(`/listing_details/${slugifyListing(item.title, item.id)}`);
+  };
+
   const ListingCard = ({ item, isWishlisted }) => (
     <div
       className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-lg transition-all duration-300 select-none"
@@ -106,17 +115,14 @@ export default function FeaturedListings({
 
         </div>
 
-        {/* Quick view button */}
+        {/* Quick view / navigate button */}
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <button
-            onClick={() => {
-              setSelectedQuickView(item);
-              setActiveImageIndex(0);
-            }}
+            onClick={() => handleCardClick(item)}
             className="bg-white text-forest hover:bg-gold hover:text-forest px-5 py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 shadow-lg scale-95 group-hover:scale-100 transition-all duration-300"
           >
             <Eye className="w-4 h-4" />
-            <span>Schnellansicht</span>
+            <span>Anzeige ansehen</span>
           </button>
         </div>
       </div>
@@ -154,10 +160,7 @@ export default function FeaturedListings({
           </div>
 
           <button
-            onClick={() => {
-              setSelectedQuickView(item);
-              setActiveImageIndex(0);
-            }}
+            onClick={() => handleCardClick(item)}
             className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1"
           >
             <span>Details</span>
