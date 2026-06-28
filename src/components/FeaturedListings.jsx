@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Heart, MapPin, Star, ShieldCheck, Eye, X, Send, Check } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Heart, MapPin, ShieldCheck, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { buildListingSlug } from '../utils/slugify';
 
 export default function FeaturedListings({
   listings,
@@ -11,10 +13,7 @@ export default function FeaturedListings({
   searchQuery,
   searchLocation
 }) {
-  const [selectedQuickView, setSelectedQuickView] = useState(null);
-  const [inquirySent, setInquirySent] = useState(false);
-  const [inquiryMessage, setInquiryMessage] = useState('');
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   const row1Ref = useRef(null);
   const row2Ref = useRef(null);
@@ -46,14 +45,9 @@ export default function FeaturedListings({
     }
   }, [filteredListings]);
 
-  const handleSendInquiry = (e) => {
-    e.preventDefault();
-    setInquirySent(true);
-    setTimeout(() => {
-      setInquirySent(false);
-      setInquiryMessage('');
-      setSelectedQuickView(null);
-    }, 2500);
+  const handleCardClick = (item) => {
+    const slug = buildListingSlug(item.title, item.id);
+    navigate(`/listing_details/${slug}`);
   };
 
   // Split listings into two rows
@@ -63,7 +57,8 @@ export default function FeaturedListings({
 
   const ListingCard = ({ item, isWishlisted }) => (
     <div
-      className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-lg transition-all duration-300 select-none"
+      onClick={() => handleCardClick(item)}
+      className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
     >
       {/* Image Area */}
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
@@ -81,7 +76,6 @@ export default function FeaturedListings({
             {item.seller.type}
           </span>
 
-
           {/* Wishlist Button */}
           <button
             onClick={(e) => {
@@ -97,27 +91,20 @@ export default function FeaturedListings({
           </button>
         </div>
 
-        {/* Location & Rating overlay */}
+        {/* Location overlay */}
         <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
           <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
             <MapPin className="w-3 h-3 text-gold shrink-0" />
             <span>{item.location}</span>
           </div>
-
         </div>
 
-        {/* Quick view button */}
+        {/* Hover CTA */}
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <button
-            onClick={() => {
-              setSelectedQuickView(item);
-              setActiveImageIndex(0);
-            }}
-            className="bg-white text-forest hover:bg-gold hover:text-forest px-5 py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 shadow-lg scale-95 group-hover:scale-100 transition-all duration-300"
-          >
+          <div className="bg-white text-forest px-5 py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 shadow-lg scale-95 group-hover:scale-100 transition-all duration-300">
             <Eye className="w-4 h-4" />
-            <span>Schnellansicht</span>
-          </button>
+            <span>Inserat ansehen</span>
+          </div>
         </div>
       </div>
 
@@ -153,16 +140,10 @@ export default function FeaturedListings({
             </span>
           </div>
 
-          <button
-            onClick={() => {
-              setSelectedQuickView(item);
-              setActiveImageIndex(0);
-            }}
-            className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1"
-          >
+          <span className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1 transition-colors">
             <span>Details</span>
             <span className="transform group-hover:translate-x-1 transition-transform inline-block">→</span>
-          </button>
+          </span>
         </div>
       </div>
     </div>
@@ -252,103 +233,6 @@ export default function FeaturedListings({
           </div>
         )}
 
-        {/* Quick View Modal */}
-        <AnimatePresence>
-          {selectedQuickView && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedQuickView(null)}
-                className="absolute inset-0 bg-forest/80 backdrop-blur-md"
-              />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative bg-sand w-full max-w-4xl rounded-[32px] shadow-2xl overflow-hidden z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] overflow-y-auto"
-              >
-                <button
-                  onClick={() => setSelectedQuickView(null)}
-                  className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-forest text-white hover:bg-gold hover:text-forest flex items-center justify-center transition-all shadow-md"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                <div className="p-6 md:p-8 flex flex-col justify-between bg-black/20">
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 shadow-inner">
-                    <img
-                      src={selectedQuickView.images[activeImageIndex]}
-                      alt={selectedQuickView.title}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    {selectedQuickView.images.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveImageIndex(idx)}
-                        className={`relative w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${idx === activeImageIndex ? 'border-gold scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                      >
-                        <img src={img} alt="Thumbnail" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="p-8 md:p-10 flex flex-col justify-between bg-sand">
-                  <div>
-                    <span className="bg-gold/25 border border-gold text-forest text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded mb-4 inline-block">
-                      {selectedQuickView.seller.type}
-                    </span>
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-black mb-2">
-                      {selectedQuickView.title}
-                    </h3>
-                    <div className="flex items-center gap-4 text-xs text-charcoal/70 mb-6">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4 text-gold" />
-                        {selectedQuickView.location}
-                      </span>
-                      <span className="flex items-center gap-1 font-mono">
-                        <Star className="w-4 h-4 text-gold fill-current" />
-                        {selectedQuickView.rating}
-                      </span>
-                    </div>
-                    <hr className="border-forest/10 mb-6" />
-                    <p className="font-sans text-xs uppercase font-bold tracking-wider text-forest/50 mb-3">Ausstattung</p>
-                    <div className="grid grid-cols-2 gap-2 mb-6">
-                      {selectedQuickView.features.map((feat, idx) => (
-                        <div key={idx} className="flex items-center space-x-2 text-xs text-charcoal/80">
-                          <Check className="w-3.5 h-3.5 text-gold shrink-0" />
-                          <span>{feat}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <form onSubmit={handleSendInquiry} className="space-y-3">
-                    <textarea
-                      required
-                      placeholder="Nachricht schreiben..."
-                      value={inquiryMessage}
-                      onChange={(e) => setInquiryMessage(e.target.value)}
-                      className="w-full bg-white border border-forest/15 rounded-xl p-3 text-xs focus:outline-none focus:border-gold"
-                      rows={3}
-                    />
-                    <button
-                      type="submit"
-                      disabled={inquirySent}
-                      className={`w-full py-3.5 px-4 rounded-full font-sans text-xs font-semibold uppercase tracking-wider flex items-center justify-center space-x-2 transition-all ${inquirySent ? 'bg-emerald-600 text-white' : 'bg-forest text-sand hover:bg-gold hover:text-forest'}`}
-                    >
-                      {inquirySent ? <span>Gesendet!</span> : <span>Anfrage senden</span>}
-                    </button>
-                  </form>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );
