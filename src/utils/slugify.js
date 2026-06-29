@@ -1,7 +1,4 @@
-/**
- * Converts a listing title into a URL-safe slug.
- * e.g. "Anhänger mit Dachzelt Prime Tech" → "anhaenger-mit-dachzelt-prime-tech"
- */
+
 export function slugify(text = '') {
     return text
         .toLowerCase()
@@ -19,20 +16,11 @@ export function slugify(text = '') {
         .replace(/^-+|-+$/g, '');
 }
 
-/**
- * Builds the listing detail URL slug.
- * Pattern: /listing_details/[title-slug]--[id]
- * e.g. /listing_details/anhaenger-mit-dachzelt-prime-tech--1782630761652x264347898888847360
- */
 export function buildListingSlug(title, id) {
-    return `${slugify(title)}--${id}`;
+    return `${slugify(title)}-${id}`;
 }
 
-/**
- * Parses a listing page slug back into its id part.
- * Splits on "--" and takes the last segment as the id.
- */
 export function parseListingId(slug = '') {
-    const parts = slug.split('--');
+    const parts = slug.split('-');
     return parts[parts.length - 1];
 }

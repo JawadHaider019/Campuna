@@ -47,7 +47,8 @@ export default function FeaturedListings({
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
-    navigate(`/listing_details/${slug}`);
+    window.location.href = `https://campuna.de/listing_details/${slug}`;
+
   };
 
   // Split listings into two rows
