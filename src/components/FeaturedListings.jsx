@@ -47,14 +47,8 @@ export default function FeaturedListings({
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
+    window.location.href = `https://campuna.de/version-test/listing_details/${slug}`;
 
-    // Send message to parent app instead of direct navigation
-    window.parent.postMessage({
-      type: 'navigate_to_listing',
-      listingId: item.id,
-      listingSlug: slug,
-      listingData: item
-    }, '*');
   };
 
   // Split listings into two rows
