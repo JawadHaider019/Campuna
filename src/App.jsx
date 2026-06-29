@@ -25,6 +25,7 @@ export default function HomePage() {
   const [wishlistedIds, setWishlistedIds] = useState([]); // Empty wishlist initially, responsive to fetched IDs
   const [listingsList, setListingsList] = useState(FEATURED_LISTINGS);
 
+
   useEffect(() => {
     let active = true;
     const fetchListings = async () => {
