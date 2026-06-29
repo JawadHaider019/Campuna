@@ -47,7 +47,7 @@ export default function FeaturedListings({
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
-    window.location.href = `https://campuna.de/listing_details/${slug}`;
+    window.location.href = `https://campuna.de/version-test/listing_details/${slug}`;
 
   };
 

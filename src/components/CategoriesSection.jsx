@@ -65,7 +65,7 @@ export default function CategoriesSection({ onSelectCategory }) {
               className="bg-white border border-white/40 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col items-center text-center min-w-[120px] sm:min-w-[140px] lg:min-w-0 flex-shrink-0 snap-center"
             >
               <Link
-                to={`https://campuna.de/category/${slug}`}
+                to={`https://campuna.de/version-test/category/${slug}`}
                 className="flex flex-col items-center text-center w-full"
                 onClick={(e) => handleCategoryClick(e, cat.name)}
               >
