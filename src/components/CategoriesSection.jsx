@@ -10,7 +10,7 @@ import {
   Key
 } from 'lucide-react';
 import { CATEGORIES } from '../data';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
+import { Link } from 'react-router-dom';
 
 const ICON_MAP = {
   'Camping Zubehör': Backpack,
@@ -36,6 +36,16 @@ const CATEGORY_SLUGS = {
 };
 
 export default function CategoriesSection({ onSelectCategory }) {
+  // Handle both navigation and the callback
+  const handleCategoryClick = (e, categoryName) => {
+    // If onSelectCategory is provided, call it
+    if (onSelectCategory) {
+      onSelectCategory(categoryName);
+    }
+    // Let the Link handle the navigation normally
+    // Don't prevent default
+  };
+
   return (
     <section id="categories" className="relative -mt-20 md:-mt-24 z-20 max-w-7xl mx-auto px-4 ">
       {/* Horizontal Scroll on Mobile, Grid on Desktop */}
@@ -57,12 +67,7 @@ export default function CategoriesSection({ onSelectCategory }) {
               <Link
                 to={`https://campuna.de/category/${slug}`}
                 className="flex flex-col items-center text-center w-full"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onSelectCategory) {
-                    onSelectCategory(cat.name);
-                  }
-                }}
+                onClick={(e) => handleCategoryClick(e, cat.name)}
               >
                 <div className="p-2.5 rounded-xl bg-forest/5 text-black group-hover:bg-forest group-hover:text-gold transition-all duration-300 mb-3 shrink-0">
                   <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
