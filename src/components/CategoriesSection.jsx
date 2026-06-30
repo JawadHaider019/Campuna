@@ -10,7 +10,7 @@ import {
   Key
 } from 'lucide-react';
 import { CATEGORIES } from '../data';
-import { Link } from 'react-router-dom';
+import { getParentNavigationUrl } from '../utils/navigation';
 
 const ICON_MAP = {
   'Camping Zubehör': Backpack,
@@ -64,8 +64,9 @@ export default function CategoriesSection({ onSelectCategory }) {
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
               className="bg-white border border-white/40 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col items-center text-center min-w-[120px] sm:min-w-[140px] lg:min-w-0 flex-shrink-0 snap-center"
             >
-              <Link
-                to={`https://campuna.de/version-test/category/${slug}`}
+              <a
+                href={getParentNavigationUrl(`category/${slug}`)}
+                target="_parent"
                 className="flex flex-col items-center text-center w-full"
                 onClick={(e) => handleCategoryClick(e, cat.name)}
               >
@@ -76,7 +77,7 @@ export default function CategoriesSection({ onSelectCategory }) {
                 <h3 className="font-display text-[10px] md:text-xs font-bold text-black leading-tight tracking-tight group-hover:text-gold transition-colors duration-300 line-clamp-2">
                   {cat.name}
                 </h3>
-              </Link>
+              </a>
             </motion.div>
           );
         })}

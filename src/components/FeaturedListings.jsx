@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Heart, MapPin, ShieldCheck, Eye } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { buildListingSlug } from '../utils/slugify';
+import { navigateTo } from '../utils/navigation';
 
 export default function FeaturedListings({
   listings,
@@ -47,8 +47,7 @@ export default function FeaturedListings({
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
-    window.location.href = `https://campuna.de/version-test/listing_details/${slug}`;
-
+    navigateTo(`listing_details/${slug}`);
   };
 
   // Split listings into two rows
