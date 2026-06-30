@@ -9,6 +9,11 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const handler = (event) => {
             if (event.data && event.data.type === "AUTH_CHANGED") {
+                if (!event.data.user) {
+                    console.log("data is not coming from bubble");
+                } else {
+                    console.log("data is coming from bubble", event.data.user);
+                }
                 setIsLoggedIn(!!event.data.isLoggedIn);
                 setUser(event.data.user || null);
             }
