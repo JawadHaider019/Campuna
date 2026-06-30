@@ -31,17 +31,18 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-3 ${isScrolled ? 'top-0 shadow-md' : 'top-[52px] sm:top-14'
+      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-2 ${isScrolled ? 'top-0 shadow-md' : 'top-12 sm:top-14'
         }`}
     >
       <div className="max-w-8xl mx-auto px-2 md:px-12 ">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <button onClick={() => navigateTo('/')} className="flex items-center group">
+          <button onClick={() => navigateTo('/')} className="flex  items-center group">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
-              className="h-10 w-auto object-cover transition-opacity duration-300 group-hover:opacity-80"
+              width={150}
+              height={65}
+              className="w-[150px] h-[65px] object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 

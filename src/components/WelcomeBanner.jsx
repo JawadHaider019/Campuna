@@ -53,22 +53,21 @@ export default function WelcomeBanner() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -100, opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="fixed top-0 left-0 w-full z-[100] bg-forest text-sand py-2 sm:py-3 px-4 shadow-lg border-b border-white/10"
+                    className="fixed top-0 left-0 w-full h-12 sm:h-14 z-[100] bg-forest text-sand px-4 shadow-lg border-b border-white/10 flex items-center"
                 >
-                    <div className="max-w-8xl mx-auto flex items-center justify-center gap-3 sm:gap-8">
+                    <div className="max-w-8xl mx-auto w-full flex items-center justify-between sm:justify-center gap-3 sm:gap-8">
                         <div className="flex items-center gap-2 sm:gap-3">
                             <div className="hidden md:flex shrink-0 w-8 h-8 rounded-lg bg-white/10 items-center justify-center">
                                 <Tent className="w-4 h-4 text-gold" />
                             </div>
-                            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-3">
-                                <p className="font-display text-[9px] sm:text-sm font-bold leading-none flex items-center gap-1.5 whitespace-nowrap">
+                            <div className="flex flex-col items-start gap-1">
+                                <p className="font-display text-[9px] sm:text-xs md:text-sm font-bold leading-none flex items-center gap-1.5 whitespace-nowrap">
                                     Willkommen bei Campuna 👋
                                     <span className="bg-gold/20 text-gold text-[7px] sm:text-[8px] font-bold uppercase tracking-tighter px-1 rounded border border-gold/20">
                                         Neu
                                     </span>
                                 </p>
-                                <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
-                                <p className="font-sans text-[8px] sm:text-xs text-white/70 whitespace-nowrap">
+                                <p className="font-sans text-[8px] sm:text-[10px] md:text-xs text-white/70 whitespace-normal leading-tight max-w-[180px] xs:max-w-[280px] sm:max-w-md md:max-w-xl lg:max-w-none">
                                     Entdecke Angebote, finde deinen Stellplatz oder teile dein Camping-Angebot mit anderen.
                                 </p>
                             </div>
