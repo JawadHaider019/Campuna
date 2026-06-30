@@ -258,7 +258,7 @@ export default function HomePage() {
       />
 
 
-      <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
+      <WelcomeBanner />
       <ScrollToTop />
 
     </div>

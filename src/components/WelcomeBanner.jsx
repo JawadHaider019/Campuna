@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Tent, Sparkles } from 'lucide-react';
+import { navigateTo } from '../utils/navigation';
 
-export default function WelcomeBanner({ onOpenSellModal }) {
+export default function WelcomeBanner() {
     const [scrolled, setScrolled] = useState(false);
     const [hideOnFooter, setHideOnFooter] = useState(false);
 
@@ -74,7 +75,7 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                         </div>
 
                         <button
-                            onClick={onOpenSellModal}
+                            onClick={() => navigateTo('/my_account?n=yes')}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:bg-white text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-3 py-1.5 sm:px-4 sm:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-md whitespace-nowrap"
                         >
                             <span className="hidden sm:inline">Kostenlos</span> inserieren
@@ -114,7 +115,7 @@ export default function WelcomeBanner({ onOpenSellModal }) {
                         </div>
 
                         <button
-                            onClick={onOpenSellModal}
+                            onClick={() => navigateTo('/my_account?n=yes')}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-4 py-2 sm:px-5 sm:py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
                             Kostenlos inserieren
