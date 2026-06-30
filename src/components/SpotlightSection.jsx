@@ -52,7 +52,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     navigateTo(`/${partner.slug}`);
                 }
             }}
-            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
+            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[180px] rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
         >
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
@@ -62,7 +62,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                     referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-black/55 group-hover:bg-black/65 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/65 transition-colors duration-500" />
             </div>
 
             {/* ── LEFT PANEL (40%) — Centered Circular Logo floating over bg-image ── */}
@@ -90,20 +90,20 @@ export default function SpotlightSection({ onPartnerClick }) {
             {/* ── RIGHT PANEL (60%) — Vertically centered, left-aligned layout ── */}
             <div
                 style={{ width: '65%' }}
-                className="relative z-10 p-5 md:p-6 flex flex-col justify-center items-start text-left shrink-0"
+                className="relative z-10 py-4 pr-4 pl-0  flex flex-col justify-center items-start text-left shrink-0"
             >
                 {/* Top content: Name & Description (Left Aligned) */}
                 <div className="flex flex-col items-start text-left">
                     <h3 className="font-display text-lg md:text-xl font-extrabold text-white leading-tight tracking-tight group-hover:text-gold transition-colors duration-300">
                         {partner.name}
                     </h3>
-                    <p className="font-sans text-xs text-white/75 leading-relaxed font-light mt-2 line-clamp-3">
+                    <p className="font-sans text-xs text-white/75 leading-relaxed font-light mt-1 line-clamp-3">
                         {partner.description}
                     </p>
                 </div>
 
                 {/* Bottom row: Badge & Arrow */}
-                <div className="flex items-center justify-between mt-2 pt-3 border-t border-white/10 w-full">
+                <div className="flex items-center justify-between mt-2 pt-2  w-full">
                     {/* Badge */}
                     <div className="inline-flex items-center space-x-1 bg-white/10 backdrop-blur-md px-2.5 py-1.5 rounded-full text-white shadow-sm shrink-0">
                         <ShieldCheck className="w-3.5 h-3.5 text-gold" />
@@ -113,8 +113,8 @@ export default function SpotlightSection({ onPartnerClick }) {
                     </div>
 
                     {/* Arrow button */}
-                    <div className="w-9 h-9 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
-                        <ArrowRight className="w-4.5 h-4.5" />
+                    <div className="w-8 h-8 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
+                        <ArrowRight className="w-4 h-4" />
                     </div>
                 </div>
             </div>
