@@ -20,27 +20,37 @@ export function getParentNavigationUrl(path) {
     let isTestEnv = hasVersionTestQuery || currentUrl.includes('version-test');
     let origin = 'https://campuna.de';
 
-    if (isIframe && document.referrer) {
+    if (isIframe) {
         try {
-            const referrerUrl = new URL(document.referrer);
-            if (
-                referrerUrl.origin.includes('campuna.de') ||
-                referrerUrl.origin.includes('localhost') ||
-                referrerUrl.origin.includes('vercel.app')
-            ) {
-                origin = referrerUrl.origin;
-                // If referrer explicitly contains version-test, use test env
-                if (referrerUrl.pathname.includes('/version-test')) {
-                    isTestEnv = true;
-                } else if (!hasVersionTestQuery && !currentUrl.includes('version-test')) {
-                    // Otherwise, only set to false if no query overrides say it is test mode
-                    isTestEnv = false;
-                }
+            // If same-origin (or subdomain mapped with relaxed CORS), we can read the parent URL directly
+            const parentHref = window.parent.location.href;
+            if (parentHref) {
+                isTestEnv = parentHref.includes('/version-test');
+                origin = window.parent.location.origin;
             }
         } catch (e) {
-            console.warn("Failed to parse document.referrer:", e);
+            // Cross-origin: fallback to referrer and parameters
+            if (document.referrer) {
+                try {
+                    const referrerUrl = new URL(document.referrer);
+                    if (
+                        referrerUrl.origin.includes('campuna.de') ||
+                        referrerUrl.origin.includes('localhost') ||
+                        referrerUrl.origin.includes('vercel.app')
+                    ) {
+                        origin = referrerUrl.origin;
+                        if (referrerUrl.pathname.includes('/version-test')) {
+                            isTestEnv = true;
+                        } else if (!hasVersionTestQuery && !currentUrl.includes('version-test')) {
+                            isTestEnv = false;
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Failed to parse document.referrer:", err);
+                }
+            }
         }
-    } else if (!isIframe) {
+    } else {
         // Default to test environment for local development/Vercel preview standalones
         const hostname = window.location.hostname;
         if (hostname.includes('localhost') || hostname.includes('127.0.0.1') || hostname.includes('vercel.app')) {
