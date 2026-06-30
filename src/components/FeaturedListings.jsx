@@ -13,8 +13,6 @@ export default function FeaturedListings({
   searchQuery,
   searchLocation
 }) {
-  const navigate = useNavigate();
-
   const row1Ref = useRef(null);
   const row2Ref = useRef(null);
   const [row1Constraints, setRow1Constraints] = useState(0);
