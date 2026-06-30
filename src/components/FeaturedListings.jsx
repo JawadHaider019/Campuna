@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, useMotionValue, animate } from 'motion/react';
 import { Heart, MapPin, ShieldCheck, Eye } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
@@ -52,6 +52,69 @@ export default function FeaturedListings({
   const midPoint = Math.ceil(filteredListings.length / 2);
   const firstRow = filteredListings.slice(0, midPoint);
   const secondRow = filteredListings.slice(midPoint);
+
+  const x1 = useMotionValue(0);
+  const x2 = useMotionValue(0);
+
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [isHovered2, setIsHovered2] = useState(false);
+
+  const [loopTrigger1, setLoopTrigger1] = useState(0);
+  const [loopTrigger2, setLoopTrigger2] = useState(0);
+
+  useEffect(() => {
+    x1.set(0);
+    x2.set(-420 * secondRow.length);
+  }, [firstRow.length, secondRow.length]);
+
+  useEffect(() => {
+    if (isHovered1 || firstRow.length === 0) return;
+
+    const target = -420 * firstRow.length;
+    const currentVal = x1.get();
+
+    const remainingDistance = Math.abs(target - currentVal);
+    const totalDistance = Math.abs(target);
+    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
+    const duration = 60 * fraction;
+
+    const controls = animate(x1, target, {
+      type: "tween",
+      ease: "linear",
+      duration: duration,
+      onComplete: () => {
+        x1.set(0);
+        setLoopTrigger1(prev => prev + 1);
+      }
+    });
+
+    return () => controls.stop();
+  }, [isHovered1, loopTrigger1, firstRow.length]);
+
+  useEffect(() => {
+    if (isHovered2 || secondRow.length === 0) return;
+
+    const target = 0;
+    const startVal = -420 * secondRow.length;
+    const currentVal = x2.get();
+
+    const remainingDistance = Math.abs(target - currentVal);
+    const totalDistance = Math.abs(startVal);
+    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
+    const duration = 65 * fraction;
+
+    const controls = animate(x2, target, {
+      type: "tween",
+      ease: "linear",
+      duration: duration,
+      onComplete: () => {
+        x2.set(startVal);
+        setLoopTrigger2(prev => prev + 1);
+      }
+    });
+
+    return () => controls.stop();
+  }, [isHovered2, loopTrigger2, secondRow.length]);
 
   const ListingCard = ({ item, isWishlisted }) => (
     <div
@@ -190,15 +253,9 @@ export default function FeaturedListings({
               <motion.div
                 drag="x"
                 dragConstraints={{ right: 0, left: -row1Constraints }}
-                animate={{ x: [0, -420 * firstRow.length] }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    duration: 60,
-                    ease: "linear",
-                  },
-                }}
+                style={{ x: x1 }}
+                onMouseEnter={() => setIsHovered1(true)}
+                onMouseLeave={() => setIsHovered1(false)}
                 className="flex gap-5 w-max "
               >
                 {[...firstRow, ...firstRow].map((item, idx) => (
@@ -212,15 +269,9 @@ export default function FeaturedListings({
               <motion.div
                 drag="x"
                 dragConstraints={{ right: 0, left: -row2Constraints }}
-                animate={{ x: [-420 * secondRow.length, 0] }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    duration: 65,
-                    ease: "linear",
-                  },
-                }}
+                style={{ x: x2 }}
+                onMouseEnter={() => setIsHovered2(true)}
+                onMouseLeave={() => setIsHovered2(false)}
                 className="flex gap-5 w-max"
               >
                 {[...secondRow, ...secondRow].map((item, idx) => (

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, useMotionValue, animate } from 'motion/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { PROVIDERS } from '../data';
 import { navigateTo } from '../utils/navigation';
@@ -8,6 +8,35 @@ export default function SpotlightSection({ onPartnerClick }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
     const dragStartX = useRef(0); // track pointer-down X to detect drag vs. click
+
+    const x = useMotionValue(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [loopTrigger, setLoopTrigger] = useState(0);
+
+    useEffect(() => {
+        if (isHovered) return;
+
+        const target = -440 * PROVIDERS.length;
+        const currentVal = x.get();
+
+        // Calculate remaining duration based on current position
+        const remainingDistance = Math.abs(target - currentVal);
+        const totalDistance = Math.abs(target);
+        const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
+        const duration = 90 * fraction;
+
+        const controls = animate(x, target, {
+            type: "tween",
+            ease: "linear",
+            duration: duration,
+            onComplete: () => {
+                x.set(0);
+                setLoopTrigger(prev => prev + 1);
+            }
+        });
+
+        return () => controls.stop();
+    }, [isHovered, loopTrigger, PROVIDERS.length]);
 
     useEffect(() => {
         if (rowRef.current) {
@@ -114,15 +143,9 @@ export default function SpotlightSection({ onPartnerClick }) {
                             drag="x"
                             onPointerDown={(e) => { dragStartX.current = e.clientX; }}
                             dragConstraints={{ right: 0, left: -constraints }}
-                            animate={{ x: [0, -440 * PROVIDERS.length] }}
-                            transition={{
-                                x: {
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                    duration: 90,
-                                    ease: "linear",
-                                },
-                            }}
+                            style={{ x }}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
                             className="flex gap-8 w-max px-32 pb-3"
                         >
                             {[...PROVIDERS, ...PROVIDERS].map((partner, idx) => (
