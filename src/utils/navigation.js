@@ -1,4 +1,4 @@
-const BASE_URL = 'https://campuna.de/version-test';
+const BASE_URL = 'https://campuna.de';
 
 /**
  * Builds a full navigation URL using the fixed base.
