@@ -232,7 +232,7 @@ export default function HomePage() {
       <VideoSection />
 
       {/* 9. Secondary Seller CTA Section */}
-      <CTASection onSellClick={() => navigateTo('/signup_login')} />
+      <CTASection onSellClick={() => navigateTo('/my_account?n=yes')} />
 
       {/* 11. Custom FAQ Accordion */}
       <FAQSection />
