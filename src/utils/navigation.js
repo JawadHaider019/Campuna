@@ -1,82 +1,14 @@
+const BASE_URL = 'https://campuna.de/version-test';
+
 /**
- * Dynamically determines the base URL of the parent window for navigation.
- * Supports both Bubble's test (/version-test) and live environments.
- * Falls back to 'https://campuna.de/version-test' if run standalone or on localhost.
+ * Builds a full navigation URL using the fixed base.
  * 
  * @param {string} path - The relative path to append (e.g., 'listing_details/slug')
  * @returns {string} The full navigation URL
  */
 export function getParentNavigationUrl(path) {
-    const isIframe = window.self !== window.top;
-
-    // Check if the current page url or query string implies version-test
-    const currentUrl = window.location.href;
-    let urlParams = new URLSearchParams(window.location.search);
-    const hasVersionTestQuery = urlParams.has('version-test') ||
-        urlParams.get('env') === 'test' ||
-        urlParams.get('version') === 'version-test' ||
-        urlParams.get('parent_url')?.includes('version-test');
-
-    let parentHref = null;
-    let isTestEnv = hasVersionTestQuery || currentUrl.includes('version-test');
-    let origin = 'https://campuna.de/version-test';
-
-    if (isIframe) {
-        try {
-            // If same-origin (or subdomain mapped with relaxed CORS), we can read the parent URL directly
-            parentHref = window.parent.location.href;
-            if (parentHref) {
-                isTestEnv = parentHref.includes('/version-test');
-                origin = window.parent.location.origin;
-            }
-        } catch (e) {
-            // Cross-origin: fallback to referrer and parameters
-            if (document.referrer) {
-                try {
-                    const referrerUrl = new URL(document.referrer);
-                    if (
-                        referrerUrl.origin.includes('campuna.de') ||
-                        referrerUrl.origin.includes('localhost') ||
-                        referrerUrl.origin.includes('vercel.app')
-                    ) {
-                        origin = referrerUrl.origin;
-                        if (referrerUrl.pathname.includes('/version-test')) {
-                            isTestEnv = true;
-                        } else if (!hasVersionTestQuery && !currentUrl.includes('version-test')) {
-                            isTestEnv = false;
-                        }
-                    }
-                } catch (err) {
-                    console.warn("Failed to parse document.referrer:", err);
-                }
-            }
-        }
-    } else {
-        // Default to test environment for local development/Vercel preview standalones
-        const hostname = window.location.hostname;
-        if (hostname.includes('localhost') || hostname.includes('127.0.0.1') || hostname.includes('vercel.app')) {
-            isTestEnv = true;
-        }
-    }
-
-    const cleanOrigin = origin.replace(/\/+$/, '');
     const cleanPath = path.replace(/^\/+/, '').replace(/\/+$/, '');
-
-    const resultUrl = isTestEnv
-        ? (cleanPath ? `${cleanOrigin}/version-test/${cleanPath}` : `${cleanOrigin}/version-test`)
-        : (cleanPath ? `${cleanOrigin}/${cleanPath}` : cleanOrigin);
-
-    console.log("[Navigation Debug]", {
-        path,
-        isIframe,
-        parentHref,
-        referrer: document.referrer,
-        iframeSearch: window.location.search,
-        isTestEnv,
-        resolvedUrl: resultUrl
-    });
-
-    return resultUrl;
+    return cleanPath ? `${BASE_URL}/${cleanPath}` : BASE_URL;
 }
 
 /**
