@@ -11,7 +11,7 @@ export function getParentNavigationUrl(path) {
 
     // Check if the current page url or query string implies version-test
     const currentUrl = window.location.href;
-    let urlParams = new URL(window.location.search);
+    let urlParams = new URLSearchParams(window.location.search);
     const hasVersionTestQuery = urlParams.has('version-test') ||
         urlParams.get('env') === 'test' ||
         urlParams.get('version') === 'version-test' ||
