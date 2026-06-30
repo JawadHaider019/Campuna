@@ -17,13 +17,14 @@ export function getParentNavigationUrl(path) {
         urlParams.get('version') === 'version-test' ||
         urlParams.get('parent_url')?.includes('version-test');
 
+    let parentHref = null;
     let isTestEnv = hasVersionTestQuery || currentUrl.includes('version-test');
     let origin = 'https://campuna.de';
 
     if (isIframe) {
         try {
             // If same-origin (or subdomain mapped with relaxed CORS), we can read the parent URL directly
-            const parentHref = window.parent.location.href;
+            parentHref = window.parent.location.href;
             if (parentHref) {
                 isTestEnv = parentHref.includes('/version-test');
                 origin = window.parent.location.origin;
@@ -61,11 +62,21 @@ export function getParentNavigationUrl(path) {
     const cleanOrigin = origin.replace(/\/+$/, '');
     const cleanPath = path.replace(/^\/+/, '').replace(/\/+$/, '');
 
-    if (isTestEnv) {
-        return cleanPath ? `${cleanOrigin}/version-test/${cleanPath}` : `${cleanOrigin}/version-test`;
-    } else {
-        return cleanPath ? `${cleanOrigin}/${cleanPath}` : cleanOrigin;
-    }
+    const resultUrl = isTestEnv
+        ? (cleanPath ? `${cleanOrigin}/version-test/${cleanPath}` : `${cleanOrigin}/version-test`)
+        : (cleanPath ? `${cleanOrigin}/${cleanPath}` : cleanOrigin);
+
+    console.log("[Navigation Debug]", {
+        path,
+        isIframe,
+        parentHref,
+        referrer: document.referrer,
+        iframeSearch: window.location.search,
+        isTestEnv,
+        resolvedUrl: resultUrl
+    });
+
+    return resultUrl;
 }
 
 /**
