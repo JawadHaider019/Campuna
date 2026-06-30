@@ -7,8 +7,11 @@ export function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
+        let authReceived = false;
+
         const handler = (event) => {
             if (event.data && event.data.type === "AUTH_CHANGED") {
+                authReceived = true;
                 if (!event.data.user) {
                     console.log("data is not coming from bubble");
                 } else {
@@ -21,11 +24,19 @@ export function AuthProvider({ children }) {
 
         window.addEventListener("message", handler);
 
+        // Alert if Bubble does not send any initial auth message within 3 seconds
+        const timer = setTimeout(() => {
+            if (!authReceived) {
+                console.log("data is not coming from bubble (Timeout waiting for Bubble window message)");
+            }
+        }, 3000);
+
         // Fallback local persistence check to prevent flashes on quick page refreshes
         try {
             const savedUser = sessionStorage.getItem('campuna_user');
             const savedLoggedIn = sessionStorage.getItem('campuna_isLoggedIn');
             if (savedUser && savedLoggedIn === 'true') {
+                authReceived = true;
                 setUser(JSON.parse(savedUser));
                 setIsLoggedIn(true);
             }
@@ -33,7 +44,10 @@ export function AuthProvider({ children }) {
             console.warn("Storage access not available:", e);
         }
 
-        return () => window.removeEventListener("message", handler);
+        return () => {
+            window.removeEventListener("message", handler);
+            clearTimeout(timer);
+        };
     }, []);
 
     // Sync to sessionStorage to preserve state on refreshes
