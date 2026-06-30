@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Search, MapPin, Compass, ShieldCheck, Sparkles } from 'lucide-react';
 import { CATEGORIES } from '../data';
+import { navigateTo } from '../utils/navigation';
 
 export default function HeroSection({ onSearch, onExploreClick, onSellClick, searchRef }) {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -10,11 +11,9 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch({
-      category: selectedCategory,
-      location,
-      query: searchQuery
-    });
+    if (searchQuery.trim()) {
+      navigateTo(`/all_listings?kw=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (

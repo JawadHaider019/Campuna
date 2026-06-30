@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowUpRight, Clock, Calendar, ArrowRight, Check } from 'lucide-react';
 import { BLOG_POSTS } from '../data';
+import { navigateTo } from '../utils/navigation';
 
 export default function BlogSection() {
   const featuredPost = BLOG_POSTS[0];
@@ -13,6 +14,7 @@ export default function BlogSection() {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay: index * 0.1 }}
+      onClick={() => navigateTo(`/post/${post.slug}`)}
       className={`group flex flex-row gap-2 sm:gap-4 cursor-pointer border-b border-forest/5 pb-2 last:border-0 last:pb-0 w-full ${isFirst ? 'lg:hidden' : ''}`}
     >
       <div className="relative w-24 sm:w-32 h-20 sm:h-24 rounded-xl overflow-hidden shrink-0 shadow-md">
@@ -60,7 +62,7 @@ export default function BlogSection() {
           </div>
           {/* Desktop View All - Hidden on Mobile & Tablet */}
           <div className="hidden lg:block">
-            <button className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
+            <button onClick={() => navigateTo('/all_blogs')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
               <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Artikel ansehen</span>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </button>
@@ -76,6 +78,7 @@ export default function BlogSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            onClick={() => navigateTo(`/post/${featuredPost.slug}`)}
             className="hidden lg:block lg:col-span-3 group cursor-pointer w-full"
           >
             <div className="relative aspect-[16/10] w-full rounded-[32px] overflow-hidden shadow-2xl">
@@ -126,7 +129,7 @@ export default function BlogSection() {
 
         {/* Mobile & Tablet Only View All - Bottom Center */}
         <div className="mt-12 flex justify-center lg:hidden">
-          <button className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
+          <button onClick={() => navigateTo('/all_blogs')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
             <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Artikel ansehen</span>
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </button>

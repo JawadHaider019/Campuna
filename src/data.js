@@ -295,6 +295,7 @@ export const PROVIDERS = [
     logo: '/partners/vtmcamping-logo.avif',
     coverImage: '/partners/vtmcamping-cover.avif',
     description: 'Wir lieben, was wir tun...',
+    slug: '?uid=1776803829229x189417462630120600',
     listingsCount: 3,
     rating: 4.9,
     location: 'Deutschland'
@@ -305,6 +306,7 @@ export const PROVIDERS = [
     logo: '/partners/cube4life-logo.avif',
     coverImage: '/partners/cube4life-cover.avif',
     description: 'CUBE4LIFE – Dein Auto. Deine Freiheit. Dein System.',
+    slug: '?uid=1776160822121x699323185804907400',
     listingsCount: 3,
     rating: 4.95,
     location: 'Bielefeld'
@@ -315,6 +317,7 @@ export const PROVIDERS = [
     logo: '/partners/dummermobile-logo.avif',
     coverImage: '/partners/dummermobile-cover.avif',
     description: 'Expertise in Wohnmobilen und Campern.',
+    slug: '?uid=1776869525532x299821018455849200',
     listingsCount: 3,
     rating: 4.85,
     location: 'Dümmer'
@@ -325,6 +328,7 @@ export const PROVIDERS = [
     logo: '/partners/casamaki-logo.avif',
     coverImage: '/partners/casemaki-cover.avif',
     description: 'Nr. 1 Partner für Wohnkabinen 🚐 Festaufbau &...',
+    slug: '?uid=1774612775285x928668539058932000',
     listingsCount: 3,
     rating: 4.9,
     location: 'Deutschland'
@@ -335,6 +339,7 @@ export const PROVIDERS = [
     logo: '/partners/proverdaGmbh-logo.avif',
     coverImage: '/partners/proverdaGmbh-cover.avif',
     description: 'Professionelle Verkaufsdatenbank für Camper.',
+    slug: '?uid=1775591052758x777492336252758700',
     listingsCount: 1,
     rating: 4.7,
     location: 'Gewerblich'
@@ -345,6 +350,7 @@ export const PROVIDERS = [
     logo: '/partners/luckyboxowl-logo.avif',
     coverImage: '/partners/luckbowlowl-cover.avif',
     description: 'Wir sind ein kleines, familiengeführtes Unternehmen...',
+    slug: '?uid=1776402781762x371166055146309600',
     listingsCount: 3,
     rating: 4.8,
     location: 'OWL'
@@ -355,6 +361,7 @@ export const PROVIDERS = [
     logo: '/partners/nalux-logo.avif',
     coverImage: '/partners/nalux-cover.avif',
     description: 'Fahrzeugveredelung - Wohnmobil &...',
+    slug: '?uid=1776108717846x665627376733133800',
     listingsCount: 3,
     rating: 4.9,
     location: 'Deutschland'
@@ -365,6 +372,7 @@ export const PROVIDERS = [
     logo: '/partners/trailer-logo.avif',
     coverImage: '/partners/trailer-cover.jpg',
     description: 'Umbauten von PKW Anhänger in...',
+    slug: '?uid=1774805620399x549661505373624900',
     listingsCount: 1,
     rating: 4.8,
     location: 'NRW'
@@ -375,6 +383,7 @@ export const PROVIDERS = [
     logo: '/partners/LivianEssense-logo.avif',
     coverImage: '/partners/LivianEssense-cover.avif',
     description: 'Livianessence | Tiny House...',
+    slug: '?uid=1775565921784x138051037995865710',
     listingsCount: 3,
     rating: 4.95,
     location: 'Tiny Living'
@@ -385,6 +394,7 @@ export const PROVIDERS = [
     logo: '/partners/tsCaravanverleih-logo.avif',
     coverImage: '/partners/tsCaravanverleih-cover.avif',
     description: 'Ihre Wohnwagenvermietung in und um Erfurt...',
+    slug: '?uid=1774108990415x175532623183632930',
     listingsCount: 4,
     rating: 4.95,
     location: 'Erfurt'
@@ -401,6 +411,7 @@ export const BLOG_POSTS = [
     readTime: '6 Min.',
     date: '09.05.2026',
     updateDate: 'Mai 9, 2026',
+    slug: 'was-ist-campuna',
     author: {
       name: 'Campuna Team',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'
@@ -415,6 +426,7 @@ export const BLOG_POSTS = [
     readTime: '5 Min.',
     date: '09.06.2026',
     updateDate: 'Juni 9, 2026',
+    slug: 'wohnwagen-gebraucht-kaufen-tipps',
     author: {
       name: 'Experten-Tipp',
       avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'
@@ -429,6 +441,7 @@ export const BLOG_POSTS = [
     readTime: '7 Min.',
     date: '16.06.2026',
     updateDate: 'Juni 16, 2026',
+    slug: 'dachzelt-kaufen-tipps',
     author: {
       name: 'Campuna Guide',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80'
@@ -443,6 +456,7 @@ export const BLOG_POSTS = [
     readTime: '10 Min.',
     date: '02.06.2026',
     updateDate: 'Juni 2, 2026',
+    slug: 'wohnwagen-gebraucht-kaufen',
     author: {
       name: 'Checklisten-Profi',
       avatar: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=100&q=80'

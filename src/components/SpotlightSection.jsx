@@ -2,10 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { PROVIDERS } from '../data';
+import { navigateTo } from '../utils/navigation';
 
 export default function SpotlightSection({ onPartnerClick }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
+    const dragStartX = useRef(0); // track pointer-down X to detect drag vs. click
 
     useEffect(() => {
         if (rowRef.current) {
@@ -15,7 +17,12 @@ export default function SpotlightSection({ onPartnerClick }) {
 
     const ProviderCard = ({ partner }) => (
         <div
-            onClick={() => onPartnerClick?.(partner.name)}
+            onClick={(e) => {
+                // Only navigate if the pointer didn't move far (i.e. it's a real click, not a drag)
+                if (Math.abs(e.clientX - dragStartX.current) < 5) {
+                    navigateTo(`/${partner.slug}`);
+                }
+            }}
             className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-lg transition-all duration-500 select-none"
         >
             {/* Background Image */}
@@ -90,7 +97,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     </div>
                     {/* Desktop View All - Hidden on Mobile & Tablet */}
                     <div className="hidden lg:block">
-                        <button className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
+                        <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
                             <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Partner</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                         </button>
@@ -105,6 +112,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing " ref={rowRef}>
                         <motion.div
                             drag="x"
+                            onPointerDown={(e) => { dragStartX.current = e.clientX; }}
                             dragConstraints={{ right: 0, left: -constraints }}
                             animate={{ x: [0, -440 * PROVIDERS.length] }}
                             transition={{
@@ -125,7 +133,7 @@ export default function SpotlightSection({ onPartnerClick }) {
 
                     {/* Mobile & Tablet Only View All - Bottom Center */}
                     <div className="mt-12 flex justify-center lg:hidden">
-                        <button className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
+                        <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
                             <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Partner</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                         </button>

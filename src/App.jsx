@@ -12,11 +12,11 @@ import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
 import SellModal from './components/SellModal';
 import WishlistDrawer from './components/WishlistDrawer';
-import AuthModal from './components/AuthModal';
 import WelcomeBanner from './components/WelcomeBanner';
 import ScrollToTop from './components/ScrollToTop';
 import { FEATURED_LISTINGS } from './data';
 import { getHomepageProducts } from './api/bubbleApi';
+import { navigateTo } from './utils/navigation';
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -129,8 +129,6 @@ export default function HomePage() {
   // Modal / Sidebar Panels States
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalConfig, setAuthModalConfig] = useState({ mode: 'login', type: '' });
 
   // Ref for scrolling to listings or search
   const searchRef = useRef(null);
@@ -190,10 +188,6 @@ export default function HomePage() {
       <Navbar
         onSearchFocus={handleNavbarSearchClick}
         onOpenSellModal={() => setIsSellModalOpen(true)}
-        onOpenAuthModal={() => {
-          setAuthModalConfig({ mode: 'login', type: '' });
-          setIsAuthModalOpen(true);
-        }}
         wishlistCount={wishlistedIds.length}
         onOpenWishlist={() => setIsWishlistOpen(true)}
       />
@@ -201,14 +195,8 @@ export default function HomePage() {
       {/* 1. Hero Section */}
       <HeroSection
         onSearch={handleSearch}
-        onExploreClick={() => {
-          setAuthModalConfig({ mode: 'register', type: 'Camper' });
-          setIsAuthModalOpen(true);
-        }}
-        onSellClick={() => {
-          setAuthModalConfig({ mode: 'register', type: 'Anbieter' });
-          setIsAuthModalOpen(true);
-        }}
+        onExploreClick={() => navigateTo('/signup_login')}
+        onSellClick={() => navigateTo('/signup_login')}
         searchRef={searchRef}
       />
 
@@ -244,7 +232,7 @@ export default function HomePage() {
       <VideoSection />
 
       {/* 9. Secondary Seller CTA Section */}
-      <CTASection onSellClick={() => setIsSellModalOpen(true)} />
+      <CTASection onSellClick={() => navigateTo('/signup_login')} />
 
       {/* 11. Custom FAQ Accordion */}
       <FAQSection />
@@ -269,12 +257,6 @@ export default function HomePage() {
         onToggleWishlist={handleToggleWishlist}
       />
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        initialMode={authModalConfig.mode}
-        initialType={authModalConfig.type}
-      />
 
       <WelcomeBanner onOpenSellModal={() => setIsSellModalOpen(true)} />
       <ScrollToTop />

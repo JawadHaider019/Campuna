@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Search, Globe, User, PlusCircle, Compass, Sparkles, Heart } from 'lucide-react';
+import { navigateTo } from '../utils/navigation';
 
 export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,36 +29,36 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
       <div className="max-w-8xl mx-auto px-2 md:px-12 ">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center group">
+          <button onClick={() => navigateTo('/')} className="flex items-center group">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
-              className="h-10 w-auto  object-cover transition-opacity duration-300 group-hover:opacity-80"
+              className="h-10 w-auto object-cover transition-opacity duration-300 group-hover:opacity-80"
             />
-          </a>
+          </button>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-10">
 
 
-            <a
-              href="#hero"
+            <button
+              onClick={() => navigateTo('/')}
               className="font-sans text-sm font-medium text-forest hover:text-gold tracking-wide transition-colors duration-200"
             >
               Startseite
-            </a>
-            <a
-              href="#journal"
+            </button>
+            <button
+              onClick={() => navigateTo('/all_blogs')}
               className="font-sans text-sm font-medium text-forest hover:text-gold tracking-wide transition-colors duration-200"
             >
               Ratgeber
-            </a>
+            </button>
 
 
 
 
             <button
-              onClick={onOpenAuthModal}
+              onClick={() => navigateTo('/signup_login')}
               className="flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg"
             >
               <User className="w-4 h-4" />
@@ -90,29 +91,24 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
             className="lg:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-lg border-b border-forest/10 shadow-xl"
           >
             <div className="px-6 py-8 flex flex-col space-y-6">
-              <a
-                href="#lifestyle"
-                onClick={() => setIsOpen(false)}
-                className="font-sans text-lg font-medium text-forest hover:text-gold"
+              <button
+                onClick={() => { setIsOpen(false); navigateTo('/'); }}
+                className="font-sans text-lg font-medium text-forest hover:text-gold text-left"
               >
-                Storytelling
-              </a>
-              <a
-                href="#journal"
-                onClick={() => setIsOpen(false)}
-                className="font-sans text-lg font-medium text-forest hover:text-gold"
+                Startseite
+              </button>
+              <button
+                onClick={() => { setIsOpen(false); navigateTo('/all_blogs'); }}
+                className="font-sans text-lg font-medium text-forest hover:text-gold text-left"
               >
-                Magazin
-              </a>
+                Ratgeber
+              </button>
 
               <hr className="border-forest/10" />
 
               <div className="flex flex-col space-y-4">
                 <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    if (onOpenAuthModal) onOpenAuthModal();
-                  }}
+                  onClick={() => { setIsOpen(false); navigateTo('/signup_login'); }}
                   className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md"
                 >
                   <span>Einloggen</span>
