@@ -62,19 +62,8 @@ export function getParentNavigationUrl(path) {
     const cleanPath = path.replace(/^\/+/, '').replace(/\/+$/, '');
 
     if (isTestEnv) {
-        // Bubble structures dynamic page URLs in test mode with version-test after page name
-        if (cleanPath.startsWith('listing_details/')) {
-            const slug = cleanPath.substring('listing_details/'.length);
-            return `${cleanOrigin}/listing_details/version-test/${slug}`;
-        } else if (cleanPath.startsWith('category/')) {
-            const slug = cleanPath.substring('category/'.length);
-            return `${cleanOrigin}/category/version-test/${slug}`;
-        } else {
-            // General static pages structure
-            return cleanPath ? `${cleanOrigin}/version-test/${cleanPath}` : `${cleanOrigin}/version-test`;
-        }
+        return cleanPath ? `${cleanOrigin}/version-test/${cleanPath}` : `${cleanOrigin}/version-test`;
     } else {
-        // Production environment links
         return cleanPath ? `${cleanOrigin}/${cleanPath}` : cleanOrigin;
     }
 }
