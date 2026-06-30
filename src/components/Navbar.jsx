@@ -6,6 +6,7 @@ import { navigateTo } from '../utils/navigation';
 export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [toggleText, setToggleText] = useState(true); // true = 'Konto', false = 'Einloggen'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +19,13 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setToggleText(prev => !prev);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -48,21 +56,43 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
               Startseite
             </button>
             <button
-              onClick={() => navigateTo('/all_blogs')}
+              onClick={() => {
+                const element = document.getElementById('journal');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="font-sans text-sm font-medium text-forest hover:text-gold tracking-wide transition-colors duration-200"
             >
               Ratgeber
             </button>
 
-
-
-
             <button
               onClick={() => navigateTo('/my_account?n=yes')}
-              className="flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg"
+              className="flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg min-w-[135px] justify-center overflow-hidden group"
             >
-              <User className="w-4 h-4" />
-              <span>Konto</span>
+              <motion.div
+                key={toggleText}
+                animate={{ scale: [1, 1.25, 1], rotate: [0, -12, 12, 0] }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="z-10 flex items-center"
+              >
+                <User className="w-4 h-4 shrink-0" />
+              </motion.div>
+              <div className="relative h-4 overflow-hidden min-w-[75px] flex items-center justify-center [perspective:400px]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={toggleText ? 'konto' : 'einloggen'}
+                    initial={{ y: 12, opacity: 0, rotateX: -75, skewX: -20, rotateY: -15 }}
+                    animate={{ y: 0, opacity: 1, rotateX: 0, skewX: 0, rotateY: 0 }}
+                    exit={{ y: -12, opacity: 0, rotateX: 75, skewX: 20, rotateY: 15 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="absolute whitespace-nowrap origin-center"
+                  >
+                    {toggleText ? 'Konto' : 'Einloggen'}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
             </button>
           </div>
 
@@ -98,7 +128,13 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                 Startseite
               </button>
               <button
-                onClick={() => { setIsOpen(false); navigateTo('/all_blogs'); }}
+                onClick={() => {
+                  setIsOpen(false);
+                  const element = document.getElementById('journal');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="font-sans text-lg font-medium text-forest hover:text-gold text-left"
               >
                 Ratgeber
@@ -108,10 +144,31 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
               <div className="flex flex-col space-y-4">
                 <button
-                  onClick={() => { setIsOpen(false); navigateTo('/signup_login'); }}
-                  className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md"
+                  onClick={() => { setIsOpen(false); navigateTo('/my_account?n=yes'); }}
+                  className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md flex items-center justify-center space-x-2 relative min-h-[48px] overflow-hidden"
                 >
-                  <span>Einloggen</span>
+                  <motion.div
+                    key={toggleText}
+                    animate={{ scale: [1, 1.25, 1], rotate: [0, -12, 12, 0] }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="z-10 flex items-center"
+                  >
+                    <User className="w-4 h-4 shrink-0" />
+                  </motion.div>
+                  <div className="relative h-5 overflow-hidden min-w-[75px] flex items-center justify-center [perspective:400px]">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={toggleText ? 'konto' : 'einloggen'}
+                        initial={{ y: 12, opacity: 0, rotateX: -75, skewX: -20, rotateY: -15 }}
+                        animate={{ y: 0, opacity: 1, rotateX: 0, skewX: 0, rotateY: 0 }}
+                        exit={{ y: -12, opacity: 0, rotateX: 75, skewX: 20, rotateY: 15 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="absolute whitespace-nowrap origin-center"
+                      >
+                        {toggleText ? 'Konto' : 'Einloggen'}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
                 </button>
               </div>
             </div>
