@@ -52,60 +52,75 @@ export default function SpotlightSection({ onPartnerClick }) {
                     navigateTo(`/${partner.slug}`);
                 }
             }}
-            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-lg transition-all duration-500 select-none"
+            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[260px] rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
         >
-            {/* Background Image */}
-            <div className="absolute inset-0">
+            {/* Background Image & Overlay */}
+            <div className="absolute inset-0 z-0">
                 <img
                     src={partner.coverImage}
                     alt={partner.name}
                     className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                     referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-black/55 group-hover:bg-black/65 transition-colors duration-500" />
             </div>
 
-            {/* Structured Content Layout */}
-            <div className="relative h-full w-full p-6 flex flex-col justify-between">
-
-                {/* Row 1: Title & Logo */}
-                <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-2">
-                        <div className="inline-flex items-center space-x-1.5 bg-sand backdrop-blur-md px-2.5 py-1 rounded-full text-forest shadow-sm">
-                            <ShieldCheck className="w-3 h-3" />
-                            <span className="text-[8px] font-bold uppercase tracking-wider">{partner.listingsCount} Einträge online</span>
-                        </div>
-
-                    </div>
-
-                    <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 p-1 shadow-xl shrink-0 overflow-hidden transform group-hover:scale-105 transition-transform duration-500">
-                        <img
-                            src={partner.logo}
-                            alt="Logo"
-                            className="w-full h-full object-cover rounded-full"
-                        />
-                    </div>
+            {/* ── LEFT PANEL (40%) — Centered Circular Logo floating over bg-image ── */}
+            <div
+                style={{ width: '35%' }}
+                className="relative z-10 flex items-center justify-center p-4 shrink-0"
+            >
+                {/* Subtle concentric rings */}
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-30">
+                    <div className="w-32 h-32 rounded-full border border-white/20" />
+                    <div className="absolute w-44 h-44 rounded-full border border-white/10" />
                 </div>
 
-                {/* Row 2: Description & Arrow */}
-                <div className="flex items-end justify-between gap-2">
-                    <div>
-                        <h3 className="font-display text-2xl font-extrabold text-white tracking-tight leading-none group-hover:text-gold transition-colors duration-300">
-                            {partner.name}
-                        </h3>
-                        <p className="font-sans text-[12px] text-white/70 truncate leading-relaxed font-light italic max-w-[280px]">
-                            {partner.description}
-                        </p>
+                {/* Circular logo */}
+                <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-md border-2 border-white/10 overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                    <img
+                        src={partner.logo}
+                        alt={`${partner.name} Logo`}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                    />
+                </div>
+            </div>
+
+            {/* ── RIGHT PANEL (60%) — Vertically centered, left-aligned layout ── */}
+            <div
+                style={{ width: '65%' }}
+                className="relative z-10 p-5 md:p-6 flex flex-col justify-center items-start text-left shrink-0"
+            >
+                {/* Top content: Name & Description (Left Aligned) */}
+                <div className="flex flex-col items-start text-left">
+                    <h3 className="font-display text-lg md:text-xl font-extrabold text-white leading-tight tracking-tight group-hover:text-gold transition-colors duration-300">
+                        {partner.name}
+                    </h3>
+                    <p className="font-sans text-xs text-white/75 leading-relaxed font-light mt-2 line-clamp-3">
+                        {partner.description}
+                    </p>
+                </div>
+
+                {/* Bottom row: Badge & Arrow */}
+                <div className="flex items-center justify-between mt-2 pt-3 border-t border-white/10 w-full">
+                    {/* Badge */}
+                    <div className="inline-flex items-center space-x-1 bg-white/10 backdrop-blur-md px-2.5 py-1.5 rounded-full text-white shadow-sm shrink-0">
+                        <ShieldCheck className="w-3.5 h-3.5 text-gold" />
+                        <span className="text-[9px] font-mono font-bold uppercase tracking-wider">
+                            {partner.listingsCount} online
+                        </span>
                     </div>
 
-                    <div className="w-11 h-11 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-lg shrink-0">
-                        <ArrowRight className="w-5 h-5" />
+                    {/* Arrow button */}
+                    <div className="w-9 h-9 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
+                        <ArrowRight className="w-4.5 h-4.5" />
                     </div>
                 </div>
             </div>
 
             {/* Visual polish border */}
-            <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[32px] transition-all duration-500 pointer-events-none" />
+            <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[32px] transition-all duration-500 pointer-events-none z-20" />
         </div>
     );
 
