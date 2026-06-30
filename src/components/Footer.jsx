@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Youtube, ShieldCheck } from 'lucide-react';
+import { getParentNavigationUrl } from '../utils/navigation';
 
 export default function Footer() {
   return (
@@ -30,10 +31,10 @@ export default function Footer() {
               Navigation
             </h4>
             <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href="https://campuna.de/" className="hover:text-gold transition-colors">Startseite</a></li>
-              <li><a href="https://campuna.de/my_account" className="hover:text-gold transition-colors">Mein Konto</a></li>
-              <li><a href="https://campuna.de/about_us" className="hover:text-gold transition-colors">Über uns</a></li>
-              <li><a href="https://campuna.de/how_campuna_works" className="hover:text-gold transition-colors">So funktioniert Campuna</a></li>
+              <li><a href={getParentNavigationUrl('')} target="_parent" className="hover:text-gold transition-colors">Startseite</a></li>
+              <li><a href={getParentNavigationUrl('my_account')} target="_parent" className="hover:text-gold transition-colors">Mein Konto</a></li>
+              <li><a href={getParentNavigationUrl('about_us')} target="_parent" className="hover:text-gold transition-colors">Über uns</a></li>
+              <li><a href={getParentNavigationUrl('how_campuna_works')} target="_parent" className="hover:text-gold transition-colors">So funktioniert Campuna</a></li>
             </ul>
           </div>
 
@@ -43,10 +44,10 @@ export default function Footer() {
               Support
             </h4>
             <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href="https://campuna.de/faq_hilfe" className="hover:text-gold transition-colors">Hilfe & FAQ</a></li>
-              <li><a href="https://campuna.de/contact_kontakt" className="hover:text-gold transition-colors">Kontakt</a></li>
-              <li><a href="https://campuna.de/act_safely__sicher_handeln" className="hover:text-gold transition-colors">Sicher handeln</a></li>
-              <li><a href="https://campuna.de/missing_anything__fehlt_dir_etwas" className="hover:text-gold transition-colors leading-snug block">Fehlt dir etwas? Sag es uns</a></li>
+              <li><a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-gold transition-colors">Hilfe & FAQ</a></li>
+              <li><a href={getParentNavigationUrl('contact_kontakt')} target="_parent" className="hover:text-gold transition-colors">Kontakt</a></li>
+              <li><a href={getParentNavigationUrl('act_safely__sicher_handeln')} target="_parent" className="hover:text-gold transition-colors">Sicher handeln</a></li>
+              <li><a href={getParentNavigationUrl('missing_anything__fehlt_dir_etwas')} target="_parent" className="hover:text-gold transition-colors leading-snug block">Fehlt dir etwas? Sag es uns</a></li>
             </ul>
           </div>
 
@@ -56,10 +57,10 @@ export default function Footer() {
               Rechtliches
             </h4>
             <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href="https://campuna.de/agb" className="hover:text-gold transition-colors">AGB</a></li>
-              <li><a href="https://campuna.de/nutzungsbedingungen" className="hover:text-gold transition-colors">Nutzungsbedingungen</a></li>
-              <li><a href="https://campuna.de/datenschutzerkl_rung" className="hover:text-gold transition-colors">Datenschutz</a></li>
-              <li><a href="https://campuna.de/impressum" className="hover:text-gold transition-colors">Impressum</a></li>
+              <li><a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-gold transition-colors">AGB</a></li>
+              <li><a href={getParentNavigationUrl('nutzungsbedingungen')} target="_parent" className="hover:text-gold transition-colors">Nutzungsbedingungen</a></li>
+              <li><a href={getParentNavigationUrl('datenschutzerkl_rung')} target="_parent" className="hover:text-gold transition-colors">Datenschutz</a></li>
+              <li><a href={getParentNavigationUrl('impressum')} target="_parent" className="hover:text-gold transition-colors">Impressum</a></li>
             </ul>
           </div>
 
