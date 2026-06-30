@@ -19,7 +19,7 @@ export function getParentNavigationUrl(path) {
 
     let parentHref = null;
     let isTestEnv = hasVersionTestQuery || currentUrl.includes('version-test');
-    let origin = 'https://campuna.de';
+    let origin = 'https://campuna.de/version-test';
 
     if (isIframe) {
         try {
