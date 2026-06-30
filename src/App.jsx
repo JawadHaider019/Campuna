@@ -114,11 +114,8 @@ export default function HomePage() {
               setWishlistedIds([mapped[0].id, mapped[1].id]);
             }
           }
-        } else {
-          console.log("data is not coming from bubble");
         }
       } catch (error) {
-        console.log("data is not coming from bubble");
         console.error("Failed to load listings from Bubble API, keeping local design mock data:", error);
       }
     };
