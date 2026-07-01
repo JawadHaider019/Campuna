@@ -76,7 +76,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                 }
             }}
             // Responsive card sizes: 280px mobile, 360px sm, 440px md, 550px lg+
-            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[360px] md:w-[420px] lg:w-[550px] h-[220px] sm:h-[240px] md:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
+            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[360px] md:w-[420px] lg:w-[550px] h-[250px] sm:h-[270px] md:h-[290px] lg:h-[310px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
         >
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
