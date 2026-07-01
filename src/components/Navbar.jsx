@@ -40,9 +40,9 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
-              width={130}
-              height={48}
-              className="w-[130px] h-[48px] object-contain transition-opacity duration-300 group-hover:opacity-80"
+              width={120}
+              height={38}
+              className="w-[120px] h-[38px] object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
