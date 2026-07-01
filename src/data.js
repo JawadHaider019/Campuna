@@ -357,7 +357,7 @@ export const PROVIDERS = [
   },
   {
     id: 'prov_7',
-    name: 'NALUX | Professionelle Ke...',
+    name: 'NALUX | Professionelle ..',
     logo: '/partners/nalux-logo.avif',
     coverImage: '/partners/nalux-cover.avif',
     description: 'Fahrzeugveredelung - Wohnmobil &...',
