@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, animate } from 'motion/react';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { PROVIDERS } from '../data';
 import { navigateTo } from '../utils/navigation';
 
@@ -75,70 +75,65 @@ export default function SpotlightSection({ onPartnerClick }) {
                     navigateTo(`/${partner.slug}`);
                 }
             }}
-            // Responsive card sizes: 280px mobile, 360px sm, 440px md, 550px lg+
-            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[360px] md:w-[420px] lg:w-[550px] h-[250px] sm:h-[270px] md:h-[290px] lg:h-[310px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
+            className="provider-card group relative flex-shrink-0 w-[320px] sm:w-[350px] md:w-[320px] lg:w-[460px] rounded-[20px] sm:rounded-[24px] overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all duration-500 select-none border border-black/8 flex flex-col bg-white"
         >
-            {/* Background Image & Overlay */}
-            <div className="absolute inset-0 z-0">
+            {/* ── TOP: Cover Image ── */}
+            <div className="relative w-full h-[150px] sm:h-[150px] md:h-[150px] lg:h-[200px]     overflow-hidden flex-shrink-0">
                 <img
                     src={partner.coverImage}
                     alt={partner.name}
                     className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                     referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/65 transition-colors duration-500" />
+                {/* Subtle dark vignette at bottom of image */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             </div>
 
-            {/* ── LEFT PANEL (35%) — Centered Circular Logo ── */}
-            <div className="relative z-10 flex items-center justify-center p-3 sm:p-4 shrink-0" style={{ width: '35%' }}>
-                {/* Subtle concentric rings */}
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-30">
-                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border border-white/20" />
-                    <div className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full border border-white/10" />
+            {/* ── BOTTOM: Content Panel ── */}
+            <div className="relative flex flex-col  flex-1 px-3 sm:px-4 pt-3 pb-3 bg-white">
+
+                {/* Top row: Logo (left) + Heading & Desc (right) */}
+                <div className="flex items-center gap-3">
+                    {/* Circular Logo */}
+                    <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow border border-black/50 overflow-hidden transition-transform duration-400 group-hover:scale-105  ring-2 ring-white">
+                        <img
+                            src={partner.logo}
+                            alt={`${partner.name} Logo`}
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                        />
+                    </div>
+
+                    {/* Heading & Description */}
+                    <div className="flex flex-col min-w-0 flex-1">
+                        <h3 className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900 leading-tight tracking-tight group-hover:text-forest transition-colors duration-300 truncate">
+                            {partner.name}
+                        </h3>
+                        <p className="font-sans text-sm sm:text-md text-gray-500 leading-snug font-normal mt-0.5 line-clamp-2">
+                            {partner.description}
+                        </p>
+                    </div>
                 </div>
 
-                {/* Circular logo — scales across breakpoints */}
-                <div className="relative z-10 w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full bg-white shadow-md border-2 border-white/10 overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                    <img
-                        src={partner.logo}
-                        alt={`${partner.name} Logo`}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                    />
-                </div>
-            </div>
-
-            {/* ── RIGHT PANEL (65%) — Text Content ── */}
-            <div className="relative z-10 py-4 pr-3 sm:pr-4 pl-0 flex flex-col justify-center items-start text-left shrink-0" style={{ width: '65%' }}>
-                {/* Name & Description */}
-                <div className="flex flex-col items-start text-left">
-                    <h3 className="font-display text-[18px] sm:text-[18px] md:text-xl lg:text-2xl font-extrabold text-white leading-tight tracking-tight group-hover:text-gold transition-colors duration-300">
-                        {partner.name}
-                    </h3>
-                    <p className="font-sans text-[10px] sm:text-xs md:text-sm text-white/75 leading-relaxed font-light mt-1 line-clamp-2 sm:line-clamp-3">
-                        {partner.description}
-                    </p>
-                </div>
-
-                {/* Bottom row: Badge & Arrow */}
-                <div className="flex items-center justify-between mt-2 pt-2 w-full">
-                    {/* Badge */}
-                    <div className="inline-flex items-center space-x-1 bg-white/10 backdrop-blur-md px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full text-white shadow-sm shrink-0">
-                        <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold" />
-                        <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wide">
+                {/* Bottom row: Online badge (left) + Arrow (right) */}
+                <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-gray-100">
+                    {/* Online badge */}
+                    <div className="inline-flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[10px]  sm:text-[11px] font-semibold text-gray-500 uppercase tracking-wide">
                             {partner.listingsCount} online
                         </span>
                     </div>
 
                     {/* Arrow button */}
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <div className="w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-forest/10 text-forest flex items-center justify-center transform group-hover:translate-x-0.5 group-hover:bg-gold group-hover:text-white transition-all duration-300 shadow-sm shrink-0">
+                        <ArrowRight className="w-4 h-4" />
                     </div>
                 </div>
             </div>
 
-            {/* Visual polish border */}
-            <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[24px] sm:rounded-[32px] transition-all duration-500 pointer-events-none z-20" />
+            {/* Hover border accent */}
+            <div className="absolute inset-0 rounded-[20px] sm:rounded-[24px] border-2 border-transparent group-hover:border-forest/20 transition-all duration-500 pointer-events-none z-20" />
         </div>
     );
 

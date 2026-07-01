@@ -75,7 +75,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.6, duration: 0.8 }}
             className="font-sans text-sm sm:text-md md:text-lg text-sand/85 leading-relaxed max-w-2xl mx-auto mb-10 font-light"
           >
-            Deutschlands exklusivster Marktplatz für anspruchsvolle Camper. Entdecken Sie Premium-Reisemobile, handverlesenes Zubehör und außergewöhnliche Stellplätze.
+            Campuna ist deine Camping-Plattform für Deutschland. Entdecke Angebote, Anbieter, Stellplätze, Ratgeber und Services rund ums Camping.
           </motion.p>
 
           {/* Action Buttons */}
