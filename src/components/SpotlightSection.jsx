@@ -52,7 +52,7 @@ export default function SpotlightSection({ onPartnerClick }) {
                     navigateTo(`/${partner.slug}`);
                 }
             }}
-            className="group relative flex-shrink-0 w-[350px] md:w-[420px] h-[250px] rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
+            className="group relative flex-shrink-0 w-[350px] md:w-[500px] h-[250px] rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
         >
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
