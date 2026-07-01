@@ -34,15 +34,14 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
       className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-2 ${isScrolled ? 'top-0 shadow-md' : 'top-12 sm:top-14'
         }`}
     >
-      <div className="max-w-8xl mx-auto px-2 md:px-12 ">
+      <div className="max-w-8xl mx-auto px-2 md:px-14 ">
         <div className="flex items-center justify-between">
           <button onClick={() => navigateTo('/')} className="flex  items-center group">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
-              width={150}
-              height={65}
-              className="w-[150px] h-[65px] object-contain transition-opacity duration-300 group-hover:opacity-80"
+
+              className="w-auto h-10 object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
 
