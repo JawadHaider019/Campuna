@@ -41,10 +41,10 @@ const SelectField = ({ id, value, onChange, options, placeholder }) => (
 );
 
 const USER_TYPES = [
-    { value: 'camper', label: 'Camper / Käufer' },
-    { value: 'seller', label: 'Privatverkäufer' },
-    { value: 'business', label: 'Gewerblicher Anbieter' },
-    { value: 'campsite', label: 'Campingplatz-Betreiber' },
+
+    { value: 'seller', label: 'Privatver Nutzer' },
+    { value: 'business', label: 'Gewerblicher Nutzer' }
+
 ];
 
 /* ═══════════════ PAGE ═══════════════ */
@@ -59,6 +59,14 @@ export default function LoginSignupPage() {
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPw, setLoginPw] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Business-only fields
+    const [companyName, setCompanyName] = useState('');
+    const [companyEmail, setCompanyEmail] = useState('');
+    const [companyAddress, setCompanyAddress] = useState('');
+    const [companyPhone, setCompanyPhone] = useState('');
+    const [vatId, setVatId] = useState('');
+    const [impressum, setImpressum] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -162,6 +170,65 @@ export default function LoginSignupPage() {
                                         options={USER_TYPES} placeholder="Wählen Sie eine Option..." />
                                 </div>
 
+                                {/* Business fields — shown only when Gewerblicher Nutzer */}
+                                <AnimatePresence>
+                                    {userType === 'business' && (
+                                        <motion.div
+                                            key="business-fields"
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.35, ease: 'easeInOut' }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="flex flex-col gap-3 pt-1 border-t border-white/15 mt-1">
+                                                <p className="font-sans text-[10px] text-white/40 uppercase tracking-widest">Geschäftliche Angaben</p>
+
+                                                {/* Row 1: Company Name + Company Email */}
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div className="flex flex-col gap-1">
+                                                        <label htmlFor="biz-name" className={labelCls}>Firmenname</label>
+                                                        <Field id="biz-name" placeholder="Campuna GmbH" value={companyName}
+                                                            onChange={e => setCompanyName(e.target.value)} autoComplete="organization" />
+                                                    </div>
+                                                    <div className="flex flex-col gap-1">
+                                                        <label htmlFor="biz-email" className={labelCls}>Firmen-E-Mail</label>
+                                                        <Field id="biz-email" type="email" placeholder="info@firma.de" value={companyEmail}
+                                                            onChange={e => setCompanyEmail(e.target.value)} autoComplete="email" />
+                                                    </div>
+                                                </div>
+
+                                                {/* Full Address — full width */}
+                                                <div className="flex flex-col gap-1">
+                                                    <label htmlFor="biz-address" className={labelCls}>Vollständige Adresse</label>
+                                                    <Field id="biz-address" placeholder="Musterstraße 1, 12345 Berlin" value={companyAddress}
+                                                        onChange={e => setCompanyAddress(e.target.value)} autoComplete="street-address" />
+                                                </div>
+
+                                                {/* Row 2: Phone + VAT ID */}
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div className="flex flex-col gap-1">
+                                                        <label htmlFor="biz-phone" className={labelCls}>Telefon</label>
+                                                        <Field id="biz-phone" type="tel" placeholder="+49 123 456" value={companyPhone}
+                                                            onChange={e => setCompanyPhone(e.target.value)} autoComplete="tel" />
+                                                    </div>
+                                                    <div className="flex flex-col gap-1">
+                                                        <label htmlFor="biz-vat" className={labelCls}>USt-IdNr.</label>
+                                                        <Field id="biz-vat" placeholder="DE123456789" value={vatId}
+                                                            onChange={e => setVatId(e.target.value)} />
+                                                    </div>
+                                                </div>
+
+                                                {/* Impressum — full width */}
+                                                <div className="flex flex-col gap-1">
+                                                    <label htmlFor="biz-impressum" className={labelCls}>Impressum-Link</label>
+                                                    <Field id="biz-impressum" type="url" placeholder="https://firma.de/impressum" value={impressum}
+                                                        onChange={e => setImpressum(e.target.value)} autoComplete="url" />
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                                 {/* Passwort */}
                                 <div className="flex flex-col gap-1">
                                     <label htmlFor="reg-pw" className={labelCls}>Passwort</label>
