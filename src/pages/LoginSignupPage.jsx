@@ -47,14 +47,6 @@ const USER_TYPES = [
     { value: 'campsite', label: 'Campingplatz-Betreiber' },
 ];
 
-/* ─── Social icon ─── */
-const SocialIcon = ({ children, label }) => (
-    <button type="button" aria-label={label}
-        className="w-9 h-9 rounded-full bg-white/20 border border-white/50 hover:bg-white/35 flex items-center justify-center transition-all duration-200">
-        {children}
-    </button>
-);
-
 /* ═══════════════ PAGE ═══════════════ */
 export default function LoginSignupPage() {
     const [mode, setMode] = useState('signup');
@@ -84,7 +76,7 @@ export default function LoginSignupPage() {
     const labelCls = "font-sans text-[11px] font-semibold text-white/65 uppercase tracking-wider";
 
     return (
-        <div className="min-h-screen w-full relative flex items-center lg:items-stretch justify-center lg:justify-end font-sans overflow-hidden">
+        <div className="min-h-screen w-full relative flex items-center justify-center font-sans overflow-hidden bg-charcoal p-4 sm:p-6 lg:p-8">
 
             {/* ── Full-screen background image ── */}
             <motion.img
@@ -95,54 +87,26 @@ export default function LoginSignupPage() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.8, ease: 'easeOut' }}
             />
-            {/* Cinematic gradient overlay — darker on right to help the card */}
-            <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/50 via-black/25 to-black/55" />
+            {/* Cinematic gradient overlay */}
+            <div className="absolute inset-0 z-[1] bg-black/45" />
 
-            {/* ── LEFT: tagline + sign-in pill ── */}
-            <div className="hidden lg:flex relative z-10 flex-1 flex-col justify-end px-12 xl:px-20 py-16 min-h-screen pointer-events-none select-none">
-                <div />
-                <img src="/logo.png" alt="" className='w-[140px] h-[40px] absolute top-12 left-12 lg:left-16 object-contain brightness-0 invert opacity-85 hover:opacity-100 transition-opacity' />
-                {/* Big tagline */}
-                <motion.div
-                    initial={{ opacity: 0, x: -32 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.9, ease: 'easeOut', delay: 0.4 }}
-                    className="max-w-[90%] lg:max-w-[85%] mb-2"
-                >
-                    <h2 className="font-display text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white leading-tight drop-shadow-xl">
-                        {mode === 'signup' ? (
-                            <>Erstelle dein Campuna-Konto</>
-                        ) : (
-                            <>Schön, dass du wieder dabei bist.</>
-                        )}
-                    </h2>
-                </motion.div>
-                <p className="font-sans text-sm text-white/55 tracking-wider mt-2">  {mode === 'signup' ? (
-                    <>Kaufen, verkaufen oder entdecken – alles rund ums Camping, einfach und transparent.</>
-                ) : (
-                    <>Melde dich an, um deine Inserate, Nachrichten und Kontoeinstellungen zu sehen.</>
-                )}</p>
-
-            </div>
-
-            {/* ── RIGHT: floating frosted glass form card ── */}
+            {/* ── CENTRALIZED Frosted Glass Form Card ── */}
             <motion.div
-                initial={{ opacity: 0, x: 48 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.25 }}
-                className="relative z-10 w-full sm:max-w-[460px] lg:max-w-[480px] xl:max-w-[540px]
-                           bg-black/40 lg:bg-white/10 backdrop-blur-[12px]
-                           border-none sm:border border-white/20 lg:border-t-0 lg:border-b-0 lg:border-r-0 lg:border-l
-                           shadow-[-24px_0_64px_-8px_rgba(0,0,0,0.4)]
-                           flex flex-col min-h-screen sm:min-h-0 lg:min-h-screen
-                           sm:my-8 lg:my-0 sm:rounded-3xl lg:rounded-none"
+                initial={{ opacity: 0, y: 32 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.15 }}
+                className="relative z-10 w-full max-w-[460px]
+                           bg-black/70 
+                           border border-white/20
+                           shadow-[0_24px_64px_-8px_rgba(0,0,0,0.5)]
+                           flex flex-col rounded-3xl overflow-hidden"
             >
                 {/* Card inner */}
-                <div className="px-7 pt-8 pb-8 flex flex-col gap-4 overflow-y-auto flex-1 justify-center">
+                <div className="px-6 sm:px-8 py-8 sm:py-10 flex flex-col gap-4 overflow-y-auto max-h-[90vh]">
 
                     {/* Logo + mode label row */}
                     <div className="flex items-center justify-between mb-2">
-                        <button onClick={() => navigateTo('/')} className="lg:hidden pointer-events-auto">
+                        <button onClick={() => navigateTo('/')} className="pointer-events-auto">
                             <img src="/logo.png" alt="Campuna"
                                 className="w-[110px] h-[32px] object-contain brightness-0 invert opacity-85 hover:opacity-100 transition-opacity" />
                         </button>
@@ -163,6 +127,16 @@ export default function LoginSignupPage() {
                                 onSubmit={handleSubmit}
                                 className="flex flex-col gap-3"
                             >
+                                {/* Headline */}
+                                <div className="mb-1">
+                                    <h1 className="font-display text-[20px] font-extrabold text-white leading-tight mb-1">
+                                        Erstelle dein Campuna-Konto
+                                    </h1>
+                                    <p className="font-sans text-[11px] text-white/55 leading-relaxed">
+                                        Kaufen, verkaufen oder entdecken – alles rund ums Camping, einfach und transparent.
+                                    </p>
+                                </div>
+
                                 {/* Nutzername */}
                                 <div className="flex flex-col gap-1">
                                     <label htmlFor="reg-username" className={labelCls}>Nutzername</label>
@@ -211,12 +185,13 @@ export default function LoginSignupPage() {
                                         ? <span className="w-4 h-4 border-2 border-forest/30 border-t-forest rounded-full animate-spin inline-block" />
                                         : 'Konto erstellen'}
                                 </motion.button>
+
                                 {/* Helper Switcher */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 12 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-                                    className="flex items-s justify-center gap-1.5 mt-2"
+                                    className="flex items-center justify-center gap-1.5 mt-2"
                                 >
                                     <span className="font-sans text-xs text-white/50 uppercase tracking-widest">Bereits Mitglied?</span>
                                     <button
@@ -229,13 +204,12 @@ export default function LoginSignupPage() {
                                     </button>
                                 </motion.div>
 
-
                                 {/* Legal */}
-                                <p className="font-sans text-[9px] text-white/50 text-center leading-relaxed">
+                                <p className="font-sans text-[9px] text-white/50 text-center leading-relaxed mt-1">
                                     Mit der Erstellung stimmst du unseren{' '}
-                                    <button type="button" className="text-gold/70 hover:text-gold transition-colors">AGB</button>
+                                    <button type="button" className="text-gold/70 hover:text-gold transition-colors font-medium">AGB</button>
                                     {' '}und der{' '}
-                                    <button type="button" className="text-gold/70 hover:text-gold transition-colors">Datenschutzerklärung</button>
+                                    <button type="button" className="text-gold/70 hover:text-gold transition-colors font-medium">Datenschutzerklärung</button>
                                     {' '}zu.
                                 </p>
                             </motion.form>
@@ -252,9 +226,14 @@ export default function LoginSignupPage() {
                                 onSubmit={handleSubmit}
                                 className="flex flex-col gap-3"
                             >
-                                <p className="font-sans text-[12px] text-white/50 leading-relaxed -mt-1">
-                                    Melde dich an, um deine Inserate, Nachrichten und Kontoeinstellungen zu sehen.
-                                </p>
+                                <div className="mb-1">
+                                    <h1 className="font-display text-[20px] font-extrabold text-white leading-tight mb-1">
+                                        Schön, dass du wieder da bist
+                                    </h1>
+                                    <p className="font-sans text-[11px] text-white/55 leading-relaxed">
+                                        Melde dich an, um deine Inserate, Nachrichten und Kontoeinstellungen zu sehen.
+                                    </p>
+                                </div>
 
                                 {/* E-Mail */}
                                 <div className="flex flex-col gap-1">
@@ -279,6 +258,7 @@ export default function LoginSignupPage() {
                                         ? <span className="w-4 h-4 border-2 border-forest/30 border-t-forest rounded-full animate-spin inline-block" />
                                         : 'Anmelden'}
                                 </motion.button>
+
                                 {/* Helper Switcher */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 12 }}
@@ -298,12 +278,12 @@ export default function LoginSignupPage() {
                                 </motion.div>
 
                                 {/* Forgot */}
-                                <button type="button" className="font-sans text-xs text-white/40 hover:text-white transition-colors text-center">
+                                <button type="button" className="font-sans text-xs text-white/40 hover:text-white transition-colors text-center mt-1">
                                     Passwort vergessen?
                                 </button>
 
                                 {/* DSGVO */}
-                                <div className="flex items-center justify-center gap-1.5 pt-1">
+                                <div className="flex items-center justify-center gap-1.5 pt-1 mt-auto">
                                     <ShieldCheck className="w-3 h-3 text-gold/50 shrink-0" />
                                     <p className="font-sans text-[9px] text-white/50 leading-relaxed">
                                         Sicherer Login. Deine Daten sind DSGVO-konform geschützt.
