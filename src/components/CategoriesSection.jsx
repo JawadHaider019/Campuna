@@ -47,7 +47,7 @@ export default function CategoriesSection({ onSelectCategory }) {
   };
 
   return (
-    <section id="categories" className="relative -mt-20 md:-mt-24 z-20 max-w-7xl mx-auto px-4 ">
+    <section id="categories" className="relative  z-20 max-w-7xl mx-auto px-4 ">
       {/* Horizontal Scroll on Mobile, Grid on Desktop */}
       <div className="flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-8 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x">
         {CATEGORIES.map((cat, index) => {

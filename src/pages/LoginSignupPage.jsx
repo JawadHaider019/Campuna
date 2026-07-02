@@ -49,7 +49,7 @@ const USER_TYPES = [
 
 /* ═══════════════ PAGE ═══════════════ */
 export default function LoginSignupPage() {
-    const [mode, setMode] = useState('signup');
+    const [mode, setMode] = useState('login');
 
     const [username, setUsername] = useState('');
     const [signupEmail, setSignupEmail] = useState('');

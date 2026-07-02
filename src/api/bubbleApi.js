@@ -13,3 +13,13 @@ export const getHomepageProducts = async () => {
         throw error;
     }
 };
+
+export const getCategoryProducts = async (categoryName) => {
+    try {
+        const response = await axios.post(API_URL, { category: categoryName });
+        return response.data;
+    } catch (error) {
+        console.error("Bubble API Category Error:", error);
+        throw error;
+    }
+};
