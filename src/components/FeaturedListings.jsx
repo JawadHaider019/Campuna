@@ -247,12 +247,15 @@ export default function FeaturedListings({
         {/* Section Title */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div className="space-y-2">
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block"
-            >   Frisch eingestellt
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+              ZUM STÖBERN
             </span>
             <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-black">
-              Neue Anzeigen auf Campuna
+              Camping-Angebote auf Campuna
             </h2>
+            <p className="font-sans text-sm text-charcoal/60 leading-relaxed font-light">
+              Entdecke wechselnde Inserate von Campern, Anbietern und Unternehmen.
+            </p>
           </div>
           {/* Desktop View All */}
           <div className="hidden lg:block">
