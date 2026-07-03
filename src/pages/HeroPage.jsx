@@ -183,7 +183,10 @@ export default function HomePage() {
             />
 
             {/* 3. Grid Categories */}
-            <CategoriesSection className="-mt-20 md:-mt-24" />
+            <div className="-mt-20 md:-mt-24" >
+                <CategoriesSection />
+            </div>
+
 
             {/* 4. Exclusive Offers with filters & interactive search */}
             <FeaturedListings
@@ -213,6 +216,6 @@ export default function HomePage() {
 
             {/* 11. Custom FAQ Accordion */}
             <FAQSection />
-        </div>
+        </div >
     );
 }
