@@ -6,10 +6,10 @@ export default function Footer() {
     <footer id="footer" className="bg-sand text-charcoal pt-16 pb-4">
       <div className="max-w-7xl mx-auto px-6 md:px-14">
         {/* Main Footer Column Grid */}
-        <div className="flex flex-wrap justify-between gap-3 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-x-12 md:gap-y-8 lg:gap-x-12 lg:gap-y-10 xl:gap-8 items-start">
 
           {/* Logo & Manifesto Column */}
-          <div className="flex flex-col space-y-4 max-w-xs items-start">
+          <div className="flex flex-col space-y-4 max-w-xs items-start md:col-start-1 md:row-start-1 md:row-span-3 lg:row-span-2 xl:col-start-1 xl:row-start-1 xl:row-span-1 h-auto">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
@@ -24,7 +24,7 @@ bleib.`}
           </div>
 
           {/* Navigation Column */}
-          <div className="space-y-4 min-w-[150px]">
+          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-1 lg:col-start-2 lg:row-start-1 xl:col-start-2 xl:row-start-1 h-auto">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Navigation
             </h4>
@@ -53,7 +53,7 @@ bleib.`}
           </div>
 
           {/* Support Column */}
-          <div className="space-y-4 min-w-[150px]">
+          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-2 lg:col-start-3 lg:row-start-1 lg:row-span-2 xl:col-start-3 xl:row-start-1 xl:row-span-1">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Support
             </h4>
@@ -83,7 +83,7 @@ bleib.`}
           </div>
 
           {/* Rechtliches Column */}
-          <div className="space-y-4 min-w-[150px] ">
+          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-3 lg:col-start-2 lg:row-start-2 xl:col-start-4 xl:row-start-1">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Rechtliches
             </h4>
@@ -110,8 +110,6 @@ bleib.`}
               </li>
             </ul>
           </div>
-
-
 
         </div>
 

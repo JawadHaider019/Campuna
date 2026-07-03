@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, animate } from 'motion/react';
-import { Heart, MapPin, ShieldCheck, Eye } from 'lucide-react';
+import { Heart, MapPin, ShieldCheck, Eye, ArrowRight } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
 
@@ -254,10 +254,12 @@ export default function FeaturedListings({
               Neue Anzeigen auf Campuna
             </h2>
           </div>
-          <div className="mt-4 md:mt-0 flex items-center gap-3">
-            <span className="text-xs text-charcoal/50 font-mono">
-              {filteredListings.length} Inserate gefunden
-            </span>
+          {/* Desktop View All */}
+          <div className="hidden lg:block">
+            <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+              <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Angebote</span>
+              <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </div>
 
@@ -309,6 +311,14 @@ export default function FeaturedListings({
                   <ListingCard key={`${item.id}-${idx}`} item={item} isWishlisted={wishlistedIds.includes(item.id)} />
                 ))}
               </motion.div>
+            </div>
+
+            {/* Mobile & Tablet Only View All - Bottom Center */}
+            <div className="mt-12 flex justify-center lg:hidden">
+              <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+                <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Angebote</span>
+                <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
         )}
