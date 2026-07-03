@@ -21,17 +21,19 @@ function TiktokIcon({ className, strokeWidth = 1.8 }) {
 
 export default function Footer() {
   return (
-    <footer id="footer" className="bg-sand text-charcoal py-14 md:py-16">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <footer id="footer" className="bg-sand text-charcoal pt-16 pb-4">
+      <div className="max-w-7xl mx-auto px-6 md:px-14">
         {/* Main Footer Column Grid */}
-        <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-16 lg:gap-24">
+        <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8">
 
           {/* Logo & Manifesto Column */}
           <div className="flex flex-col space-y-4 max-w-xs items-start">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
-              className="h-14 w-auto object-contain"
+              width={130}
+              height={30}
+              className="h-[40px] w-[140px] object-cover"
             />
             <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left whitespace-pre-line">
               {`Wir sind da. Nutze es. Wenn du möchtest,
@@ -40,10 +42,10 @@ bleib.`}
           </div>
 
           {/* Desktop Columns (hidden on mobile, visible on md and up) */}
-          <div className="hidden md:flex md:gap-16 lg:gap-24">
+          <div className="hidden md:flex md:gap-16">
             {/* Navigation Column */}
             <div className="space-y-4 min-w-[140px]">
-              <h4 className="font-sans text-[16px] font-bold text-forest">
+              <h4 className="font-sans text-[16px] font-bold text-black/80">
                 Navigation
               </h4>
               <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -72,7 +74,7 @@ bleib.`}
 
             {/* Support Column */}
             <div className="space-y-4 min-w-[140px]">
-              <h4 className="font-sans text-[16px] font-bold text-forest">
+              <h4 className="font-sans text-[16px] font-bold text-black/80">
                 Support
               </h4>
               <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -102,7 +104,7 @@ bleib.`}
 
             {/* Rechtliches Column */}
             <div className="space-y-4 min-w-[140px]">
-              <h4 className="font-sans text-[16px] font-bold text-forest">
+              <h4 className="font-sans text-[16px] font-bold text-black/80">
                 Rechtliches
               </h4>
               <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -227,7 +229,7 @@ bleib.`}
         </div>
 
         {/* Sub-footer Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-16 text-[14.5px] text-charcoal/80 font-sans">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8  text-[14.5px] text-charcoal/80 font-sans">
           <p className="text-center font-normal">
             © 2026 Campuna. Alle Rechte vorbehalten.
           </p>
