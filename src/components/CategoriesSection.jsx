@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import React from 'react';
 import {
   Backpack,
   Truck,
@@ -55,14 +55,9 @@ export default function CategoriesSection({ onSelectCategory }) {
           const slug = CATEGORY_SLUGS[cat.name] || '';
 
           return (
-            <motion.div
+            <div
               key={cat.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: index * 0.05, duration: 0.6 }}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="bg-white border border-white/40 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group flex flex-col items-center text-center min-w-[120px] sm:min-w-[140px] lg:min-w-0 flex-shrink-0 snap-center"
+              className="bg-white border border-white/40 p-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group flex flex-col items-center text-center min-w-[120px] sm:min-w-[140px] lg:min-w-0 flex-shrink-0 snap-center"
             >
               <a
                 href={getParentNavigationUrl(`/category/${slug}`)}
@@ -78,7 +73,7 @@ export default function CategoriesSection({ onSelectCategory }) {
                   {cat.name}
                 </h3>
               </a>
-            </motion.div>
+            </div>
           );
         })}
       </div>
