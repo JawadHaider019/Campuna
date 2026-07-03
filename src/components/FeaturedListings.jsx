@@ -45,7 +45,7 @@ export default function FeaturedListings({
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
-    navigateTo(`/version-test/listing_details/${slug}`);
+    navigateTo(`/listing_details/${slug}`);
   };
 
   // Split listings into two rows

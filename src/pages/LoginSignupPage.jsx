@@ -110,10 +110,10 @@ export default function LoginSignupPage() {
                            flex flex-col rounded-3xl overflow-hidden"
             >
                 {/* Card inner */}
-                <div className="px-6 sm:px-8 py-8 sm:py-10 flex flex-col gap-4 overflow-y-auto max-h-[90vh]">
+                <div className="px-6 sm:px-8 py-4 sm:py-8 flex flex-col gap-1 sm:gap-2 overflow-y-auto max-h-[90vh]">
 
                     {/* Logo + mode label row */}
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-1">
                         <button onClick={() => navigateTo('/')} className="pointer-events-auto">
                             <img src="/logo.png" alt="Campuna"
                                 className="w-[110px] h-[32px] object-contain brightness-0 invert opacity-85 hover:opacity-100 transition-opacity" />
@@ -133,7 +133,7 @@ export default function LoginSignupPage() {
                                 animate="visible"
                                 exit="exit"
                                 onSubmit={handleSubmit}
-                                className="flex flex-col gap-3"
+                                className="flex flex-col gap-2"
                             >
                                 {/* Headline */}
                                 <div className="mb-1">
@@ -181,7 +181,7 @@ export default function LoginSignupPage() {
                                             transition={{ duration: 0.35, ease: 'easeInOut' }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="flex flex-col gap-3 pt-1 border-t border-white/15 mt-1">
+                                            <div className="flex flex-col gap-2 pt-1 border-t border-white/15 mt-1">
                                                 <p className="font-sans text-[10px] text-white/40 uppercase tracking-widest">Geschäftliche Angaben</p>
 
                                                 {/* Row 1: Company Name + Company Email */}
