@@ -81,10 +81,10 @@ export default function LoginSignupPage() {
         exit: { opacity: 0, y: -16, transition: { duration: 0.2 } },
     };
 
-    const labelCls = "font-sans text-[11px] font-semibold text-white/65 uppercase tracking-wider";
+    const labelCls = "font-sans text-[9px] font-semibold text-white/65 uppercase tracking-wider";
 
     return (
-        <div className="min-h-screen w-full relative flex items-center justify-center font-sans overflow-hidden bg-charcoal p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen w-full relative flex items-center justify-center font-sans overflow-hidden bg-charcoal p-2 sm:p-3 lg:p-4">
 
             {/* ── Full-screen background image ── */}
             <motion.img
@@ -110,7 +110,7 @@ export default function LoginSignupPage() {
                            flex flex-col rounded-3xl overflow-hidden"
             >
                 {/* Card inner */}
-                <div className="px-6 sm:px-8 py-4 sm:py-8 flex flex-col gap-1 sm:gap-2 overflow-y-auto max-h-[90vh]">
+                <div className="px-6 sm:px-8 py-3 sm:py-4 flex flex-col gap-1 sm:gap-2 overflow-y-auto max-h-[95vh]">
 
                     {/* Logo + mode label row */}
                     <div className="flex items-center justify-between mb-1">
@@ -118,7 +118,7 @@ export default function LoginSignupPage() {
                             <img src="/logo.png" alt="Campuna"
                                 className="w-[110px] h-[32px] object-contain brightness-0 invert opacity-85 hover:opacity-100 transition-opacity" />
                         </button>
-                        <span className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        <span className="font-display text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                             {mode === 'signup' ? 'Registrieren' : 'Einloggen'}
                         </span>
                     </div>
@@ -136,11 +136,11 @@ export default function LoginSignupPage() {
                                 className="flex flex-col gap-2"
                             >
                                 {/* Headline */}
-                                <div className="mb-1">
-                                    <h1 className="font-display text-[20px] font-extrabold text-white leading-tight mb-1">
+                                <div>
+                                    <h1 className="font-display text-[18px] font-extrabold text-white leading-tight mb-1">
                                         Erstelle dein Campuna-Konto
                                     </h1>
-                                    <p className="font-sans text-[11px] text-white/55 leading-relaxed">
+                                    <p className="font-sans text-[10px] text-white/55 leading-relaxed">
                                         Kaufen, verkaufen oder entdecken – alles rund ums Camping, einfach und transparent.
                                     </p>
                                 </div>
@@ -258,7 +258,7 @@ export default function LoginSignupPage() {
                                     initial={{ opacity: 0, y: 12 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-                                    className="flex items-center justify-center gap-1.5 mt-2"
+                                    className="flex items-center justify-center gap-1.5 "
                                 >
                                     <span className="font-sans text-xs text-white/50 uppercase tracking-widest">Bereits Mitglied?</span>
                                     <button
@@ -272,7 +272,7 @@ export default function LoginSignupPage() {
                                 </motion.div>
 
                                 {/* Legal */}
-                                <p className="font-sans text-[9px] text-white/50 text-center leading-relaxed mt-1">
+                                <p className="font-sans text-[9px] text-white/50 text-center leading-relaxed ">
                                     Mit der Erstellung stimmst du unseren{' '}
                                     <button type="button" className="text-gold/70 hover:text-gold transition-colors font-medium">AGB</button>
                                     {' '}und der{' '}

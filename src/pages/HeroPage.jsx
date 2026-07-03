@@ -187,12 +187,7 @@ export default function HomePage() {
             />
 
             {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-            <PartnersSection
-                onPartnerClick={(name) => {
-                    const element = document.getElementById('exclusive-offers');
-                    element?.scrollIntoView({ behavior: 'smooth' });
-                }}
-            />
+            <PartnersSection />
 
             {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
             <BlogSection />

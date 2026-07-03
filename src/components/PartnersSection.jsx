@@ -4,11 +4,10 @@ import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { PROVIDERS } from '../data';
 import { navigateTo } from '../utils/navigation';
 
-export default function SpotlightSection({ onPartnerClick }) {
+export default function PartnersSection({ onPartnerClick }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
     const [cardWidth, setCardWidth] = useState(320);
-    const dragStartX = useRef(0);
 
     const x = useMotionValue(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -70,10 +69,10 @@ export default function SpotlightSection({ onPartnerClick }) {
 
     const ProviderCard = ({ partner }) => (
         <div
-            onClick={(e) => {
-                if (Math.abs(e.clientX - dragStartX.current) < 5) {
-                    navigateTo(`/${partner.slug}`);
-                }
+            onClick={() => {
+                if (onPartnerClick) onPartnerClick(partner.name);
+
+                navigateTo(`/all_business/${partner.slug}`);
             }}
             // Responsive card sizes: 280px mobile, 360px sm, 440px md, 550px lg+
             className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
@@ -174,7 +173,6 @@ export default function SpotlightSection({ onPartnerClick }) {
                     <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing" ref={rowRef}>
                         <motion.div
                             drag="x"
-                            onPointerDown={(e) => { dragStartX.current = e.clientX; }}
                             dragConstraints={{ right: 0, left: -constraints }}
                             style={{ x }}
                             onMouseEnter={() => setIsHovered(true)}
