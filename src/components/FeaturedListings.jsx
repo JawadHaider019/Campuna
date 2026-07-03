@@ -13,11 +13,6 @@ export default function FeaturedListings({
   searchQuery,
   searchLocation
 }) {
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
-  const [row1Constraints, setRow1Constraints] = useState(0);
-  const [row2Constraints, setRow2Constraints] = useState(0);
-
   // Filter listings based on category, search queries
   const filteredListings = listings.filter((item) => {
     if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
@@ -33,15 +28,6 @@ export default function FeaturedListings({
     }
     return true;
   });
-
-  useEffect(() => {
-    if (row1Ref.current) {
-      setRow1Constraints(row1Ref.current.scrollWidth - row1Ref.current.offsetWidth);
-    }
-    if (row2Ref.current) {
-      setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
-    }
-  }, [filteredListings]);
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
@@ -72,69 +58,6 @@ export default function FeaturedListings({
   const midPoint = Math.ceil(visibleListings.length / 2);
   const firstRow = visibleListings.slice(0, midPoint);
   const secondRow = visibleListings.slice(midPoint);
-
-  const x1 = useMotionValue(0);
-  const x2 = useMotionValue(0);
-
-  const [isHovered1, setIsHovered1] = useState(false);
-  const [isHovered2, setIsHovered2] = useState(false);
-
-  const [loopTrigger1, setLoopTrigger1] = useState(0);
-  const [loopTrigger2, setLoopTrigger2] = useState(0);
-
-  useEffect(() => {
-    x1.set(0);
-    x2.set(-420 * secondRow.length);
-  }, [firstRow.length, secondRow.length]);
-
-  useEffect(() => {
-    if (isHovered1 || firstRow.length === 0) return;
-
-    const target = -420 * firstRow.length;
-    const currentVal = x1.get();
-
-    const remainingDistance = Math.abs(target - currentVal);
-    const totalDistance = Math.abs(target);
-    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
-    const duration = 60 * fraction;
-
-    const controls = animate(x1, target, {
-      type: "tween",
-      ease: "linear",
-      duration: duration,
-      onComplete: () => {
-        x1.set(0);
-        setLoopTrigger1(prev => prev + 1);
-      }
-    });
-
-    return () => controls.stop();
-  }, [isHovered1, loopTrigger1, firstRow.length]);
-
-  useEffect(() => {
-    if (isHovered2 || secondRow.length === 0) return;
-
-    const target = 0;
-    const startVal = -420 * secondRow.length;
-    const currentVal = x2.get();
-
-    const remainingDistance = Math.abs(target - currentVal);
-    const totalDistance = Math.abs(startVal);
-    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
-    const duration = 65 * fraction;
-
-    const controls = animate(x2, target, {
-      type: "tween",
-      ease: "linear",
-      duration: duration,
-      onComplete: () => {
-        x2.set(startVal);
-        setLoopTrigger2(prev => prev + 1);
-      }
-    });
-
-    return () => controls.stop();
-  }, [isHovered2, loopTrigger2, secondRow.length]);
 
   function ListingCard({ item, isWishlisted }) {
     const [imgIdx, setImgIdx] = useState(0);
@@ -274,41 +197,57 @@ export default function FeaturedListings({
             </button>
           </div>
         ) : (
-          <div className="space-y-2 relative">
+          <div className="space-y-4 relative marquee-container">
+            {/* CSS inject tag for stutter-free native GPU animation */}
+            <style>{`
+              @keyframes marquee-left {
+                0% { transform: translate3d(0, 0, 0); }
+                100% { transform: translate3d(-50%, 0, 0); }
+              }
+              @keyframes marquee-right {
+                0% { transform: translate3d(-50%, 0, 0); }
+                100% { transform: translate3d(0, 0, 0); }
+              }
+              .animate-marquee-left {
+                display: flex;
+                gap: 1.25rem;
+                width: max-content;
+                animation: marquee-left 45s linear infinite;
+                will-change: transform;
+              }
+              .animate-marquee-right {
+                display: flex;
+                gap: 1.25rem;
+                width: max-content;
+                animation: marquee-right 45s linear infinite;
+                will-change: transform;
+              }
+              .marquee-row:hover .animate-marquee-left,
+              .marquee-row:hover .animate-marquee-right {
+                animation-play-state: paused;
+              }
+            `}</style>
+
             {/* Fade Overlays - Hidden on Mobile */}
             <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-            {/* Row 1: Draggable Left to Right */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row1Ref}>
-              <motion.div
-                drag="x"
-                dragConstraints={{ right: 0, left: -row1Constraints }}
-                style={{ x: x1 }}
-                onMouseEnter={() => setIsHovered1(true)}
-                onMouseLeave={() => setIsHovered1(false)}
-                className="flex gap-5 w-max "
-              >
+            {/* Row 1: Left to Right */}
+            <div className="relative overflow-hidden pb-2 marquee-row">
+              <div className="animate-marquee-left">
                 {[...firstRow, ...firstRow].map((item, idx) => (
                   <ListingCard key={`${item.id}-${idx}`} item={item} isWishlisted={wishlistedIds.includes(item.id)} />
                 ))}
-              </motion.div>
+              </div>
             </div>
 
-            {/* Row 2: Draggable Right to Left */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
-              <motion.div
-                drag="x"
-                dragConstraints={{ right: 0, left: -row2Constraints }}
-                style={{ x: x2 }}
-                onMouseEnter={() => setIsHovered2(true)}
-                onMouseLeave={() => setIsHovered2(false)}
-                className="flex gap-5 w-max"
-              >
+            {/* Row 2: Right to Left */}
+            <div className="relative overflow-hidden pb-4 marquee-row">
+              <div className="animate-marquee-right">
                 {[...secondRow, ...secondRow].map((item, idx) => (
                   <ListingCard key={`${item.id}-${idx}`} item={item} isWishlisted={wishlistedIds.includes(item.id)} />
                 ))}
-              </motion.div>
+              </div>
             </div>
           </div>
         )}
