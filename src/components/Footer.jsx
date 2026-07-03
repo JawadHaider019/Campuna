@@ -6,7 +6,7 @@ export default function Footer() {
     <footer id="footer" className="bg-sand text-charcoal pt-16 pb-4">
       <div className="max-w-7xl mx-auto px-6 md:px-14">
         {/* Main Footer Column Grid */}
-        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-5">
+        <div className="flex flex-wrap justify-between gap-3 md:gap-5">
 
           {/* Logo & Manifesto Column */}
           <div className="flex flex-col space-y-4 max-w-xs items-start">
