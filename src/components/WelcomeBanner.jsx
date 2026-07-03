@@ -55,7 +55,7 @@ export default function WelcomeBanner() {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                     className="fixed top-0 left-0 w-full z-[100] bg-forest text-sand shadow-lg border-b border-white/10"
                 >
-                    <div className="w-[calc(100%-1rem)] max-w-5xl mx-auto flex flex-row items-center gap-2 sm:gap-4 px-4 py-1 sm:px-7 sm:py-2">
+                    <div className="w-[calc(100%-1rem)] max-w-5xl mx-auto flex flex-row items-center gap-2 sm:gap-4 px-4 py-3 sm:px-7 sm:py-3">
 
                         <div className="sm:flex hidden shrink-0 w-12 h-12 rounded-2xl bg-forest border border-gold/20 flex items-center justify-center shadow-inner">
                             <Tent className="w-6 h-6 text-sand" />

@@ -31,7 +31,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-3 ${isScrolled ? 'top-0 shadow-md' : 'top-[48px] sm:top-[56px]'
+      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-5 ${isScrolled ? 'top-0 shadow-md' : 'top-[56px] sm:top-[64px]'
         }`}
     >
       <div className="max-w-8xl mx-auto px-2 md:px-14 ">
