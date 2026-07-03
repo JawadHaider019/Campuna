@@ -13,6 +13,11 @@ export default function FeaturedListings({
   searchQuery,
   searchLocation
 }) {
+  const row1Ref = useRef(null);
+  const row2Ref = useRef(null);
+  const [row1Constraints, setRow1Constraints] = useState(0);
+  const [row2Constraints, setRow2Constraints] = useState(0);
+
   // Filter listings based on category, search queries
   const filteredListings = listings.filter((item) => {
     if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
@@ -28,6 +33,15 @@ export default function FeaturedListings({
     }
     return true;
   });
+
+  useEffect(() => {
+    if (row1Ref.current) {
+      setRow1Constraints(row1Ref.current.scrollWidth - row1Ref.current.offsetWidth);
+    }
+    if (row2Ref.current) {
+      setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
+    }
+  }, [filteredListings]);
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
@@ -64,59 +78,19 @@ export default function FeaturedListings({
 
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
-  const [isDragging1, setIsDragging1] = useState(false);
-  const [isDragging2, setIsDragging2] = useState(false);
-
-  const [constraints1, setConstraints1] = useState(0);
-  const [constraints2, setConstraints2] = useState(0);
 
   const [loopTrigger1, setLoopTrigger1] = useState(0);
   const [loopTrigger2, setLoopTrigger2] = useState(0);
 
   useEffect(() => {
-    const updateConstraints = () => {
-      const isDesktop = window.innerWidth >= 768;
-      const cardWidth = isDesktop ? 350 : 320;
-      const gap = 20; // gap-5
-      const step = cardWidth + gap;
-
-      const width1 = firstRow.length * step - gap;
-      const width2 = secondRow.length * step - gap;
-
-      const padding = window.innerWidth >= 768 ? 96 : 32; // md:px-12 (96px), px-4 (32px)
-      const viewportWidth = Math.min(window.innerWidth - padding, 1320);
-
-      setConstraints1(Math.max(0, width1 - viewportWidth));
-      setConstraints2(Math.max(0, width2 - viewportWidth));
-    };
-
-    updateConstraints();
-    window.addEventListener('resize', updateConstraints);
-    return () => window.removeEventListener('resize', updateConstraints);
+    x1.set(0);
+    x2.set(-420 * secondRow.length);
   }, [firstRow.length, secondRow.length]);
 
-  // Set initial scroll values only when filter resets (visibleCount === INITIAL_COUNT)
   useEffect(() => {
-    if (visibleCount === INITIAL_COUNT) {
-      const isDesktop = window.innerWidth >= 768;
-      const cardWidth = isDesktop ? 350 : 320;
-      const gap = 20;
-      const step = cardWidth + gap;
+    if (isHovered1 || firstRow.length === 0) return;
 
-      x1.set(0);
-      x2.set(-step * secondRow.length);
-    }
-  }, [visibleCount, secondRow.length]);
-
-  useEffect(() => {
-    if (isHovered1 || isDragging1 || firstRow.length === 0) return;
-
-    const isDesktop = window.innerWidth >= 768;
-    const cardWidth = isDesktop ? 350 : 320;
-    const gap = 20;
-    const step = cardWidth + gap;
-
-    const target = -step * firstRow.length;
+    const target = -420 * firstRow.length;
     const currentVal = x1.get();
 
     const remainingDistance = Math.abs(target - currentVal);
@@ -135,18 +109,13 @@ export default function FeaturedListings({
     });
 
     return () => controls.stop();
-  }, [isHovered1, isDragging1, loopTrigger1, firstRow.length]);
+  }, [isHovered1, loopTrigger1, firstRow.length]);
 
   useEffect(() => {
-    if (isHovered2 || isDragging2 || secondRow.length === 0) return;
-
-    const isDesktop = window.innerWidth >= 768;
-    const cardWidth = isDesktop ? 350 : 320;
-    const gap = 20;
-    const step = cardWidth + gap;
+    if (isHovered2 || secondRow.length === 0) return;
 
     const target = 0;
-    const startVal = -step * secondRow.length;
+    const startVal = -420 * secondRow.length;
     const currentVal = x2.get();
 
     const remainingDistance = Math.abs(target - currentVal);
@@ -165,43 +134,7 @@ export default function FeaturedListings({
     });
 
     return () => controls.stop();
-  }, [isHovered2, isDragging2, loopTrigger2, secondRow.length]);
-
-  const handleDragEnd1 = () => {
-    setIsDragging1(false);
-    const isDesktop = window.innerWidth >= 768;
-    const cardWidth = isDesktop ? 350 : 320;
-    const gap = 20;
-    const step = cardWidth + gap;
-    const loopWidth = step * firstRow.length;
-
-    let currentX = x1.get();
-    if (currentX < -loopWidth) {
-      x1.set(currentX + loopWidth);
-    } else if (currentX > 0) {
-      x1.set(currentX - loopWidth);
-    }
-    setLoopTrigger1(prev => prev + 1);
-  };
-
-  const handleDragEnd2 = () => {
-    setIsDragging2(false);
-    const isDesktop = window.innerWidth >= 768;
-    const cardWidth = isDesktop ? 350 : 320;
-    const gap = 20;
-    const step = cardWidth + gap;
-    const loopWidth = step * secondRow.length;
-
-    let currentX = x2.get();
-    const startVal = -loopWidth;
-
-    if (currentX < startVal) {
-      x2.set(currentX + loopWidth);
-    } else if (currentX > 0) {
-      x2.set(currentX - loopWidth);
-    }
-    setLoopTrigger2(prev => prev + 1);
-  };
+  }, [isHovered2, loopTrigger2, secondRow.length]);
 
   function ListingCard({ item, isWishlisted }) {
     const [imgIdx, setImgIdx] = useState(0);
@@ -347,13 +280,11 @@ export default function FeaturedListings({
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
             {/* Row 1: Draggable Left to Right */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing">
+            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row1Ref}>
               <motion.div
                 drag="x"
-                dragConstraints={{ right: 0, left: -constraints1 }}
+                dragConstraints={{ right: 0, left: -row1Constraints }}
                 style={{ x: x1 }}
-                onDragStart={() => setIsDragging1(true)}
-                onDragEnd={handleDragEnd1}
                 onMouseEnter={() => setIsHovered1(true)}
                 onMouseLeave={() => setIsHovered1(false)}
                 className="flex gap-5 w-max "
@@ -365,13 +296,11 @@ export default function FeaturedListings({
             </div>
 
             {/* Row 2: Draggable Right to Left */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing">
+            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
               <motion.div
                 drag="x"
-                dragConstraints={{ right: 0, left: -constraints2 }}
+                dragConstraints={{ right: 0, left: -row2Constraints }}
                 style={{ x: x2 }}
-                onDragStart={() => setIsDragging2(true)}
-                onDragEnd={handleDragEnd2}
                 onMouseEnter={() => setIsHovered2(true)}
                 onMouseLeave={() => setIsHovered2(false)}
                 className="flex gap-5 w-max"
