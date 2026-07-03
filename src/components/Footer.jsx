@@ -216,16 +216,16 @@ bleib.`}
 
           <div className="flex items-center gap-5 justify-center">
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
-              <TbBrandFacebook className="w-8 h-8 text-forest" strokeWidth={1.5} />
+              <TbBrandFacebook className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
-              <TbBrandTiktok className="w-8 h-8 text-forest" strokeWidth={1.5} />
+              <TbBrandTiktok className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
-              <TbBrandInstagram className="w-8 h-8 text-forest" strokeWidth={1.5} />
+              <TbBrandInstagram className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
-              <TbBrandYoutube className="w-8 h-8 text-forest" strokeWidth={1.5} />
+              <TbBrandYoutube className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
           </div>
         </div>
