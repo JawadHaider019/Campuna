@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-    "https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage-products";
+    "https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage-products";
 
 export const getHomepageProducts = async () => {
     try {
