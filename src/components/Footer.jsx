@@ -1,23 +1,5 @@
-import { Facebook, Instagram, Youtube } from 'lucide-react';
+import { TbBrandFacebook, TbBrandTiktok, TbBrandInstagram, TbBrandYoutube } from 'react-icons/tb';
 import { getParentNavigationUrl } from '../utils/navigation';
-
-// Custom SVG path for Tiktok matches lucide-react outline
-function TiktokIcon({ className, strokeWidth = 1.8 }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-    </svg>
-  );
-}
 
 export default function Footer() {
   return (
@@ -138,7 +120,7 @@ bleib.`}
             <div className="flex flex-col space-y-10">
               {/* Navigation */}
               <div className="space-y-4">
-                <h4 className="font-sans text-[16px] font-bold text-forest">
+                <h4 className="font-sans text-[16px] font-bold text-black/80">
                   Navigation
                 </h4>
                 <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -167,7 +149,7 @@ bleib.`}
 
               {/* Rechtliches */}
               <div className="space-y-4">
-                <h4 className="font-sans text-[16px] font-bold text-forest">
+                <h4 className="font-sans text-[16px] font-bold text-black/80">
                   Rechtliches
                 </h4>
                 <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -197,7 +179,7 @@ bleib.`}
 
             {/* Right Stack: Support */}
             <div className="space-y-4">
-              <h4 className="font-sans text-[16px] font-bold text-forest">
+              <h4 className="font-sans text-[16px] font-bold text-black/80">
                 Support
               </h4>
               <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
@@ -229,23 +211,23 @@ bleib.`}
         </div>
 
         {/* Sub-footer Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8  text-[14.5px] text-charcoal/80 font-sans">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8 text-[14.5px] text-charcoal/80 font-sans">
           <p className="text-center font-normal">
             © 2026 Campuna. Alle Rechte vorbehalten.
           </p>
 
           <div className="flex items-center gap-5 justify-center">
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
-              <Facebook className="w-5 h-5 text-forest" strokeWidth={1.8} />
+              <TbBrandFacebook className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
-              <TiktokIcon className="w-5 h-5 text-forest" strokeWidth={1.8} />
+              <TbBrandTiktok className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
-              <Instagram className="w-5 h-5 text-forest" strokeWidth={1.8} />
+              <TbBrandInstagram className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
             <a href="#" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
-              <Youtube className="w-5 h-5 text-forest" strokeWidth={1.8} />
+              <TbBrandYoutube className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
           </div>
         </div>
