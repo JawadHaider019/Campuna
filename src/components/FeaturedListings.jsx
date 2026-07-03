@@ -48,10 +48,30 @@ export default function FeaturedListings({
     navigateTo(`/listing_details/${slug}`);
   };
 
-  // Split listings into two rows
-  const midPoint = Math.ceil(filteredListings.length / 2);
-  const firstRow = filteredListings.slice(0, midPoint);
-  const secondRow = filteredListings.slice(midPoint);
+  // Progressive loading: start fast with 12 items, then reveal more every 1.5s
+  const INITIAL_COUNT = 12;
+  const BATCH_SIZE = 4;
+  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+
+  // Reset visible count whenever the filtered list changes (e.g. search/filter applied)
+  useEffect(() => {
+    setVisibleCount(INITIAL_COUNT);
+  }, [selectedCategoryFilter, searchQuery, searchLocation]);
+
+  // Tick up visible items progressively until all are shown
+  useEffect(() => {
+    if (visibleCount >= filteredListings.length) return;
+    const timer = setTimeout(() => {
+      setVisibleCount(prev => Math.min(prev + BATCH_SIZE, filteredListings.length));
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [visibleCount, filteredListings.length]);
+
+  // Split visible listings into two rows
+  const visibleListings = filteredListings.slice(0, visibleCount);
+  const midPoint = Math.ceil(visibleListings.length / 2);
+  const firstRow = visibleListings.slice(0, midPoint);
+  const secondRow = visibleListings.slice(midPoint);
 
   const x1 = useMotionValue(0);
   const x2 = useMotionValue(0);
@@ -116,99 +136,110 @@ export default function FeaturedListings({
     return () => controls.stop();
   }, [isHovered2, loopTrigger2, secondRow.length]);
 
-  const ListingCard = ({ item, isWishlisted }) => (
-    <div
-      onClick={() => handleCardClick(item)}
-      className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
-    >
-      {/* Image Area */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
-        <img
-          src={item.images[0]}
-          alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-105 pointer-events-none"
-          referrerPolicy="no-referrer"
-        />
+  function ListingCard({ item, isWishlisted }) {
+    const [imgIdx, setImgIdx] = useState(0);
+    const handleImgError = () => {
+      if (imgIdx < item.images.length - 1) {
+        setImgIdx(i => i + 1);
+      }
+    };
 
-        {/* Top Bar inside image card */}
-        <div className="absolute top-4 inset-x-4 flex items-center justify-between">
-          <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
-            <ShieldCheck className="w-3 h-3 text-gold" />
-            {item.seller.type}
-          </span>
+    return (
+      <div
+        onClick={() => handleCardClick(item)}
+        className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
+      >
+        {/* Image Area */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
+          <img
+            src={item.images[imgIdx]}
+            alt={item.title}
+            className="w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-105 pointer-events-none"
+            referrerPolicy="no-referrer"
+            loading="lazy"
+            onError={handleImgError}
+          />
 
-          {/* Wishlist Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleWishlist(item.id);
-            }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
-              ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
-              : 'bg-white/70 hover:bg-white text-forest hover:scale-110'
-              }`}
-          >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
-          </button>
-        </div>
+          {/* Top Bar inside image card */}
+          <div className="absolute top-4 inset-x-4 flex items-center justify-between">
+            <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
+              <ShieldCheck className="w-3 h-3 text-gold" />
+              {item.seller.type}
+            </span>
 
-        {/* Location overlay */}
-        <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
-          <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-gold shrink-0" />
-            <span>{item.location}</span>
+            {/* Wishlist Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleWishlist(item.id);
+              }}
+              className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
+                ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
+                : 'bg-white/70 hover:bg-white text-forest hover:scale-110'
+                }`}
+            >
+              <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
+            </button>
+          </div>
+
+          {/* Location overlay */}
+          <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
+            <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-gold shrink-0" />
+              <span>{item.location}</span>
+            </div>
+          </div>
+
+          {/* Hover CTA */}
+          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="bg-white text-forest px-5 py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 shadow-lg scale-95 group-hover:scale-100 transition-all duration-300">
+              <Eye className="w-4 h-4" />
+              <span>Inserat ansehen</span>
+            </div>
           </div>
         </div>
 
-        {/* Hover CTA */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="bg-white text-forest px-5 py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 shadow-lg scale-95 group-hover:scale-100 transition-all duration-300">
-            <Eye className="w-4 h-4" />
-            <span>Inserat ansehen</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Content Area */}
-      <div className="p-4 flex flex-col flex-1 justify-between">
-        <div>
-          {/* Title */}
-          <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
-            {item.title}
-          </h3>
-
-          {/* Features chips */}
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {item.features.slice(0, 3).map((feat, idx) => (
-              <span
-                key={idx}
-                className="text-[10px] text-charcoal/60 bg-sand px-2 py-1 rounded-md border border-forest/5"
-              >
-                {feat}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Pricing & CTA Line */}
-        <div className="pt-2 border-t border-forest/5 flex items-end justify-between">
+        {/* Content Area */}
+        <div className="p-4 flex flex-col flex-1 justify-between">
           <div>
-            <span className="block text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
-              {item.pricePeriod}
-            </span>
-            <span className="font-display text-xl font-extrabold text-forest">
-              {item.price.toLocaleString('de-DE')} €
-            </span>
+            {/* Title */}
+            <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
+              {item.title}
+            </h3>
+
+            {/* Features chips */}
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {item.features.slice(0, 3).map((feat, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] text-charcoal/60 bg-sand px-2 py-1 rounded-md border border-forest/5"
+                >
+                  {feat}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <span className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1 transition-colors">
-            <span>Details</span>
-            <span className="transform group-hover:translate-x-1 transition-transform inline-block">→</span>
-          </span>
+          {/* Pricing & CTA Line */}
+          <div className="pt-2 border-t border-forest/5 flex items-end justify-between">
+            <div>
+              <span className="block text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
+                {item.pricePeriod}
+              </span>
+              <span className="font-display text-xl font-extrabold text-forest">
+                {item.price.toLocaleString('de-DE')} €
+              </span>
+            </div>
+
+            <span className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1 transition-colors">
+              <span>Details</span>
+              <span className="transform group-hover:translate-x-1 transition-transform inline-block">→</span>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   return (
     <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-20 overflow-hidden">

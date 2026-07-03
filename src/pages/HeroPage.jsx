@@ -27,10 +27,20 @@ export default function HomePage() {
                 const data = await getHomepageProducts();
                 if (data && data.status === "success" && data.response && Array.isArray(data.response.listing)) {
                     const mapped = data.response.listing.map((item) => {
-                        // Format images (adding https:)
-                        const images = (item.images && item.images.length > 0 ? item.images : [item["Main Image"]])
+                        // Format images (adding https:) and convert HEIC via Bubble CDN transform
+                        let images = (item.images && item.images.length > 0 ? item.images : [item["Main Image"]])
                             .filter(Boolean)
-                            .map(url => url.startsWith('//') ? `https:${url}` : url);
+                            .map(url => {
+                                url = url.startsWith('//') ? `https:${url}` : url;
+                                // Convert HEIC to web-compatible format via Bubble CDN image transformation
+                                if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
+                                    url = url.replace(
+                                        /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                        '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                                    );
+                                }
+                                return url;
+                            });
 
                         if (images.length === 0) {
                             images.push('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80');

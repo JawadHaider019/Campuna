@@ -29,9 +29,20 @@ const SORT_OPTIONS = [
 
 // Map API listing to the normalized shape
 function mapListing(item) {
-    const images = (item.images && item.images.length > 0 ? item.images : [item['Main Image']])
+    // Format images (adding https:) and convert HEIC via Bubble CDN transform
+    let images = (item.images && item.images.length > 0 ? item.images : [item['Main Image']])
         .filter(Boolean)
-        .map(url => url.startsWith('//') ? `https:${url}` : url);
+        .map(url => {
+            url = url.startsWith('//') ? `https:${url}` : url;
+            // Convert HEIC to web-compatible format via Bubble CDN image transformation
+            if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
+                url = url.replace(
+                    /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                    '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                );
+            }
+            return url;
+        });
 
     if (images.length === 0) {
         images.push('hero-campuna.png');
@@ -87,9 +98,16 @@ function mapListing(item) {
 
 // ─── The Card component (identical to FeaturedListings.ListingCard) ────────────
 function ListingCard({ item, isWishlisted, onToggleWishlist }) {
+    const [imgIdx, setImgIdx] = React.useState(0);
+    const handleImgError = () => {
+        if (imgIdx < item.images.length - 1) {
+            setImgIdx(i => i + 1);
+        }
+    };
+
     const handleCardClick = () => {
         const slug = buildListingSlug(item.title, item.id);
-        navigateTo(`/version-test/listing_details/${slug}`);
+        navigateTo(`/listing_details/${slug}`);
     };
 
     return (
@@ -103,10 +121,12 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             {/* Image Area */}
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
                 <img
-                    src={item.images[0]}
+                    src={item.images[imgIdx]}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-105 pointer-events-none"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    onError={handleImgError}
                 />
 
                 {/* Top badge row */}
