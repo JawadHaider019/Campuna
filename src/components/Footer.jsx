@@ -1,88 +1,249 @@
-import { Facebook, Instagram, Youtube, ShieldCheck } from 'lucide-react';
+import { Facebook, Instagram, Youtube } from 'lucide-react';
 import { getParentNavigationUrl } from '../utils/navigation';
+
+// Custom SVG path for Tiktok matches lucide-react outline
+function TiktokIcon({ className, strokeWidth = 1.8 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
-    <footer id="footer" className="bg-sand text-forest py-12 sm:py-10 border-t border-forest/5">
+    <footer id="footer" className="bg-sand text-charcoal py-14 md:py-16">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-8">
+        {/* Main Footer Column Grid */}
+        <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-16 lg:gap-24">
 
           {/* Logo & Manifesto Column */}
-          <div className="space-y-8 lg:col-span-1 items-start">
-            <div className="flex flex-col space-y-3 items-start">
-              <img
-                src="/logo.png"
-                alt="Campuna – Dein Camping-Marktplatz"
-                className="h-16 w-auto object-contain"
-              />
-              <p className="font-sans text-sm text-charcoal/70 font-light leading-relaxed max-w-xs italic text-left">
-                "Wir sind da. Nutze es. Wenn du möchtest, bleib."
-              </p>
+          <div className="flex flex-col space-y-4 max-w-xs items-start">
+            <img
+              src="/logo.png"
+              alt="Campuna – Dein Camping-Marktplatz"
+              className="h-14 w-auto object-contain"
+            />
+            <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left whitespace-pre-line">
+              {`Wir sind da. Nutze es. Wenn du möchtest,
+bleib.`}
+            </p>
+          </div>
+
+          {/* Desktop Columns (hidden on mobile, visible on md and up) */}
+          <div className="hidden md:flex md:gap-16 lg:gap-24">
+            {/* Navigation Column */}
+            <div className="space-y-4 min-w-[140px]">
+              <h4 className="font-sans text-[16px] font-bold text-forest">
+                Navigation
+              </h4>
+              <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                <li>
+                  <a href={getParentNavigationUrl('')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Startseite
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('my_account')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Mein Konto
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('about_us')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Über uns
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('how_campuna_works')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    So funktioniert Campuna
+                  </a>
+                </li>
+              </ul>
             </div>
 
+            {/* Support Column */}
+            <div className="space-y-4 min-w-[140px]">
+              <h4 className="font-sans text-[16px] font-bold text-forest">
+                Support
+              </h4>
+              <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                <li>
+                  <a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Hilfe & FAQ
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('contact_kontakt')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Kontakt
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('act_safely__sicher_handeln')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Sicher handeln
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('missing_anything__fehlt_dir_etwas')} target="_parent" className="hover:text-forest transition-colors font-medium leading-tight block">
+                    Fehlt dir etwas?<br />
+                    Sag es uns
+                  </a>
+                </li>
+              </ul>
+            </div>
 
+            {/* Rechtliches Column */}
+            <div className="space-y-4 min-w-[140px]">
+              <h4 className="font-sans text-[16px] font-bold text-forest">
+                Rechtliches
+              </h4>
+              <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                <li>
+                  <a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    AGB
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('nutzungsbedingungen')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Nutzungsbedingungen
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('datenschutzerkl_rung')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Datenschutz
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('impressum')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Impressum
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Navigation Column */}
-          <div className="space-y-4">
-            <h4 className="font-display text-[14px] font-bold uppercase tracking-[0.4em] text-forest">
-              Navigation
-            </h4>
-            <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href={getParentNavigationUrl('')} target="_parent" className="hover:text-gold transition-colors">Startseite</a></li>
-              <li><a href={getParentNavigationUrl('my_account')} target="_parent" className="hover:text-gold transition-colors">Mein Konto</a></li>
-              <li><a href={getParentNavigationUrl('about_us')} target="_parent" className="hover:text-gold transition-colors">Über uns</a></li>
-              <li><a href={getParentNavigationUrl('how_campuna_works')} target="_parent" className="hover:text-gold transition-colors">So funktioniert Campuna</a></li>
-            </ul>
-          </div>
+          {/* Mobile Grid Layout (visible on small screens, hidden on md and up) */}
+          <div className="grid grid-cols-2 gap-y-10 gap-x-8 md:hidden w-full">
+            {/* Left Stack: Navigation first, then Rechtliches */}
+            <div className="flex flex-col space-y-10">
+              {/* Navigation */}
+              <div className="space-y-4">
+                <h4 className="font-sans text-[16px] font-bold text-forest">
+                  Navigation
+                </h4>
+                <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                  <li>
+                    <a href={getParentNavigationUrl('')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Startseite
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('my_account')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Mein Konto
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('about_us')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Über uns
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('how_campuna_works')} target="_parent" className="hover:text-forest transition-colors font-medium leading-snug block">
+                      So funktioniert Campuna
+                    </a>
+                  </li>
+                </ul>
+              </div>
 
-          {/* Support Column */}
-          <div className="space-y-4">
-            <h4 className="font-display text-[14px] font-bold uppercase tracking-[0.4em] text-forest">
-              Support
-            </h4>
-            <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-gold transition-colors">Hilfe & FAQ</a></li>
-              <li><a href={getParentNavigationUrl('contact_kontakt')} target="_parent" className="hover:text-gold transition-colors">Kontakt</a></li>
-              <li><a href={getParentNavigationUrl('act_safely__sicher_handeln')} target="_parent" className="hover:text-gold transition-colors">Sicher handeln</a></li>
-              <li><a href={getParentNavigationUrl('missing_anything__fehlt_dir_etwas')} target="_parent" className="hover:text-gold transition-colors leading-snug block">Fehlt dir etwas? Sag es uns</a></li>
-            </ul>
-          </div>
+              {/* Rechtliches */}
+              <div className="space-y-4">
+                <h4 className="font-sans text-[16px] font-bold text-forest">
+                  Rechtliches
+                </h4>
+                <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                  <li>
+                    <a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      AGB
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('nutzungsbedingungen')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Nutzungsbedingungen
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('datenschutzerkl_rung')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Datenschutz
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getParentNavigationUrl('impressum')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                      Impressum
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-          {/* Rechtliches Column */}
-          <div className="space-y-4">
-            <h4 className="font-display text-[14px] font-bold uppercase tracking-[0.4em] text-forest">
-              Rechtliches
-            </h4>
-            <ul className="space-y-3 font-sans text-[12px] font-light text-charcoal/60">
-              <li><a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-gold transition-colors">AGB</a></li>
-              <li><a href={getParentNavigationUrl('nutzungsbedingungen')} target="_parent" className="hover:text-gold transition-colors">Nutzungsbedingungen</a></li>
-              <li><a href={getParentNavigationUrl('datenschutzerkl_rung')} target="_parent" className="hover:text-gold transition-colors">Datenschutz</a></li>
-              <li><a href={getParentNavigationUrl('impressum')} target="_parent" className="hover:text-gold transition-colors">Impressum</a></li>
-            </ul>
+            {/* Right Stack: Support */}
+            <div className="space-y-4">
+              <h4 className="font-sans text-[16px] font-bold text-forest">
+                Support
+              </h4>
+              <ul className="space-y-3 font-sans text-[14.5px] text-charcoal/80">
+                <li>
+                  <a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Hilfe & FAQ
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('contact_kontakt')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Kontakt
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('act_safely__sicher_handeln')} target="_parent" className="hover:text-forest transition-colors font-medium">
+                    Sicher handeln
+                  </a>
+                </li>
+                <li>
+                  <a href={getParentNavigationUrl('missing_anything__fehlt_dir_etwas')} target="_parent" className="hover:text-forest transition-colors font-medium leading-tight block">
+                    Fehlt dir etwas?<br />
+                    Sag es uns
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
 
         </div>
 
-        {/* Separator line */}
-        <hr className="border-forest/5 my-4" />
+        {/* Sub-footer Section */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-16 text-[14.5px] text-charcoal/80 font-sans">
+          <p className="text-center font-normal">
+            © 2026 Campuna. Alle Rechte vorbehalten.
+          </p>
 
-        {/* Sub-footer metadata */}
-        <div className="flex flex-col md:flex-row items-center justify-between text-[11px] text-charcoal/40 font-mono gap-4">
-          <p>© 2026 Campuna. Alle Rechte vorbehalten.</p>
-
-          {/* Social Icons */}
-          <div className="flex space-x-4">
-            <a href="#" className="w-10 h-10 rounded-full border text-white border-forest/5 bg-forest hover:bg-forest/80 hover:text-white flex items-center justify-center transition-all duration-300">
-              <Instagram className="w-4 h-4" />
+          <div className="flex items-center gap-5 justify-center">
+            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
+              <Facebook className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full border text-white border-forest/5 bg-forest hover:bg-forest/80 hover:text-white flex items-center justify-center transition-all duration-300">
-              <Facebook className="w-4 h-4" />
+            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
+              <TiktokIcon className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full border text-white border-forest/5 bg-forest hover:bg-forest/80 hover:text-white flex items-center justify-center transition-all duration-300">
-              <Youtube className="w-4 h-4" />
+            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
+              <Instagram className="w-5 h-5 text-forest" strokeWidth={1.8} />
+            </a>
+            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
+              <Youtube className="w-5 h-5 text-forest" strokeWidth={1.8} />
             </a>
           </div>
         </div>
