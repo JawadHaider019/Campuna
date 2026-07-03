@@ -209,7 +209,7 @@ bleib.`}
         </div>
 
         {/* Sub-footer Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8 text-[14.5px] text-charcoal/80 font-sans">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8 text-[12px] text-charcoal/80 font-sans">
           <p className="text-center font-normal">
             © 2026 Campuna. Alle Rechte vorbehalten.
           </p>
