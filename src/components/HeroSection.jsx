@@ -1,136 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Search, MapPin, Compass, ShieldCheck, Sparkles } from 'lucide-react';
 import { CATEGORIES } from '../data';
 import { navigateTo } from '../utils/navigation';
 
-export default function HeroSection({ onSearch, onExploreClick, onSellClick, searchRef }) {
+export default function HeroSection({ onSearch, onExploreClick, onSellClick, searchRef, isLoggedIn }) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [location, setLocation] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // 1. Initial check of localStorage / sessionStorage / URL Params
-    const checkStorageOrUrl = () => {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const loggedInParam = urlParams.get('loggedIn');
-        if (loggedInParam === 'true') return true;
-        if (loggedInParam === 'false') return false;
-
-        const localVal = localStorage.getItem('loggedIn');
-        if (localVal === 'true') return true;
-        if (localVal === 'false') return false;
-
-        const sessionVal = sessionStorage.getItem('loggedIn');
-        if (sessionVal === 'true') return true;
-        if (sessionVal === 'false') return false;
-      } catch (e) {
-        // ignore storage errors
-      }
-      return null;
-    };
-
-    const initialVal = checkStorageOrUrl();
-    if (initialVal !== null) {
-      setIsLoggedIn(initialVal);
-    }
-
-    // 2. Intercept console logs
-    const originalLog = console.log;
-    const originalInfo = console.info;
-    const originalWarn = console.warn;
-    const originalError = console.error;
-
-    const parseLogText = (logText) => {
-      const normalized = logText.toLowerCase().replace(/\s+/g, '');
-      if (normalized.includes('loggedin:true') || normalized.includes('loggedin=true')) {
-        setIsLoggedIn(true);
-      } else if (normalized.includes('loggedin:false') || normalized.includes('loggedin=false')) {
-        setIsLoggedIn(false);
-      }
-    };
-
-    const interceptor = (originalFunc) => {
-      return function (...args) {
-        originalFunc.apply(console, args);
-        try {
-          if (args[0] === 'loggedIn') {
-            if (args[1] === true || args[1] === 'true') {
-              setIsLoggedIn(true);
-              return;
-            } else if (args[1] === false || args[1] === 'false') {
-              setIsLoggedIn(false);
-              return;
-            }
-          }
-
-          for (const arg of args) {
-            if (arg && typeof arg === 'object' && arg.loggedIn !== undefined) {
-              setIsLoggedIn(!!arg.loggedIn);
-              return;
-            }
-          }
-
-          const logText = args
-            .map((arg) => {
-              try {
-                return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
-              } catch (e) {
-                return '';
-              }
-            })
-            .join(' ');
-          parseLogText(logText);
-        } catch (e) {
-          // ignore
-        }
-      };
-    };
-
-    console.log = interceptor(originalLog);
-    console.info = interceptor(originalInfo);
-    console.warn = interceptor(originalWarn);
-    console.error = interceptor(originalError);
-
-    // 3. Listen to window message events (e.g. from Bubble iframe)
-    const handleMsg = (event) => {
-      try {
-        if (event.data) {
-          if (typeof event.data === 'string') {
-            parseLogText(event.data);
-          } else if (typeof event.data === 'object') {
-            if (event.data.loggedIn !== undefined) {
-              setIsLoggedIn(!!event.data.loggedIn);
-            } else if (event.data.type === 'loggedIn' || event.data.event === 'loggedIn') {
-              setIsLoggedIn(!!event.data.value);
-            }
-          }
-        }
-      } catch (e) {
-        // ignore
-      }
-    };
-    window.addEventListener('message', handleMsg);
-
-    // 4. Poll storage
-    const interval = setInterval(() => {
-      const currentVal = checkStorageOrUrl();
-      if (currentVal !== null) {
-        setIsLoggedIn(currentVal);
-      }
-    }, 1000);
-
-    return () => {
-      console.log = originalLog;
-      console.info = originalInfo;
-      console.warn = originalWarn;
-      console.error = originalError;
-      window.removeEventListener('message', handleMsg);
-      clearInterval(interval);
-    };
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -18,6 +18,7 @@ export default function HomePage() {
     const [searchLocation, setSearchLocation] = useState('');
     const [wishlistedIds, setWishlistedIds] = useState([]); // Empty wishlist initially, responsive to fetched IDs
     const [listingsList, setListingsList] = useState(FEATURED_LISTINGS);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
     useEffect(() => {
@@ -25,6 +26,14 @@ export default function HomePage() {
         const fetchListings = async () => {
             try {
                 const data = await getHomepageProducts();
+                if (data && data.status === "success") {
+                    const user = data.response?.user || data.response?.current_user || data?.user;
+                    if (user && user["emailConfirmed?"] === true) {
+                        setIsLoggedIn(true);
+                    } else {
+                        setIsLoggedIn(false);
+                    }
+                }
                 if (data && data.status === "success" && data.response && Array.isArray(data.response.listing)) {
                     const mapped = data.response.listing.map((item) => {
                         // Format images (adding https:) and convert HEIC via Bubble CDN transform
@@ -180,6 +189,7 @@ export default function HomePage() {
                 onExploreClick={() => navigateTo('/signup_login')}
                 onSellClick={() => navigateTo('/signup_login')}
                 searchRef={searchRef}
+                isLoggedIn={isLoggedIn}
             />
 
             {/* 3. Grid Categories */}
