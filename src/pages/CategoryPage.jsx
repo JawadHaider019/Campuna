@@ -74,7 +74,8 @@ function mapListing(item) {
     if (item['Type of offer']) features.push(item['Type of offer']);
     if (features.length === 0) features.push('Camping');
 
-    const isMietenOrGewerblich = category === 'Mieten & Vermieten' || (item['Sub - Category'] && item['Sub - Category'].toLowerCase().includes('mieten'));
+    const resolvedSellerType = item['listing user type'] || (category === 'Mieten & Vermieten' || (item['Sub - Category'] && item['Sub - Category'].toLowerCase().includes('mieten')) ? 'Gewerblich' : 'Privat');
+    const sellerName = resolvedSellerType === 'Gewerblich' ? 'Gewerblicher Anbieter' : 'Privatverkäufer';
 
     return {
         id,
@@ -87,10 +88,11 @@ function mapListing(item) {
         reviewsCount: (sum % 15) + 3,
         images,
         seller: {
-            name: isMietenOrGewerblich ? 'Gewerblicher Anbieter' : 'Privatverkäufer',
+            name: sellerName,
             verified: true,
-            type: isMietenOrGewerblich ? 'Gewerblich' : 'Privat',
+            type: resolvedSellerType,
         },
+        listing_user_type: resolvedSellerType,
         features,
         isExclusive: sum % 3 === 0,
     };
@@ -133,7 +135,7 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                 <div className="absolute top-4 inset-x-4 flex items-center justify-between">
                     <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
                         <ShieldCheck className="w-3 h-3 text-gold" />
-                        {item.seller.type}
+                        {item.listing_user_type || item.seller?.type || 'Privat'}
                     </span>
 
                     <button

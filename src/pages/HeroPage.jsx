@@ -97,9 +97,8 @@ export default function HomePage() {
                         }
 
                         // Seller info
-                        const isMietenOrGewerblich = category === 'Mieten & Vermieten' || (item["Sub - Category"] && item["Sub - Category"].toLowerCase().includes('mieten'));
-                        const sellerType = isMietenOrGewerblich ? 'Gewerblich' : 'Privat';
-                        const sellerName = isMietenOrGewerblich ? 'Gewerblicher Anbieter' : 'Privatverkäufer';
+                        const resolvedSellerType = item["listing user type"] || (category === 'Mieten & Vermieten' || (item["Sub - Category"] && item["Sub - Category"].toLowerCase().includes('mieten')) ? 'Gewerblich' : 'Privat');
+                        const sellerName = resolvedSellerType === 'Gewerblich' ? 'Gewerblicher Anbieter' : 'Privatverkäufer';
 
                         return {
                             id,
@@ -114,8 +113,9 @@ export default function HomePage() {
                             seller: {
                                 name: sellerName,
                                 verified: true,
-                                type: sellerType
+                                type: resolvedSellerType
                             },
+                            listing_user_type: resolvedSellerType,
                             features,
                             isExclusive: sum % 3 === 0
                         };

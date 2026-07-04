@@ -167,7 +167,7 @@ export default function FeaturedListings({
           <div className="absolute top-4 inset-x-4 flex items-center justify-between">
             <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
               <ShieldCheck className="w-3 h-3 text-gold" />
-              {item.seller.type}
+              {item.listing_user_type}
             </span>
 
             {/* Wishlist Button */}
