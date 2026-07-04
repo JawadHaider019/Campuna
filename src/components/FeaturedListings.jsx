@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, useMotionValue, animate } from 'motion/react';
 import { Heart, MapPin, ShieldCheck, Eye, ArrowRight } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
@@ -18,21 +18,49 @@ export default function FeaturedListings({
   const [row1Constraints, setRow1Constraints] = useState(0);
   const [row2Constraints, setRow2Constraints] = useState(0);
 
+  // Shuffle the input listings whenever they change (e.g. from an API call)
+  const shuffledListings = useMemo(() => {
+    const arr = [...listings];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [listings]);
+
   // Filter listings based on category, search queries
-  const filteredListings = listings.filter((item) => {
-    if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      const inTitle = item.title.toLowerCase().includes(query);
-      const inFeatures = item.features.some(f => f.toLowerCase().includes(query));
-      if (!inTitle && !inFeatures) return false;
-    }
-    if (searchLocation) {
-      const loc = searchLocation.toLowerCase();
-      if (!item.location.toLowerCase().includes(loc)) return false;
-    }
-    return true;
-  });
+  const filteredListings = useMemo(() => {
+    return shuffledListings.filter((item) => {
+      if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const inTitle = item.title.toLowerCase().includes(query);
+        const inFeatures = item.features.some(f => f.toLowerCase().includes(query));
+        if (!inTitle && !inFeatures) return false;
+      }
+      if (searchLocation) {
+        const loc = searchLocation.toLowerCase();
+        if (!item.location.toLowerCase().includes(loc)) return false;
+      }
+      return true;
+    });
+  }, [shuffledListings, selectedCategoryFilter, searchQuery, searchLocation]);
+
+  // Limit display to maximum 10 listings (5 in first row, 5 in second row)
+  const displayListings = useMemo(() => {
+    return filteredListings.slice(0, Math.min(filteredListings.length, 10));
+  }, [filteredListings]);
+
+  // Split into firstRow (up to 5 items) and secondRow (up to 5 items) without any overlaps
+  const firstRow = useMemo(() => {
+    const midPoint = Math.ceil(displayListings.length / 2);
+    return displayListings.slice(0, midPoint);
+  }, [displayListings]);
+
+  const secondRow = useMemo(() => {
+    const midPoint = Math.ceil(displayListings.length / 2);
+    return displayListings.slice(midPoint);
+  }, [displayListings]);
 
   useEffect(() => {
     if (row1Ref.current) {
@@ -41,37 +69,12 @@ export default function FeaturedListings({
     if (row2Ref.current) {
       setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
     }
-  }, [filteredListings]);
+  }, [firstRow, secondRow]);
 
   const handleCardClick = (item) => {
     const slug = buildListingSlug(item.title, item.id);
     navigateTo(`/listing_details/${slug}`);
   };
-
-  // Progressive loading: start fast with 12 items, then reveal more every 1.5s
-  const INITIAL_COUNT = 12;
-  const BATCH_SIZE = 4;
-  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
-
-  // Reset visible count whenever the filtered list changes (e.g. search/filter applied)
-  useEffect(() => {
-    setVisibleCount(INITIAL_COUNT);
-  }, [selectedCategoryFilter, searchQuery, searchLocation]);
-
-  // Tick up visible items progressively until all are shown
-  useEffect(() => {
-    if (visibleCount >= filteredListings.length) return;
-    const timer = setTimeout(() => {
-      setVisibleCount(prev => Math.min(prev + BATCH_SIZE, filteredListings.length));
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [visibleCount, filteredListings.length]);
-
-  // Split visible listings into two rows
-  const visibleListings = filteredListings.slice(0, visibleCount);
-  const midPoint = Math.ceil(visibleListings.length / 2);
-  const firstRow = visibleListings.slice(0, midPoint);
-  const secondRow = visibleListings.slice(midPoint);
 
   const x1 = useMotionValue(0);
   const x2 = useMotionValue(0);

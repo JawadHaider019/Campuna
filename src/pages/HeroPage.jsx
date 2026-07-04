@@ -122,10 +122,12 @@ export default function HomePage() {
                     });
 
                     if (active) {
-                        setListingsList(mapped);
+                        // Shuffle mapped listings randomly when the API is successfully called
+                        const shuffled = [...mapped].sort(() => Math.random() - 0.5);
+                        setListingsList(shuffled);
                         // Optionally auto-wishlist the first two items for beautiful visual design representation
-                        if (mapped.length >= 2) {
-                            setWishlistedIds([mapped[0].id, mapped[1].id]);
+                        if (shuffled.length >= 2) {
+                            setWishlistedIds([shuffled[0].id, shuffled[1].id]);
                         }
                     }
                 }
