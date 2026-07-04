@@ -18,19 +18,9 @@ export default function FeaturedListings({
   const [row1Constraints, setRow1Constraints] = useState(0);
   const [row2Constraints, setRow2Constraints] = useState(0);
 
-  // Shuffle the input listings whenever they change (e.g. from an API call)
-  const shuffledListings = useMemo(() => {
-    const arr = [...listings];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }, [listings]);
-
   // Filter listings based on category, search queries
   const filteredListings = useMemo(() => {
-    return shuffledListings.filter((item) => {
+    return listings.filter((item) => {
       if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
@@ -44,23 +34,23 @@ export default function FeaturedListings({
       }
       return true;
     });
-  }, [shuffledListings, selectedCategoryFilter, searchQuery, searchLocation]);
+  }, [listings, selectedCategoryFilter, searchQuery, searchLocation]);
 
-  // Limit display to maximum 10 listings (5 in first row, 5 in second row)
-  const displayListings = useMemo(() => {
-    return filteredListings.slice(0, Math.min(filteredListings.length, 10));
+  // Randomly partition the filtered listings into two halves (firstRow and secondRow)
+  // This guarantees each row gets a random selection of half of the total items, with no duplicates.
+  const { firstRow, secondRow } = useMemo(() => {
+    const shuffled = [...filteredListings];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    const midPoint = Math.ceil(shuffled.length / 2);
+    return {
+      firstRow: shuffled.slice(0, midPoint),
+      secondRow: shuffled.slice(midPoint)
+    };
   }, [filteredListings]);
-
-  // Split into firstRow (up to 5 items) and secondRow (up to 5 items) without any overlaps
-  const firstRow = useMemo(() => {
-    const midPoint = Math.ceil(displayListings.length / 2);
-    return displayListings.slice(0, midPoint);
-  }, [displayListings]);
-
-  const secondRow = useMemo(() => {
-    const midPoint = Math.ceil(displayListings.length / 2);
-    return displayListings.slice(midPoint);
-  }, [displayListings]);
 
   useEffect(() => {
     if (row1Ref.current) {
