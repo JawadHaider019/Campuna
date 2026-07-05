@@ -7,6 +7,8 @@ import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { FEATURED_LISTINGS, CATEGORIES } from '../data'
 import CategoriesSection from '../components/CategoriesSection';
+import { formatLocation } from '../utils/location';
+
 
 // Map URL slugs → internal category names
 const SLUG_TO_CATEGORY = {
@@ -57,6 +59,7 @@ function mapListing(item) {
     const rating = parseFloat((4.5 + (sum % 6) * 0.1).toFixed(1));
 
     const location = item['location geo']?.address || 'Deutschland';
+    const displayLocation = formatLocation(location);
     const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
     let pricePeriod = 'Preis';
     if (category === 'Mieten & Vermieten' || (item['Sub - Category'] && item['Sub - Category'].toLowerCase().includes('mieten'))) {
@@ -84,6 +87,7 @@ function mapListing(item) {
         price,
         pricePeriod,
         location,
+        displayLocation,
         rating,
         reviewsCount: (sum % 15) + 3,
         images,
@@ -153,7 +157,7 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                 <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
                     <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
                         <MapPin className="w-3 h-3 text-gold shrink-0" />
-                        <span>{item.location}</span>
+                        <span>{item.displayLocation || item.location}</span>
                     </div>
                 </div>
 
@@ -236,7 +240,8 @@ export default function CategoryPage() {
                 const filtered = categoryName
                     ? FEATURED_LISTINGS.filter(l => l.category === categoryName)
                     : FEATURED_LISTINGS;
-                if (active) setListings(filtered);
+                const mappedMock = filtered.map(l => ({ ...l, displayLocation: formatLocation(l.location) }));
+                if (active) setListings(mappedMock);
             } finally {
                 if (active) setLoading(false);
             }

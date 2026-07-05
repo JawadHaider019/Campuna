@@ -12,12 +12,16 @@ import { FEATURED_LISTINGS } from '../data';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 
+import { formatLocation } from '../utils/location';
+
 export default function HomePage() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState('');
     const [wishlistedIds, setWishlistedIds] = useState([]); // Empty wishlist initially, responsive to fetched IDs
-    const [listingsList, setListingsList] = useState(FEATURED_LISTINGS);
+    const [listingsList, setListingsList] = useState(() =>
+        FEATURED_LISTINGS.map(l => ({ ...l, displayLocation: formatLocation(l.location) }))
+    );
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
@@ -70,6 +74,7 @@ export default function HomePage() {
 
                         // Location
                         const location = item["location geo"]?.address || "Deutschland";
+                        const displayLocation = formatLocation(location);
 
                         // Price & Price Period
                         const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
@@ -107,6 +112,7 @@ export default function HomePage() {
                             price,
                             pricePeriod,
                             location,
+                            displayLocation,
                             rating,
                             reviewsCount: (sum % 15) + 3,
                             images,

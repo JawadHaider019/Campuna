@@ -36,8 +36,6 @@ export default function FeaturedListings({
     });
   }, [listings, selectedCategoryFilter, searchQuery, searchLocation]);
 
-  // Randomly partition the filtered listings into two halves (firstRow and secondRow)
-  // This guarantees each row gets a random selection of half of the total items, with no duplicates.
   const { firstRow, secondRow } = useMemo(() => {
     const shuffled = [...filteredListings];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -179,7 +177,7 @@ export default function FeaturedListings({
           <div className="absolute bottom-4 right-0 inset-x-4 flex items-center justify-end pointer-events-none text-white/90">
             <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] flex items-center gap-1">
               <MapPin className="w-3 h-3 text-gold shrink-0" />
-              <span>{item.location}</span>
+              <span>{item.displayLocation || item.location}</span>
             </div>
           </div>
 
