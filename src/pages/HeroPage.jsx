@@ -32,8 +32,8 @@ export default function HomePage() {
                 const data = await getHomepageProducts();
                 if (data && data.status === "success") {
                     const user = data.response?.user || data.response?.current_user || data?.user;
-                    console.log("Logged-in status check - user:", user, "isLoggedIn:", user ? user["emailConfirmed?"] === true : false);
-                    if (user && user["emailConfirmed?"] === true) {
+                    console.log("Logged-in status check - user:", user, "isLoggedIn:", user ? !!user["Last Active"] : false);
+                    if (user && user["Last Active"]) {
                         setIsLoggedIn(true);
                     } else {
                         setIsLoggedIn(false);
