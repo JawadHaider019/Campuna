@@ -13,6 +13,12 @@ const App = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Expose helper to trigger mock messages
+    window.__testPostMessage = (data) => {
+      console.log("Triggering local mock postMessage:", data);
+      window.postMessage(data, "*");
+    };
+
     const receive = (event) => {
       console.log("Message received:", event);
       console.log("Origin:", event.origin);
@@ -24,11 +30,16 @@ const App = () => {
         timestamp: new Date().toLocaleTimeString()
       };
 
-      // Allow messages only from Bubble
-      if (
-        event.origin !== "https://campuna.de" &&
-        event.origin !== "https://simoneasalvo.bubbleapps.io"
-      ) return;
+      // Allow messages only from Bubble (and localhost/127.0.0.1 in development)
+      const isAllowedOrigin =
+        event.origin === "https://campuna.de" ||
+        event.origin === "https://simoneasalvo.bubbleapps.io" ||
+        (import.meta.env.DEV && (
+          event.origin.startsWith("http://localhost:") ||
+          event.origin.startsWith("http://127.0.0.1:")
+        ));
+
+      if (!isAllowedOrigin) return;
 
       if (event.data.type === "AUTH_STATUS") {
         console.log("Received:", event.data);
@@ -40,6 +51,7 @@ const App = () => {
 
     return () => {
       window.removeEventListener("message", receive);
+      delete window.__testPostMessage;
     };
   }, []);
 
