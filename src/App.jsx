@@ -10,6 +10,7 @@ import HomePage from './pages/HeroPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
@@ -18,6 +19,12 @@ const App = () => {
       console.log("Triggering local mock postMessage:", data);
       window.postMessage(data, "*");
     };
+
+    // Set a safety timeout to hide the loading spinner in case Bubble does not respond
+    const safetyTimeout = setTimeout(() => {
+      console.log("Auth loading timeout reached, hiding spinner.");
+      setIsLoading(false);
+    }, 850);
 
     const receive = (event) => {
       console.log("Message received:", event.origin, event.data);
@@ -43,6 +50,9 @@ const App = () => {
       if (event.data.type === "AUTH_STATUS") {
         console.log("Received:", event.data);
         setLoggedIn(event.data.authenticated);
+        // Clear loader once the message is received
+        clearTimeout(safetyTimeout);
+        setIsLoading(false);
       }
     };
 
@@ -50,12 +60,26 @@ const App = () => {
 
     return () => {
       window.removeEventListener("message", receive);
+      clearTimeout(safetyTimeout);
       delete window.__testPostMessage;
     };
   }, []);
 
   // Check if current path is the login page
   const isLoginPage = location.pathname === '/auth';
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-sand z-[99999]">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-forest border-t-transparent rounded-full animate-spin" />
+          <p className="font-sans text-xs font-semibold text-forest uppercase tracking-widest animate-pulse">
+            Laden...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
