@@ -20,15 +20,11 @@ const App = () => {
       window.postMessage(data, "*");
     };
 
-    // Set a safety timeout to hide the loading spinner in case Bubble does not respond.
-    // If running in an iframe (embedded in Bubble), wait 5000ms. If standalone, wait 300ms.
-    const isEmbedded = window.self !== window.top;
-    const timeoutDuration = isEmbedded ? 5000 : 300;
-
+    // Set a safety timeout to hide the loading spinner in case Bubble does not respond
     const safetyTimeout = setTimeout(() => {
-      console.log(`Auth loading timeout reached (${timeoutDuration}ms), hiding spinner.`);
+      console.log("Auth loading timeout reached, hiding spinner.");
       setIsLoading(false);
-    }, timeoutDuration);
+    }, 850);
 
     const receive = (event) => {
       console.log("Message received:", event.origin, event.data);
