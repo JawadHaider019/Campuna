@@ -48,10 +48,6 @@ const App = () => {
 
     window.addEventListener("message", receive);
 
-    // Send readiness signal to Bubble parent
-    console.log("Sending IFRAME_READY to parent...");
-    window.parent.postMessage({ type: "IFRAME_READY" }, "*");
-
     return () => {
       window.removeEventListener("message", receive);
       delete window.__testPostMessage;
