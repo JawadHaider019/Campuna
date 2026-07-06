@@ -58,6 +58,11 @@ const App = () => {
 
     window.addEventListener("message", receive);
 
+    // Send readiness signal to Bubble parent
+    const targetParentOrigin = import.meta.env.DEV ? "*" : "https://campuna.de";
+    console.log("Sending REACT_READY to parent origin:", targetParentOrigin);
+    window.parent.postMessage({ type: "REACT_READY" }, targetParentOrigin);
+
     return () => {
       window.removeEventListener("message", receive);
       clearTimeout(safetyTimeout);
