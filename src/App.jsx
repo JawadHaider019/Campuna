@@ -24,7 +24,7 @@ const App = () => {
     const safetyTimeout = setTimeout(() => {
       console.log("Auth loading timeout reached, hiding spinner.");
       setIsLoading(false);
-    }, 850);
+    }, 1800);
 
     const receive = (event) => {
       console.log("Message received:", event.origin, event.data);
