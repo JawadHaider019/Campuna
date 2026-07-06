@@ -34,6 +34,7 @@ const App = () => {
       const isAllowedOrigin =
         event.origin === "https://campuna.de" ||
         event.origin === "https://simoneasalvo.bubbleapps.io" ||
+        event.origin === "https://campuna.vercel.app" ||
         (import.meta.env.DEV && (
           event.origin.startsWith("http://localhost:") ||
           event.origin.startsWith("http://127.0.0.1:")
