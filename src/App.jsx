@@ -27,7 +27,8 @@ const App = () => {
     }, 850);
 
     const receive = (event) => {
-      console.log("Message received:", event.origin, event.data);
+      console.log("Origin:", event.origin);
+      console.log("Data:", event.data);
 
       window.__lastReceivedMessage = {
         origin: event.origin,
@@ -38,8 +39,6 @@ const App = () => {
       // Allow messages only from Bubble (and localhost/127.0.0.1 in development)
       const isAllowedOrigin =
         event.origin === "https://campuna.de" ||
-        event.origin === "https://simoneasalvo.bubbleapps.io" ||
-        event.origin === "https://campuna.vercel.app" ||
         (import.meta.env.DEV && (
           event.origin.startsWith("http://localhost:") ||
           event.origin.startsWith("http://127.0.0.1:")
@@ -47,8 +46,7 @@ const App = () => {
 
       if (!isAllowedOrigin) return;
 
-      if (event.data.type === "AUTH_STATUS") {
-        console.log("Received:", event.data);
+      if (event.data?.type === "AUTH_STATUS") {
         setLoggedIn(event.data.authenticated);
         // Clear loader once the message is received
         clearTimeout(safetyTimeout);
