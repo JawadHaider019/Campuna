@@ -18,6 +18,12 @@ const App = () => {
       console.log("Origin:", event.origin);
       console.log("Data:", event.data);
 
+      window.__lastReceivedMessage = {
+        origin: event.origin,
+        data: event.data,
+        timestamp: new Date().toLocaleTimeString()
+      };
+
       // Allow messages only from Bubble
       if (
         event.origin !== "https://campuna.de" &&
