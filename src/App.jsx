@@ -20,9 +20,7 @@ const App = () => {
     };
 
     const receive = (event) => {
-      console.log("Message received:", event);
-      console.log("Origin:", event.origin);
-      console.log("Data:", event.data);
+      console.log("Message received:", event.origin, event.data);
 
       window.__lastReceivedMessage = {
         origin: event.origin,
@@ -49,6 +47,10 @@ const App = () => {
     };
 
     window.addEventListener("message", receive);
+
+    // Send readiness signal to Bubble parent
+    console.log("Sending IFRAME_READY to parent...");
+    window.parent.postMessage({ type: "IFRAME_READY" }, "*");
 
     return () => {
       window.removeEventListener("message", receive);
