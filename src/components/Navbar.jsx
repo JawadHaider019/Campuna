@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Search, Globe, User, PlusCircle, Compass, Sparkles, Heart } from 'lucide-react';
 import { navigateTo } from '../utils/navigation';
 
-export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist }) {
+export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist, isLoggedIn }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [toggleText, setToggleText] = useState(true); // true = 'Konto', false = 'Einloggen'
@@ -22,11 +22,15 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   }, []);
 
   useEffect(() => {
+    if (isLoggedIn) {
+      setToggleText(true);
+      return;
+    }
     const interval = setInterval(() => {
       setToggleText(prev => !prev);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <nav

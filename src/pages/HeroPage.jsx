@@ -14,7 +14,7 @@ import { navigateTo } from '../utils/navigation';
 
 import { formatLocation } from '../utils/location';
 
-export default function HomePage() {
+export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState('');
@@ -24,21 +24,18 @@ export default function HomePage() {
     );
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    useEffect(() => {
+        if (propIsLoggedIn !== undefined) {
+            setIsLoggedIn(propIsLoggedIn);
+        }
+    }, [propIsLoggedIn]);
+
 
     useEffect(() => {
         let active = true;
         const fetchListings = async () => {
             try {
                 const data = await getHomepageProducts();
-                if (data && data.status === "success") {
-                    const user = data.response?.user || data.response?.current_user || data?.user;
-                    console.log("Logged-in status check - user:", user, "isLoggedIn:", user ? !!user["Last Active"] : false);
-                    if (user && user["Last Active"]) {
-                        setIsLoggedIn(true);
-                    } else {
-                        setIsLoggedIn(false);
-                    }
-                }
                 if (data && data.status === "success" && data.response && Array.isArray(data.response.listing)) {
                     const mapped = data.response.listing.map((item) => {
                         // Format images (adding https:) and convert HEIC via Bubble CDN transform
