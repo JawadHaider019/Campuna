@@ -75,7 +75,7 @@ export default function WelcomeBanner() {
                         </div>
 
                         <button
-                            onClick={() => navigateTo('/my_account?n=yes')}
+                            onClick={() => navigateTo('/my_account')}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-4 py-2 sm:px-5 sm:py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
                             Inserieren

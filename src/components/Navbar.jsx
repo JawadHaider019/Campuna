@@ -119,7 +119,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
               <div className="flex flex-col space-y-4">
                 <button
-                  onClick={() => { setIsOpen(false); navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login'); }}
+                  onClick={() => { setIsOpen(false); navigateTo(isLoggedIn ? '/my_account' : '/signup_login'); }}
                   className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md flex items-center justify-center space-x-2 min-h-[48px]"
                 >
                   <User className="w-4 h-4 shrink-0" />
