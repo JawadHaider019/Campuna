@@ -289,7 +289,7 @@ export default function CategoryPage() {
                     <div className="max-w-7xl mx-auto">
                         {/* Back button */}
                         <button
-                            onClick={() => navigateTo('/version-test/')}
+                            onClick={() => navigateTo('/')}
                             className="mb-6 flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white transition-colors group"
                         >
                             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -376,7 +376,7 @@ export default function CategoryPage() {
                                 Keine Inserate in dieser Kategorie gefunden.
                             </p>
                             <button
-                                onClick={() => navigateTo('/version-test/')}
+                                onClick={() => navigateTo('/')}
                                 className="bg-forest text-sand text-xs font-semibold uppercase tracking-wider py-3 px-6 rounded-full hover:bg-gold hover:text-forest transition-colors duration-300"
                             >
                                 Zur Startseite

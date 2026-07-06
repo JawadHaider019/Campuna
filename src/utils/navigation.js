@@ -7,7 +7,19 @@ const BASE_URL = 'https://campuna.de';
  * @returns {string} The full navigation URL
  */
 export function getParentNavigationUrl(path) {
-    const cleanPath = path.replace(/^\/+/, '').replace(/\/+$/, '');
+    // Detect if parent or containing site is in Bubble's version-test environment
+    const isVersionTest = document.referrer && document.referrer.includes('/version-test');
+
+    let cleanPath = path.replace(/^\/+/, '').replace(/\/+$/, '');
+
+    // Strip "/version-test" prefix from incoming path if already present to prevent duplication
+    if (cleanPath.startsWith('version-test')) {
+        cleanPath = cleanPath.slice(12).replace(/^\/+/, '');
+    }
+
+    if (isVersionTest) {
+        return cleanPath ? `${BASE_URL}/version-test/${cleanPath}` : `${BASE_URL}/version-test/`;
+    }
     return cleanPath ? `${BASE_URL}/${cleanPath}` : BASE_URL;
 }
 
