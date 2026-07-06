@@ -324,6 +324,30 @@ export const PROVIDERS = [
   },
   {
     id: 'prov_4',
+    name: 'CVB',
+    logo: '/partners/cvb-logo.png',
+    coverImage: '/partners/cvb-cover.png',
+    slug: '?uid=1776687522610x609488749931111700',
+    listingsCount: 1,
+  },
+  {
+    id: 'prov_5',
+    name: 'Team Lorenz Wohnmobile',
+    logo: '/partners/teamlorenz-logo.png',
+    coverImage: '/partners/teamlorenz-cover.png',
+    slug: '?uid=1780250702063x648952957542537000',
+    listingsCount: 3,
+  },
+  {
+    id: 'prov_6',
+    name: 'Björn Lindemann',
+    logo: '/partners/björnlindemann-cover.png',
+    coverImage: '/partners/björnlindemann-cover.png',
+    slug: '?uid=1776890947085x969286827362994400',
+    listingsCount: 1,
+  },
+  {
+    id: 'prov_7',
     name: 'Casamaki',
     logo: '/partners/casamaki-logo.avif',
     coverImage: '/partners/casemaki-cover.avif',
@@ -334,7 +358,7 @@ export const PROVIDERS = [
     location: 'Deutschland'
   },
   {
-    id: 'prov_5',
+    id: 'prov_8',
     name: 'ProVerDa GmbH',
     logo: '/partners/proverdaGmbh-logo.avif',
     coverImage: '/partners/proverdaGmbh-cover.avif',
@@ -345,7 +369,7 @@ export const PROVIDERS = [
     location: 'Gewerblich'
   },
   {
-    id: 'prov_6',
+    id: 'prov_9',
     name: 'LuckyBoxOWL',
     logo: '/partners/luckyboxowl-logo.avif',
     coverImage: '/partners/luckbowlowl-cover.avif',
@@ -356,7 +380,7 @@ export const PROVIDERS = [
     location: 'OWL'
   },
   {
-    id: 'prov_7',
+    id: 'prov_10',
     name: 'NALUX | Professionelle ..',
     logo: '/partners/nalux-logo.avif',
     coverImage: '/partners/nalux-cover.avif',
@@ -367,7 +391,7 @@ export const PROVIDERS = [
     location: 'Deutschland'
   },
   {
-    id: 'prov_8',
+    id: 'prov_11',
     name: 'Trailer Manufaktur NRW',
     logo: '/partners/trailer-logo.avif',
     coverImage: '/partners/trailer-cover.jpg',
@@ -378,7 +402,7 @@ export const PROVIDERS = [
     location: 'NRW'
   },
   {
-    id: 'prov_9',
+    id: 'prov_12',
     name: 'LivianEssence',
     logo: '/partners/LivianEssense-logo.avif',
     coverImage: '/partners/LivianEssense-cover.avif',
@@ -389,7 +413,7 @@ export const PROVIDERS = [
     location: 'Tiny Living'
   },
   {
-    id: 'prov_10',
+    id: 'prov_13',
     name: 'TS Caravanverleih',
     logo: '/partners/tsCaravanverleih-logo.avif',
     coverImage: '/partners/tsCaravanverleih-cover.avif',
