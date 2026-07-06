@@ -12,6 +12,9 @@ export default function PartnersSection({ onPartnerClick }) {
     const x = useMotionValue(0);
     const [isHovered, setIsHovered] = useState(false);
     const [loopTrigger, setLoopTrigger] = useState(0);
+    const [randomizedProviders, setRandomizedProviders] = useState(() =>
+        [...PROVIDERS].sort(() => Math.random() - 0.5)
+    );
 
     const gap = 16; // gap-4 = 16px
 
@@ -40,7 +43,7 @@ export default function PartnersSection({ onPartnerClick }) {
         if (isHovered) return;
 
         const step = cardWidth + gap;
-        const target = -step * PROVIDERS.length;
+        const target = -step * randomizedProviders.length;
         const currentVal = x.get();
 
         const remainingDistance = Math.abs(target - currentVal);
@@ -59,13 +62,13 @@ export default function PartnersSection({ onPartnerClick }) {
         });
 
         return () => controls.stop();
-    }, [isHovered, loopTrigger, cardWidth]);
+    }, [isHovered, loopTrigger, cardWidth, randomizedProviders]);
 
     useEffect(() => {
         if (rowRef.current) {
             setConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
         }
-    }, [PROVIDERS]);
+    }, [randomizedProviders]);
 
     const ProviderCard = ({ partner }) => (
         <div
@@ -179,7 +182,7 @@ export default function PartnersSection({ onPartnerClick }) {
                             onMouseLeave={() => setIsHovered(false)}
                             className="flex gap-4 w-max px-4 sm:px-16 md:px-32 pb-3"
                         >
-                            {[...PROVIDERS, ...PROVIDERS].map((partner, idx) => (
+                            {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (
                                 <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />
                             ))}
                         </motion.div>

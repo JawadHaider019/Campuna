@@ -19,9 +19,10 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState('');
     const [wishlistedIds, setWishlistedIds] = useState([]); // Empty wishlist initially, responsive to fetched IDs
-    const [listingsList, setListingsList] = useState(() =>
-        FEATURED_LISTINGS.map(l => ({ ...l, displayLocation: formatLocation(l.location) }))
-    );
+    const [listingsList, setListingsList] = useState(() => {
+        const initial = FEATURED_LISTINGS.map(l => ({ ...l, displayLocation: formatLocation(l.location) }));
+        return [...initial].sort(() => Math.random() - 0.5);
+    });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
