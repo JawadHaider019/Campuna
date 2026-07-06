@@ -61,7 +61,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
             </button>
 
             <button
-              onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
+              onClick={() => navigateTo(isLoggedIn ? '/my_account' : '/signup_login')}
               className="flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg min-w-[135px] justify-center group"
             >
               <User className="w-4 h-4 shrink-0" />

@@ -79,31 +79,42 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           </motion.p>
 
           {/* Action Buttons */}
-          {!isLoggedIn && (
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-8"
-            >
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-8"
+          >
+            {isLoggedIn ? (
               <motion.button
-                onClick={onExploreClick}
+                onClick={() => navigateTo('/my_account?n=yes')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px]  tracking-wider"
+                className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
               >
-                Ich bin Camper
+                Anzeige erstellen
               </motion.button>
-              <motion.button
-                onClick={onSellClick}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px]  tracking-wider"
-              >
-                Ich bin Anbieter
-              </motion.button>
-            </motion.div>
-          )}
+            ) : (
+              <>
+                <motion.button
+                  onClick={onExploreClick}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
+                >
+                  Ich bin Camper
+                </motion.button>
+                <motion.button
+                  onClick={onSellClick}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px] tracking-wider"
+                >
+                  Ich bin Anbieter
+                </motion.button>
+              </>
+            )}
+          </motion.div>
 
           {/* Advanced Search Bar Component */}
           <motion.div
