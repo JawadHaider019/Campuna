@@ -35,10 +35,10 @@ export default function ScrollToTop() {
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     onClick={scrollToTop}
-                    className="fixed bottom-24 right-6 z-[70] w-12 h-12 rounded-full bg-forest text-sand hover:bg-gold hover:text-forest flex items-center justify-center transition-all duration-300 shadow-2xl hover:-translate-y-1 border border-white/10 group md:bottom-8"
+                    className="fixed bottom-30 sm:bottom-30  md:bottom-35 lg:bottom-30 right-6 z-[90] w-10 h-10 sm:h-12 sm:w-12 rounded-full bg-forest text-sand hover:bg-gold hover:text-forest flex items-center justify-center transition-all duration-300 shadow-2xl hover:-translate-y-1 border border-white/10 group"
                     aria-label="Scroll to top"
                 >
-                    <ChevronUp className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
+                    <ChevronUp className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110" />
 
                     {/* Subtle glow effect */}
                     <div className="absolute inset-0 rounded-full bg-forest/20 blur-xl -z-10 group-hover:bg-gold/20 transition-all duration-300" />

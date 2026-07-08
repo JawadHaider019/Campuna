@@ -23,7 +23,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-5 ${isScrolled ? 'top-0 shadow-md' : 'top-[56px] sm:top-[64px]'
+      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-5 ${isScrolled ? 'top-0 shadow-md' : 'top-[70px] sm:top-[64px] md:top-[74px] lg:top-[64px] '
         }`}
     >
       <div className="max-w-8xl mx-auto px-2 md:px-14 ">
@@ -86,7 +86,19 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
           {/* Mobile menu trigger */}
           <div className="flex lg:hidden items-center space-x-4">
-
+            {isLoggedIn && alertCount > 0 && (
+              <button
+                onClick={() => navigateTo('/my_account')}
+                className="relative p-2 text-gold focus:outline-none flex items-center justify-center transition-colors duration-200"
+                aria-label="Benachrichtigungen"
+              >
+                <Bell className="w-6 h-6 shrink-0" />
+                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+              </button>
+            )}
 
             <button
               onClick={() => setIsOpen(!isOpen)}
