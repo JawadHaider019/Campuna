@@ -70,7 +70,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                 <span className="whitespace-nowrap flex items-center gap-1">
                   {isLoggedIn ? 'Konto' : 'Einloggen'}
                   {isLoggedIn && alertCount > 0 && (
-                    <span className="relative flex items-center justify-center text-gold">
+                    <span className="relative flex items-center justify-center text-gold group-hover:text-forest">
                       <Bell className="w-3.5 h-3.5 shrink-0" />
                       <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -86,26 +86,20 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
           {/* Mobile menu trigger */}
           <div className="flex lg:hidden items-center space-x-4">
-            {isLoggedIn && alertCount > 0 && (
-              <button
-                onClick={() => navigateTo('/my_account')}
-                className="relative p-2 text-gold focus:outline-none flex items-center justify-center transition-colors duration-200"
-                aria-label="Benachrichtigungen"
-              >
-                <Bell className="w-6 h-6 shrink-0" />
-                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-              </button>
-            )}
-
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-forest focus:outline-none"
+              className="relative p-2 text-forest focus:outline-none"
               aria-label="Menü umschalten"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <div className="relative">
+                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isLoggedIn && alertCount > 0 && (
+                  <span className="absolute top-0 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
             </button>
           </div>
         </div>
@@ -145,14 +139,14 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
               <div className="flex flex-col space-y-4">
                 <button
                   onClick={() => { setIsOpen(false); navigateTo(isLoggedIn ? '/my_account' : '/signup_login'); }}
-                  className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md flex items-center justify-center space-x-2 min-h-[48px]"
+                  className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md flex items-center justify-center space-x-2 min-h-[48px] group"
                 >
                   <User className="w-4 h-4 shrink-0" />
                   <div className="relative">
                     <span className="whitespace-nowrap flex items-center gap-1">
                       {isLoggedIn ? 'Konto' : 'Einloggen'}
                       {isLoggedIn && alertCount > 0 && (
-                        <span className="relative flex items-center justify-center text-gold">
+                        <span className="relative flex items-center justify-center text-gold group-hover:text-forest">
                           <Bell className="w-3.5 h-3.5 shrink-0" />
                           <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
