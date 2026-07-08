@@ -10,6 +10,7 @@ import HomePage from './pages/HeroPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [alertCount, setAlertCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
@@ -48,6 +49,32 @@ const App = () => {
 
       if (event.data?.type === "AUTH_STATUS") {
         setLoggedIn(event.data.authenticated);
+
+        // Handle notification/alert count (Showalert/showAlert/showalert from Bubble)
+        let count = 0;
+        const alertVal = event.data.Showalert !== undefined ? event.data.Showalert : event.data.showAlert;
+        if (alertVal !== undefined && alertVal !== null) {
+          if (typeof alertVal === 'number') {
+            count = alertVal;
+          } else if (typeof alertVal === 'boolean') {
+            count = alertVal ? 1 : 0;
+          } else if (typeof alertVal === 'string') {
+            const trimmed = alertVal.trim().toLowerCase();
+            if (trimmed === 'yes' || trimmed === 'true') {
+              count = 1;
+            } else if (trimmed === 'no' || trimmed === 'false') {
+              count = 0;
+            } else {
+              const parsed = parseInt(trimmed, 10);
+              if (!isNaN(parsed)) {
+                count = Math.max(0, parsed);
+              }
+            }
+          }
+        }
+        setAlertCount(count);
+        console.log("AUTH_STATUS processed. setLoggedIn:", event.data.authenticated, "setAlertCount:", count);
+
         // Clear loader once the message is received
         clearTimeout(safetyTimeout);
         setIsLoading(false);
@@ -87,7 +114,7 @@ const App = () => {
   return (
     <>
       {/* Only show Navbar if NOT on login page */}
-      {!isLoginPage && <Navbar isLoggedIn={loggedIn} />}
+      {!isLoginPage && <Navbar isLoggedIn={loggedIn} alertCount={alertCount} />}
 
       <Routes>
         <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Search, Globe, User, PlusCircle, Compass, Sparkles, Heart } from 'lucide-react';
 import { navigateTo } from '../utils/navigation';
 
-export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist, isLoggedIn }) {
+export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist, isLoggedIn, alertCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -62,12 +62,25 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
             <button
               onClick={() => navigateTo(isLoggedIn ? '/my_account' : '/signup_login')}
-              className="flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg min-w-[135px] justify-center group"
+              className="relative flex items-center space-x-2 bg-forest text-sand hover:bg-gold hover:text-forest py-2.5 px-5 rounded-full font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg min-w-[135px] justify-center group"
             >
-              <User className="w-4 h-4 shrink-0" />
+              <div className="relative">
+                <User className="w-4 h-4 shrink-0" />
+                {isLoggedIn && alertCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
               <span className="whitespace-nowrap">
                 {isLoggedIn ? 'Konto' : 'Einloggen'}
               </span>
+              {isLoggedIn && alertCount > 0 && (
+                <span className="ml-1 bg-red-500 text-sand text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none">
+                  {alertCount}
+                </span>
+              )}
             </button>
           </div>
 
@@ -122,10 +135,23 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                   onClick={() => { setIsOpen(false); navigateTo(isLoggedIn ? '/my_account' : '/signup_login'); }}
                   className="w-full bg-forest text-sand py-3 rounded-full font-sans text-sm font-semibold hover:bg-gold hover:text-forest transition-colors duration-300 shadow-md flex items-center justify-center space-x-2 min-h-[48px]"
                 >
-                  <User className="w-4 h-4 shrink-0" />
+                  <div className="relative">
+                    <User className="w-4 h-4 shrink-0" />
+                    {isLoggedIn && alertCount > 0 && (
+                      <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      </span>
+                    )}
+                  </div>
                   <span className="whitespace-nowrap">
                     {isLoggedIn ? 'Konto' : 'Einloggen'}
                   </span>
+                  {isLoggedIn && alertCount > 0 && (
+                    <span className="ml-1 bg-red-500 text-sand text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none">
+                      {alertCount}
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
