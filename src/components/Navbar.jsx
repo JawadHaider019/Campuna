@@ -72,8 +72,9 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                   {isLoggedIn && alertCount > 0 && (
                     <span className="relative flex items-center justify-center text-gold">
                       <Bell className="w-3.5 h-3.5 shrink-0" />
-                      <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center bg-red-500 text-sand rounded-full text-[8px] font-bold h-3.5 min-w-[14px] px-0.5 leading-none">
-
+                      <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                       </span>
                     </span>
                   )}
@@ -141,8 +142,9 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                       {isLoggedIn && alertCount > 0 && (
                         <span className="relative flex items-center justify-center text-gold">
                           <Bell className="w-3.5 h-3.5 shrink-0" />
-                          <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center bg-red-500 text-sand rounded-full text-[8px] font-bold h-3.5 min-w-[14px] px-0.5 leading-none">
-
+                          <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                           </span>
                         </span>
                       )}
