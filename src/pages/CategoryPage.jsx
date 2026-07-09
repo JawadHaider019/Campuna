@@ -22,6 +22,28 @@ const SLUG_TO_CATEGORY = {
     'mieten-vermieten': 'Mieten & Vermieten',
 };
 
+// Static content mapping for each category (headings, hero subtitle, and SEO contents)
+const CATEGORY_CONTENT = {
+    'Camping Zubehör': {
+        heroTitle: 'Camping Zubehör kaufen & verkaufen',
+        heroSubtitle: 'Entdecke Camping Zubehör von privaten und gewerblichen Anbietern auf Campuna. Von Vorzelten und Markisen bis Campingmöbel, Technik und Outdoor-Ausrüstung.',
+        seoHeading: 'Camping Zubehör auf Campuna finden',
+        seoParagraphs: [
+            'Auf Campuna findest du Camping Zubehör für Wohnmobile, Wohnwagen, Camper und Zelte.',
+            'Von Vorzelten und Markisen über Campingmöbel bis hin zu Technik, Outdoor-Ausrüstung und praktischem Zubehör – hier entdecken Camper passende Angebote von privaten und gewerblichen Anbietern aus ganz Deutschland.'
+        ]
+    },
+    'Fahrräder & Träger': {
+        heroTitle: 'Fahrräder & Fahrradträger für Camping kaufen & verkaufen',
+        heroSubtitle: 'Entdecke Fahrräder, Fahrradträger und passendes Zubehör für Camping, Wohnmobil und Caravan auf Campuna. Angebote von privaten und gewerblichen Anbietern in ganz Deutschland.',
+        seoHeading: 'Fahrräder und Fahrradträger für Camper',
+        seoParagraphs: [
+            'Auf Campuna findest du Fahrräder, Fahrradträger und Transportlösungen für Wohnmobile, Wohnwagen und Camper.',
+            'Vergleiche Angebote von privaten und gewerblichen Anbietern und finde die passende Ausstattung für deinen nächsten Campingurlaub.'
+        ]
+    }
+};
+
 // Sort options
 const SORT_OPTIONS = [
     { value: 'newest', label: 'Neueste zuerst' },
@@ -220,9 +242,9 @@ export default function CategoryPage() {
 
     const categoryInfo = CATEGORIES.find(c => c.name === categoryName) || {};
 
-    const isZubehoer = categoryName === 'Camping Zubehör';
-    const heroTitle = isZubehoer ? 'Camping Zubehör kaufen & verkaufen' : (categoryName || 'Alle Angebote');
-    const heroSubtitle = isZubehoer ? 'Entdecke Camping Zubehör von privaten und gewerblichen Anbietern auf Campuna. Von Vorzelten und Markisen bis Campingmöbel, Technik und Outdoor-Ausrüstung.' : '';
+    const catContent = CATEGORY_CONTENT[categoryName] || {};
+    const heroTitle = catContent.heroTitle || categoryName || 'Alle Angebote';
+    const heroSubtitle = catContent.heroSubtitle || '';
 
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -316,7 +338,7 @@ export default function CategoryPage() {
                             {heroTitle}
                         </h1>
                         {heroSubtitle && (
-                            <p className="text-white/90 text-sm sm:text-base max-w-2xl mt-3 mb-4 font-sans leading-relaxed drop-shadow-md">
+                            <p className="text-white/90 text-sm sm:text-base max-w-7xl mt-3 mb-4 font-sans leading-relaxed drop-shadow-md">
                                 {heroSubtitle}
                             </p>
                         )}
@@ -431,19 +453,18 @@ export default function CategoryPage() {
                 </section>
 
                 {/* ── Category Description / SEO Section ── */}
-                {isZubehoer && (
-                    <section className="max-w-4xl mx-auto px-4 pb-16">
+                {catContent.seoHeading && catContent.seoParagraphs && catContent.seoParagraphs.length > 0 && (
+                    <section className="max-w-7xl mx-auto px-4 py-8">
                         <div className="bg-gradient-to-br from-sand/50 to-beige/30 rounded-[32px] border border-forest/10 p-8 md:p-12 shadow-sm font-sans">
-                            <h2 className="font-display text-2xl md:text-3xl font-extrabold text-forest mb-6">
-                                Camping Zubehör auf Campuna finden
+                            <h2 className="font-display text-2xl  font-extrabold text-forest mb-2">
+                                {catContent.seoHeading}
                             </h2>
-                            <div className="space-y-4 text-charcoal/85 text-sm md:text-base leading-relaxed font-light">
-                                <p className="font-semibold text-forest/90">
-                                    Auf Campuna findest du Camping Zubehör für Wohnmobile, Wohnwagen, Camper und Zelte.
-                                </p>
-                                <p>
-                                    Von Vorzelten und Markisen über Campingmöbel bis hin zu Technik, Outdoor-Ausrüstung und praktischem Zubehör – hier entdecken Camper passende Angebote von privaten und gewerblichen Anbietern aus ganz Deutschland.
-                                </p>
+                            <div className="space-y-2 text-charcoal/85 text-xs md:text-sm leading-relaxed font-light">
+                                {catContent.seoParagraphs.map((para, idx) => (
+                                    <p key={idx} className={idx === 0 ? "font-semibold text-forest/90" : ""}>
+                                        {para}
+                                    </p>
+                                ))}
                             </div>
                         </div>
                     </section>
