@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Search, Globe, User, PlusCircle, Compass, Sparkles, Heart, Bell } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { navigateTo } from '../utils/navigation';
 
 export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal, wishlistCount = 0, onOpenWishlist, isLoggedIn, alertCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+
+  const isHomepage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +27,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-5 ${isScrolled ? 'top-0 shadow-md' : 'top-[70px] sm:top-[64px] md:top-[74px] lg:top-[64px] '
+      className={`fixed left-0 w-full z-50 transition-[top,box-shadow] duration-500 ease-in-out bg-white py-5 ${isScrolled || !isHomepage ? 'top-0 ' : 'top-[70px] sm:top-[64px] md:top-[74px] lg:top-[64px]'
         }`}
     >
       <div className="max-w-8xl mx-auto px-2 md:px-14 ">

@@ -293,7 +293,7 @@ export default function CategoryPage() {
             <div className="bg-white min-h-screen relative font-sans text-charcoal ">
                 {/* ── Hero Banner ── */}
                 <section
-                    className="relative mt-34 sm:mt-34 md:mt-36 pt-10 pb-14 px-4 overflow-hidden"
+                    className="relative mt-20 sm:mt-20 md:mt-20 pt-10 pb-14 px-4 mx-4 overflow-hidden rounded-4xl"
                     style={{
                         backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 60%, rgba(0, 0, 0, 1) 100%), url('/hero-campuna.png')`,
                         backgroundSize: 'cover',
@@ -326,7 +326,7 @@ export default function CategoryPage() {
                 </section>
 
                 {/* ── Filter & Sort Bar ── */}
-                <div className="sticky top-[64px] z-30 bg-white/90 backdrop-blur-md border-b border-forest/5 shadow-sm">
+                <div className="sticky top-[78px] z-30 bg-white/90 backdrop-blur-md border-b border-forest/5 shadow-sm">
                     <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
                         {/* Search within category */}
                         <div className="relative flex-1 max-w-sm">

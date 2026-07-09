@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import LoginSignupPage from './pages/LoginSignupPage';
 import CategoryPage from './pages/CategoryPage';
 import Footer from './components/Footer';
-import WelcomeBanner from './components/WelcomeBanner';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HeroPage';
 
@@ -123,11 +122,10 @@ const App = () => {
         <Route path="/category/:slug" element={<CategoryPage />} />
       </Routes>
 
-      {/* Only show Footer, WelcomeBanner, ScrollToTop if NOT on login page */}
+      {/* Only show Footer, ScrollToTop if NOT on login page */}
       {!isLoginPage && (
         <>
           <Footer />
-          <WelcomeBanner />
           <ScrollToTop />
         </>
       )}

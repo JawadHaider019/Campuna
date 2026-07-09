@@ -13,6 +13,7 @@ import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 
 import { formatLocation } from '../utils/location';
+import WelcomeBanner from '../components/WelcomeBanner';
 
 export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -233,6 +234,8 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
             {/* 11. Custom FAQ Accordion */}
             <FAQSection />
+
+            <WelcomeBanner />
         </div >
     );
 }
