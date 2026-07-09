@@ -122,7 +122,7 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             onClick={handleCardClick}
-            className="group relative flex flex-col bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            className="group relative flex flex-col bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300  cursor-pointer"
         >
             {/* Image Area */}
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
@@ -214,12 +214,22 @@ export default function CategoryPage() {
 
     const categoryInfo = CATEGORIES.find(c => c.name === categoryName) || {};
 
+    const isZubehoer = categoryName === 'Camping Zubehör';
+    const heroTitle = isZubehoer ? 'Camping Zubehör kaufen & verkaufen' : (categoryName || 'Alle Angebote');
+    const heroSubtitle = isZubehoer ? 'Entdecke Camping Zubehör von privaten und gewerblichen Anbietern auf Campuna. Von Vorzelten und Markisen bis Campingmöbel, Technik und Outdoor-Ausrüstung.' : '';
+
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [wishlistedIds, setWishlistedIds] = useState([]);
     const [sortBy, setSortBy] = useState('newest');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [visibleCount, setVisibleCount] = useState(20);
+
+    // Reset pagination when category, query, or sorting changes
+    useEffect(() => {
+        setVisibleCount(20);
+    }, [slug, searchQuery, sortBy]);
 
     useEffect(() => {
         let active = true;
@@ -273,15 +283,12 @@ export default function CategoryPage() {
 
     return (
         <>
-            <div className="bg-white min-h-screen relative font-sans text-charcoal">
+            <div className="bg-white min-h-screen relative font-sans text-charcoal ">
                 {/* ── Hero Banner ── */}
                 <section
-                    className="relative pt-32 pb-14 px-4 overflow-hidden"
+                    className="relative mt-34 sm:mt-34 md:mt-36 pt-10 pb-14 px-4 overflow-hidden"
                     style={{
-                        backgroundImage: categoryInfo.image
-                            ? `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 60%, rgba(255,255,255,1) 100%), url(${categoryInfo.image})`
-                            : 'none',
-                        backgroundColor: !categoryInfo.image ? '#f5f5f0' : undefined,
+                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 60%, rgba(0, 0, 0, 1) 100%), url('/hero-campuna.png')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}
@@ -299,14 +306,15 @@ export default function CategoryPage() {
                         <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block mb-2">
                             {categoryName ? 'Kategorie' : 'Alle Angebote'}
                         </span>
-                        <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 drop-shadow-lg">
-                            {categoryName || 'Alle Angebote'}
+                        <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-2 drop-shadow-lg">
+                            {heroTitle}
                         </h1>
-                        {true && (
-                            <p className="text-white/70 text-sm font-mono">
-                                {sorted.length} Inserate gefunden
+                        {heroSubtitle && (
+                            <p className="text-white/90 text-sm sm:text-base max-w-2xl mt-3 mb-4 font-sans leading-relaxed drop-shadow-md">
+                                {heroSubtitle}
                             </p>
                         )}
+
                     </div>
                 </section>
 
@@ -383,29 +391,70 @@ export default function CategoryPage() {
                             </button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {sorted.map((item, idx) => (
-                                <motion.div
-                                    key={item.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.04, duration: 0.4 }}
-                                >
-                                    <ListingCard
-                                        item={item}
-                                        isWishlisted={wishlistedIds.includes(item.id)}
-                                        onToggleWishlist={handleToggleWishlist}
-                                    />
-                                </motion.div>
-                            ))}
-                        </div>
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {sorted.slice(0, visibleCount).map((item, idx) => (
+                                    <motion.div
+                                        key={item.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.04, duration: 0.4 }}
+                                    >
+                                        <ListingCard
+                                            item={item}
+                                            isWishlisted={wishlistedIds.includes(item.id)}
+                                            onToggleWishlist={handleToggleWishlist}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Load More Button */}
+                            {sorted.length > visibleCount && (
+                                <div className="flex justify-center mt-12 mb-4">
+                                    <button
+                                        onClick={() => setVisibleCount(prev => prev + 20)}
+                                        className="bg-forest text-white text-xs font-semibold uppercase tracking-wider py-4 px-8 rounded-full border border-forest/10 shadow-md hover:bg-gold hover:text-forest hover:border-gold hover:shadow-lg active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer font-sans"
+                                    >
+                                        Mehr Angebote laden
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </section>
 
+                {/* ── Category Description / SEO Section ── */}
+                {isZubehoer && (
+                    <section className="max-w-4xl mx-auto px-4 pb-16">
+                        <div className="bg-gradient-to-br from-sand/50 to-beige/30 rounded-[32px] border border-forest/10 p-8 md:p-12 shadow-sm font-sans">
+                            <h2 className="font-display text-2xl md:text-3xl font-extrabold text-forest mb-6">
+                                Camping Zubehör auf Campuna finden
+                            </h2>
+                            <div className="space-y-4 text-charcoal/85 text-sm md:text-base leading-relaxed font-light">
+                                <p className="font-semibold text-forest/90">
+                                    Auf Campuna findest du Camping Zubehör für Wohnmobile, Wohnwagen, Camper und Zelte.
+                                </p>
+                                <p>
+                                    Von Vorzelten und Markisen über Campingmöbel bis hin zu Technik, Outdoor-Ausrüstung und praktischem Zubehör – hier entdecken Camper passende Angebote von privaten und gewerblichen Anbietern aus ganz Deutschland.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
             </div>
-            <div className='py-16 px-4 border'>
-                <h1 className='text-2xl font-bold mb-4 text-center'>other categories</h1>
-                <CategoriesSection /></div>
+            <div className="py-16 px-4 bg-white border-t border-forest/5">
+                <div className="max-w-7xl mx-auto mb-10 text-center">
+                    <span className="font-sans text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.4em] text-gold block mb-2">
+                        ENTDECKEN
+                    </span>
+                    <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-black">
+                        Beliebte Bereiche
+                    </h2>
+                </div>
+                <CategoriesSection />
+            </div>
         </>
     );
 }

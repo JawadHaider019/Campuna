@@ -3,7 +3,7 @@ export const CATEGORIES = [
     id: '1',
     name: 'Camping Zubehör',
     count: 31,
-    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'camping-zubehoer',
     iconName: 'Tent'
   },
