@@ -35,7 +35,12 @@ const CATEGORY_SLUGS = {
   'Mieten & Vermieten': 'mieten-vermieten'
 };
 
-export default function CategoriesSection({ onSelectCategory }) {
+export default function CategoriesSection({ onSelectCategory, excludeCategory }) {
+  // Filter out current/excluded category if prop is provided
+  const filteredCategories = excludeCategory
+    ? CATEGORIES.filter(cat => cat.name !== excludeCategory)
+    : CATEGORIES;
+
   // Handle both navigation and the callback
   const handleCategoryClick = (e, categoryName) => {
     // If onSelectCategory is provided, call it
@@ -46,11 +51,15 @@ export default function CategoriesSection({ onSelectCategory }) {
     // Don't prevent default
   };
 
+  const gridClass = filteredCategories.length === 7
+    ? "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-7 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x"
+    : "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-8 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x";
+
   return (
     <section id="categories" className="relative  z-20 max-w-7xl mx-auto px-4 ">
       {/* Horizontal Scroll on Mobile, Grid on Desktop */}
-      <div className="flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-8 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x">
-        {CATEGORIES.map((cat, index) => {
+      <div className={gridClass}>
+        {filteredCategories.map((cat, index) => {
           const Icon = ICON_MAP[cat.name] || Tent;
           const slug = CATEGORY_SLUGS[cat.name] || '';
 

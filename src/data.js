@@ -5,63 +5,120 @@ export const CATEGORIES = [
     count: 31,
     image: '/collection/camping-zubehoer-hero.png',
     slug: 'camping-zubehoer',
-    iconName: 'Tent'
+    iconName: 'Tent',
+    heroTitle: 'Camping Zubehör kaufen & verkaufen',
+    heroSubtitle: 'Entdecke Camping Zubehör von privaten und gewerblichen Anbietern auf Campuna. Von Vorzelten und Markisen bis Campingmöbel, Technik und Outdoor-Ausrüstung.',
+    seoHeading: 'Camping Zubehör auf Campuna finden',
+    seoParagraphs: [
+      'Auf Campuna findest du Camping Zubehör für Wohnmobile, Wohnwagen, Camper und Zelte.',
+      'Von Vorzelten und Markisen über Campingmöbel bis hin zu Technik, Outdoor-Ausrüstung und praktischem Zubehör – hier entdecken Camper passende Angebote von privaten und gewerblichen Anbietern aus ganz Deutschland.'
+    ]
   },
   {
     id: '2',
     name: 'Wohnmobile & Camper',
     count: 24,
-    image: 'https://images.unsplash.com/photo-1523987355122-83482224058b?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'wohnmobile-camper',
-    iconName: 'Truck'
+    iconName: 'Truck',
+    heroTitle: 'Wohnmobile & Camper kaufen oder verkaufen',
+    heroSubtitle: 'Entdecke Wohnmobile, Campervans, Kastenwagen und Wohnwagen von privaten und gewerblichen Anbietern auf Campuna. Finde passende Angebote für dein nächstes Campingabenteuer.',
+    seoHeading: 'Wohnmobile & Camper auf Campuna finden',
+    seoParagraphs: [
+      'Campuna ist dein Camping-Marktplatz für Wohnmobile, Campervans, Kastenwagen und Wohnwagen.',
+      'Hier findest du Angebote von privaten Verkäufern und gewerblichen Händlern aus ganz Deutschland. Ob gebrauchtes Wohnmobil kaufen, Campingfahrzeug verkaufen oder neue Angebote entdecken – Campuna verbindet Camper mit passenden Anbietern.',
+      'Neben Wohnmobilen und Campern findest du auf Campuna auch Campingzubehör, Stellplätze, Dienstleistungen und weitere Angebote rund ums Camping.'
+    ]
   },
   {
     id: '3',
     name: 'Zelte & Dachzelte',
     count: 3,
-    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'zelte-dachzelte',
-    iconName: 'Mountain'
+    iconName: 'Mountain',
+    heroTitle: 'Zelte & Dachzelte kaufen, verkaufen oder entdecken',
+    heroSubtitle: 'Entdecke Zelte, Dachzelte und Camping-Unterkünfte von privaten und gewerblichen Anbietern auf Campuna. Ob Familienzelt, Vorzelt oder Dachzelt – finde passende Angebote für dein nächstes Abenteuer.',
+    seoHeading: 'Zelte und Dachzelte auf Campuna finden',
+    seoParagraphs: [
+      'Entdecke Zelte, Dachzelte und passendes Zubehör für dein nächstes Outdoor-Abenteuer.',
+      'Ob Familienzelt, Campingzelt oder Dachzelt für Van und Auto – auf Campuna findest du Angebote von privaten Verkäufern und gewerblichen Anbietern aus ganz Deutschland.'
+    ]
   },
   {
     id: '4',
     name: 'Fahrräder & Träger',
     count: 3,
-    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'fahrraeder-traeger',
-    iconName: 'Bike'
+    iconName: 'Bike',
+    heroTitle: 'Fahrräder & Fahrradträger für Camping kaufen & verkaufen',
+    heroSubtitle: 'Entdecke Fahrräder, Fahrradträger und passendes Zubehör für Camping, Wohnmobil und Caravan auf Campuna. Angebote von privaten und gewerblichen Anbietern in ganz Deutschland.',
+    seoHeading: 'Fahrräder und Fahrradträger für Camper',
+    seoParagraphs: [
+      'Auf Campuna findest du Fahrräder, Fahrradträger und Transportlösungen für Wohnmobile, Wohnwagen und Camper.',
+      'Vergleiche Angebote von privaten und gewerblichen Anbietern und finde die passende Ausstattung für deinen nächsten Campingurlaub.'
+    ]
   },
   {
     id: '5',
     name: 'Stellplätze & Campingplätze',
     count: 15,
-    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'stellplaetze',
-    iconName: 'MapPin'
+    iconName: 'MapPin',
+    heroTitle: 'Stellplätze & Campingplätze finden auf Campuna',
+    heroSubtitle: 'Entdecke Stellplätze, Campingplätze und Übernachtungsmöglichkeiten für Wohnmobil, Wohnwagen und Camper auf Campuna. Finde passende Plätze für deinen nächsten Campingurlaub.',
+    seoHeading: 'Stellplätze und Campingplätze entdecken',
+    seoParagraphs: [
+      'Finde Stellplätze, Campingplätze und Übernachtungsmöglichkeiten für Wohnmobile, Wohnwagen und Camper.',
+      'Auf Campuna präsentieren private und gewerbliche Anbieter ihre Angebote für Campingurlaub und Reisen in Deutschland und darüber hinaus.'
+    ]
   },
   {
     id: '6',
     name: 'Camping Services',
     count: 9,
-    image: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'camping-services',
-    iconName: 'Wrench'
+    iconName: 'Wrench',
+    heroTitle: 'Camping Services & Dienstleistungen finden auf Campuna',
+    heroSubtitle: 'Entdecke Dienstleistungen rund um Camping, Wohnmobil, Wohnwagen und Caravan auf Campuna. Finde passende Anbieter für Reparatur, Wartung, Aufbereitung, Transport und weitere Services.',
+    seoHeading: 'Dienstleistungen rund ums Camping',
+    seoParagraphs: [
+      'Entdecke Camping-Services wie Reparaturen, Wartung, Fahrzeugaufbereitung, Vermietung, Transporte und weitere Dienstleistungen rund um Wohnmobile, Wohnwagen und Campingfahrzeuge.',
+      'Campuna bringt Camper und Dienstleister direkt zusammen.'
+    ]
   },
   {
     id: '7',
     name: 'Tiny Houses',
     count: 4,
-    image: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'tiny-houses',
-    iconName: 'Home'
+    iconName: 'Home',
+    heroTitle: 'Tiny Houses kaufen, verkaufen oder entdecken auf Campuna',
+    heroSubtitle: 'Entdecke Tiny Houses, mobile Wohnlösungen und alternative Unterkünfte auf Campuna. Angebote von privaten und gewerblichen Anbietern in ganz Deutschland.',
+    seoHeading: 'Tiny Houses entdecken',
+    seoParagraphs: [
+      'Auf Campuna findest du Tiny Houses, Mobilheime und alternative Wohnlösungen für Camping, Freizeit und dauerhaftes Wohnen.',
+      'Vergleiche Angebote von privaten und gewerblichen Anbietern und finde passende Lösungen für dein Projekt.'
+    ]
   },
   {
     id: '8',
     name: 'Mieten & Vermieten',
     count: 7,
-    image: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=600&q=80',
+    image: '/collection/camping-zubehoer-hero.png',
     slug: 'mieten-vermieten',
-    iconName: 'Key'
+    iconName: 'Key',
+    heroTitle: 'Wohnmobile, Wohnwagen & Campingfahrzeuge mieten oder vermieten',
+    heroSubtitle: 'Entdecke Mietangebote rund um Camping auf Campuna. Ob Wohnmobil, Wohnwagen, Campervan oder andere Campingfahrzeuge – finde passende Angebote von privaten und gewerblichen Anbietern.',
+    seoHeading: 'Campingfahrzeuge und Zubehör mieten',
+    seoParagraphs: [
+      'Entdecke Mietangebote für Wohnmobile, Wohnwagen, Camper, Zubehör und weitere Campinglösungen.',
+      'Campuna verbindet Vermieter und Mieter direkt miteinander und bietet eine zentrale Plattform für Camping-Mietangebote.'
+    ]
   }
 ];
 
