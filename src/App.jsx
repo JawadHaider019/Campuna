@@ -3,6 +3,8 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LoginSignupPage from './pages/LoginSignupPage';
 import CategoryPage from './pages/CategoryPage';
+import AllListingsPage from './pages/AllListingsPage';
+import BusinessProfilePage from './pages/BusinessProfilePage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HeroPage';
@@ -120,6 +122,9 @@ const App = () => {
         <Route path="/auth" element={<LoginSignupPage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/category/:slug" element={<CategoryPage />} />
+        <Route path="/all_listings" element={<AllListingsPage />} />
+        <Route path="/all_business" element={<BusinessProfilePage />} />
+        <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
       </Routes>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}

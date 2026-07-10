@@ -1,0 +1,437 @@
+import React, { useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import { motion } from 'motion/react';
+import {
+    Heart,
+    MapPin,
+    ShieldCheck,
+    Mail,
+    Calendar,
+    Globe,
+    ArrowLeft,
+    MessageSquare,
+    Star,
+    Eye,
+    Info,
+    ExternalLink,
+    Megaphone,
+    Facebook,
+    Instagram
+} from 'lucide-react';
+import { navigateTo } from '../utils/navigation';
+import { buildListingSlug } from '../utils/slugify';
+import { PROVIDERS, FEATURED_LISTINGS } from '../data';
+import { formatLocation } from '../utils/location';
+
+// Mock specific Tiny House listings for LivianEssence
+const LIVIAN_MOCK_LISTINGS = [
+    {
+        id: 'liv_1',
+        title: 'Tiny House – Platz für 4–6 Personen, Lärche & Fichte',
+        price: 55000,
+        pricePeriod: 'Kaufpreis',
+        location: 'Gelnhausen, Hessen',
+        displayLocation: 'Gelnhausen',
+        images: [
+            'https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=650&q=80'
+        ],
+        features: ['4-6 Personen', 'Lärche & Fichte', 'Mobil', 'Winterfest'],
+        isNegotiable: false
+    },
+    {
+        id: 'liv_2',
+        title: 'Tiny House – Flexibel, modern & vielseitig nutzbar',
+        price: 52000,
+        pricePeriod: 'Kaufpreis',
+        location: 'Gelnhausen, Hessen',
+        displayLocation: 'Gelnhausen',
+        images: [
+            'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=650&q=80'
+        ],
+        features: ['Flexibel', 'Vielseitig', 'Modern', 'Holzbau'],
+        isNegotiable: true
+    },
+    {
+        id: 'liv_3',
+        title: 'Tiny House - Hochwertig, modern & ganzjährig bewohnbar',
+        price: 65000,
+        pricePeriod: 'Kaufpreis',
+        location: 'Gelnhausen, Hessen',
+        displayLocation: 'Gelnhausen',
+        images: [
+            'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=650&q=80',
+            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=650&q=80'
+        ],
+        features: ['Highlight', 'Ganzjährig bewohnbar', 'Luxusausstattung'],
+        isNegotiable: false
+    }
+];
+
+// Card component mapping a row of horizontal grid previews (keep the below cards same)
+function ListingCard({ item }) {
+    const handleCardClick = () => {
+        const slug = buildListingSlug(item.title, item.id);
+        navigateTo(`/listing_details/${slug}`);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={handleCardClick}
+            className="group relative flex flex-col bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 cursor-pointer h-full"
+        >
+            {/* 4-Image Grid Preview */}
+            <div className="grid grid-cols-4 gap-0.5 aspect-[16/9] w-full bg-sand/15 overflow-hidden border-b border-forest/5">
+                {item.images.slice(0, 4).map((img, idx) => (
+                    <div key={idx} className="relative w-full h-full overflow-hidden">
+                        <img
+                            src={img}
+                            alt={`${item.title} preview ${idx}`}
+                            className="w-full h-full object-cover transition-transform duration-[0.8s] group-hover:scale-105"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                        />
+                    </div>
+                ))}
+                {item.images.length < 4 && Array.from({ length: 4 - item.images.length }).map((_, i) => (
+                    <div key={i} className="bg-sand/30 w-full h-full" />
+                ))}
+            </div>
+
+            {/* Content Area */}
+            <div className="p-4.5 flex flex-col flex-1 justify-between gap-4">
+                <div>
+                    <h3 className="font-display text-xs sm:text-sm md:text-base font-bold text-black group-hover:text-gold transition-colors duration-200 line-clamp-2 leading-snug">
+                        {item.title}
+                    </h3>
+
+                </div>
+
+                {/* Pricing / Location info */}
+                <div>
+                    <div className="flex items-center justify-between pb-3 border-b border-forest/5">
+                        <div>
+                            <span className="block text-[8px] md:text-[9px] uppercase tracking-widest text-charcoal/40 font-mono leading-none mb-1">
+                                Preis
+                            </span>
+                            <span className="font-display text-xs sm:text-base font-extrabold text-forest">
+                                {item.price.toLocaleString('de-DE')} € {item.isNegotiable && <span className="text-[10px] font-normal text-charcoal/50">(VB)</span>}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-0.5 text-stone-500 text-[10px] sm:text-xs">
+                            <MapPin className="w-3.5 h-3.5 text-gold shrink-0" />
+                            <span>{item.displayLocation || item.location.split(',')[0]}</span>
+                        </div>
+                    </div>
+
+                    <div className="pt-3 flex justify-center">
+                        <span className="w-full bg-white hover:bg-sand/30 border border-forest/10 py-2 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wider text-forest flex items-center justify-center gap-1.5 transition-colors duration-300">
+                            <Eye className="w-3.5 h-3.5 text-forest/70" />
+                            Angebot ansehen
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </motion.div>
+    );
+}
+
+// ─── Main BusinessProfilePage ────────────────────────────────────────────────────────
+export default function BusinessProfilePage() {
+    const location = useLocation();
+    const { uid: pathUid } = useParams();
+
+    const queryParams = new URLSearchParams(location.search);
+    const queryUid = queryParams.get('uid');
+
+    const uid = pathUid || queryUid || '';
+
+    // Look up business provider
+    const provider = PROVIDERS.find(p => {
+        return p.id === uid || p.slug.includes(uid) || p.slug === uid || p.name.toLowerCase() === uid.toLowerCase();
+    }) || PROVIDERS.find(p => p.name === 'LivianEssence') || PROVIDERS[0];
+
+    const providerName = provider?.name || 'LivianEssence';
+    const isLivian = providerName.toLowerCase().includes('livian');
+
+    // Hardcoded metadata matching requested screens
+    const memberSince = isLivian ? '07.04.2026' : '12.11.2025';
+    const email = isLivian ? 'd.zipf@markson-tinyhouse.com' : `info@${providerName.toLowerCase().replace(/[^a-z0-9]/g, '')}.de`;
+
+    // Bullet points
+    const bioLines = isLivian ? [
+        'Livianessence | Tiny House Kooperation',
+        'Nachhaltiges, minimalistisches Wohnen mit Stil.',
+        'Ob als eigener Wohnraum oder als Ferienhaus-Investition.',
+        'Persönlicher Service & smarte, preisbewusste Lösung.',
+        'Mehr Freiheit. Weniger Raum. Mehr Leben - Wir schauen Individuell'
+    ] : [
+        `${providerName} – Premium Partner auf Campuna.`,
+        provider.description || 'Expertise, Zuverlässigkeit und erstklassiger Service.',
+        'Ihr Ansprechpartner rund ums Camping & Fahrgeräte.',
+        'Besuchen Sie unsere Inserate oder kontaktieren Sie uns direkt für Angebote.'
+    ];
+
+    // Legal Information Impressum attributes
+    const legalDetails = {
+        firmenname: isLivian ? 'Livianessence Co. (Markson Tiny House)' : `${providerName} GmbH`,
+        adresse: isLivian ? 'Gelnhäuser Allee 10, 63571 Gelnhausen, Deutschland' : `${provider.location || 'Deutschland'}`,
+        kontaktinfo: `E-Mail: ${email} | Tel: +49 (0) 6051 4567-89`,
+        impressumUrl: 'https://campuna.de/impressum'
+    };
+
+    // Get matching listings
+    let listings = [];
+    if (isLivian) {
+        listings = LIVIAN_MOCK_LISTINGS;
+    } else {
+        listings = FEATURED_LISTINGS.map((l, i) => ({
+            ...l,
+            id: `prov_lst_${i}`,
+            displayLocation: formatLocation(l.location),
+            isNegotiable: l.pricePeriod === 'Preis' || false
+        })).slice(0, Math.min(3, provider.listingsCount || 3));
+
+        if (listings.length === 0) {
+            listings = FEATURED_LISTINGS.slice(0, 2).map((l, i) => ({
+                ...l,
+                id: `prov_lst_${i}`,
+                displayLocation: formatLocation(l.location),
+                isNegotiable: false
+            }));
+        }
+    }
+
+    return (
+        <div className="bg-white min-h-screen relative font-sans text-charcoal">
+
+            {/* ── Padding Navigation Header ── */}
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-24 sm:pt-28 pb-4">
+                <button
+                    onClick={() => navigateTo('/')}
+                    className="flex items-center gap-2 text-xs md:text-sm font-semibold text-charcoal/50 hover:text-forest transition-colors group cursor-pointer"
+                >
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    Zurück zur Startseite
+                </button>
+            </div>
+
+            <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pb-16">
+
+                {/* ── Facebook / LinkedIn Style Profile Box ── */}
+                <section className="bg-white rounded-3xl overflow-hidden border border-forest/10 shadow-lg mb-12">
+
+                    {/* Cover Picture */}
+                    <div className="relative w-full aspect-[3/1] md:aspect-[4.5/1] overflow-hidden bg-sand/20">
+                        <img
+                            src={provider.coverImage || '/hero-campuna.png'}
+                            alt={`${providerName} Banner`}
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                        />
+                    </div>
+
+                    {/* Logo & Headline info section (overlapping cover picture) */}
+                    <div className="relative px-6 md:px-12 flex flex-col items-start gap-4">
+
+                        {/* Round profile image overlapping bottom of cover */}
+                        <div className="-mt-14 md:-mt-24 w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white bg-white shadow-xl overflow-hidden flex items-center justify-center shrink-0 z-10 select-none">
+                            <img
+                                src={provider.logo || '/logo.png'}
+                                alt={`${providerName} Logo`}
+                                className="w-full h-full object-cover"
+                                referrerPolicy="no-referrer"
+                            />
+                        </div>
+
+                    </div>
+
+                    {/* Details & Actions section */}
+                    <div className="px-6 md:px-12 pb-10 pt-4 flex flex-col lg:flex-row justify-between gap-8 items-start">
+
+                        {/* Info and Bio area (Left) */}
+                        <div className="flex-1 space-y-4 max-w-3xl">
+                            <div className="space-y-1">
+
+                                {/* Name line + verified checkmark badge */}
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <h1 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-forest tracking-tight">
+                                        {providerName}
+                                    </h1>
+                                    <span className="p-1 bg-forest/5 text-forest rounded-full border border-forest/10 inline-flex items-center justify-center shrink-0">
+                                        <ShieldCheck className="w-4 h-4 text-forest shrink-0 fill-forest/15" />
+                                    </span>
+                                </div>
+
+                                {/* Category tagline */}
+                                <p className="text-xs md:text-sm font-semibold text-charcoal/65 flex items-center gap-1.5 flex-wrap">
+                                    <span>{isLivian ? 'Livianessence | Tiny House Kooperation' : (provider.description?.slice(0, 45) || 'Gewerblicher Partner')}</span>
+                                </p>
+                            </div>
+
+                            {/* Sub-meta details (Email, Date joined) */}
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-xs md:text-sm text-charcoal/70">
+                                <a
+                                    href={`mailto:${email}`}
+                                    className="flex items-center gap-1.5 hover:text-forest transition-colors font-medium"
+                                >
+                                    <Mail className="w-4.5 h-4.5 text-gold shrink-0" />
+                                    {email}
+                                </a>
+                                <div className="flex items-center gap-1.5 text-charcoal/85 font-semibold">
+                                    <Calendar className="w-4.5 h-4.5 text-gold shrink-0" />
+                                    Mitglied seit {memberSince}
+                                </div>
+                            </div>
+
+                            {/* Description / Bio Lines list (as bullet items) */}
+                            <div className="space-y-2 pt-4 border-t border-forest/5">
+                                {bioLines.slice(isLivian ? 1 : 0).map((line, i) => (
+                                    <p key={i} className="text-xs md:text-sm text-charcoal/80 leading-relaxed font-light flex items-start gap-2">
+
+                                        <span>{line}</span>
+                                    </p>
+                                ))}
+                            </div>
+
+                            {/* Link / Social Icon */}
+                            <div className="pt-2 flex gap-2">
+                                <a
+                                    href={isLivian ? 'https://markson-tinyhouse.com' : 'https://campuna.de'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-8.5 h-8.5 rounded-full border border-forest/15 flex items-center justify-center text-charcoal/50 hover:text-forest hover:border-forest/40 hover:bg-forest/5 transition-all shadow-sm shrink-0 inline-flex cursor-pointer"
+                                >
+                                    <Globe className="w-4.5 h-4.5" />
+                                </a>
+                                <a
+                                    href={isLivian ? 'https://markson-tinyhouse.com' : 'https://campuna.de'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-8.5 h-8.5 rounded-full border border-forest/15 flex items-center justify-center text-charcoal/50 hover:text-forest hover:border-forest/40 hover:bg-forest/5 transition-all shadow-sm shrink-0 inline-flex cursor-pointer"
+                                >
+                                    <Instagram className="w-4.5 h-4.5" />
+                                </a>
+                                <a
+                                    href={isLivian ? 'https://markson-tinyhouse.com' : 'https://campuna.de'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-8.5 h-8.5 rounded-full border border-forest/15 flex items-center justify-center text-charcoal/50 hover:text-forest hover:border-forest/40 hover:bg-forest/5 transition-all shadow-sm shrink-0 inline-flex cursor-pointer"
+                                >
+                                    <Facebook className="w-4.5 h-4.5" />
+                                </a>
+
+                            </div>
+                        </div>
+
+                        {/* Support/Call to Actions (Right/Side) */}
+                        <div className="w-full lg:w-auto lg:min-w-[280px] flex flex-col items-center lg:items-end gap-5 shrink-0">
+
+                            {/* Message button */}
+                            <div className="w-full text-center lg:text-right">
+                                <a
+                                    href={`mailto:${email}?subject=Anfrage%20über%20Campuna`}
+                                    className="w-full bg-forest hover:bg-gold text-white hover:text-forest transition-colors duration-300 font-sans font-bold py-3.5 px-7 rounded-full shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                                >
+                                    <MessageSquare className="w-4.5 h-4.5 shrink-0" />
+                                    Verkäufer kontaktieren
+                                </a>
+                                <span className="block mt-2 text-[10px] text-charcoal/45 font-medium leading-none">
+                                    Nachricht direkt an den Verkäufer senden
+                                </span>
+                            </div>
+
+                            {/* Pioneer Badge */}
+                            <div className="inline-flex items-center gap-1.5 px-4.5 py-2 border border-yellow-500/25 bg-amber-500/5 text-amber-900 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm select-none">
+                                <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500 shrink-0" />
+                                <span>Campuna Pioneer</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                {/* ── Inserate Listings Section ── */}
+                <section className="mb-14">
+                    <div className="flex items-center gap-2.5 border-b border-forest/5 pb-4 mb-8">
+                        <Megaphone className="w-5 h-5 text-gold shrink-0" />
+                        <h2 className="font-display text-xl sm:text-2xl font-black text-forest uppercase tracking-tight">
+                            Anzeigen von {providerName}
+                        </h2>
+                        <span className="ml-1 bg-forest/5 text-forest px-3 py-1 rounded-full text-xs font-bold font-mono">
+                            {listings.length}
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {listings.map((item) => (
+                            <div key={item.id} className="h-full">
+                                <ListingCard item={item} />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* ── Legal Details Impressum Box ── */}
+                <section className="max-w-7xl">
+                    <div className="bg-sand/5 border border-forest/10 p-6 md:p-8 rounded-2xl shadow-sm text-charcoal">
+
+                        <h3 className="font-display text-base md:text-lg font-bold text-forest flex items-center gap-2 pb-3.5 border-b border-forest/10 mb-5 uppercase tracking-wide">
+                            <Info className="w-4.5 h-4.5 text-gold shrink-0" />
+                            Rechtliche Angaben
+                        </h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-xs md:text-sm leading-relaxed">
+
+                            <div className="space-y-1">
+                                <span className="block font-bold text-charcoal/90">Firmenname:</span>
+                                <span className="font-light text-charcoal/80">{legalDetails.firmenname}</span>
+                            </div>
+
+                            <div className="space-y-1">
+                                <span className="block font-bold text-charcoal/90">Adresse:</span>
+                                <span className="font-light text-charcoal/80">{legalDetails.adresse}</span>
+                            </div>
+
+                            <div className="space-y-1">
+                                <span className="block font-bold text-charcoal/90">Kontaktinformationen:</span>
+                                <span className="font-light text-charcoal/80">{legalDetails.kontaktinfo}</span>
+                            </div>
+
+                            <div className="space-y-1">
+                                <span className="block font-bold text-charcoal/90">Impressum:</span>
+                                <a
+                                    href={legalDetails.impressumUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 font-semibold text-forest hover:text-gold transition-colors"
+                                >
+                                    Siehe Anbieter-Impressum
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+            </main>
+
+        </div>
+    );
+}
