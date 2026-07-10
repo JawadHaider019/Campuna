@@ -308,7 +308,7 @@ export default function FeaturedListings({
             </div>
 
             {/* Mobile & Tablet Only View All - Bottom Center */}
-            <div className="mt-12 flex justify-center lg:hidden">
+            <div className="mt-7 flex justify-center lg:hidden">
               <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
                 <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Angebote</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />

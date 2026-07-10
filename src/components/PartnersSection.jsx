@@ -189,7 +189,7 @@ export default function PartnersSection({ onPartnerClick }) {
                     </div>
 
                     {/* Mobile & Tablet View All */}
-                    <div className="mt-10 flex justify-center lg:hidden">
+                    <div className="mt-7 flex justify-center lg:hidden">
                         <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
                             <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Partner</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
