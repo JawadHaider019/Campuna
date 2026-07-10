@@ -22,7 +22,7 @@ export default function FAQSection() {
           <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
             Häufig gestellte Fragen
           </span>
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-forest">
+          <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest">
             Alles, was du wissen musst
           </h2>
 

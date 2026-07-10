@@ -26,7 +26,7 @@ export default function CTASection({ onSellClick }) {
                 Anbieter werden
               </div>
 
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
                 Verkaufst du etwas rund ums Camping?
               </h2>
 

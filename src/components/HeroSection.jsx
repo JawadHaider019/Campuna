@@ -19,7 +19,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
   return (
     <section
       id="hero"
-      className="relative min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] mt-34 sm:mt-34 md:mt-36 mb-12 mx-4 md:mx-8 lg:mx-12 shadow-2xl border border-forest/10"
+      className="relative min-h-[80vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] mt-38 sm:mt-38 mb-12 mx-4 md:mx-8 lg:mx-12 shadow-2xl border border-forest/10"
     >
       {/* Background Cinematic Image with Zoom Animation */}
       <div className="absolute inset-0 z-0">

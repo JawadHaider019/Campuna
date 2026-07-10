@@ -35,7 +35,7 @@ export default function WhyCampuna() {
           <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
             The Advantage
           </span>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-black leading-[1.1]">
+          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-black leading-[1.1]">
             Warum Campuna?
           </h2>
           <div className="w-16 h-0.5 bg-gold mx-auto rounded-full mt-4" />

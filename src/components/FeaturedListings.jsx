@@ -194,7 +194,7 @@ export default function FeaturedListings({
         <div className="p-4 flex flex-col flex-1 justify-between">
           <div>
             {/* Title */}
-            <h3 className="font-display text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
+            <h3 className="font-display text-lg font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
               {item.title}
             </h3>
 
@@ -241,7 +241,7 @@ export default function FeaturedListings({
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
               ZUM STÖBERN
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-black">
+            <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-black">
               Camping-Angebote auf Campuna
             </h2>
             <p className="font-sans text-sm text-charcoal/60 leading-relaxed font-light">
