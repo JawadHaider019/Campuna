@@ -5,6 +5,7 @@ import LoginSignupPage from './pages/LoginSignupPage';
 import CategoryPage from './pages/CategoryPage';
 import AllListingsPage from './pages/AllListingsPage';
 import BusinessProfilePage from './pages/BusinessProfilePage';
+import ListingDetailPage from './pages/ListingDetailPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HeroPage';
@@ -123,6 +124,7 @@ const App = () => {
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/category/:slug" element={<CategoryPage />} />
         <Route path="/all_listings" element={<AllListingsPage />} />
+        <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
         <Route path="/all_business" element={<BusinessProfilePage />} />
         <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
       </Routes>

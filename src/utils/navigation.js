@@ -36,6 +36,11 @@ export function navigateTo(path) {
         window.open(targetUrl, '_parent');
     } else {
         // Standalone - navigate current window
-        window.location.href = targetUrl;
+        if (import.meta.env.DEV) {
+            const cleanPath = path.startsWith('/') ? path : '/' + path;
+            window.location.pathname = cleanPath;
+        } else {
+            window.location.href = targetUrl;
+        }
     }
 }

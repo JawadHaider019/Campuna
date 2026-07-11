@@ -342,6 +342,184 @@ export const FEATURED_LISTINGS = [
     },
     features: ['Transport-Caravan', 'Zusatzfenster', 'Kompakt'],
     isExclusive: true
+  },
+  {
+    id: 'CP-1067',
+    title: 'Verkauft - Dethleffs Camper 720 SK - Gepflegtes Raumwunder mit 7 Schlafplätzen',
+    category: 'Wohnmobile & Camper',
+    price: 11500,
+    pricePeriod: 'Kaufpreis',
+    location: 'Waidring, Österreich',
+    rating: 4.8,
+    reviewsCount: 11,
+    images: [
+      'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1627664819818-e147d6221422?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Bea',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['7 Schlafplätze', 'Gepflegt', 'Etagenbett', 'Rundsitzgruppe'],
+    isExclusive: true,
+    isNegotiable: true,
+    publishedDate: '22.04.2026',
+    anzeigeNr: 'CP-1067',
+    viewsCount: 11,
+    likesCount: 0,
+    chatsCount: 0,
+    condition: 'Gut',
+    status: 'Aktiv',
+    description: 'Zum Verkauf steht ein gepflegter Dethleffs Camper 720 SK. Dieses Raumwunder ist der ideale Begleiter für große Familien. Mit insgesamt 7 Schlafplätzen (inklusive gemütlichem Etagenbett für die Kinder, einer großen Rundsitzgruppe, die sich leicht umbauen lässt, und einem komfortablen Doppelbett) bietet er ausreichend Platz für alle Mitreisenden.\n\nDer Wohnwagen verfügt über eine sehr gepflegte Küche mit 3-Flammen-Gaskocher, Spüle und Kühlschrank mit Eisfach. Das Badezimmer ist mit Thetford-Toilette und Waschbecken ausgestattet. Dank der Truma-Heizung mit Umluft ist der Camper auch für kältere Nächte oder Wintercamping bestens gerüstet.\n\nTechnische Daten & Highlights:\n- Erstzulassung: 2008\n- Zulässiges Gesamtgewicht: 2.000 kg\n- Länge: ca. 8,90 m | Breite: 2,50 m | Höhe: 2,65 m\n- Anti-Schlinger-Kupplung für stabiles Fahren\n- Antischlingerkupplung Alko\n- 100 km/h Zulassung\n- Große Heckgarage unter dem Etagenbett (hochklappbar)\n- TÜV und Gasprüfung auf Wunsch neu.\n\nDer Wohnwagen ist trocken, tierfrei und ein Nichtraucherfahrzeug. Kleinere altersübliche Gebrauchsspuren sind vorhanden, insgesamt befindet sich das Fahrzeug jedoch in einem sehr gepflegten Zustand.'
+  },
+  {
+    id: 'CP-1075',
+    title: 'Hymer Tramp P686 S...',
+    category: 'Wohnmobile & Camper',
+    price: 33500,
+    pricePeriod: 'Kaufpreis',
+    location: 'Schuby',
+    rating: 4.7,
+    reviewsCount: 5,
+    images: [
+      'https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: false,
+      type: 'Privat'
+    },
+    features: ['Teilintegriert', 'Gepflegt'],
+    isExclusive: false,
+    isNegotiable: false,
+    publishedDate: '23.04.2026',
+    anzeigeNr: 'CP-1075',
+    viewsCount: 29,
+    likesCount: 0,
+    chatsCount: 0,
+    condition: 'Gebraucht',
+    status: 'Aktiv',
+    description: 'Schöner Hymer Tramp P686 S in gepflegtem Zustand.'
+  },
+  {
+    id: 'CP-1076',
+    title: 'Adria Astella 704 ...',
+    category: 'Wohnmobile & Camper',
+    price: 54950,
+    pricePeriod: 'Kaufpreis',
+    location: 'Oberhausen',
+    rating: 4.9,
+    reviewsCount: 8,
+    images: [
+      'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Luxus', 'Modern'],
+    isExclusive: false,
+    isNegotiable: false,
+    publishedDate: '23.04.2026',
+    anzeigeNr: 'CP-1076',
+    viewsCount: 45,
+    likesCount: 2,
+    chatsCount: 1,
+    condition: 'Gebraucht',
+    status: 'Aktiv',
+    description: 'Hochwertiger Wohnwagen Adria Astella 704.'
+  },
+  {
+    id: 'CP-1077',
+    title: 'Absetzkabine Picku...',
+    category: 'Wohnmobile & Camper',
+    price: 15000,
+    pricePeriod: 'Kaufpreis',
+    location: 'Schkeuditz',
+    rating: 4.6,
+    reviewsCount: 3,
+    images: [
+      'https://images.unsplash.com/photo-1627664819818-e147d6221422?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Gewerblicher Anbieter',
+      verified: true,
+      type: 'Gewerblich'
+    },
+    features: ['Absetzkabine', 'Pickup'],
+    isExclusive: false,
+    isNegotiable: false,
+    publishedDate: '23.04.2026',
+    anzeigeNr: 'CP-1077',
+    viewsCount: 18,
+    likesCount: 0,
+    chatsCount: 0,
+    condition: 'Gebraucht',
+    status: 'Aktiv',
+    description: 'Praktische Absetzkabine für Pickup-Fahrzeuge.'
+  },
+  {
+    id: 'CP-1078',
+    title: 'Wohnkabine Festauf...',
+    category: 'Wohnmobile & Camper',
+    price: 17000,
+    pricePeriod: 'Kaufpreis',
+    location: 'Schkeuditz',
+    rating: 4.8,
+    reviewsCount: 4,
+    images: [
+      'https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Gewerblicher Anbieter',
+      verified: true,
+      type: 'Gewerblich'
+    },
+    features: ['Wohnkabine', 'Festaufbau'],
+    isExclusive: false,
+    isNegotiable: false,
+    publishedDate: '23.04.2026',
+    anzeigeNr: 'CP-1078',
+    viewsCount: 22,
+    likesCount: 1,
+    chatsCount: 0,
+    condition: 'Gebraucht',
+    status: 'Aktiv',
+    description: 'Solide Wohnkabine als Festaufbau.'
+  },
+  {
+    id: 'CP-1079',
+    title: 'Hymer Eriba 491 A ...',
+    category: 'Wohnmobile & Camper',
+    price: 7800,
+    pricePeriod: 'Kaufpreis',
+    location: 'Neudenau',
+    rating: 4.5,
+    reviewsCount: 2,
+    images: [
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: false,
+      type: ''
+    },
+    features: ['Klassiker', 'Eriba'],
+    isExclusive: false,
+    isNegotiable: false,
+    publishedDate: '23.04.2026',
+    anzeigeNr: 'CP-1079',
+    viewsCount: 15,
+    likesCount: 0,
+    chatsCount: 0,
+    condition: 'Gebraucht',
+    status: 'Aktiv',
+    description: 'Klassischer Hymer Eriba 491 A.'
   }
 ];
 
