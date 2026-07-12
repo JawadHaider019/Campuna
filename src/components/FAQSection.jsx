@@ -78,10 +78,8 @@ export default function FAQSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     >
-                      <div className="px-8 md:px-10 pb-4 font-sans text-base text-charcoal/70 leading-relaxed font-light max-w-3xl">
+                      <div className="px-8 md:px-10 pb-4 font-sans text-base text-charcoal/70 leading-relaxed font-light max-w-3xl whitespace-pre-line">
                         {faq.answer}
-
-
                       </div>
                     </motion.div>
                   )}

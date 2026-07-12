@@ -727,31 +727,39 @@ export const FAQS = [
   {
     id: 'faq_1',
     question: 'Was ist Campuna?',
-    answer: 'Campuna ist Deutschlands spezialisierter Marktplatz für gebrauchte Camping-Ausrüstung. Hier können Camper ihre gebrauchten Zelte, Schlafsäcke, Kocher und Wohnwagen-Zubehör kaufen und verkaufen – einfach, sicher und kostenlos.'
+    answer: `Campuna ist Deutschlands Camping-Marktplatz für alles rund ums Camping.
+
+Auf Campuna findest du Wohnmobile, Wohnwagen, Campingbusse, Zelte, Campingzubehör, Stellplätze, Campingplätze, Vermietungen, Dienstleistungen und Angebote von privaten sowie gewerblichen Anbietern.
+
+Ob kaufen, verkaufen, mieten oder entdecken – Campuna verbindet die Camping-Community auf einer Plattform.
+
+Neue Angebote, Anbieter und Camping-Inspirationen kommen regelmäßig dazu. Ein Besuch lohnt sich also immer.`
   },
   {
     id: 'faq_2',
     question: 'Für wen ist Campuna geeignet?',
-    answer: 'Campuna ist ideal für alle Camping-Begeisterten in Deutschland – egal ob Anfänger oder erfahrene Camper. Wer hochwertige Ausrüstung günstig kaufen oder gebrauchte Artikel verkaufen möchte, ist bei uns genau richtig.'
+    answer: `Campuna ist für alle geeignet, die Camping lieben – vom Einsteiger bis zum erfahrenen Camper.
+
+Egal ob du ein Wohnmobil, einen Wohnwagen, Campingzubehör, einen Stellplatz, einen Campingplatz, eine Vermietung oder Dienstleistungen rund ums Camping suchst oder selbst anbieten möchtest – auf Campuna findest du private und gewerbliche Angebote an einem Ort.`
   },
   {
     id: 'faq_3',
     question: 'Wie kann ich auf Campuna verkaufen?',
-    answer: 'Das Inserieren auf Campuna ist ganz einfach: Registriere dich kostenlos, erstelle dein Inserat mit Fotos und Beschreibung, und schon können Interessenten dich kontaktieren.'
+    answer: 'Das Inserieren auf Campuna ist kostenlos und in wenigen Minuten erledigt. Registriere dich, erstelle dein Inserat mit Fotos und einer Beschreibung und veröffentliche Angebote für Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze, Vermietungen oder Dienstleistungen. Interessenten können dich anschließend direkt über Campuna kontaktieren.'
   },
   {
     id: 'faq_4',
     question: 'Kostet das Inserieren auf Campuna etwas?',
-    answer: 'Nein! Das Einstellen von Inseraten auf Campuna ist komplett kostenlos. Wir glauben daran, dass Camper ohne versteckte Gebühren handeln können sollen.'
+    answer: 'Ja, private Inserate auf Campuna sind kostenlos. Du kannst Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze und viele weitere Camping-Angebote kostenlos inserieren. Für zusätzliche Sichtbarkeit stehen auf Wunsch optionale Premium- und Spotlight-Funktionen zur Verfügung.'
   },
   {
     id: 'faq_5',
-    question: 'Welche Camping-Artikel kann ich auf Campuna verkaufen?',
-    answer: 'Du kannst nahezu alle Camping-Artikel verkaufen: Zelte, Schlafsäcke, Isomatten, Campingkocher, Laternen, Rucksäcke, Wohnwagen-Zubehör, Campingmöbel und vieles mehr.'
+    question: 'Was kann ich auf Campuna anbieten?',
+    answer: 'Auf Campuna kannst du nahezu alles rund ums Camping anbieten. Dazu gehören Wohnmobile, Wohnwagen, Campingbusse, Zelte, Campingzubehör, Campingmöbel, Outdoor-Ausrüstung, Boote, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen rund ums Camping.'
   },
   {
     id: 'faq_6',
-    question: 'Wie finde ich günstige Camping-Ausrüstung auf Campuna?',
-    answer: 'Nutze einfach die Suchfunktion und filtere nach Kategorie, Preis oder Standort. So findest du schnell das passende Angebot in deiner Nähe oder deutschlandweit.'
+    question: 'Wie finde ich passende Angebote auf Campuna?',
+    answer: 'Nutze die Suchfunktion und filtere nach Kategorie, Preis oder Standort. So findest du schnell Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen – in deiner Nähe oder deutschlandweit.'
   }
 ];

@@ -5,11 +5,16 @@ export default function Footer() {
   return (
     <footer id="footer" className="bg-sand text-charcoal pt-16 pb-4">
       <div className="max-w-7xl mx-auto px-6 md:px-14">
+        <div className="mb-8">
+          <p className="font-sans text-[13px] text-charcoal/70 italic leading-relaxed text-center">
+            Campuna ist Deutschlands Camping-Marktplatz für Wohnmobile, Wohnwagen, Campingbusse, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen rund ums Camping. Entdecke Angebote von privaten und gewerblichen Anbietern – alles an einem Ort.
+          </p>
+        </div>
         {/* Main Footer Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-x-12 md:gap-y-8 lg:gap-x-12 lg:gap-y-10 xl:gap-8 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-start">
 
           {/* Logo & Manifesto Column */}
-          <div className="flex flex-col space-y-4 max-w-xs items-start md:col-start-1 md:row-start-1 md:row-span-3 lg:row-span-2 xl:col-start-1 xl:row-start-1 xl:row-span-1 h-auto">
+          <div className="flex flex-col space-y-4 max-w-xs items-start h-auto">
             <img
               src="/logo.png"
               alt="Campuna – Dein Camping-Marktplatz"
@@ -21,10 +26,11 @@ export default function Footer() {
               {`Wir sind da. Nutze es. Wenn du möchtest,
 bleib.`}
             </p>
+
           </div>
 
           {/* Navigation Column */}
-          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-1 lg:col-start-2 lg:row-start-1 xl:col-start-2 xl:row-start-1 h-auto">
+          <div className="space-y-4 min-w-[150px] h-auto">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Navigation
             </h4>
@@ -52,8 +58,63 @@ bleib.`}
             </ul>
           </div>
 
+          {/* Camping-Marktplatz Column */}
+          <div className="space-y-4 min-w-[180px] h-auto">
+            <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
+              Marktplatz
+            </h4>
+            <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
+              <li>
+                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Wohnmobil')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Wohnmobile
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Wohnwagen')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Wohnwagen
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Campingbus')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Campingbusse
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('category/ausrüstung-und-zubehör')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Campingzubehör
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('all_listings?cat=campingplätze-stellplätze&kw=Campingplatz')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Campingplätze
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('all_listings?cat=campingplätze-stellplätze&kw=Stellplatz')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Stellplätze
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('category/mieten-vermieten')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Vermietung
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('category/dienstleistungen')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Dienstleistungen
+                </a>
+              </li>
+              <li>
+                <a href={getParentNavigationUrl('all_business')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                  Anbieter
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
           {/* Support Column */}
-          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-2 lg:col-start-3 lg:row-start-1 lg:row-span-2 xl:col-start-3 xl:row-start-1 xl:row-span-1">
+          <div className="space-y-4 min-w-[150px]">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Support
             </h4>
@@ -83,7 +144,7 @@ bleib.`}
           </div>
 
           {/* Rechtliches Column */}
-          <div className="space-y-4 min-w-[150px] md:col-start-2 md:row-start-3 lg:col-start-2 lg:row-start-2 xl:col-start-4 xl:row-start-1">
+          <div className="space-y-4 min-w-[150px]">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Rechtliches
             </h4>
