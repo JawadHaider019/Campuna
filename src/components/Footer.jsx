@@ -1,5 +1,17 @@
 import { TbBrandFacebook, TbBrandTiktok, TbBrandInstagram, TbBrandYoutube } from 'react-icons/tb';
 import { getParentNavigationUrl } from '../utils/navigation';
+import { CATEGORIES } from '../data';
+
+const CATEGORY_SLUGS = {
+  'Camping Zubehör': 'ausrüstung-und-zubehör',
+  'Wohnmobile & Camper': 'fahrzeuge',
+  'Zelte & Dachzelte': 'zelte-and-dachzelte',
+  'Fahrräder & Träger': 'fahrräder-träger',
+  'Stellplätze & Campingplätze': 'campingplätze-stellplätze',
+  'Camping Services': 'dienstleistungen',
+  'Tiny Houses': 'tiny-houses',
+  'Mieten & Vermieten': 'mieten-vermieten'
+};
 
 export default function Footer() {
   return (
@@ -58,58 +70,26 @@ bleib.`}
             </ul>
           </div>
 
-          {/* Camping-Marktplatz Column */}
+          {/* Categories Column */}
           <div className="space-y-4 min-w-[180px] h-auto">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
-              Marktplatz
+              Kategorie
             </h4>
             <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
-              <li>
-                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Wohnmobil')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Wohnmobile
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Wohnwagen')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Wohnwagen
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('all_listings?cat=fahrzeuge&kw=Campingbus')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Campingbusse
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('category/ausrüstung-und-zubehör')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Campingzubehör
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('all_listings?cat=campingplätze-stellplätze&kw=Campingplatz')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Campingplätze
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('all_listings?cat=campingplätze-stellplätze&kw=Stellplatz')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Stellplätze
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('category/mieten-vermieten')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Vermietung
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('category/dienstleistungen')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Dienstleistungen
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('all_business')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Anbieter
-                </a>
-              </li>
-
+              {CATEGORIES.map((cat) => {
+                const slug = CATEGORY_SLUGS[cat.name] || '';
+                return (
+                  <li key={cat.id}>
+                    <a
+                      href={getParentNavigationUrl(`category/${slug}`)}
+                      target="_parent"
+                      className="hover:text-forest transition-colors font-[400]"
+                    >
+                      {cat.name}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
