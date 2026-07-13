@@ -13,7 +13,7 @@ import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 
 import { formatLocation } from '../utils/location';
-import WelcomeBanner from '../components/WelcomeBanner';
+
 import DiscoverCampuna from '../components/DiscoverCampuna';
 
 export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
@@ -193,14 +193,15 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
 
             {/* 1. Hero Section */}
-            <HeroSection
-                onSearch={handleSearch}
-                onExploreClick={() => navigateTo('/signup_login')}
-                onSellClick={() => navigateTo('/signup_login')}
-                searchRef={searchRef}
-                isLoggedIn={isLoggedIn}
-            />
-
+            <div className="-mt-18">
+                <HeroSection
+                    onSearch={handleSearch}
+                    onExploreClick={() => navigateTo('/signup_login')}
+                    onSellClick={() => navigateTo('/signup_login')}
+                    searchRef={searchRef}
+                    isLoggedIn={isLoggedIn}
+                />
+            </div>
             {/* 3. Grid Categories */}
             <div className="-mt-20 md:-mt-24" >
                 <CategoriesSection />
@@ -224,6 +225,9 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
             <BlogSection />
 
+            {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
+            <DiscoverCampuna />
+
             {/* 7. Why Campuna Features Section */}
             <WhyCampuna />
 
@@ -235,8 +239,6 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
             {/* 11. Custom FAQ Accordion */}
             <FAQSection />
-
-            <WelcomeBanner />
         </div >
     );
 }

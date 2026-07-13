@@ -8,7 +8,8 @@ import BusinessProfilePage from './pages/BusinessProfilePage';
 import ListingDetailPage from './pages/ListingDetailPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import HomePage from './pages/HeroPage';
+import HeroPage from './pages/HeroPage';
+import HomePage from './pages/Homepage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -119,7 +120,8 @@ const App = () => {
       {!isLoginPage && <Navbar isLoggedIn={loggedIn} alertCount={alertCount} />}
 
       <Routes>
-        <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
+        <Route path="/" element={<HeroPage isLoggedIn={loggedIn} />} />
+        <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
         <Route path="/auth" element={<LoginSignupPage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/category/:slug" element={<CategoryPage />} />
