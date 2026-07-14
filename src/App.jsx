@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import HeroPage from './pages/HeroPage';
 import HomePage from './pages/Homepage';
+import CreateListingPage from './pages/CreateListingPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -129,6 +130,9 @@ const App = () => {
         <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
         <Route path="/all_business" element={<BusinessProfilePage />} />
         <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
+        <Route path="/my_account" element={<CreateListingPage />} />
+        <Route path="/create_listing" element={<CreateListingPage />} />
+        <Route path="/create-listing" element={<CreateListingPage />} />
       </Routes>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}

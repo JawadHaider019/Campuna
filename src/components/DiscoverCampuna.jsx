@@ -312,8 +312,8 @@ export default function DiscoverCampuna() {
                             <button
                                 onClick={() => setActiveTool('payload')}
                                 className={`flex items-center gap-2 py-2 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'payload'
-                                        ? 'bg-forest text-gold shadow-md'
-                                        : 'text-charcoal/60 hover:bg-sand hover:text-forest'
+                                    ? 'bg-forest text-gold shadow-md'
+                                    : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
                                 <Scale className="w-4 h-4" /> Zuladungsrechner (z.G.G.)
@@ -321,8 +321,8 @@ export default function DiscoverCampuna() {
                             <button
                                 onClick={() => setActiveTool('costs')}
                                 className={`flex items-center gap-2 py-2 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'costs'
-                                        ? 'bg-forest text-gold shadow-md'
-                                        : 'text-charcoal/60 hover:bg-sand hover:text-forest'
+                                    ? 'bg-forest text-gold shadow-md'
+                                    : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
                                 <Fuel className="w-4 h-4" /> Sprit- & Reisekostenrechner
@@ -494,10 +494,10 @@ export default function DiscoverCampuna() {
                                             <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5">
                                                 <div
                                                     className={`h-full transition-all duration-300 rounded-full ${remainingPayload < 0
-                                                            ? 'bg-rose-500'
-                                                            : remainingPayload < 50
-                                                                ? 'bg-amber-500'
-                                                                : 'bg-forest'
+                                                        ? 'bg-rose-500'
+                                                        : remainingPayload < 50
+                                                            ? 'bg-amber-500'
+                                                            : 'bg-forest'
                                                         }`}
                                                     style={{ width: `${payloadPercentage}%` }}
                                                 />
@@ -512,10 +512,10 @@ export default function DiscoverCampuna() {
 
                                     {/* Warning Info box */}
                                     <div className={`mt-6 p-4 rounded-xl flex items-start gap-2 border text-xs leading-relaxed ${remainingPayload < 0
-                                            ? 'bg-rose-50 border-rose-100 text-rose-800'
-                                            : remainingPayload < 50
-                                                ? 'bg-amber-50 border-amber-100 text-amber-800'
-                                                : 'bg-emerald-50 border-emerald-100 text-emerald-800'
+                                        ? 'bg-rose-50 border-rose-100 text-rose-800'
+                                        : remainingPayload < 50
+                                            ? 'bg-amber-50 border-amber-100 text-amber-800'
+                                            : 'bg-emerald-50 border-emerald-100 text-emerald-800'
                                         }`}>
                                         <Info className={`w-4 h-4 shrink-0 mt-0.5 ${remainingPayload < 0 ? 'text-rose-500' : 'text-forest'}`} />
                                         <div>
@@ -714,8 +714,8 @@ export default function DiscoverCampuna() {
                     <button
                         onClick={() => setActiveTab('tips')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tips'
-                                ? 'border-forest text-forest'
-                                : 'border-transparent text-charcoal/50 hover:text-forest'
+                            ? 'border-forest text-forest'
+                            : 'border-transparent text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Lightbulb className="w-4 h-4" /> Camping-Tipps
@@ -723,8 +723,8 @@ export default function DiscoverCampuna() {
                     <button
                         onClick={() => setActiveTab('inspiration')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'inspiration'
-                                ? 'border-forest text-forest'
-                                : 'border-transparent text-charcoal/50 hover:text-forest'
+                            ? 'border-forest text-forest'
+                            : 'border-transparent text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Compass className="w-4 h-4" /> Inspirationen
@@ -732,8 +732,8 @@ export default function DiscoverCampuna() {
                     <button
                         onClick={() => setActiveTab('community')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'community'
-                                ? 'border-forest text-forest'
-                                : 'border-transparent text-charcoal/50 hover:text-forest'
+                            ? 'border-forest text-forest'
+                            : 'border-transparent text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <MessageSquare className="w-4 h-4" /> Community-Fragen
@@ -741,8 +741,8 @@ export default function DiscoverCampuna() {
                     <button
                         onClick={() => setActiveTab('tools')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tools'
-                                ? 'border-forest text-forest'
-                                : 'border-transparent text-charcoal/50 hover:text-forest'
+                            ? 'border-forest text-forest'
+                            : 'border-transparent text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Calculator className="w-4 h-4" /> Interaktive Camping-Tools
