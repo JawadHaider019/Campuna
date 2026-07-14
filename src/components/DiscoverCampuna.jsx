@@ -311,15 +311,7 @@ export default function DiscoverCampuna() {
                                         {tip.excerpt}
                                     </p>
                                 </div>
-                                <div className="pt-4 border-t border-forest/5 flex items-center justify-between">
-                                    <span className="text-[11px] text-charcoal/45 font-sans font-medium flex items-center gap-1">
-                                        <Lightbulb className="w-3.5 h-3.5 text-gold" />
-                                        {tip.readTime}
-                                    </span>
-                                    <button className="text-[11px] font-bold text-forest hover:text-gold uppercase tracking-wider flex items-center gap-1 transition-colors">
-                                        Lesen <ArrowRight className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
+
                             </div>
                         ))}
                     </motion.div>
@@ -365,12 +357,7 @@ export default function DiscoverCampuna() {
                                             {insp.description}
                                         </p>
                                     </div>
-                                    <div className="pt-3 border-t border-forest/5 flex items-center justify-between">
-                                        <span className="text-[11px] font-mono text-charcoal/50">Dauer: {insp.duration}</span>
-                                        <button className="text-[11px] font-bold text-forest hover:text-gold uppercase tracking-wider flex items-center gap-1 transition-colors">
-                                            Route laden <Compass className="w-3.5 h-3.5 text-forest group-hover:text-gold" />
-                                        </button>
-                                    </div>
+
                                 </div>
                             </div>
                         ))}
