@@ -436,7 +436,7 @@ export default function CreateListingPage() {
                                                 <button
                                                     type="button"
                                                     onClick={() => removeImage(idx)}
-                                                    className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow hover:bg-red-650"
+                                                    className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center  transition-opacity duration-200 shadow hover:bg-red-650"
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" />
                                                 </button>
