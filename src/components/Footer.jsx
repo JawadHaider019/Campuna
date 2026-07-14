@@ -161,16 +161,16 @@ bleib.`}
           </p>
 
           <div className="flex items-center gap-5 justify-center">
-            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
+            <a href="https://www.facebook.com/people/campunade/61580574896053/" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
               <TbBrandFacebook className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
-            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
+            <a href="https://www.tiktok.com/@campuna.de" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
               <TbBrandTiktok className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
-            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
+            <a href="https://www.instagram.com/campuna.de/" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
               <TbBrandInstagram className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
-            <a href="#" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
+            <a href="https://www.youtube.com/@campuna?si=YU8ngbf058KMRVy0" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
               <TbBrandYoutube className="w-6 h-6 text-forest" strokeWidth={1.5} />
             </a>
           </div>
