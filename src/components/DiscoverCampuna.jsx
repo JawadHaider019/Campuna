@@ -304,7 +304,7 @@ export default function DiscoverCampuna() {
                                         </span>
                                         <span className="text-[11px] text-charcoal/40 font-mono">{tip.date}</span>
                                     </div>
-                                    <h3 className="font-display text-base sm:text-lg font-bold text-forest hover:text-gold transition-colors duration-200 mb-2.5 leading-snug cursor-pointer">
+                                    <h3 className="font-display text-base sm:text-lg font-bold text-forest  transition-colors duration-200 mb-2.5 leading-snug ">
                                         {tip.title}
                                     </h3>
                                     <p className="font-sans text-[13px] text-charcoal/70 leading-relaxed font-light mb-4">
@@ -350,7 +350,7 @@ export default function DiscoverCampuna() {
                                                 </span>
                                             ))}
                                         </div>
-                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 cursor-pointer">
+                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2  ">
                                             {insp.title}
                                         </h3>
                                         <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-2">
