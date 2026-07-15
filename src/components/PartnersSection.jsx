@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useMotionValue, animate } from 'motion/react';
+import { motion, useMotionValue } from 'motion/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { PROVIDERS } from '../data';
 import { navigateTo } from '../utils/navigation';
@@ -7,68 +7,63 @@ import { navigateTo } from '../utils/navigation';
 export default function PartnersSection({ onPartnerClick }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
-    const [cardWidth, setCardWidth] = useState(320);
-
-    const x = useMotionValue(0);
-    const [isHovered, setIsHovered] = useState(false);
-    const [loopTrigger, setLoopTrigger] = useState(0);
     const [randomizedProviders, setRandomizedProviders] = useState(() =>
         [...PROVIDERS].sort(() => Math.random() - 0.5)
     );
 
+    const x = useMotionValue(0);
+    const isHoveredRef = useRef(false);
+    const isDraggingRef = useRef(false);
+    const cardWidthRef = useRef(360);
     const gap = 16; // gap-4 = 16px
 
     // Measure actual card width + gap from DOM
-    const measureCard = useCallback(() => {
-        if (!rowRef.current) return;
-        const card = rowRef.current.querySelector('.provider-card');
-        if (card) {
-            const w = card.getBoundingClientRect().width;
-            setCardWidth(w);
-        }
-        setConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
-    }, []);
-
     useEffect(() => {
+        const measureCard = () => {
+            if (!rowRef.current) return;
+            const card = rowRef.current.querySelector('.provider-card');
+            if (card) {
+                cardWidthRef.current = card.getBoundingClientRect().width;
+            }
+            setConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
+        };
+
         const timer = setTimeout(measureCard, 100);
         window.addEventListener('resize', measureCard);
         return () => {
             clearTimeout(timer);
             window.removeEventListener('resize', measureCard);
         };
-    }, [measureCard, loopTrigger]);
-
-    // Auto-scroll loop using measured card width
-    useEffect(() => {
-        if (isHovered) return;
-
-        const step = cardWidth + gap;
-        const target = -step * randomizedProviders.length;
-        const currentVal = x.get();
-
-        const remainingDistance = Math.abs(target - currentVal);
-        const totalDistance = Math.abs(target);
-        const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
-        const duration = 90 * fraction;
-
-        const controls = animate(x, target, {
-            type: 'tween',
-            ease: 'linear',
-            duration,
-            onComplete: () => {
-                x.set(0);
-                setLoopTrigger(prev => prev + 1);
-            },
-        });
-
-        return () => controls.stop();
-    }, [isHovered, loopTrigger, cardWidth, randomizedProviders]);
-
-    useEffect(() => {
-        if (rowRef.current) {
-            setConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
-        }
     }, [randomizedProviders]);
+
+    // Auto-scroll loop using measured card width and requestAnimationFrame
+    useEffect(() => {
+        let animationFrameId;
+        let lastTime = performance.now();
+
+        const loop = (time) => {
+            const delta = (time - lastTime) / 1000; // in seconds
+            lastTime = time;
+
+            if (randomizedProviders.length > 0 && !isHoveredRef.current && !isDraggingRef.current) {
+                const step = cardWidthRef.current + gap;
+                const maxMove = step * randomizedProviders.length;
+                let currentX = x.get() - 30 * delta; // slides left, 30 px/s
+                while (currentX <= -maxMove) {
+                    currentX += maxMove;
+                }
+                while (currentX > 0) {
+                    currentX -= maxMove;
+                }
+                x.set(currentX);
+            }
+
+            animationFrameId = requestAnimationFrame(loop);
+        };
+
+        animationFrameId = requestAnimationFrame(loop);
+        return () => cancelAnimationFrame(animationFrameId);
+    }, [randomizedProviders.length]);
 
     const ProviderCard = ({ partner }) => (
         <div
@@ -178,8 +173,10 @@ export default function PartnersSection({ onPartnerClick }) {
                             drag="x"
                             dragConstraints={{ right: 0, left: -constraints }}
                             style={{ x }}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
+                            onDragStart={() => { isDraggingRef.current = true; }}
+                            onDragEnd={() => { isDraggingRef.current = false; }}
+                            onMouseEnter={() => { isHoveredRef.current = true; }}
+                            onMouseLeave={() => { isHoveredRef.current = false; }}
                             className="flex gap-4 w-max px-4 sm:px-16 md:px-32 pb-3"
                         >
                             {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (

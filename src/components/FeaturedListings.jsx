@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { motion, useMotionValue, animate } from 'motion/react';
+import { motion, useMotionValue } from 'motion/react';
 import { Heart, MapPin, ShieldCheck, Eye, ArrowRight } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
@@ -50,13 +50,33 @@ export default function FeaturedListings({
     };
   }, [filteredListings]);
 
+  const isHovered1Ref = useRef(false);
+  const isHovered2Ref = useRef(false);
+  const isDragging1Ref = useRef(false);
+  const isDragging2Ref = useRef(false);
+  const cardWidthRef = useRef(350);
+  const gap = 20; // gap-5 = 20px
+
   useEffect(() => {
-    if (row1Ref.current) {
-      setRow1Constraints(row1Ref.current.scrollWidth - row1Ref.current.offsetWidth);
-    }
-    if (row2Ref.current) {
-      setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
-    }
+    const measure = () => {
+      if (row1Ref.current) {
+        const card = row1Ref.current.querySelector('.listing-card');
+        if (card) {
+          cardWidthRef.current = card.getBoundingClientRect().width;
+        }
+        setRow1Constraints(row1Ref.current.scrollWidth - row1Ref.current.offsetWidth);
+      }
+      if (row2Ref.current) {
+        setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
+      }
+    };
+
+    const timer = setTimeout(measure, 100);
+    window.addEventListener('resize', measure);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measure);
+    };
   }, [firstRow, secondRow]);
 
   const handleCardClick = (item) => {
@@ -67,65 +87,54 @@ export default function FeaturedListings({
   const x1 = useMotionValue(0);
   const x2 = useMotionValue(0);
 
-  const [isHovered1, setIsHovered1] = useState(false);
-  const [isHovered2, setIsHovered2] = useState(false);
-
-  const [loopTrigger1, setLoopTrigger1] = useState(0);
-  const [loopTrigger2, setLoopTrigger2] = useState(0);
-
   useEffect(() => {
+    const step = cardWidthRef.current + gap;
     x1.set(0);
-    x2.set(-420 * secondRow.length);
+    x2.set(-step * secondRow.length);
   }, [firstRow.length, secondRow.length]);
 
   useEffect(() => {
-    if (isHovered1 || firstRow.length === 0) return;
+    let animationFrameId;
+    let lastTime = performance.now();
 
-    const target = -420 * firstRow.length;
-    const currentVal = x1.get();
+    const loop = (time) => {
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
 
-    const remainingDistance = Math.abs(target - currentVal);
-    const totalDistance = Math.abs(target);
-    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
-    const duration = 60 * fraction;
+      const step = cardWidthRef.current + gap;
 
-    const controls = animate(x1, target, {
-      type: "tween",
-      ease: "linear",
-      duration: duration,
-      onComplete: () => {
-        x1.set(0);
-        setLoopTrigger1(prev => prev + 1);
+      // Row 1: slides left (decreasing value)
+      if (firstRow.length > 0 && !isHovered1Ref.current && !isDragging1Ref.current) {
+        const maxMove = step * firstRow.length;
+        let currentX = x1.get() - 40 * delta; // 40 px/s
+        while (currentX <= -maxMove) {
+          currentX += maxMove;
+        }
+        while (currentX > 0) {
+          currentX -= maxMove;
+        }
+        x1.set(currentX);
       }
-    });
 
-    return () => controls.stop();
-  }, [isHovered1, loopTrigger1, firstRow.length]);
-
-  useEffect(() => {
-    if (isHovered2 || secondRow.length === 0) return;
-
-    const target = 0;
-    const startVal = -420 * secondRow.length;
-    const currentVal = x2.get();
-
-    const remainingDistance = Math.abs(target - currentVal);
-    const totalDistance = Math.abs(startVal);
-    const fraction = totalDistance > 0 ? remainingDistance / totalDistance : 1;
-    const duration = 65 * fraction;
-
-    const controls = animate(x2, target, {
-      type: "tween",
-      ease: "linear",
-      duration: duration,
-      onComplete: () => {
-        x2.set(startVal);
-        setLoopTrigger2(prev => prev + 1);
+      // Row 2: slides right (increasing value)
+      if (secondRow.length > 0 && !isHovered2Ref.current && !isDragging2Ref.current) {
+        const maxMove = step * secondRow.length;
+        let currentX = x2.get() + 38 * delta; // 38 px/s
+        while (currentX < -maxMove) {
+          currentX += maxMove;
+        }
+        while (currentX >= 0) {
+          currentX -= maxMove;
+        }
+        x2.set(currentX);
       }
-    });
 
-    return () => controls.stop();
-  }, [isHovered2, loopTrigger2, secondRow.length]);
+      animationFrameId = requestAnimationFrame(loop);
+    };
+
+    animationFrameId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [firstRow.length, secondRow.length]);
 
   function ListingCard({ item, isWishlisted }) {
     const [imgIdx, setImgIdx] = useState(0);
@@ -138,7 +147,7 @@ export default function FeaturedListings({
     return (
       <div
         onClick={() => handleCardClick(item)}
-        className="group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
+        className="listing-card group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
       >
         {/* Image Area */}
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
@@ -281,8 +290,10 @@ export default function FeaturedListings({
                 drag="x"
                 dragConstraints={{ right: 0, left: -row1Constraints }}
                 style={{ x: x1 }}
-                onMouseEnter={() => setIsHovered1(true)}
-                onMouseLeave={() => setIsHovered1(false)}
+                onDragStart={() => { isDragging1Ref.current = true; }}
+                onDragEnd={() => { isDragging1Ref.current = false; }}
+                onMouseEnter={() => { isHovered1Ref.current = true; }}
+                onMouseLeave={() => { isHovered1Ref.current = false; }}
                 className="flex gap-5 w-max "
               >
                 {[...firstRow, ...firstRow].map((item, idx) => (
@@ -297,8 +308,10 @@ export default function FeaturedListings({
                 drag="x"
                 dragConstraints={{ right: 0, left: -row2Constraints }}
                 style={{ x: x2 }}
-                onMouseEnter={() => setIsHovered2(true)}
-                onMouseLeave={() => setIsHovered2(false)}
+                onDragStart={() => { isDragging2Ref.current = true; }}
+                onDragEnd={() => { isDragging2Ref.current = false; }}
+                onMouseEnter={() => { isHovered2Ref.current = true; }}
+                onMouseLeave={() => { isHovered2Ref.current = false; }}
                 className="flex gap-5 w-max"
               >
                 {[...secondRow, ...secondRow].map((item, idx) => (
