@@ -639,27 +639,27 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="bg-white rounded-3xl border border-forest/5 shadow-md p-6 sm:p-8"
+                        className="bg-white rounded-3xl border border-forest/5 shadow-md p-4 sm:p-6"
                     >
                         {/* Tool Selection Tabs */}
-                        <div className="flex border-b border-forest/10 pb-4 mb-6 gap-4">
+                        <div className="flex border-b border-forest/10 pb-4 mb-4 gap-4">
                             <button
                                 onClick={() => setActiveTool('payload')}
-                                className={`flex items-center gap-2 py-2 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'payload'
+                                className={`flex items-center gap-2 py-2 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'payload'
                                     ? 'bg-forest text-gold shadow-md'
                                     : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
-                                <Scale className="w-4 h-4" /> Zuladungsrechner (z.G.G.)
+                                <Scale className="w-4 h-4" /> Zuladung <span className="text-xs sm:block hidden">(z.G.G.)</span>
                             </button>
                             <button
                                 onClick={() => setActiveTool('costs')}
-                                className={`flex items-center gap-2 py-2 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'costs'
+                                className={`flex items-center gap-2 py-2 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'costs'
                                     ? 'bg-forest text-gold shadow-md'
                                     : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
-                                <Fuel className="w-4 h-4" /> Sprit- & Reisekostenrechner
+                                <Fuel className="w-4 h-4" />Sprit &<span className="sm:hidden block">Reise</span><span className=" sm:block hidden">Reisekostenrechner</span>
                             </button>
                         </div>
 
