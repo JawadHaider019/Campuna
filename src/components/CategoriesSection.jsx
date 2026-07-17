@@ -7,7 +7,8 @@ import {
   Trees,
   Wrench,
   Home,
-  Key
+  Key,
+  Sailboat
 } from 'lucide-react';
 import { CATEGORIES } from '../data';
 import { getParentNavigationUrl } from '../utils/navigation';
@@ -20,7 +21,8 @@ const ICON_MAP = {
   'Stellplätze & Campingplätze': Trees,
   'Camping Services': Wrench,
   'Tiny Houses': Home,
-  'Mieten & Vermieten': Key
+  'Mieten & Vermieten': Key,
+  'Boote & Wassersport': Sailboat
 };
 
 // Mapping category names to their respective URL slugs
@@ -32,7 +34,8 @@ const CATEGORY_SLUGS = {
   'Stellplätze & Campingplätze': 'campingplätze-stellplätze',
   'Camping Services': 'dienstleistungen',
   'Tiny Houses': 'tiny-houses',
-  'Mieten & Vermieten': 'mieten-vermieten'
+  'Mieten & Vermieten': 'mieten-vermieten',
+  'Boote & Wassersport': 'boats-watersports'
 };
 
 export default function CategoriesSection({ onSelectCategory, excludeCategory }) {
@@ -51,9 +54,12 @@ export default function CategoriesSection({ onSelectCategory, excludeCategory })
     // Don't prevent default
   };
 
-  const gridClass = filteredCategories.length === 7
+  const colCount = filteredCategories.length;
+  const gridClass = colCount === 7
     ? "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-7 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x"
-    : "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-8 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x";
+    : colCount === 8
+      ? "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-8 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x"
+      : "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-9 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x";
 
   return (
     <section id="categories" className="relative  z-20 max-w-7xl mx-auto px-4 ">

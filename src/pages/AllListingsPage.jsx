@@ -75,6 +75,14 @@ const CATEGORY_SUBCATEGORIES = {
         'Wohnmobil mieten',
         'Wohnwagen mieten',
         'Zubehör mieten'
+    ],
+    'Boote & Wassersport': [
+        'Motorboote',
+        'Segelboote',
+        'Schlauchboote',
+        'Kajaks & SUPs',
+        'Wassersportausrüstung',
+        'Zubehör & Sonstiges'
     ]
 };
 
@@ -217,8 +225,8 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                             onToggleWishlist(item.id);
                         }}
                         className={`w-7 h-7 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
-                                ? 'bg-rose-500 text-white hover:bg-rose-600 scale-105'
-                                : 'bg-white/75 hover:bg-white text-forest hover:scale-105'
+                            ? 'bg-rose-500 text-white hover:bg-rose-600 scale-105'
+                            : 'bg-white/75 hover:bg-white text-forest hover:scale-105'
                             }`}
                     >
                         <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-current' : ''}`} />
@@ -628,8 +636,8 @@ export default function AllListingsPage() {
                                             type="button"
                                             onClick={() => setAnbieter(opt.key)}
                                             className={`py-1.5 px-1 rounded-full text-[10px] font-bold uppercase tracking-wide transition-all ${anbieter === opt.key
-                                                    ? 'bg-forest text-white'
-                                                    : 'text-charcoal/65 hover:text-charcoal hover:bg-sand/40'
+                                                ? 'bg-forest text-white'
+                                                : 'text-charcoal/65 hover:text-charcoal hover:bg-sand/40'
                                                 }`}
                                         >
                                             {opt.label}
@@ -1030,8 +1038,8 @@ export default function AllListingsPage() {
                                                 type="button"
                                                 onClick={() => setAnbieter(opt.key)}
                                                 className={`py-1.5 px-1 rounded-full text-[10px] font-bold uppercase tracking-wide transition-all ${anbieter === opt.key
-                                                        ? 'bg-forest text-white'
-                                                        : 'text-charcoal/65 hover:text-charcoal hover:bg-sand/40'
+                                                    ? 'bg-forest text-white'
+                                                    : 'text-charcoal/65 hover:text-charcoal hover:bg-sand/40'
                                                     }`}
                                             >
                                                 {opt.label}

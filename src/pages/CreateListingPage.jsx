@@ -72,6 +72,14 @@ const SUBCATEGORIES_MAP = {
         'Camper mieten',
         'Wohnwagen mieten',
         'Zubehör mieten'
+    ],
+    'Boote & Wassersport': [
+        'Motorboote',
+        'Segelboote',
+        'Schlauchboote',
+        'Kajaks & SUPs',
+        'Wassersport-Zubehör',
+        'Sonstiges'
     ]
 };
 

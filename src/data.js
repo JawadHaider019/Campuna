@@ -119,6 +119,21 @@ export const CATEGORIES = [
       'Entdecke Mietangebote für Wohnmobile, Wohnwagen, Camper, Zubehör und weitere Campinglösungen.',
       'Campuna verbindet Vermieter und Mieter direkt miteinander und bietet eine zentrale Plattform für Camping-Mietangebote.'
     ]
+  },
+  {
+    id: '9',
+    name: 'Boote & Wassersport',
+    count: 7,
+    image: '/collection/camping-zubehoer-hero.png',
+    slug: 'boats-watersports',
+    iconName: 'Sailboat',
+    heroTitle: 'Boote & Wassersport auf Campuna entdecken',
+    heroSubtitle: 'Entdecke Boote, Wassersportausrüstung und Zubehör auf Campuna. Finde passende Angebote für Motorboote, Segelboote, Schlauchboote, Kajaks, SUPs, Jetskis und vieles mehr für dein nächstes Abenteuer auf dem Wasser.',
+    seoHeading: 'Boote & Wassersport',
+    seoParagraphs: [
+      'Entdecke Boote, Wassersportausrüstung und passendes Zubehör für Freizeit und Urlaub. Finde Motorboote, Segelboote, Kajaks, SUPs, Schlauchboote, Jetskis und weitere Angebote für unvergessliche Erlebnisse auf dem Wasser.',
+      'Campuna bringt Käufer und Verkäufer direkt zusammen.'
+    ]
   }
 ];
 
@@ -520,6 +535,64 @@ export const FEATURED_LISTINGS = [
     condition: 'Gebraucht',
     status: 'Aktiv',
     description: 'Klassischer Hymer Eriba 491 A.'
+  },
+  {
+    id: 'lst_12',
+    title: 'Kajak Sevylor Colorado 2-Personen Schlauchboot',
+    category: 'Boote & Wassersport',
+    price: 320,
+    pricePeriod: 'Preis',
+    location: 'Leipzig, Sachsen',
+    rating: 4.8,
+    reviewsCount: 5,
+    images: [
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['Schlauchboot', 'Paddel inkl.', 'Sehr guter Zustand'],
+    isExclusive: false,
+    isNegotiable: true,
+    publishedDate: '24.04.2026',
+    anzeigeNr: 'CP-1080',
+    viewsCount: 22,
+    likesCount: 1,
+    chatsCount: 0,
+    condition: 'Sehr gut',
+    status: 'Aktiv',
+    description: 'Zweier-Kajak Sevylor Colorado in sehr gutem Zustand. Inklusive Paddel und Luftpumpe.'
+  },
+  {
+    id: 'lst_13',
+    title: 'Stand Up Paddle Board Red Paddle Co 10.6',
+    category: 'Boote & Wassersport',
+    price: 450,
+    pricePeriod: 'Preis',
+    location: 'Stuttgart, BW',
+    rating: 4.9,
+    reviewsCount: 7,
+    images: [
+      'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    seller: {
+      name: 'Privatverkäufer',
+      verified: true,
+      type: 'Privat'
+    },
+    features: ['SUP', 'Inflatable', 'Zubehör Rucksack'],
+    isExclusive: true,
+    isNegotiable: false,
+    publishedDate: '25.04.2026',
+    anzeigeNr: 'CP-1081',
+    viewsCount: 34,
+    likesCount: 3,
+    chatsCount: 1,
+    condition: 'Gut',
+    status: 'Aktiv',
+    description: 'Premium SUP Board von Red Paddle Co, robust und langlebig. Mit Rucksack und Pumpe.'
   }
 ];
 
