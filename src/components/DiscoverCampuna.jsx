@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Lightbulb,
@@ -162,6 +162,119 @@ const INITIAL_COMMUNITY_QUESTIONS = [
 export default function DiscoverCampuna() {
     const [activeTab, setActiveTab] = useState('tips');
 
+    // ── Pre-fetched Tips and Inspiration State ──
+    const [tips, setTips] = useState(DISCOVER_TIPS);
+    const [inspirations, setInspirations] = useState(DISCOVER_INSPIRATION);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchTipsAndInspirations = async () => {
+            setIsLoading(true);
+            try {
+                const res = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.status === 'success' && data.response) {
+                        // 1. Map Tips
+                        if (data.response.Tips && data.response.Tips.length > 0) {
+                            const mappedTips = data.response.Tips.map((tip, idx) => {
+                                const category = tip.Category || 'Allgemein';
+                                let badgeColor = 'bg-amber-50 text-amber-700 border-amber-100';
+                                if (category.toLowerCase().includes('recht')) {
+                                    badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-100';
+                                } else if (category.toLowerCase().includes('pflege') || category.toLowerCase().includes('fzg') || category.toLowerCase().includes('wartung') || category.toLowerCase().includes('fahrzeug')) {
+                                    badgeColor = 'bg-blue-50 text-blue-700 border-blue-100';
+                                }
+
+                                let formattedDate = 'Heute';
+                                if (tip['Modified Date'] || tip['Created Date']) {
+                                    const timestamp = tip['Modified Date'] || tip['Created Date'];
+                                    const dateObj = new Date(timestamp);
+                                    if (!isNaN(dateObj.getTime())) {
+                                        const now = new Date();
+                                        const d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                                        const d2 = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+                                        const diffTime = d1 - d2;
+                                        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+                                        if (diffDays === 0) {
+                                            formattedDate = 'Heute';
+                                        } else if (diffDays === 1) {
+                                            formattedDate = 'Gestern';
+                                        } else if (diffDays === 7) {
+                                            formattedDate = 'Vor einer Woche';
+                                        } else {
+                                            formattedDate = dateObj.toLocaleDateString('de-DE', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric'
+                                            });
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    id: tip._id || `api_tip_${idx}`,
+                                    title: tip.Title || 'Kein Titel',
+                                    excerpt: tip.Desc || tip.desc || '',
+                                    readTime: `${Math.max(3, Math.ceil((tip.Desc || tip.desc || '').split(' ').length / 150))} Min. Lesezeit`,
+                                    category: category,
+                                    date: formattedDate,
+                                    views: `${Math.floor(Math.random() * 500) + 100} views`,
+                                    badgeColor: badgeColor
+                                };
+                            });
+                            setTips(mappedTips);
+                        }
+
+                        // 2. Map Inspiration listings
+                        if (data.response.listing && data.response.listing.length > 0) {
+                            const mappedInspirations = data.response.listing.map((item, idx) => {
+                                const id = item._id || item.id || `api_insp_${idx}`;
+                                const title = item.Title || item.title || 'Keine Route';
+                                const description = item.Desc || item.desc || item.Description || item.description || '';
+                                const location = item.Location || item.location || 'Deutschland';
+                                const duration = item.Duration || item.duration || '3-5 Tage';
+                                const imageObj = item.Image || item.image || item.images || item.Images;
+                                let image = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
+                                if (typeof imageObj === 'string' && imageObj.startsWith('http')) {
+                                    image = imageObj;
+                                } else if (Array.isArray(imageObj) && imageObj.length > 0) {
+                                    image = imageObj[0];
+                                }
+
+                                const tagsObj = item.Tags || item.tags || ['Entdecken'];
+                                const tags = Array.isArray(tagsObj) ? tagsObj : (typeof tagsObj === 'string' ? tagsObj.split(',').map(t => t.trim()) : ['Entdecken']);
+
+                                return {
+                                    id,
+                                    title,
+                                    location,
+                                    duration,
+                                    image,
+                                    tags,
+                                    description
+                                };
+                            });
+                            setInspirations(mappedInspirations);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching tips and inspiration:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTipsAndInspirations();
+    }, []);
+
     // ── Community Q&A State ──
     const [questions, setQuestions] = useState(INITIAL_COMMUNITY_QUESTIONS);
     const [expandedQuestionId, setExpandedQuestionId] = useState(null);
@@ -292,7 +405,7 @@ export default function DiscoverCampuna() {
                         transition={{ duration: 0.4 }}
                         className="grid grid-cols-1 md:grid-cols-3 gap-6"
                     >
-                        {DISCOVER_TIPS.map((tip) => (
+                        {tips.map((tip) => (
                             <div
                                 key={tip.id}
                                 className="bg-white rounded-3xl p-6 border border-forest/5 shadow-md hover:shadow-xl hover:border-forest/10 transition-all duration-300 flex flex-col justify-between"
@@ -326,7 +439,7 @@ export default function DiscoverCampuna() {
                         transition={{ duration: 0.4 }}
                         className="grid grid-cols-1 md:grid-cols-2 gap-6"
                     >
-                        {DISCOVER_INSPIRATION.map((insp) => (
+                        {inspirations.map((insp) => (
                             <div
                                 key={insp.id}
                                 className="group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row"
@@ -663,17 +776,360 @@ export default function DiscoverCampuna() {
                             </button>
                         </div>
 
-                        <div className="min-h-[250px] flex flex-col items-center justify-center text-center p-8 bg-sand/20 rounded-3xl border border-forest/10 mt-6 md:p-12">
-                            <div className="bg-forest/10 p-4 rounded-full text-forest mb-4 animate-pulse">
-                                <Wrench className="w-8 h-8" />
+                        {activeTool === 'payload' ? (
+                            // Option A: Payload Calculator
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+                                {/* Inputs */}
+                                <div className="lg:col-span-7 space-y-5">
+                                    <div className="flex items-center gap-2 text-forest mb-2">
+                                        <Scale className="w-5 h-5 text-forest" />
+                                        <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
+                                    </div>
+                                    <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
+                                        Berechne das verbleibende Gewicht deines Fahrzeugs, um Überladung und hohe Bußgelder im Camping-Urlaub zu vermeiden.
+                                    </p>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {/* Max Weight */}
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                Zul. Gesamtgewicht (kg)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={maxWeight}
+                                                onChange={e => setMaxWeight(Number(e.target.value))}
+                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                            />
+                                        </div>
+                                        {/* Empty Weight */}
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                Masse fahrbereit (kg)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={emptyWeight}
+                                                onChange={e => setEmptyWeight(Number(e.target.value))}
+                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Cargo Sliders */}
+                                    <div className="space-y-4 pt-3">
+                                        {/* Driver, Passengers */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Fahrer (kg)</span>
+                                                    <span>{driverWeight} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="50" max="150" step="1"
+                                                    value={driverWeight} onChange={e => setDriverWeight(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Beifahrer / Mitf.</span>
+                                                    <span>{passengers} Pers.</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="0" max="6" step="1"
+                                                    value={passengers} onChange={e => setPassengers(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Gew. je Beif. (kg)</span>
+                                                    <span>{passengersWeight} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="40" max="120" step="1"
+                                                    value={passengersWeight} onChange={e => setPassengersWeight(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Water and Gas */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Wasser (Liter/kg)</span>
+                                                    <span>{waterWater} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="0" max="250" step="5"
+                                                    value={waterWater} onChange={e => setWaterWater(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Gasflaschen (kg)</span>
+                                                    <span>{gasWeight} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="0" max="60" step="1"
+                                                    value={gasWeight} onChange={e => setGasWeight(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Baggage and Equipment */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Gepäck & Vorräte (kg)</span>
+                                                    <span>{baggage} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="20" max="500" step="5"
+                                                    value={baggage} onChange={e => setBaggage(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Ausrüstung / Stühle (kg)</span>
+                                                    <span>{equipment} kg</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="0" max="300" step="5"
+                                                    value={equipment} onChange={e => setEquipment(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Results Screen */}
+                                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
+                                    <div>
+                                        <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Ergebnis</h5>
+
+                                        <div className="space-y-4">
+                                            {/* Current Total */}
+                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                <span className="text-xs text-charcoal/60">Aktuelles Gesamtgewicht:</span>
+                                                <span className="text-xl font-bold text-forest">{currentTotalWeight} kg</span>
+                                            </div>
+
+                                            {/* Max Limit */}
+                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                <span className="text-xs text-charcoal/60">Zulässiges Limit:</span>
+                                                <span className="text-sm font-semibold text-charcoal/80">{maxWeight} kg</span>
+                                            </div>
+
+                                            {/* Remaining capacity */}
+                                            <div className="flex justify-between items-baseline pt-2">
+                                                <span className="text-xs text-charcoal/60">Verbleibende Reserve:</span>
+                                                <span className={`text-xl font-extrabold ${remainingPayload < 0 ? 'text-rose-600 animate-pulse' : 'text-forest'}`}>
+                                                    {remainingPayload} kg
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Progress Bar visual indicator */}
+                                        <div className="mt-6 space-y-1">
+                                            <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5">
+                                                <div
+                                                    className={`h-full transition-all duration-300 rounded-full ${remainingPayload < 0
+                                                        ? 'bg-rose-500'
+                                                        : remainingPayload < 50
+                                                            ? 'bg-amber-500'
+                                                            : 'bg-forest'
+                                                        }`}
+                                                    style={{ width: `${payloadPercentage}%` }}
+                                                />
+                                            </div>
+                                            <div className="flex justify-between text-[9px] font-mono text-charcoal/40">
+                                                <span>Leergewicht ({emptyWeight}kg)</span>
+                                                <span>{payloadPercentage.toFixed(0)}% Kapazität</span>
+                                                <span>Max ({maxWeight}kg)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Warning Info box */}
+                                    <div className={`mt-6 p-4 rounded-xl flex items-start gap-2 border text-xs leading-relaxed ${remainingPayload < 0
+                                        ? 'bg-rose-50 border-rose-100 text-rose-800'
+                                        : remainingPayload < 50
+                                            ? 'bg-amber-50 border-amber-100 text-amber-800'
+                                            : 'bg-emerald-50 border-emerald-100 text-emerald-800'
+                                        }`}>
+                                        <Info className={`w-4 h-4 shrink-0 mt-0.5 ${remainingPayload < 0 ? 'text-rose-500' : 'text-forest'}`} />
+                                        <div>
+                                            {remainingPayload < 0 ? (
+                                                <strong>Achtung: Dein Fahrzeug ist überladen!</strong>
+                                            ) : remainingPayload < 50 ? (
+                                                <strong>Vorsicht: Sehr knappe Zuladungsreserve!</strong>
+                                            ) : (
+                                                <strong>Gute Fahrt!</strong>
+                                            )}
+                                            <p className="mt-1 font-light opacity-90">
+                                                {remainingPayload < 0
+                                                    ? 'Du überschreitest das zulässige Gesamtgewicht. In Deutschland und Europa drohen bei Kontrollen empfindliche Bußgelder.'
+                                                    : remainingPayload < 50
+                                                        ? 'Die Reserve ist sehr gering. Wenn Personen zusteigen oder Gepäck hinzukommt, riskierst du eine Überladung.'
+                                                        : 'Deine Zuladung liegt im grünen Bereich. Achte trotzdem auf eine gleichmäßige Gewichtsverteilung.'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <h4 className="font-display text-lg font-bold text-forest mb-2">
-                                Tool in Entwicklung
-                            </h4>
-                            <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
-                                Unser {activeTool === 'payload' ? 'Zuladungsrechner (z.G.G.)' : 'Sprit- & Reisekostenrechner'} befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze mit erweiterten Funktionen zur Verfügung.
-                            </p>
-                        </div>
+                        ) : (
+                            // Option B: Fuel & Trip Costs Calculator
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+                                {/* Inputs */}
+                                <div className="lg:col-span-7 space-y-5">
+                                    <div className="flex items-center gap-2 text-forest mb-2">
+                                        <Fuel className="w-5 h-5 text-forest" />
+                                        <h4 className="font-display text-base font-bold">Fahrt- & Stellplatzbudget planen</h4>
+                                    </div>
+                                    <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
+                                        Berechne unkompliziert die Treibstoffkosten und Campingkosten für deine nächste Autoreise.
+                                    </p>
+
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {/* Distance */}
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Reiseentfernung (km)</span>
+                                                    <span>{distance} km</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="50" max="4000" step="50"
+                                                    value={distance} onChange={e => setDistance(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+
+                                            {/* Nights */}
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                    <span>Anzahl Nächte</span>
+                                                    <span>{nights} Nächte</span>
+                                                </div>
+                                                <input
+                                                    type="range" min="1" max="60" step="1"
+                                                    value={nights} onChange={e => setNights(Number(e.target.value))}
+                                                    className="w-full accent-forest"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
+                                            {/* Fuel Consumption */}
+                                            <div className="space-y-1.5">
+                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                    Verbrauch (l/100km)
+                                                </label>
+                                                <input
+                                                    type="number" step="0.1"
+                                                    value={consumption}
+                                                    onChange={e => setConsumption(Number(e.target.value))}
+                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                />
+                                            </div>
+
+                                            {/* Spritpreis */}
+                                            <div className="space-y-1.5">
+                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                    Spritpreis (€/l)
+                                                </label>
+                                                <input
+                                                    type="number" step="0.01"
+                                                    value={fuelPrice}
+                                                    onChange={e => setFuelPrice(Number(e.target.value))}
+                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                />
+                                            </div>
+
+                                            {/* Campsite charge */}
+                                            <div className="space-y-1.5">
+                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                    Stellplatz / Nacht (€)
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={campsiteCost}
+                                                    onChange={e => setCampsiteCost(Number(e.target.value))}
+                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Other reserves */}
+                                        <div className="space-y-1.5 pt-2 max-w-xs">
+                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                Sonstiges Budget (Vignetten, Maut, Essen)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={otherBudget}
+                                                onChange={e => setOtherBudget(Number(e.target.value))}
+                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Results Screen */}
+                                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
+                                    <div>
+                                        <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
+
+                                        <div className="space-y-4">
+                                            {/* Fuel costs */}
+                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                <span className="text-xs text-charcoal/60">Kraftstoffkosten:</span>
+                                                <span className="text-sm font-semibold text-charcoal/80">{fuelCostTotal.toFixed(2)} €</span>
+                                            </div>
+
+                                            {/* Camping costs */}
+                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                <span className="text-xs text-charcoal/60">Übernachtungskosten:</span>
+                                                <span className="text-sm font-semibold text-charcoal/80">{campsiteCostTotal.toFixed(2)} €</span>
+                                            </div>
+
+                                            {/* Other */}
+                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                <span className="text-xs text-charcoal/60">Maut & Nebenkosten:</span>
+                                                <span className="text-sm font-semibold text-charcoal/80">{otherBudget.toFixed(2)} €</span>
+                                            </div>
+
+                                            {/* Total cost */}
+                                            <div className="flex justify-between items-baseline pt-2">
+                                                <span className="text-xs text-forest font-bold uppercase tracking-wider">Gesamtbedarf:</span>
+                                                <span className="text-2xl font-extrabold text-forest">
+                                                    {totalCost.toFixed(2)} €
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Summary Box */}
+                                    <div className="mt-6 p-4 rounded-xl flex items-start gap-2 border bg-emerald-50 border-emerald-100 text-emerald-800 text-xs leading-relaxed">
+                                        <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest" />
+                                        <div>
+                                            <strong>Budgetübersicht bereit!</strong>
+                                            <p className="mt-1 font-light opacity-90">
+                                                Für deine {distance} km lange Reise mit {nights} Übernachtungen benötigst du ca. <strong className="font-semibold">{totalCost.toFixed(0)} €</strong>.
+                                                Tipp: Rechne immer etwa 10% Reserve für unvorhergesehene Tankstopps oder erhöhte Platzgebühren ein.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </motion.div>
                 );
 
@@ -720,6 +1176,7 @@ export default function DiscoverCampuna() {
                     >
                         <Compass className="w-4 h-4" /> Inspirationen
                     </button>
+                    {/* Hiding the 3rd tab (Community-Fragen) for now
                     <button
                         onClick={() => handleTabChange('community')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'community'
@@ -729,6 +1186,7 @@ export default function DiscoverCampuna() {
                     >
                         <MessageSquare className="w-4 h-4" /> Community-Fragen
                     </button>
+                    */}
                     <button
                         onClick={() => handleTabChange('tools')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tools'
