@@ -131,31 +131,15 @@ export default function FeaturedListings({
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    const maxItemsPerRow = 10;
-    const midPoint = Math.min(maxItemsPerRow, Math.ceil(shuffled.length / 2));
+    const midPoint = Math.ceil(shuffled.length / 2);
     return {
       firstRow: shuffled.slice(0, midPoint),
-      secondRow: shuffled.slice(midPoint, midPoint * 2)
+      secondRow: shuffled.slice(midPoint)
     };
   }, [filteredListings]);
 
-  const row1Items = useMemo(() => {
-    if (firstRow.length === 0) return [];
-    let items = [...firstRow];
-    while (items.length < 8) {
-      items = [...items, ...firstRow];
-    }
-    return items;
-  }, [firstRow]);
-
-  const row2Items = useMemo(() => {
-    if (secondRow.length === 0) return [];
-    let items = [...secondRow];
-    while (items.length < 8) {
-      items = [...items, ...secondRow];
-    }
-    return items;
-  }, [secondRow]);
+  const dir1Ref = useRef(-1); // -1 = left, 1 = right
+  const dir2Ref = useRef(1);  // 1 = right, -1 = left
 
   const isHovered1Ref = useRef(false);
   const isHovered2Ref = useRef(false);
@@ -183,7 +167,7 @@ export default function FeaturedListings({
       clearTimeout(timer);
       window.removeEventListener('resize', measure);
     };
-  }, [row1Items, row2Items]);
+  }, [firstRow, secondRow]);
 
   const handleCardClick = useCallback((item) => {
     const slug = buildListingSlug(item.title, item.id);
@@ -194,10 +178,9 @@ export default function FeaturedListings({
   const x2 = useMotionValue(0);
 
   useEffect(() => {
-    const step = cardWidthRef.current + gap;
     x1.set(0);
-    x2.set(-step * row2Items.length);
-  }, [row1Items.length, row2Items.length]);
+    x2.set(-row2Constraints);
+  }, [firstRow, secondRow, row2Constraints]);
 
   useEffect(() => {
     let animationFrameId;
@@ -205,26 +188,42 @@ export default function FeaturedListings({
     const loop = (time) => {
       const delta = Math.min((time - lastTime) / 1000, 0.1);
       lastTime = time;
-      const step = cardWidthRef.current + gap;
-      if (row1Items.length > 0 && !isHovered1Ref.current && !isDragging1Ref.current) {
-        const maxMove = step * row1Items.length;
-        let currentX = x1.get() - 40 * delta;
-        while (currentX <= -maxMove) currentX += maxMove;
-        while (currentX > 0) currentX -= maxMove;
+
+      // Row 1: ping-pong scrolling
+      if (firstRow.length > 0 && !isHovered1Ref.current && !isDragging1Ref.current && row1Constraints > 0) {
+        let currentX = x1.get() + dir1Ref.current * 40 * delta;
+        if (dir1Ref.current === -1 && currentX <= -row1Constraints) {
+          currentX = -row1Constraints;
+          dir1Ref.current = 1;
+        } else if (dir1Ref.current === 1 && currentX >= 0) {
+          currentX = 0;
+          dir1Ref.current = -1;
+        }
         x1.set(currentX);
+      } else if (row1Constraints <= 0) {
+        x1.set(0);
       }
-      if (row2Items.length > 0 && !isHovered2Ref.current && !isDragging2Ref.current) {
-        const maxMove = step * row2Items.length;
-        let currentX = x2.get() + 38 * delta;
-        while (currentX < -maxMove) currentX += maxMove;
-        while (currentX >= 0) currentX -= maxMove;
+
+      // Row 2: ping-pong scrolling
+      if (secondRow.length > 0 && !isHovered2Ref.current && !isDragging2Ref.current && row2Constraints > 0) {
+        let currentX = x2.get() + dir2Ref.current * 38 * delta;
+        if (dir2Ref.current === -1 && currentX <= -row2Constraints) {
+          currentX = -row2Constraints;
+          dir2Ref.current = 1;
+        } else if (dir2Ref.current === 1 && currentX >= 0) {
+          currentX = 0;
+          dir2Ref.current = -1;
+        }
         x2.set(currentX);
+      } else if (row2Constraints <= 0) {
+        x2.set(0);
       }
+
       animationFrameId = requestAnimationFrame(loop);
     };
     animationFrameId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [row1Items.length, row2Items.length]);
+  }, [firstRow, secondRow, row1Constraints, row2Constraints]);
 
   return (
     <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-20 overflow-hidden">
@@ -266,6 +265,7 @@ export default function FeaturedListings({
             <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
+            {/* Row 1: Draggable Left to Right */}
             <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row1Ref}>
               <motion.div
                 drag="x"
@@ -277,9 +277,9 @@ export default function FeaturedListings({
                 onMouseLeave={() => { isHovered1Ref.current = false; }}
                 className="flex gap-5 w-max "
               >
-                {[...row1Items, ...row1Items].map((item, idx) => (
+                {firstRow.map((item) => (
                   <ListingCard
-                    key={`${item.id}-${idx}`}
+                    key={item.id}
                     item={item}
                     isWishlisted={wishlistedIds.includes(item.id)}
                     onToggleWishlist={onToggleWishlist}
@@ -289,6 +289,7 @@ export default function FeaturedListings({
               </motion.div>
             </div>
 
+            {/* Row 2: Draggable Right to Left */}
             <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
               <motion.div
                 drag="x"
@@ -300,9 +301,9 @@ export default function FeaturedListings({
                 onMouseLeave={() => { isHovered2Ref.current = false; }}
                 className="flex gap-5 w-max"
               >
-                {[...row2Items, ...row2Items].map((item, idx) => (
+                {secondRow.map((item) => (
                   <ListingCard
-                    key={`${item.id}-${idx}`}
+                    key={item.id}
                     item={item}
                     isWishlisted={wishlistedIds.includes(item.id)}
                     onToggleWishlist={onToggleWishlist}
