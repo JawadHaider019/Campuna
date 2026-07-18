@@ -20,6 +20,8 @@ import {
     Scale
 } from 'lucide-react';
 import { navigateTo } from '../utils/navigation';
+import { buildListingSlug } from '../utils/slugify';
+
 
 // Mock Data for Discover Section
 const DISCOVER_TIPS = [
@@ -171,100 +173,135 @@ export default function DiscoverCampuna() {
         const fetchTipsAndInspirations = async () => {
             setIsLoading(true);
             try {
-                const res = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                // Fetch Tips from homepage_tips
+                const tipsPromise = fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     }
+                }).then(res => res.ok ? res.json() : null).catch(err => {
+                    console.error("Error fetching tips:", err);
+                    return null;
                 });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.status === 'success' && data.response) {
-                        // 1. Map Tips
-                        if (data.response.Tips && data.response.Tips.length > 0) {
-                            const mappedTips = data.response.Tips.map((tip, idx) => {
-                                const category = tip.Category || 'Allgemein';
-                                let badgeColor = 'bg-amber-50 text-amber-700 border-amber-100';
-                                if (category.toLowerCase().includes('recht')) {
-                                    badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-100';
-                                } else if (category.toLowerCase().includes('pflege') || category.toLowerCase().includes('fzg') || category.toLowerCase().includes('wartung') || category.toLowerCase().includes('fahrzeug')) {
-                                    badgeColor = 'bg-blue-50 text-blue-700 border-blue-100';
-                                }
 
-                                let formattedDate = 'Heute';
-                                if (tip['Modified Date'] || tip['Created Date']) {
-                                    const timestamp = tip['Modified Date'] || tip['Created Date'];
-                                    const dateObj = new Date(timestamp);
-                                    if (!isNaN(dateObj.getTime())) {
-                                        const now = new Date();
-                                        const d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                                        const d2 = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
-                                        const diffTime = d1 - d2;
-                                        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+                // Fetch Products from homepage-products
+                const productsPromise = fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage-products/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => res.ok ? res.json() : null).catch(err => {
+                    console.error("Error fetching products:", err);
+                    return null;
+                });
 
-                                        if (diffDays === 0) {
-                                            formattedDate = 'Heute';
-                                        } else if (diffDays === 1) {
-                                            formattedDate = 'Gestern';
-                                        } else if (diffDays === 7) {
-                                            formattedDate = 'Vor einer Woche';
-                                        } else {
-                                            formattedDate = dateObj.toLocaleDateString('de-DE', {
-                                                day: '2-digit',
-                                                month: '2-digit',
-                                                year: 'numeric'
-                                            });
-                                        }
-                                    }
-                                }
+                const [tipsData, productsData] = await Promise.all([tipsPromise, productsPromise]);
 
-                                return {
-                                    id: tip._id || `api_tip_${idx}`,
-                                    title: tip.Title || 'Kein Titel',
-                                    excerpt: tip.Desc || tip.desc || '',
-                                    readTime: `${Math.max(3, Math.ceil((tip.Desc || tip.desc || '').split(' ').length / 150))} Min. Lesezeit`,
-                                    category: category,
-                                    date: formattedDate,
-                                    views: `${Math.floor(Math.random() * 500) + 100} views`,
-                                    badgeColor: badgeColor
-                                };
-                            });
-                            setTips(mappedTips);
+                // Map Tips
+                if (tipsData && tipsData.status === 'success' && tipsData.response && tipsData.response.Tips) {
+                    const mappedTips = tipsData.response.Tips.map((tip, idx) => {
+                        const category = tip.Category || 'Allgemein';
+                        let badgeColor = 'bg-amber-50 text-amber-700 border-amber-100';
+                        if (category.toLowerCase().includes('recht')) {
+                            badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-100';
+                        } else if (category.toLowerCase().includes('pflege') || category.toLowerCase().includes('fzg') || category.toLowerCase().includes('wartung') || category.toLowerCase().includes('fahrzeug')) {
+                            badgeColor = 'bg-blue-50 text-blue-700 border-blue-100';
                         }
 
-                        // 2. Map Inspiration listings
-                        if (data.response.listing && data.response.listing.length > 0) {
-                            const mappedInspirations = data.response.listing.map((item, idx) => {
-                                const id = item._id || item.id || `api_insp_${idx}`;
-                                const title = item.Title || item.title || 'Keine Route';
-                                const description = item.Desc || item.desc || item.Description || item.description || '';
-                                const location = item.Location || item.location || 'Deutschland';
-                                const duration = item.Duration || item.duration || '3-5 Tage';
-                                const imageObj = item.Image || item.image || item.images || item.Images;
-                                let image = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-                                if (typeof imageObj === 'string' && imageObj.startsWith('http')) {
-                                    image = imageObj;
-                                } else if (Array.isArray(imageObj) && imageObj.length > 0) {
-                                    image = imageObj[0];
+                        let formattedDate = 'Heute';
+                        if (tip['Modified Date'] || tip['Created Date']) {
+                            const timestamp = tip['Modified Date'] || tip['Created Date'];
+                            const dateObj = new Date(timestamp);
+                            if (!isNaN(dateObj.getTime())) {
+                                const now = new Date();
+                                const d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                                const d2 = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+                                const diffTime = d1 - d2;
+                                const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+                                if (diffDays === 0) {
+                                    formattedDate = 'Heute';
+                                } else if (diffDays === 1) {
+                                    formattedDate = 'Gestern';
+                                } else if (diffDays === 7) {
+                                    formattedDate = 'Vor einer Woche';
+                                } else {
+                                    formattedDate = dateObj.toLocaleDateString('de-DE', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    });
                                 }
+                            }
+                        }
 
-                                const tagsObj = item.Tags || item.tags || ['Entdecken'];
-                                const tags = Array.isArray(tagsObj) ? tagsObj : (typeof tagsObj === 'string' ? tagsObj.split(',').map(t => t.trim()) : ['Entdecken']);
+                        return {
+                            id: tip._id || `api_tip_${idx}`,
+                            title: tip.Title || 'Kein Titel',
+                            excerpt: tip.Desc || tip.desc || '',
+                            readTime: `${Math.max(3, Math.ceil((tip.Desc || tip.desc || '').split(' ').length / 150))} Min. Lesezeit`,
+                            category: category,
+                            date: formattedDate,
+                            views: `${Math.floor(Math.random() * 500) + 100} views`,
+                            badgeColor: badgeColor
+                        };
+                    });
+                    setTips(mappedTips);
+                }
 
-                                return {
-                                    id,
-                                    title,
-                                    location,
-                                    duration,
-                                    image,
-                                    tags,
-                                    description
-                                };
-                            });
-                            setInspirations(mappedInspirations);
+                // Map products to inspirations state
+                if (productsData && productsData.status === 'success' && productsData.response && productsData.response.listing) {
+                    // Show only featured listings. If none featured, fallback to 2 random listings
+                    let targetListings = productsData.response.listing.filter(item => item.Featured === true);
+                    if (targetListings.length === 0 && productsData.response.listing.length > 0) {
+                        const originalList = productsData.response.listing;
+                        if (originalList.length <= 2) {
+                            targetListings = [...originalList];
+                        } else {
+                            const selectedIndices = new Set();
+                            while (selectedIndices.size < 2) {
+                                const randIdx = Math.floor(Math.random() * originalList.length);
+                                selectedIndices.add(randIdx);
+                            }
+                            targetListings = [...selectedIndices].map(idx => originalList[idx]);
                         }
                     }
+
+                    const mappedInspirations = targetListings.map((item, idx) => {
+                        const id = item._id || item.id || `api_insp_${idx}`;
+                        const title = item.title || item.Title || 'Kein Titel';
+                        const description = item.description || item.Description || item.desc || item.Desc || '';
+                        const locationGeo = item['location geo'];
+                        const location = locationGeo?.address || item.location || 'Deutschland';
+
+                        const imageObj = item.images || item.MainImage || item['Main Image'] || item.image || item.Image;
+                        let image = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
+                        if (typeof imageObj === 'string') {
+                            image = imageObj.startsWith('//') ? `https:${imageObj}` : imageObj;
+                        } else if (Array.isArray(imageObj) && imageObj.length > 0) {
+                            image = imageObj[0].startsWith('//') ? `https:${imageObj[0]}` : imageObj[0];
+                        }
+
+                        // Tags from Category & Sub-Category
+                        const tags = [];
+                        if (item.Category) tags.push(item.Category);
+                        if (item['Sub - Category']) tags.push(item['Sub - Category']);
+                        if (tags.length === 0) tags.push('Entdecken');
+
+                        return {
+                            id,
+                            title,
+                            location,
+                            image,
+                            tags,
+                            description,
+                            price: item.price || 0,
+                            isFeatured: item.Featured || false
+                        };
+                    });
+                    setInspirations(mappedInspirations);
                 }
+
             } catch (err) {
                 console.error("Error fetching tips and inspiration:", err);
             } finally {
@@ -437,12 +474,21 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                        className={
+                            inspirations.length === 1
+                                ? "flex justify-center"
+                                : "grid grid-cols-1 md:grid-cols-2 gap-6"
+                        }
                     >
                         {inspirations.map((insp) => (
                             <div
                                 key={insp.id}
-                                className="group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row"
+                                onClick={() => {
+                                    const slug = buildListingSlug(insp.title, insp.id);
+                                    navigateTo(`/listing_details/${slug}`);
+                                }}
+                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
+                                    }`}
                             >
                                 <div className="relative w-full sm:w-2/5 aspect-[4/3] sm:aspect-auto overflow-hidden bg-sand/10">
                                     <img
@@ -453,6 +499,11 @@ export default function DiscoverCampuna() {
                                     <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
                                         <MapPin className="w-3 h-3 text-gold" /> {insp.location}
                                     </div>
+                                    {insp.isFeatured && (
+                                        <div className="absolute top-3 right-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
+                                            Featured
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="p-6 flex-1 flex flex-col justify-between">
                                     <div>
@@ -463,14 +514,34 @@ export default function DiscoverCampuna() {
                                                 </span>
                                             ))}
                                         </div>
-                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2  ">
+                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200">
                                             {insp.title}
                                         </h3>
-                                        <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-2">
+                                        <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-3">
                                             {insp.description}
                                         </p>
                                     </div>
-
+                                    <div className="pt-3 border-t border-forest/5 flex items-center justify-between mt-auto">
+                                        <div>
+                                            <span className="block text-[9px] uppercase tracking-widest text-charcoal/40 font-mono">
+                                                Preis
+                                            </span>
+                                            <span className="font-display text-base font-extrabold text-forest">
+                                                {insp.price ? `${insp.price.toLocaleString('de-DE')} €` : 'Auf Anfrage'}
+                                            </span>
+                                        </div>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                const slug = buildListingSlug(insp.title, insp.id);
+                                                navigateTo(`/listing_details/${slug}`);
+                                            }}
+                                            className="group/btn flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors duration-200 cursor-pointer"
+                                        >
+                                            <span>Zum Produkt</span>
+                                            <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform text-gold" style={{ display: 'inline-block' }} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
