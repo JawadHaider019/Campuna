@@ -487,10 +487,10 @@ export default function DiscoverCampuna() {
                                     const slug = buildListingSlug(insp.title, insp.id);
                                     navigateTo(`/listing_details/${slug}`);
                                 }}
-                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
+                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[480px] sm:h-[260px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
                                     }`}
                             >
-                                <div className="relative w-full sm:w-2/5 aspect-[4/3] sm:aspect-auto overflow-hidden bg-sand/10">
+                                <div className="relative w-full sm:w-2/5 h-48 sm:h-full overflow-hidden bg-sand/10">
                                     <img
                                         src={insp.image}
                                         alt={insp.title}
@@ -555,264 +555,18 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="space-y-4"
                     >
-                        {/* Ask a Question Bar */}
-                        <div className="bg-sand/30 border border-forest/10 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
-                                <h4 className="font-display text-sm sm:text-base font-bold text-forest">
-                                    Haben Sie eine eigene Frage an die Community?
-                                </h4>
-                                <p className="font-sans text-[11px] sm:text-xs text-charcoal/60 leading-relaxed font-light">
-                                    Erstelle einen neuen Beitrag, um wertvolles Feedback von erfahrenen Campern zu erhalten.
-                                </p>
+                        <div className="min-h-[250px] flex flex-col items-center justify-center text-center p-8 bg-sand/20 rounded-3xl border border-forest/10 mt-6 md:p-12">
+                            <div className="bg-forest/10 p-4 rounded-full text-forest mb-4 animate-pulse">
+                                <Wrench className="w-8 h-8" />
                             </div>
-                            <button
-                                onClick={() => setIsQuestionFormOpen(!isQuestionFormOpen)}
-                                className="bg-forest hover:bg-gold text-white hover:text-forest text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-xl shadow-sm transition-all duration-300 flex items-center justify-center gap-1.5 shrink-0 grow-0 cursor-pointer self-start sm:self-auto"
-                            >
-                                <Plus className="w-3.5 h-3.5" />
-                                {isQuestionFormOpen ? 'Schließen' : 'Frage stellen'}
-                            </button>
+                            <h4 className="font-display text-lg font-bold text-forest mb-2">
+                                Tool in Entwicklung
+                            </h4>
+                            <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
+                                Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
+                            </p>
                         </div>
-
-                        {/* Add Question Form Drawer */}
-                        <AnimatePresence>
-                            {isQuestionFormOpen && (
-                                <motion.form
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: 'auto' }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    onSubmit={handleAddQuestion}
-                                    className="bg-white border border-forest/10 rounded-2xl p-5 shadow-inner space-y-4 overflow-hidden"
-                                >
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-1">
-                                            <label className="block text-[10px] font-bold text-forest uppercase tracking-widest">
-                                                Dein Name / Username *
-                                            </label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={newQuestionUser}
-                                                onChange={e => setNewQuestionUser(e.target.value)}
-                                                placeholder="z.B. CamperJoe"
-                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                            />
-                                        </div>
-                                        <div className="space-y-1">
-                                            <label className="block text-[10px] font-bold text-forest uppercase tracking-widest">
-                                                Tags/Kategorien (Kommagetrennt)
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={newQuestionTags}
-                                                onChange={e => setNewQuestionTags(e.target.value)}
-                                                placeholder="z.B. Zubehör, Elektrik"
-                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="block text-[10px] font-bold text-forest uppercase tracking-widest">
-                                            Deine Frage *
-                                        </label>
-                                        <textarea
-                                            required
-                                            value={newQuestionText}
-                                            onChange={e => setNewQuestionText(e.target.value)}
-                                            placeholder="Beschreibe deine Frage möglichst präzise..."
-                                            rows="3"
-                                            className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal resize-none"
-                                        />
-                                    </div>
-                                    <div className="flex justify-end pt-1">
-                                        <button
-                                            type="submit"
-                                            className="bg-forest hover:bg-gold text-white hover:text-forest text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-xl transition-colors cursor-pointer"
-                                        >
-                                            Frage veröffentlichen
-                                        </button>
-                                    </div>
-                                </motion.form>
-                            )}
-                        </AnimatePresence>
-
-                        {/* Questions List */}
-                        {questions.map((q) => {
-                            const totalComments = q.comments.length;
-                            const latestComment = totalComments > 0 ? q.comments[0] : null;
-                            const isExtended = expandedQuestionId === q.id;
-
-                            return (
-                                <div
-                                    key={q.id}
-                                    className="bg-white rounded-2xl p-5 border border-forest/5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-4"
-                                >
-                                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                        <div className="flex-1 space-y-3">
-                                            <div className="flex items-center gap-2">
-                                                <span className={`font-sans text-[11px] font-bold py-0.5 px-2 rounded-md ${totalComments > 0
-                                                    ? 'text-emerald-700 bg-emerald-50 border border-emerald-100'
-                                                    : 'text-amber-700 bg-amber-50 border border-amber-100'
-                                                    }`}>
-                                                    {totalComments > 0 ? 'Beantwortet' : 'Offen'}
-                                                </span>
-                                                <div className="flex flex-wrap gap-1.5">
-                                                    {q.tags.map((t, idx) => (
-                                                        <span key={idx} className="text-[10px] text-charcoal/40 font-mono">#{t}</span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <h4
-                                                onClick={() => setExpandedQuestionId(isExtended ? null : q.id)}
-                                                className="font-display text-sm sm:text-base font-bold text-forest hover:text-gold cursor-pointer leading-snug transition-colors"
-                                            >
-                                                {q.question}
-                                            </h4>
-
-                                            {/* Show latest reply snippet (if exists) & clickable to open answers */}
-                                            {latestComment ? (
-                                                <div
-                                                    onClick={() => setExpandedQuestionId(isExtended ? null : q.id)}
-                                                    className="bg-sand/35 hover:bg-sand/50 rounded-xl p-3 flex items-start gap-2 border border-forest/5 cursor-pointer transition-colors"
-                                                >
-                                                    <span className="bg-forest/10 p-1 rounded-lg text-forest shrink-0 mt-0.5">
-                                                        <HelpCircle className="w-3.5 h-3.5" />
-                                                    </span>
-                                                    <p className="font-sans text-[12.5px] text-charcoal/80 leading-relaxed font-light">
-                                                        <strong className="font-semibold text-forest">{latestComment.user}</strong>: "{latestComment.text}"
-                                                    </p>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    onClick={() => setExpandedQuestionId(isExtended ? null : q.id)}
-                                                    className="bg-sand/35 hover:bg-sand/50 rounded-xl p-3 flex items-center justify-center gap-2 border border-forest/5 cursor-pointer text-xs text-charcoal/50 font-light italic"
-                                                >
-                                                    Noch keine Antworten. Klicke auf "Helfen", um die erste Antwort zu schreiben!
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Engagement Numbers */}
-                                        <div className="flex md:flex-col items-center justify-between md:justify-center md:items-end gap-3 self-stretch border-t md:border-t-0 md:border-l border-forest/5 pt-3 md:pt-0 md:pl-5 shrink-0 min-w-[120px]">
-                                            <div className="flex items-center gap-4 text-xs font-mono text-charcoal/50">
-                                                <button
-                                                    onClick={() => handleToggleLike(q.id)}
-                                                    className={`flex items-center gap-1 shrink-0 transition-all active:scale-95 group hover:text-forest ${q.liked ? 'text-forest font-bold' : ''}`}
-                                                >
-                                                    <ThumbsUp className={`w-3.5 h-3.5 transition-transform group-hover:scale-110 ${q.liked ? 'fill-forest text-forest' : 'text-forest/65'}`} />
-                                                    {q.upvotes}
-                                                </button>
-                                                <button
-                                                    onClick={() => setExpandedQuestionId(isExtended ? null : q.id)}
-                                                    className="flex items-center gap-1 shrink-0 hover:text-forest"
-                                                >
-                                                    <MessageCircle className="w-3.5 h-3.5 text-forest/65" />
-                                                    {totalComments}
-                                                </button>
-                                            </div>
-                                            <button
-                                                onClick={() => setExpandedQuestionId(isExtended ? null : q.id)}
-                                                className={`text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg shadow-sm transition-all duration-300 cursor-pointer ${isExtended
-                                                    ? 'bg-gold text-forest hover:bg-forest hover:text-white'
-                                                    : 'bg-forest hover:bg-gold text-white hover:text-forest'
-                                                    }`}
-                                            >
-                                                {isExtended ? 'Ausblenden' : 'Helfen'}
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Comments / Replies Section */}
-                                    <AnimatePresence>
-                                        {isExtended && (
-                                            <motion.div
-                                                initial={{ opacity: 0, height: 0 }}
-                                                animate={{ opacity: 1, height: 'auto' }}
-                                                exit={{ opacity: 0, height: 0 }}
-                                                transition={{ duration: 0.3 }}
-                                                className="border-t border-forest/10 pt-4 mt-2 overflow-hidden space-y-4"
-                                            >
-                                                {/* List of comments */}
-                                                <div className="space-y-3">
-                                                    <h5 className="text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Diskussion ({totalComments})
-                                                    </h5>
-                                                    {totalComments > 0 ? (
-                                                        <div className="space-y-2.5 max-h-[250px] overflow-y-auto pr-1">
-                                                            {q.comments.map((comment) => (
-                                                                <div
-                                                                    key={comment.id}
-                                                                    className="bg-sand/20 rounded-xl p-3 border border-forest/5 flex flex-col gap-1.5"
-                                                                >
-                                                                    <div className="flex items-center justify-between border-b border-forest/5 pb-1">
-                                                                        <span className="text-xs font-semibold text-forest flex items-center gap-1.5">
-                                                                            <span className="w-4 h-4 rounded-full bg-forest/10 text-forest flex items-center justify-center text-[9px] uppercase font-bold">
-                                                                                {comment.user.charAt(0)}
-                                                                            </span>
-                                                                            {comment.user}
-                                                                        </span>
-                                                                        <span className="text-[10px] text-charcoal/45 font-mono">{comment.date}</span>
-                                                                    </div>
-                                                                    <p className="text-xs text-charcoal/80 leading-relaxed font-light">
-                                                                        {comment.text}
-                                                                    </p>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <p className="text-xs text-charcoal/50 italic pl-1">Noch keine Antworten. Sei der Erste, der antwortet!</p>
-                                                    )}
-                                                </div>
-
-                                                {/* Comment input form */}
-                                                <form
-                                                    onSubmit={(e) => handleAddComment(e, q.id)}
-                                                    className="bg-sand/30 border border-forest/5 p-4 rounded-xl space-y-3"
-                                                >
-                                                    <div className="flex  items-center gap-2">
-                                                        <span className="bg-forest/10 text-forest p-1 rounded-md">
-                                                            <HelpCircle className="w-3.5 h-3.5" />
-                                                        </span>
-                                                        <span className="text-[11px] font-bold text-forest uppercase tracking-wider">Antworten</span>
-                                                    </div>
-
-                                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                                        <div className="sm:col-span-1 space-y-1">
-                                                            <input
-                                                                type="text"
-                                                                value={newCommentUser}
-                                                                onChange={e => setNewCommentUser(e.target.value)}
-                                                                placeholder="Dein Name"
-                                                                className="w-full bg-white border border-forest/10 p-2 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                            />
-                                                        </div>
-                                                        <div className="sm:col-span-2 flex sm:flex-row flex-col space-y-1 relative flex gap-2">
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={newCommentText}
-                                                                onChange={e => setNewCommentText(e.target.value)}
-                                                                placeholder="Schreibe eine hilfreiche Antwort..."
-                                                                className="flex-1 bg-white border border-forest/10 p-2 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                            />
-                                                            <button
-                                                                type="submit"
-                                                                className="bg-forest hover:bg-gold hover:text-forest text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-xl transition-colors cursor-pointer shrink-0"
-                                                            >
-                                                                Antworten
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            );
-                        })}
                     </motion.div>
                 );
 
@@ -847,360 +601,393 @@ export default function DiscoverCampuna() {
                             </button>
                         </div>
 
-                        {activeTool === 'payload' ? (
-                            // Option A: Payload Calculator
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-                                {/* Inputs */}
-                                <div className="lg:col-span-7 space-y-5">
-                                    <div className="flex items-center gap-2 text-forest mb-2">
-                                        <Scale className="w-5 h-5 text-forest" />
-                                        <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
-                                    </div>
-                                    <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
-                                        Berechne das verbleibende Gewicht deines Fahrzeugs, um Überladung und hohe Bußgelder im Camping-Urlaub zu vermeiden.
-                                    </p>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {/* Max Weight */}
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                Zul. Gesamtgewicht (kg)
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={maxWeight}
-                                                onChange={e => setMaxWeight(Number(e.target.value))}
-                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                            />
-                                        </div>
-                                        {/* Empty Weight */}
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                Masse fahrbereit (kg)
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={emptyWeight}
-                                                onChange={e => setEmptyWeight(Number(e.target.value))}
-                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Cargo Sliders */}
-                                    <div className="space-y-4 pt-3">
-                                        {/* Driver, Passengers */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Fahrer (kg)</span>
-                                                    <span>{driverWeight} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="50" max="150" step="1"
-                                                    value={driverWeight} onChange={e => setDriverWeight(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Beifahrer / Mitf.</span>
-                                                    <span>{passengers} Pers.</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="0" max="6" step="1"
-                                                    value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Gew. je Beif. (kg)</span>
-                                                    <span>{passengersWeight} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="40" max="120" step="1"
-                                                    value={passengersWeight} onChange={e => setPassengersWeight(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Water and Gas */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Wasser (Liter/kg)</span>
-                                                    <span>{waterWater} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="0" max="250" step="5"
-                                                    value={waterWater} onChange={e => setWaterWater(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Gasflaschen (kg)</span>
-                                                    <span>{gasWeight} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="0" max="60" step="1"
-                                                    value={gasWeight} onChange={e => setGasWeight(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Baggage and Equipment */}
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Gepäck & Vorräte (kg)</span>
-                                                    <span>{baggage} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="20" max="500" step="5"
-                                                    value={baggage} onChange={e => setBaggage(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Ausrüstung / Stühle (kg)</span>
-                                                    <span>{equipment} kg</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="0" max="300" step="5"
-                                                    value={equipment} onChange={e => setEquipment(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
+                        {/* Zuladung (z.G.G.) Tool In Development Overlay */}
+                        {activeTool === 'payload' && (
+                            <div className="min-h-[250px] flex flex-col items-center justify-center text-center p-8 bg-sand/20 rounded-3xl border border-forest/10 mt-6 md:p-12">
+                                <div className="bg-forest/10 p-4 rounded-full text-forest mb-4 animate-pulse">
+                                    <Wrench className="w-8 h-8" />
                                 </div>
-
-                                {/* Results Screen */}
-                                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
-                                    <div>
-                                        <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Ergebnis</h5>
-
-                                        <div className="space-y-4">
-                                            {/* Current Total */}
-                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                <span className="text-xs text-charcoal/60">Aktuelles Gesamtgewicht:</span>
-                                                <span className="text-xl font-bold text-forest">{currentTotalWeight} kg</span>
-                                            </div>
-
-                                            {/* Max Limit */}
-                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                <span className="text-xs text-charcoal/60">Zulässiges Limit:</span>
-                                                <span className="text-sm font-semibold text-charcoal/80">{maxWeight} kg</span>
-                                            </div>
-
-                                            {/* Remaining capacity */}
-                                            <div className="flex justify-between items-baseline pt-2">
-                                                <span className="text-xs text-charcoal/60">Verbleibende Reserve:</span>
-                                                <span className={`text-xl font-extrabold ${remainingPayload < 0 ? 'text-rose-600 animate-pulse' : 'text-forest'}`}>
-                                                    {remainingPayload} kg
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {/* Progress Bar visual indicator */}
-                                        <div className="mt-6 space-y-1">
-                                            <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5">
-                                                <div
-                                                    className={`h-full transition-all duration-300 rounded-full ${remainingPayload < 0
-                                                        ? 'bg-rose-500'
-                                                        : remainingPayload < 50
-                                                            ? 'bg-amber-500'
-                                                            : 'bg-forest'
-                                                        }`}
-                                                    style={{ width: `${payloadPercentage}%` }}
-                                                />
-                                            </div>
-                                            <div className="flex justify-between text-[9px] font-mono text-charcoal/40">
-                                                <span>Leergewicht ({emptyWeight}kg)</span>
-                                                <span>{payloadPercentage.toFixed(0)}% Kapazität</span>
-                                                <span>Max ({maxWeight}kg)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Warning Info box */}
-                                    <div className={`mt-6 p-4 rounded-xl flex items-start gap-2 border text-xs leading-relaxed ${remainingPayload < 0
-                                        ? 'bg-rose-50 border-rose-100 text-rose-800'
-                                        : remainingPayload < 50
-                                            ? 'bg-amber-50 border-amber-100 text-amber-800'
-                                            : 'bg-emerald-50 border-emerald-100 text-emerald-800'
-                                        }`}>
-                                        <Info className={`w-4 h-4 shrink-0 mt-0.5 ${remainingPayload < 0 ? 'text-rose-500' : 'text-forest'}`} />
-                                        <div>
-                                            {remainingPayload < 0 ? (
-                                                <strong>Achtung: Dein Fahrzeug ist überladen!</strong>
-                                            ) : remainingPayload < 50 ? (
-                                                <strong>Vorsicht: Sehr knappe Zuladungsreserve!</strong>
-                                            ) : (
-                                                <strong>Gute Fahrt!</strong>
-                                            )}
-                                            <p className="mt-1 font-light opacity-90">
-                                                {remainingPayload < 0
-                                                    ? 'Du überschreitest das zulässige Gesamtgewicht. In Deutschland und Europa drohen bei Kontrollen empfindliche Bußgelder.'
-                                                    : remainingPayload < 50
-                                                        ? 'Die Reserve ist sehr gering. Wenn Personen zusteigen oder Gepäck hinzukommt, riskierst du eine Überladung.'
-                                                        : 'Deine Zuladung liegt im grünen Bereich. Achte trotzdem auf eine gleichmäßige Gewichtsverteilung.'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h4 className="font-display text-lg font-bold text-forest mb-2">
+                                    Tool in Entwicklung
+                                </h4>
+                                <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
+                                    Unser Zuladungsrechner befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
+                                </p>
                             </div>
-                        ) : (
-                            // Option B: Fuel & Trip Costs Calculator
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-                                {/* Inputs */}
-                                <div className="lg:col-span-7 space-y-5">
-                                    <div className="flex items-center gap-2 text-forest mb-2">
-                                        <Fuel className="w-5 h-5 text-forest" />
-                                        <h4 className="font-display text-base font-bold">Fahrt- & Stellplatzbudget planen</h4>
-                                    </div>
-                                    <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
-                                        Berechne unkompliziert die Treibstoffkosten und Campingkosten für deine nächste Autoreise.
-                                    </p>
+                        )}
 
-                                    <div className="space-y-4">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {/* Distance */}
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Reiseentfernung (km)</span>
-                                                    <span>{distance} km</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="50" max="4000" step="50"
-                                                    value={distance} onChange={e => setDistance(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
+                        {/* Sprit- & Reisekostenrechner Tool In Development Overlay */}
+                        {activeTool === 'costs' && (
+                            <div className="min-h-[250px] flex flex-col items-center justify-center text-center p-8 bg-sand/20 rounded-3xl border border-forest/10 mt-6 md:p-12">
+                                <div className="bg-forest/10 p-4 rounded-full text-forest mb-4 animate-pulse">
+                                    <Wrench className="w-8 h-8" />
+                                </div>
+                                <h4 className="font-display text-lg font-bold text-forest mb-2">
+                                    Tool in Entwicklung
+                                </h4>
+                                <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
+                                    Unser Sprit- & Reisekostenrechner befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
+                                </p>
+                            </div>
+                        )}
 
-                                            {/* Nights */}
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                    <span>Anzahl Nächte</span>
-                                                    <span>{nights} Nächte</span>
-                                                </div>
-                                                <input
-                                                    type="range" min="1" max="60" step="1"
-                                                    value={nights} onChange={e => setNights(Number(e.target.value))}
-                                                    className="w-full accent-forest"
-                                                />
-                                            </div>
+                        {/* Keep calculator markup in the DOM but hidden */}
+                        <div style={{ display: 'none' }}>
+                            {activeTool === 'payload' ? (
+                                // Option A: Payload Calculator
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+                                    {/* Inputs */}
+                                    <div className="lg:col-span-7 space-y-5">
+                                        <div className="flex items-center gap-2 text-forest mb-2">
+                                            <Scale className="w-5 h-5 text-forest" />
+                                            <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
                                         </div>
+                                        <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
+                                            Berechne das verbleibende Gewicht deines Fahrzeugs, um Überladung und hohe Bußgelder im Camping-Urlaub zu vermeiden.
+                                        </p>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
-                                            {/* Fuel Consumption */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {/* Max Weight */}
                                             <div className="space-y-1.5">
                                                 <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                    Verbrauch (l/100km)
-                                                </label>
-                                                <input
-                                                    type="number" step="0.1"
-                                                    value={consumption}
-                                                    onChange={e => setConsumption(Number(e.target.value))}
-                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                />
-                                            </div>
-
-                                            {/* Spritpreis */}
-                                            <div className="space-y-1.5">
-                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                    Spritpreis (€/l)
-                                                </label>
-                                                <input
-                                                    type="number" step="0.01"
-                                                    value={fuelPrice}
-                                                    onChange={e => setFuelPrice(Number(e.target.value))}
-                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                />
-                                            </div>
-
-                                            {/* Campsite charge */}
-                                            <div className="space-y-1.5">
-                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                    Stellplatz / Nacht (€)
+                                                    Zul. Gesamtgewicht (kg)
                                                 </label>
                                                 <input
                                                     type="number"
-                                                    value={campsiteCost}
-                                                    onChange={e => setCampsiteCost(Number(e.target.value))}
+                                                    value={maxWeight}
+                                                    onChange={e => setMaxWeight(Number(e.target.value))}
+                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                />
+                                            </div>
+                                            {/* Empty Weight */}
+                                            <div className="space-y-1.5">
+                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                    Masse fahrbereit (kg)
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={emptyWeight}
+                                                    onChange={e => setEmptyWeight(Number(e.target.value))}
                                                     className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
                                                 />
                                             </div>
                                         </div>
 
-                                        {/* Other reserves */}
-                                        <div className="space-y-1.5 pt-2 max-w-xs">
-                                            <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                Sonstiges Budget (Vignetten, Maut, Essen)
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={otherBudget}
-                                                onChange={e => setOtherBudget(Number(e.target.value))}
-                                                className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                            />
+                                        {/* Cargo Sliders */}
+                                        <div className="space-y-4 pt-3">
+                                            {/* Driver, Passengers */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Fahrer (kg)</span>
+                                                        <span>{driverWeight} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="50" max="150" step="1"
+                                                        value={driverWeight} onChange={e => setDriverWeight(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Beifahrer / Mitf.</span>
+                                                        <span>{passengers} Pers.</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="0" max="6" step="1"
+                                                        value={passengers} onChange={e => setPassengers(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Gew. je Beif. (kg)</span>
+                                                        <span>{passengersWeight} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="40" max="120" step="1"
+                                                        value={passengersWeight} onChange={e => setPassengersWeight(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Water and Gas */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Wasser (Liter/kg)</span>
+                                                        <span>{waterWater} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="0" max="250" step="5"
+                                                        value={waterWater} onChange={e => setWaterWater(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Gasflaschen (kg)</span>
+                                                        <span>{gasWeight} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="0" max="60" step="1"
+                                                        value={gasWeight} onChange={e => setGasWeight(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Baggage and Equipment */}
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Gepäck & Vorräte (kg)</span>
+                                                        <span>{baggage} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="20" max="500" step="5"
+                                                        value={baggage} onChange={e => setBaggage(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Ausrüstung / Stühle (kg)</span>
+                                                        <span>{equipment} kg</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="0" max="300" step="5"
+                                                        value={equipment} onChange={e => setEquipment(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Results Screen */}
+                                    <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
+                                        <div>
+                                            <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Ergebnis</h5>
+
+                                            <div className="space-y-4">
+                                                {/* Current Total */}
+                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                    <span className="text-xs text-charcoal/60">Aktuelles Gesamtgewicht:</span>
+                                                    <span className="text-xl font-bold text-forest">{currentTotalWeight} kg</span>
+                                                </div>
+
+                                                {/* Max Limit */}
+                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                    <span className="text-xs text-charcoal/60">Zulässiges Limit:</span>
+                                                    <span className="text-sm font-semibold text-charcoal/80">{maxWeight} kg</span>
+                                                </div>
+
+                                                {/* Remaining capacity */}
+                                                <div className="flex justify-between items-baseline pt-2">
+                                                    <span className="text-xs text-charcoal/60">Verbleibende Reserve:</span>
+                                                    <span className={`text-xl font-extrabold ${remainingPayload < 0 ? 'text-rose-600 animate-pulse' : 'text-forest'}`}>
+                                                        {remainingPayload} kg
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Progress Bar visual indicator */}
+                                            <div className="mt-6 space-y-1">
+                                                <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5">
+                                                    <div
+                                                        className={`h-full transition-all duration-300 rounded-full ${remainingPayload < 0
+                                                            ? 'bg-rose-500'
+                                                            : remainingPayload < 50
+                                                                ? 'bg-amber-500'
+                                                                : 'bg-forest'
+                                                            }`}
+                                                        style={{ width: `${payloadPercentage}%` }}
+                                                    />
+                                                </div>
+                                                <div className="flex justify-between text-[9px] font-mono text-charcoal/40">
+                                                    <span>Leergewicht ({emptyWeight}kg)</span>
+                                                    <span>{payloadPercentage.toFixed(0)}% Kapazität</span>
+                                                    <span>Max ({maxWeight}kg)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Warning Info box */}
+                                        <div className={`mt-6 p-4 rounded-xl flex items-start gap-2 border text-xs leading-relaxed ${remainingPayload < 0
+                                            ? 'bg-rose-50 border-rose-100 text-rose-800'
+                                            : remainingPayload < 50
+                                                ? 'bg-amber-50 border-amber-100 text-amber-800'
+                                                : 'bg-emerald-50 border-emerald-100 text-emerald-800'
+                                            }`}>
+                                            <Info className={`w-4 h-4 shrink-0 mt-0.5 ${remainingPayload < 0 ? 'text-rose-500' : 'text-forest'}`} />
+                                            <div>
+                                                {remainingPayload < 0 ? (
+                                                    <strong>Achtung: Dein Fahrzeug ist überladen!</strong>
+                                                ) : remainingPayload < 50 ? (
+                                                    <strong>Vorsicht: Sehr knappe Zuladungsreserve!</strong>
+                                                ) : (
+                                                    <strong>Gute Fahrt!</strong>
+                                                )}
+                                                <p className="mt-1 font-light opacity-90">
+                                                    {remainingPayload < 0
+                                                        ? 'Du überschreitest das zulässige Gesamtgewicht. In Deutschland und Europa drohen bei Kontrollen empfindliche Bußgelder.'
+                                                        : remainingPayload < 50
+                                                            ? 'Die Reserve ist sehr gering. Wenn Personen zusteigen oder Gepäck hinzukommt, riskierst du eine Überladung.'
+                                                            : 'Deine Zuladung liegt im grünen Bereich. Achte trotzdem auf eine gleichmäßige Gewichtsverteilung.'}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Results Screen */}
-                                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
-                                    <div>
-                                        <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
+                            ) : (
+                                // Option B: Fuel & Trip Costs Calculator
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+                                    {/* Inputs */}
+                                    <div className="lg:col-span-7 space-y-5">
+                                        <div className="flex items-center gap-2 text-forest mb-2">
+                                            <Fuel className="w-5 h-5 text-forest" />
+                                            <h4 className="font-display text-base font-bold">Fahrt- & Stellplatzbudget planen</h4>
+                                        </div>
+                                        <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
+                                            Berechne unkompliziert die Treibstoffkosten und Campingkosten für deine nächste Autoreise.
+                                        </p>
 
                                         <div className="space-y-4">
-                                            {/* Fuel costs */}
-                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                <span className="text-xs text-charcoal/60">Kraftstoffkosten:</span>
-                                                <span className="text-sm font-semibold text-charcoal/80">{fuelCostTotal.toFixed(2)} €</span>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                {/* Distance */}
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Reiseentfernung (km)</span>
+                                                        <span>{distance} km</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="50" max="4000" step="50"
+                                                        value={distance} onChange={e => setDistance(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
+
+                                                {/* Nights */}
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
+                                                        <span>Anzahl Nächte</span>
+                                                        <span>{nights} Nächte</span>
+                                                    </div>
+                                                    <input
+                                                        type="range" min="1" max="60" step="1"
+                                                        value={nights} onChange={e => setNights(Number(e.target.value))}
+                                                        className="w-full accent-forest"
+                                                    />
+                                                </div>
                                             </div>
 
-                                            {/* Camping costs */}
-                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                <span className="text-xs text-charcoal/60">Übernachtungskosten:</span>
-                                                <span className="text-sm font-semibold text-charcoal/80">{campsiteCostTotal.toFixed(2)} €</span>
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
+                                                {/* Fuel Consumption */}
+                                                <div className="space-y-1.5">
+                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                        Verbrauch (l/100km)
+                                                    </label>
+                                                    <input
+                                                        type="number" step="0.1"
+                                                        value={consumption}
+                                                        onChange={e => setConsumption(Number(e.target.value))}
+                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                    />
+                                                </div>
+
+                                                {/* Spritpreis */}
+                                                <div className="space-y-1.5">
+                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                        Spritpreis (€/l)
+                                                    </label>
+                                                    <input
+                                                        type="number" step="0.01"
+                                                        value={fuelPrice}
+                                                        onChange={e => setFuelPrice(Number(e.target.value))}
+                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                    />
+                                                </div>
+
+                                                {/* Campsite charge */}
+                                                <div className="space-y-1.5">
+                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                        Stellplatz / Nacht (€)
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={campsiteCost}
+                                                        onChange={e => setCampsiteCost(Number(e.target.value))}
+                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                    />
+                                                </div>
                                             </div>
 
-                                            {/* Other */}
-                                            <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                <span className="text-xs text-charcoal/60">Maut & Nebenkosten:</span>
-                                                <span className="text-sm font-semibold text-charcoal/80">{otherBudget.toFixed(2)} €</span>
-                                            </div>
-
-                                            {/* Total cost */}
-                                            <div className="flex justify-between items-baseline pt-2">
-                                                <span className="text-xs text-forest font-bold uppercase tracking-wider">Gesamtbedarf:</span>
-                                                <span className="text-2xl font-extrabold text-forest">
-                                                    {totalCost.toFixed(2)} €
-                                                </span>
+                                            {/* Other reserves */}
+                                            <div className="space-y-1.5 pt-2 max-w-xs">
+                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
+                                                    Sonstiges Budget (Vignetten, Maut, Essen)
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={otherBudget}
+                                                    onChange={e => setOtherBudget(Number(e.target.value))}
+                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
+                                                />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Summary Box */}
-                                    <div className="mt-6 p-4 rounded-xl flex items-start gap-2 border bg-emerald-50 border-emerald-100 text-emerald-800 text-xs leading-relaxed">
-                                        <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest" />
+                                    {/* Results Screen */}
+                                    <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
                                         <div>
-                                            <strong>Budgetübersicht bereit!</strong>
-                                            <p className="mt-1 font-light opacity-90">
-                                                Für deine {distance} km lange Reise mit {nights} Übernachtungen benötigst du ca. <strong className="font-semibold">{totalCost.toFixed(0)} €</strong>.
-                                                Tipp: Rechne immer etwa 10% Reserve für unvorhergesehene Tankstopps oder erhöhte Platzgebühren ein.
-                                            </p>
+                                            <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
+
+                                            <div className="space-y-4">
+                                                {/* Fuel costs */}
+                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                    <span className="text-xs text-charcoal/60">Kraftstoffkosten:</span>
+                                                    <span className="text-sm font-semibold text-charcoal/80">{fuelCostTotal.toFixed(2)} €</span>
+                                                </div>
+
+                                                {/* Camping costs */}
+                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                    <span className="text-xs text-charcoal/60">Übernachtungskosten:</span>
+                                                    <span className="text-sm font-semibold text-charcoal/80">{campsiteCostTotal.toFixed(2)} €</span>
+                                                </div>
+
+                                                {/* Other */}
+                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
+                                                    <span className="text-xs text-charcoal/60">Maut & Nebenkosten:</span>
+                                                    <span className="text-sm font-semibold text-charcoal/80">{otherBudget.toFixed(2)} €</span>
+                                                </div>
+
+                                                {/* Total cost */}
+                                                <div className="flex justify-between items-baseline pt-2">
+                                                    <span className="text-xs text-forest font-bold uppercase tracking-wider">Gesamtbedarf:</span>
+                                                    <span className="text-2xl font-extrabold text-forest">
+                                                        {totalCost.toFixed(2)} €
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Summary Box */}
+                                        <div className="mt-6 p-4 rounded-xl flex items-start gap-2 border bg-emerald-50 border-emerald-100 text-emerald-800 text-xs leading-relaxed">
+                                            <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest" />
+                                            <div>
+                                                <strong>Budgetübersicht bereit!</strong>
+                                                <p className="mt-1 font-light opacity-90">
+                                                    Für deine {distance} km lange Reise mit {nights} Übernachtungen benötigst du ca. <strong className="font-semibold">{totalCost.toFixed(0)} €</strong>.
+                                                    Tipp: Rechne immer etwa 10% Reserve für unvorhergesehene Tankstopps oder erhöhte Platzgebühren ein.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </motion.div>
                 );
 
@@ -1247,8 +1034,8 @@ export default function DiscoverCampuna() {
                     >
                         <Compass className="w-4 h-4" /> Inspirationen
                     </button>
-                    {/* Hiding the 3rd tab (Community-Fragen) for now
-                    <button
+                    {/* Commented out as requested by user to hide this tab */}
+                    {/* <button
                         onClick={() => handleTabChange('community')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'community'
                             ? 'border-forest text-forest'
@@ -1256,8 +1043,7 @@ export default function DiscoverCampuna() {
                             }`}
                     >
                         <MessageSquare className="w-4 h-4" /> Community-Fragen
-                    </button>
-                    */}
+                    </button> */}
                     <button
                         onClick={() => handleTabChange('tools')}
                         className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tools'
