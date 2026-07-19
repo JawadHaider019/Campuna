@@ -236,7 +236,7 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             {/* 11. Custom FAQ Accordion */}
             <FAQSection />
 
-            <WelcomeBanner />
+            <WelcomeBanner isLoggedIn={isLoggedIn} />
         </div >
     );
 }

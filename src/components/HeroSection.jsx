@@ -75,7 +75,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.6, duration: 0.8 }}
             className="font-sans text-sm sm:text-md md:text-lg text-sand/85 leading-relaxed max-w-2xl mx-auto mb-10 font-light"
           >
-            Campuna ist deine Camping-Plattform für Deutschland. Entdecke Angebote, Anbieter, Stellplätze, Ratgeber und Services rund ums Camping.
+            Entdecke Fahrzeuge, Zubehör, Stellplätze, Vermietungen und Services – oder stelle dein eigenes Camping-Angebot kostenlos ein.
           </motion.p>
 
           {/* Action Buttons */}
@@ -85,35 +85,27 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.7, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-8"
           >
-            {isLoggedIn ? (
-              <motion.button
-                onClick={() => navigateTo('/my_account?n=yes')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
-              >
-                Anzeige erstellen
-              </motion.button>
-            ) : (
-              <>
-                <motion.button
-                  onClick={onExploreClick}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
-                >
-                  Ich bin Camper
-                </motion.button>
-                <motion.button
-                  onClick={onSellClick}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px] tracking-wider"
-                >
-                  Ich bin Anbieter
-                </motion.button>
-              </>
-            )}
+            <motion.button
+              onClick={() => {
+                const element = document.getElementById('exclusive-offers');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
+            >
+              Angebote entdecken
+            </motion.button>
+            <motion.button
+              onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-sans font-semibold py-3 px-6 rounded-full transition-all duration-300 text-[12px] tracking-wider"
+            >
+              {isLoggedIn ? 'Inserat erstellen' : 'Kostenlos inserieren'}
+            </motion.button>
           </motion.div>
 
           {/* Advanced Search Bar Component */}

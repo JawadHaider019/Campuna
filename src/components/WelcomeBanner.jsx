@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Tent, Sparkles } from 'lucide-react';
 import { navigateTo } from '../utils/navigation';
 
-export default function WelcomeBanner() {
+export default function WelcomeBanner({ isLoggedIn }) {
     const [scrolled, setScrolled] = useState(false);
     const [hideOnFooter, setHideOnFooter] = useState(false);
 
@@ -62,23 +62,27 @@ export default function WelcomeBanner() {
                         </div>
 
                         <div className="flex-1 text-left">
-                            <p className="font-display text-xs sm:text-base font-bold text-white leading-snug flex items-center justify-start gap-2">
-                                Willkommen bei Campuna
-                                <span className="text-base sm:text-lg hidden sm:block">👋</span>
-                                <span className="hidden sm:inline-flex items-center gap-1 bg-sand/20 text-sand text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border border-gold/20">
-                                    <Sparkles className="w-2.5 h-2.5" /> Neu
-                                </span>
+                            <p className="font-display text-xs sm:text-base font-bold text-white leading-snug flex items-center justify-start gap-2 flex-wrap">
+                                {isLoggedIn ? 'Du möchtest etwas anbieten?' : 'Private Anzeigen kostenlos einstellen'}
+                                {!isLoggedIn && <span className="text-base sm:text-lg hidden sm:block">👋</span>}
+                                {!isLoggedIn && (
+                                    <span className="hidden sm:inline-flex items-center gap-1 bg-sand/20 text-sand text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border border-gold/20">
+                                        <Sparkles className="w-2.5 h-2.5" /> Neu
+                                    </span>
+                                )}
                             </p>
                             <p className="font-sans text-[10px] sm:text-xs text-white/80 leading-relaxed">
-                                Entdecke Angebote, finde deinen Stellplatz  oder teile dein Camping-Angebot mit anderen.
+                                {isLoggedIn
+                                    ? 'Erstelle dein nächstes Inserat in wenigen Schritten.'
+                                    : 'Verkaufe Campingzubehör, Fahrzeuge und mehr – schnell und unkompliziert.'}
                             </p>
                         </div>
 
                         <button
-                            onClick={() => navigateTo('/my_account?n=yes')}
+                            onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-4 py-2 sm:px-5 sm:py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
-                            Inserieren
+                            {isLoggedIn ? 'Inserat erstellen' : 'Jetzt inserieren'}
                             <ArrowRight className="w-3 h-3" />
                         </button>
                     </div>
@@ -102,23 +106,27 @@ export default function WelcomeBanner() {
                         </div>
 
                         <div className="flex-1 text-left">
-                            <p className="font-display text-xs sm:text-base font-bold text-white leading-snug flex items-center justify-start gap-2">
-                                Willkommen bei Campuna
-                                <span className="text-base sm:text-lg hidden sm:block">👋</span>
-                                <span className="hidden sm:inline-flex items-center gap-1 bg-sand/20 text-sand text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border border-gold/20">
-                                    <Sparkles className="w-2.5 h-2.5" /> Neu
-                                </span>
+                            <p className="font-display text-xs sm:text-base font-bold text-white leading-snug flex items-center justify-start gap-2 flex-wrap">
+                                {isLoggedIn ? 'Du möchtest etwas anbieten?' : 'Private Anzeigen kostenlos einstellen'}
+                                {!isLoggedIn && <span className="text-base sm:text-lg hidden sm:block">👋</span>}
+                                {!isLoggedIn && (
+                                    <span className="hidden sm:inline-flex items-center gap-1 bg-sand/20 text-sand text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border border-gold/20">
+                                        <Sparkles className="w-2.5 h-2.5" /> Neu
+                                    </span>
+                                )}
                             </p>
                             <p className="font-sans text-[10px] sm:text-xs text-white/80 leading-relaxed">
-                                Entdecke Angebote, finde deinen Stellplatz  oder teile dein Camping-Angebot mit anderen.
+                                {isLoggedIn
+                                    ? 'Erstelle dein nächstes Inserat in wenigen Schritten.'
+                                    : 'Verkaufe Campingzubehör, Fahrzeuge und mehr – schnell und unkompliziert.'}
                             </p>
                         </div>
 
                         <button
-                            onClick={() => navigateTo('/my_account?n=yes')}
+                            onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
                             className="shrink-0 flex items-center gap-1 bg-sand hover:brightness-110 text-forest font-sans font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-4 py-2 sm:px-5 sm:py-2.5 rounded-full transition-all duration-300 hover:scale-[1.03] shadow-lg whitespace-nowrap"
                         >
-                            Inserieren
+                            {isLoggedIn ? 'Inserat erstellen' : 'Jetzt inserieren'}
                             <ArrowRight className="w-3 h-3" />
                         </button>
                     </div>
