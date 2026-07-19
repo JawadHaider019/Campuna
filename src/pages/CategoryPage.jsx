@@ -20,7 +20,7 @@ const SLUG_TO_CATEGORY = {
     'dienstleistungen': 'Camping Services',
     'tiny-houses': 'Tiny Houses',
     'mieten-vermieten': 'Mieten & Vermieten',
-    'boats-watersports': 'Boote & Wassersport',
+    'boote-wassersport': 'Boote & Wassersport',
 };
 
 

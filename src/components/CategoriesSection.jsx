@@ -35,7 +35,7 @@ const CATEGORY_SLUGS = {
   'Camping Services': 'dienstleistungen',
   'Tiny Houses': 'tiny-houses',
   'Mieten & Vermieten': 'mieten-vermieten',
-  'Boote & Wassersport': 'boats-watersports'
+  'Boote & Wassersport': 'boote-wassersport'
 };
 
 export default function CategoriesSection({ onSelectCategory, excludeCategory }) {

@@ -125,7 +125,7 @@ export const CATEGORIES = [
     name: 'Boote & Wassersport',
     count: 7,
     image: '/collection/camping-zubehoer-hero.png',
-    slug: 'boats-watersports',
+    slug: 'boote-wassersport',
     iconName: 'Sailboat',
     heroTitle: 'Boote & Wassersport auf Campuna entdecken',
     heroSubtitle: 'Entdecke Boote, Wassersportausrüstung und Zubehör auf Campuna. Finde passende Angebote für Motorboote, Segelboote, Schlauchboote, Kajaks, SUPs, Jetskis und vieles mehr für dein nächstes Abenteuer auf dem Wasser.',
