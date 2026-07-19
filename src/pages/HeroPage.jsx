@@ -219,7 +219,7 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             />
 
             {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-            <PartnersSection />
+            <PartnersSection isLoggedIn={isLoggedIn} />
 
             {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
             <BlogSection />

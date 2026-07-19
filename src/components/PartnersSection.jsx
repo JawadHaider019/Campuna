@@ -4,7 +4,7 @@ import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { PROVIDERS } from '../data';
 import { navigateTo } from '../utils/navigation';
 
-export default function PartnersSection({ onPartnerClick }) {
+export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
     const [randomizedProviders, setRandomizedProviders] = useState(() =>
@@ -145,19 +145,25 @@ export default function PartnersSection({ onPartnerClick }) {
 
                 {/* Section header */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8 px-4">
-                    <div className="space-y-1">
+                    <div className="space-y-1 text-center md:text-left">
                         <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
-                            Campuna Spotlight
+                            CAMPUNA SPOTLIGHT
                         </span>
                         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">
-                            Empfohlene Camping-Anbieter
+                            Camping-Anbieter im Spotlight
                         </h2>
-                        <div className="w-16 h-0.5 bg-gold rounded-full mt-4" />
+                        <div className="w-16 h-0.5 bg-gold rounded-full mt-4 mx-auto md:mx-0" />
                     </div>
-                    {/* Desktop View All */}
-                    <div className="hidden lg:block">
+                    {/* Desktop Actions */}
+                    <div className="hidden lg:flex items-center space-x-6">
+                        <button
+                            onClick={() => navigateTo('/signup_login')}
+                            className="text-charcoal/60 hover:text-forest text-[11px] font-sans font-semibold transition-colors border-b border-transparent hover:border-forest/30 pb-0.5"
+                        >
+                            Auch Anbieter werden
+                        </button>
                         <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
-                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Partner</span>
+                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                         </button>
                     </div>
@@ -185,10 +191,16 @@ export default function PartnersSection({ onPartnerClick }) {
                         </motion.div>
                     </div>
 
-                    {/* Mobile & Tablet View All */}
-                    <div className="mt-7 flex justify-center lg:hidden">
+                    {/* Mobile & Tablet Actions */}
+                    <div className="mt-8 flex  items-center justify-center gap-4 sm:gap-6 lg:hidden">
+                        <button
+                            onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
+                            className="text-charcoal/60 hover:text-forest text-[11px] font-sans font-semibold transition-colors border-b border-transparent hover:border-forest/30 pb-0.5"
+                        >
+                            Auch Anbieter werden
+                        </button>
                         <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
-                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Partner</span>
+                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                         </button>
                     </div>
