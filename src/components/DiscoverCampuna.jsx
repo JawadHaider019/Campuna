@@ -476,7 +476,7 @@ export default function DiscoverCampuna() {
                                     />
 
                                     {insp.isFeatured && (
-                                        <div className="absolute top-3 right-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
+                                        <div className="absolute top-3 left-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
                                             Featured
                                         </div>
                                     )}
