@@ -449,7 +449,7 @@ export default function DiscoverCampuna() {
                                     const slug = buildListingSlug(insp.title, insp.id);
                                     navigateTo(`/listing_details/${slug}`);
                                 }}
-                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[240px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
+                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[260px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
                                     }`}
                             >
                                 <div className="relative w-full sm:w-2/5 h-48 sm:h-full overflow-hidden bg-sand/10">
