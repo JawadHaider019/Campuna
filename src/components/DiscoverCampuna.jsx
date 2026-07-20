@@ -199,7 +199,8 @@ export default function DiscoverCampuna() {
 
                 // Map Tips
                 if (tipsData && tipsData.status === 'success' && tipsData.response && tipsData.response.Tips) {
-                    const mappedTips = tipsData.response.Tips.map((tip, idx) => {
+                    const activeTips = tipsData.response.Tips.filter(tip => tip.Active === 'Yes');
+                    const mappedTips = activeTips.map((tip, idx) => {
                         const category = tip.Category || 'Allgemein';
                         let badgeColor = 'bg-amber-50 text-amber-700 border-amber-100';
                         if (category.toLowerCase().includes('recht')) {
@@ -219,12 +220,16 @@ export default function DiscoverCampuna() {
                                 const diffTime = d1 - d2;
                                 const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-                                if (diffDays === 0) {
+                                if (diffDays <= 0) {
                                     formattedDate = 'Heute';
                                 } else if (diffDays === 1) {
                                     formattedDate = 'Gestern';
+                                } else if (diffDays > 1 && diffDays < 7) {
+                                    formattedDate = `Vor ${diffDays} Tagen`;
                                 } else if (diffDays === 7) {
                                     formattedDate = 'Vor einer Woche';
+                                } else if (diffDays > 7 && diffDays <= 30) {
+                                    formattedDate = `Vor ${diffDays} Tagen`;
                                 } else {
                                     formattedDate = dateObj.toLocaleDateString('de-DE', {
                                         day: '2-digit',
