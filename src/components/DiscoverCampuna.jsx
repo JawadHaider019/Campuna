@@ -17,66 +17,11 @@ import {
     Fuel,
     Info,
     Euro,
-    Scale
+    Scale,
+    X
 } from 'lucide-react';
 import { navigateTo } from '../utils/navigation';
 import { buildListingSlug } from '../utils/slugify';
-
-
-// Mock Data for Discover Section
-const DISCOVER_TIPS = [
-    {
-        id: 'tip_1',
-        title: 'Wildcamping & Freistehen: Was ist in Deutschland erlaubt?',
-        excerpt: 'Lerne die rechtlichen Unterschiede zwischen Biwakieren, Notlanden und illegalem Wildcamping kennen, um Bußgelder zu vermeiden.',
-        readTime: '4 Min. Lesezeit',
-        category: 'Rechtliches',
-        date: 'Heute',
-        views: '1.2k views',
-        badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-100'
-    },
-    {
-        id: 'tip_2',
-        title: 'Wohnmobil winterfest machen: Die 10-Schritte-Checkliste',
-        excerpt: 'Wasserleitungen entleeren, Frostschutz prüfen und Polster richtig lagern. Schütze dein Campingfahrzeug vor Frostschäden.',
-        readTime: '6 Min. Lesezeit',
-        category: 'Fahrzeugpflege',
-        date: 'Gestern',
-        views: '920 views',
-        badgeColor: 'bg-blue-50 text-blue-700 border-blue-100'
-    },
-    {
-        id: 'tip_3',
-        title: '12 unverzichtbare Camping-Hacks für Regentage',
-        excerpt: 'Von Microfaser-Tricks über kreative Belüftungsmethoden bis hin zu den besten Beschäftigungsideen im engen Raum.',
-        readTime: '3 Min. Lesezeit',
-        category: 'Praxis-Tipps',
-        date: 'Vor 3 Tagen',
-        views: '2.4k views',
-        badgeColor: 'bg-amber-50 text-amber-700 border-amber-100'
-    }
-];
-
-const DISCOVER_INSPIRATION = [
-    {
-        id: 'insp_1',
-        title: 'Route Romantische Straße: Von Würzburg bis Neuschwanstein mit dem Camper',
-        location: 'Süddeutschland',
-        duration: '5-7 Tage',
-        image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80',
-        tags: ['Schlösser', 'Historisch', 'Panoramastraße'],
-        description: 'Eine der ältesten und beliebtesten Ferienstraßen Deutschlands bietet malerische Stellplätze an Burgen und Weinbergen.'
-    },
-    {
-        id: 'insp_2',
-        title: 'Unbekanntes Mecklenburg: Naturcamping abseits der Touristenpfade',
-        location: 'Mecklenburg-Vorpommern',
-        duration: '3-4 Tage',
-        image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80',
-        tags: ['Naturpur', 'Badesee', 'Ruhe'],
-        description: 'Versteckte Seen, dichte Wälder und winzige Naturcampingplätze, die absolute Entspannung und Sternenhimmel pur bieten.'
-    }
-];
 
 
 const INITIAL_COMMUNITY_QUESTIONS = [
@@ -165,9 +110,10 @@ export default function DiscoverCampuna() {
     const [activeTab, setActiveTab] = useState('tips');
 
     // ── Pre-fetched Tips and Inspiration State ──
-    const [tips, setTips] = useState(DISCOVER_TIPS);
-    const [inspirations, setInspirations] = useState(DISCOVER_INSPIRATION);
+    const [tips, setTips] = useState([]);
+    const [inspirations, setInspirations] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedTip, setSelectedTip] = useState(null);
 
     useEffect(() => {
         const fetchTipsAndInspirations = async () => {
@@ -244,10 +190,8 @@ export default function DiscoverCampuna() {
                             id: tip._id || `api_tip_${idx}`,
                             title: tip.Title || 'Kein Titel',
                             excerpt: tip.Desc || tip.desc || '',
-                            readTime: `${Math.max(3, Math.ceil((tip.Desc || tip.desc || '').split(' ').length / 150))} Min. Lesezeit`,
                             category: category,
                             date: formattedDate,
-                            views: `${Math.floor(Math.random() * 500) + 100} views`,
                             badgeColor: badgeColor
                         };
                     });
@@ -450,7 +394,8 @@ export default function DiscoverCampuna() {
                         {tips.map((tip) => (
                             <div
                                 key={tip.id}
-                                className="bg-white rounded-3xl p-6 border border-forest/5 shadow-md hover:shadow-xl hover:border-forest/10 transition-all duration-300 flex flex-col justify-between"
+                                onClick={() => setSelectedTip(tip)}
+                                className="bg-white rounded-3xl p-6 border border-forest/5 shadow-md hover:shadow-xl hover:border-forest/10 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:scale-[1.01]"
                             >
                                 <div>
                                     <div className="flex items-center justify-between mb-4">
@@ -459,14 +404,16 @@ export default function DiscoverCampuna() {
                                         </span>
                                         <span className="text-[11px] text-charcoal/40 font-mono">{tip.date}</span>
                                     </div>
-                                    <h3 className="font-display text-base sm:text-lg font-bold text-forest  transition-colors duration-200 mb-2.5 leading-snug ">
+                                    <h3
+                                        title={tip.title}
+                                        className="font-display text-base sm:text-lg font-bold text-forest transition-colors duration-200 mb-2.5 leading-snug truncate"
+                                    >
                                         {tip.title}
                                     </h3>
-                                    <p className="font-sans text-[13px] text-charcoal/70 leading-relaxed font-light mb-4">
+                                    <p className="font-sans text-[13px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-3">
                                         {tip.excerpt}
                                     </p>
                                 </div>
-
                             </div>
                         ))}
                     </motion.div>
@@ -1067,6 +1014,56 @@ export default function DiscoverCampuna() {
                     </AnimatePresence>
                 </div>
             </div>
+
+            {/* Premium Tip Popup Modal */}
+            <AnimatePresence>
+                {selectedTip && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedTip(null)}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] flex items-center justify-center p-4"
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative border border-forest/10 flex flex-col gap-5 overflow-hidden"
+                        >
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setSelectedTip(null)}
+                                className="absolute top-4 right-4 p-2 rounded-full bg-sand/50 text-forest hover:bg-forest hover:text-gold transition-all duration-300 animate-none cursor-pointer"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
+                            {/* Badge and Date */}
+                            <div className="flex items-center gap-3">
+                                <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${selectedTip.badgeColor}`}>
+                                    {selectedTip.category}
+                                </span>
+                                <span className="text-xs text-charcoal/40 font-mono">{selectedTip.date}</span>
+                            </div>
+
+                            {/* Full Heading */}
+                            <h3 className="font-display text-xl sm:text-2xl font-bold text-forest leading-snug pr-8 mt-1">
+                                {selectedTip.title}
+                            </h3>
+
+                            {/* Text / Description */}
+                            <div className="border-t border-forest/5 pt-4">
+                                <p className="font-sans text-sm sm:text-base text-charcoal/80 leading-relaxed font-light whitespace-pre-line">
+                                    {selectedTip.excerpt}
+                                </p>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
