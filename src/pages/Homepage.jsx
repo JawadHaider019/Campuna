@@ -41,8 +41,25 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                 const data = await getHomepageProducts();
                 if (data && data.status === "success" && data.response && Array.isArray(data.response.listing)) {
                     const mapped = data.response.listing.map((item) => {
-                        // Format images (adding https:) and convert HEIC via Bubble CDN transform
-                        let images = (item.images && item.images.length > 0 ? item.images : [item["Main Image"]])
+                        // Prioritize Main Image, fallback to images array
+                        let rawImages = [];
+                        const mainImg = item["Main Image"] || item.MainImage;
+                        if (mainImg) {
+                            rawImages.push(mainImg);
+                        }
+                        if (item.images && Array.isArray(item.images)) {
+                            item.images.forEach(img => {
+                                if (img && img !== mainImg && !rawImages.includes(img)) {
+                                    rawImages.push(img);
+                                }
+                            });
+                        } else if (item.images && typeof item.images === 'string') {
+                            if (item.images !== mainImg) {
+                                rawImages.push(item.images);
+                            }
+                        }
+
+                        let images = rawImages
                             .filter(Boolean)
                             .map(url => {
                                 url = url.startsWith('//') ? `https:${url}` : url;

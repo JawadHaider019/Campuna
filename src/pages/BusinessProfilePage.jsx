@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -158,17 +158,216 @@ export default function BusinessProfilePage() {
 
     const uid = pathUid || queryUid || '';
 
-    // Look up business provider
-    const provider = PROVIDERS.find(p => {
-        return p.id === uid || p.slug.includes(uid) || p.slug === uid || p.name.toLowerCase() === uid.toLowerCase();
-    }) || PROVIDERS.find(p => p.name === 'LivianEssence') || PROVIDERS[0];
+    const [provider, setProvider] = useState(null);
+    const [listings, setListings] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const providerName = provider?.name || 'LivianEssence';
+    useEffect(() => {
+        const fetchProviderData = async () => {
+            setLoading(true);
+            try {
+                // Fetch F_users from hompage_tips
+                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                // Fetch products to filter listings
+                const productsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage-products/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                let users = [];
+                let allProducts = [];
+
+                if (tipsRes.ok) {
+                    const tipsData = await tipsRes.json();
+                    if (tipsData && tipsData.status === 'success' && tipsData.response && Array.isArray(tipsData.response.F_users)) {
+                        users = tipsData.response.F_users;
+                    }
+                }
+
+                if (productsRes.ok) {
+                    const productsData = await productsRes.json();
+                    if (productsData && productsData.status === 'success' && productsData.response && Array.isArray(productsData.response.listing)) {
+                        allProducts = productsData.response.listing;
+                    }
+                }
+
+                // Try to find the user in dynamic list
+                const matchedUser = users.find(u => u._id === uid || u.username?.toLowerCase() === uid.toLowerCase());
+
+                if (matchedUser) {
+                    // Count how many listings belong to this user
+                    const userProducts = allProducts.filter(l => l['Created By'] === matchedUser._id);
+
+                    // Format their listings to ListingCard structure:
+                    const formatted = userProducts.map((item, idx) => {
+                        // Image fallback logic: Prioritize Main Image, fallback to images array
+                        let rawImages = [];
+                        const mainImg = item['Main Image'] || item.MainImage;
+                        if (mainImg) {
+                            rawImages.push(mainImg);
+                        }
+                        if (item.images && Array.isArray(item.images)) {
+                            item.images.forEach(img => {
+                                if (img && img !== mainImg && !rawImages.includes(img)) {
+                                    rawImages.push(img);
+                                }
+                            });
+                        } else if (item.images && typeof item.images === 'string') {
+                            if (item.images !== mainImg) {
+                                rawImages.push(item.images);
+                            }
+                        }
+
+                        let images = rawImages
+                            .filter(Boolean)
+                            .map(url => {
+                                url = url.startsWith('//') ? `https:${url}` : url;
+                                if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
+                                    url = url.replace(
+                                        /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                        '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                                    );
+                                }
+                                return url;
+                            });
+
+                        if (images.length === 0) {
+                            images.push('/hero-campuna.png');
+                        }
+
+                        return {
+                            id: item._id || `api_lst_${idx}`,
+                            title: item.title || item.Title || 'Kein Titel',
+                            price: item.price || item.Price || 0,
+                            pricePeriod: item['price type'] || 'Preis',
+                            location: item.location || 'Deutschland',
+                            displayLocation: formatLocation(item.location || 'Deutschland'),
+                            images,
+                            isNegotiable: item['price type'] === 'Preis' || false
+                        };
+                    });
+
+                    // Format member since date
+                    let memberSince = '12.11.2025';
+                    if (matchedUser['Created Date']) {
+                        const d = new Date(matchedUser['Created Date']);
+                        if (!isNaN(d.getTime())) {
+                            memberSince = d.toLocaleDateString('de-DE');
+                        }
+                    }
+
+                    // Logo URL
+                    let logo = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+                    if (matchedUser['Logo/Profile']) {
+                        const rawLogo = matchedUser['Logo/Profile'];
+                        logo = rawLogo.startsWith('//') ? `https:${rawLogo}` : rawLogo;
+                    }
+
+                    // Cover URL
+                    let coverImage = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80';
+                    if (matchedUser.Cover) {
+                        const rawCover = matchedUser.Cover;
+                        coverImage = rawCover.startsWith('//') ? `https:${rawCover}` : rawCover;
+                    }
+
+                    const dynamicProviderObj = {
+                        id: matchedUser._id,
+                        name: matchedUser['BU - Company name'] || matchedUser.username || 'Camping Partner',
+                        logo,
+                        coverImage,
+                        description: matchedUser.Bio || 'Dein Partner für Camping Abenteuer.',
+                        slug: `?uid=${matchedUser._id}`,
+                        listingsCount: userProducts.length,
+                        email: matchedUser.email || matchedUser.authentication?.email?.email || 'kontakt@campuna.de',
+                        memberSince,
+                        phone: matchedUser['BU - phone'] || '+49 (0) 6051 4567-89',
+                        adresse: matchedUser['BU - Full address'] || 'Deutschland',
+                        impressum: matchedUser['BU - Impressum '] || 'https://campuna.de/impressum'
+                    };
+
+                    setProvider(dynamicProviderObj);
+                    setListings(formatted);
+                } else {
+                    // Fallback to local static providers if needed
+                    const fallbackProv = PROVIDERS.find(p => {
+                        return p.id === uid || p.slug.includes(uid) || p.slug === uid || p.name.toLowerCase() === uid.toLowerCase();
+                    }) || PROVIDERS.find(p => p.name === 'LivianEssence') || PROVIDERS[0];
+
+                    if (fallbackProv) {
+                        const isLivian = fallbackProv.name.toLowerCase().includes('livian');
+                        const memberSince = isLivian ? '07.04.2026' : '12.11.2025';
+                        const email = isLivian ? 'd.zipf@markson-tinyhouse.com' : `info@${fallbackProv.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.de`;
+
+                        const staticObj = {
+                            ...fallbackProv,
+                            email,
+                            memberSince,
+                            phone: '+49 (0) 6051 4567-89',
+                            adresse: fallbackProv.location || 'Deutschland',
+                            impressum: 'https://campuna.de/impressum'
+                        };
+                        setProvider(staticObj);
+
+                        let listingsVal = [];
+                        if (isLivian) {
+                            listingsVal = LIVIAN_MOCK_LISTINGS;
+                        } else {
+                            listingsVal = FEATURED_LISTINGS.map((l, i) => ({
+                                ...l,
+                                id: `prov_lst_${i}`,
+                                displayLocation: formatLocation(l.location),
+                                isNegotiable: l.pricePeriod === 'Preis' || false
+                            })).slice(0, Math.min(3, fallbackProv.listingsCount || 3));
+
+                            if (listingsVal.length === 0) {
+                                listingsVal = FEATURED_LISTINGS.slice(0, 2).map((l, i) => ({
+                                    ...l,
+                                    id: `prov_lst_${i}`,
+                                    displayLocation: formatLocation(l.location),
+                                    isNegotiable: false
+                                }));
+                            }
+                        }
+                        setListings(listingsVal);
+                    }
+                }
+            } catch (err) {
+                console.error("Error setting provider details:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProviderData();
+    }, [uid]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-sand flex items-center justify-center pt-24">
+                <div className="flex flex-col items-center space-y-4">
+                    <div className="w-12 h-12 border-4 border-forest border-t-transparent rounded-full animate-spin" />
+                    <p className="font-sans text-xs font-semibold text-forest uppercase tracking-widest animate-pulse">Laden...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!provider) {
+        return (
+            <div className="min-h-screen bg-sand flex items-center justify-center pt-24 text-center">
+                <p className="font-sans text-sm font-semibold text-charcoal/60">Anbieter nicht gefunden.</p>
+            </div>
+        );
+    }
+
+    const providerName = provider.name;
     const isLivian = providerName.toLowerCase().includes('livian');
-
-    // Hardcoded metadata matching requested screens
-    const memberSince = isLivian ? '07.04.2026' : '12.11.2025';
-    const email = isLivian ? 'd.zipf@markson-tinyhouse.com' : `info@${providerName.toLowerCase().replace(/[^a-z0-9]/g, '')}.de`;
+    const memberSince = provider.memberSince;
+    const email = provider.email;
 
     // Bullet points
     const bioLines = isLivian ? [
@@ -186,33 +385,11 @@ export default function BusinessProfilePage() {
 
     // Legal Information Impressum attributes
     const legalDetails = {
-        firmenname: isLivian ? 'Livianessence Co. (Markson Tiny House)' : `${providerName} GmbH`,
-        adresse: isLivian ? 'Gelnhäuser Allee 10, 63571 Gelnhausen, Deutschland' : `${provider.location || 'Deutschland'}`,
-        kontaktinfo: `E-Mail: ${email} | Tel: +49 (0) 6051 4567-89`,
-        impressumUrl: 'https://campuna.de/impressum'
+        firmenname: provider.firmenname || (isLivian ? 'Livianessence Co. (Markson Tiny House)' : `${providerName} GmbH`),
+        adresse: provider.adresse || (isLivian ? 'Gelnhäuser Allee 10, 63571 Gelnhausen, Deutschland' : `${provider.location || 'Deutschland'}`),
+        kontaktinfo: `E-Mail: ${email} | Tel: ${provider.phone || '+49 (0) 6051 4567-89'}`,
+        impressumUrl: provider.impressum || 'https://campuna.de/impressum'
     };
-
-    // Get matching listings
-    let listings = [];
-    if (isLivian) {
-        listings = LIVIAN_MOCK_LISTINGS;
-    } else {
-        listings = FEATURED_LISTINGS.map((l, i) => ({
-            ...l,
-            id: `prov_lst_${i}`,
-            displayLocation: formatLocation(l.location),
-            isNegotiable: l.pricePeriod === 'Preis' || false
-        })).slice(0, Math.min(3, provider.listingsCount || 3));
-
-        if (listings.length === 0) {
-            listings = FEATURED_LISTINGS.slice(0, 2).map((l, i) => ({
-                ...l,
-                id: `prov_lst_${i}`,
-                displayLocation: formatLocation(l.location),
-                isNegotiable: false
-            }));
-        }
-    }
 
     return (
         <div className="bg-white min-h-screen relative font-sans text-charcoal">

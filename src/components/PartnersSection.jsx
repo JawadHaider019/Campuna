@@ -11,6 +11,85 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
         [...PROVIDERS].sort(() => Math.random() - 0.5)
     );
 
+    useEffect(() => {
+        let active = true;
+        const loadProvidersAndCounts = async () => {
+            try {
+                // Fetch F_users from hompage_tips
+                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                // Fetch products to count online listings
+                const productsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage-products/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                let users = [];
+                let listings = [];
+
+                if (tipsRes.ok) {
+                    const tipsData = await tipsRes.json();
+                    if (tipsData && tipsData.status === 'success' && tipsData.response && Array.isArray(tipsData.response.F_users)) {
+                        users = tipsData.response.F_users;
+                    }
+                }
+
+                if (productsRes.ok) {
+                    const productsData = await productsRes.json();
+                    if (productsData && productsData.status === 'success' && productsData.response && Array.isArray(productsData.response.listing)) {
+                        listings = productsData.response.listing;
+                    }
+                }
+
+                if (users.length > 0) {
+                    const mappedProviders = users.map(user => {
+                        // Count how many listings belong to this user
+                        const count = listings.filter(l => l['Created By'] === user._id).length;
+
+                        // Logo URL formatted
+                        let logo = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
+                        if (user['Logo/Profile']) {
+                            const rawLogo = user['Logo/Profile'];
+                            logo = rawLogo.startsWith('//') ? `https:${rawLogo}` : rawLogo;
+                        }
+
+                        // Cover URL formatted
+                        let coverImage = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80';
+                        if (user.Cover) {
+                            const rawCover = user.Cover;
+                            coverImage = rawCover.startsWith('//') ? `https:${rawCover}` : rawCover;
+                        }
+
+                        return {
+                            id: user._id,
+                            name: user['BU - Company name'] || user.username || 'Camping Partner',
+                            logo,
+                            coverImage,
+                            description: user.Bio || 'Dein Partner für Camping Abenteuer.',
+                            slug: `?uid=${user._id}`,
+                            listingsCount: count
+                        };
+                    });
+
+                    if (active) {
+                        const shuffled = [...mappedProviders].sort(() => Math.random() - 0.5);
+                        setRandomizedProviders(shuffled);
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching providers API in PartnersSection:", err);
+            }
+        };
+
+        loadProvidersAndCounts();
+        return () => {
+            active = false;
+        };
+    }, []);
+
     const x = useMotionValue(0);
     const isHoveredRef = useRef(false);
     const isDraggingRef = useRef(false);

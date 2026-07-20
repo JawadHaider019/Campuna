@@ -80,7 +80,25 @@ export default function ListingDetailPage() {
                         const apiMatch = data.response.listing.find(item => item._id === listingId);
                         if (apiMatch) {
                             // Map API item structure to our layout
-                            let images = (apiMatch.images && apiMatch.images.length > 0 ? apiMatch.images : [apiMatch['Main Image']])
+                            // Prioritize Main Image, fallback to images array
+                            let rawImages = [];
+                            const mainImg = apiMatch['Main Image'] || apiMatch.MainImage;
+                            if (mainImg) {
+                                rawImages.push(mainImg);
+                            }
+                            if (apiMatch.images && Array.isArray(apiMatch.images)) {
+                                apiMatch.images.forEach(img => {
+                                    if (img && img !== mainImg && !rawImages.includes(img)) {
+                                        rawImages.push(img);
+                                    }
+                                });
+                            } else if (apiMatch.images && typeof apiMatch.images === 'string') {
+                                if (apiMatch.images !== mainImg) {
+                                    rawImages.push(apiMatch.images);
+                                }
+                            }
+
+                            let images = rawImages
                                 .filter(Boolean)
                                 .map(url => url.startsWith('//') ? `https:${url}` : url);
 

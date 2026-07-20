@@ -223,12 +223,22 @@ export default function DiscoverCampuna() {
                         const locationGeo = item['location geo'];
                         const location = locationGeo?.address || item.location || 'Deutschland';
 
-                        const imageObj = item.images || item.MainImage || item['Main Image'] || item.image || item.Image;
+                        // Prioritize Main Image, fallback to images array
                         let image = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-                        if (typeof imageObj === 'string') {
-                            image = imageObj.startsWith('//') ? `https:${imageObj}` : imageObj;
-                        } else if (Array.isArray(imageObj) && imageObj.length > 0) {
-                            image = imageObj[0].startsWith('//') ? `https:${imageObj[0]}` : imageObj[0];
+                        const mainImg = item['Main Image'] || item.MainImage;
+                        const imagesArray = item.images;
+
+                        if (mainImg && typeof mainImg === 'string') {
+                            image = mainImg.startsWith('//') ? `https:${mainImg}` : mainImg;
+                        } else if (Array.isArray(imagesArray) && imagesArray.length > 0 && typeof imagesArray[0] === 'string') {
+                            image = imagesArray[0].startsWith('//') ? `https:${imagesArray[0]}` : imagesArray[0];
+                        } else if (typeof imagesArray === 'string') {
+                            image = imagesArray.startsWith('//') ? `https:${imagesArray}` : imagesArray;
+                        } else {
+                            const fallbackObj = item.image || item.Image;
+                            if (typeof fallbackObj === 'string') {
+                                image = fallbackObj.startsWith('//') ? `https:${fallbackObj}` : fallbackObj;
+                            }
                         }
 
                         // Tags from Category & Sub-Category
@@ -439,7 +449,7 @@ export default function DiscoverCampuna() {
                                     const slug = buildListingSlug(insp.title, insp.id);
                                     navigateTo(`/listing_details/${slug}`);
                                 }}
-                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[220px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
+                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[240px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
                                     }`}
                             >
                                 <div className="relative w-full sm:w-2/5 h-48 sm:h-full overflow-hidden bg-sand/10">
