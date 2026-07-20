@@ -16,7 +16,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
         const loadProvidersAndCounts = async () => {
             try {
                 // Fetch F_users from hompage_tips
-                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage_tips/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });

@@ -120,7 +120,7 @@ export default function DiscoverCampuna() {
             setIsLoading(true);
             try {
                 // Fetch Tips from homepage_tips
-                const tipsPromise = fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                const tipsPromise = fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage_tips/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
