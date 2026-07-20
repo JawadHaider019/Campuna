@@ -100,7 +100,16 @@ export default function ListingDetailPage() {
 
                             let images = rawImages
                                 .filter(Boolean)
-                                .map(url => url.startsWith('//') ? `https:${url}` : url);
+                                .map(url => {
+                                    url = url.startsWith('//') ? `https:${url}` : url;
+                                    if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
+                                        url = url.replace(
+                                            /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                            '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                                        );
+                                    }
+                                    return url;
+                                });
 
                             if (images.length === 0) images.push('/hero-campuna.png');
 

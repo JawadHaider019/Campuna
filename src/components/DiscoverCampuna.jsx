@@ -241,6 +241,14 @@ export default function DiscoverCampuna() {
                             }
                         }
 
+                        // Convert HEIC to web-compatible format via Bubble CDN image transformation
+                        if (/\.heic$/i.test(image.split('?')[0]) && image.includes('cdn.bubble.io')) {
+                            image = image.replace(
+                                /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                            );
+                        }
+
                         // Tags from Category & Sub-Category
                         const tags = [];
                         if (item.Category) tags.push(item.Category);
@@ -994,7 +1002,9 @@ export default function DiscoverCampuna() {
                             : 'border-transparent text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Compass className="w-4 h-4" /> Inspirationen
+                        <Compass className="w-4 h-4" />
+                        <span className="block sm:hidden">recommendation</span>
+                        <span className="hidden sm:block">campuna recommendation</span>
                     </button>
                     {/* Commented out as requested by user to hide this tab */}
                     {/* <button
