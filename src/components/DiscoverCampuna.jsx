@@ -198,29 +198,34 @@ export default function DiscoverCampuna() {
                     setTips(mappedTips);
                 }
 
+                // Helper to get time value of a listing for sorting
+                const getListingTime = (item) => {
+                    const dateStr = item['Created Date'] || item['Modified Date'] || item.CreatedDate || item.ModifiedDate;
+                    if (!dateStr) return 0;
+                    const time = new Date(dateStr).getTime();
+                    return isNaN(time) ? 0 : time;
+                };
+
+                // Helper to sort listings by latest first and limit to max 2
+                const getLatestTwoListings = (list) => {
+                    return [...list]
+                        .sort((a, b) => getListingTime(b) - getListingTime(a))
+                        .slice(0, 2);
+                };
+
                 // Map products/listing to inspirations state
                 let targetListings = [];
                 let useFallback = true;
 
                 // 1. Try to use the listing from homepage_tips response (tipsData)
                 if (tipsData && tipsData.status === 'success' && tipsData.response && tipsData.response.listing && tipsData.response.listing.length > 0) {
-                    targetListings = tipsData.response.listing;
+                    targetListings = getLatestTwoListings(tipsData.response.listing);
                     useFallback = false;
                 }
 
-                // 2. If no listing in it, fallback to 2 random listings from product listing (productsData)
+                // 2. If no listing in it, fallback to 2 latest listings from product listing (productsData)
                 if (useFallback && productsData && productsData.status === 'success' && productsData.response && productsData.response.listing && productsData.response.listing.length > 0) {
-                    const originalList = productsData.response.listing;
-                    if (originalList.length <= 2) {
-                        targetListings = [...originalList];
-                    } else {
-                        const selectedIndices = new Set();
-                        while (selectedIndices.size < 2) {
-                            const randIdx = Math.floor(Math.random() * originalList.length);
-                            selectedIndices.add(randIdx);
-                        }
-                        targetListings = [...selectedIndices].map(idx => originalList[idx]);
-                    }
+                    targetListings = getLatestTwoListings(productsData.response.listing);
                 }
 
                 if (targetListings.length > 0) {
