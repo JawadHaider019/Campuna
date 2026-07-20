@@ -492,10 +492,10 @@ export default function DiscoverCampuna() {
                                                 </span>
                                             ))}
                                         </div>
-                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200">
+                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 line-clamp-3">
                                             {insp.title}
                                         </h3>
-                                        <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-3">
+                                        <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-2">
                                             {insp.description}
                                         </p>
                                     </div>
