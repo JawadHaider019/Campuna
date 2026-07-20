@@ -474,9 +474,7 @@ export default function DiscoverCampuna() {
                                         alt={insp.title}
                                         className="w-full h-full object-cover transition-transform duration-[1s] group-hover:scale-105"
                                     />
-                                    <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
-                                        <MapPin className="w-3 h-3 text-gold" /> {insp.location}
-                                    </div>
+
                                     {insp.isFeatured && (
                                         <div className="absolute top-3 right-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
                                             Featured
