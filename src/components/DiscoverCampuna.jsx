@@ -198,24 +198,32 @@ export default function DiscoverCampuna() {
                     setTips(mappedTips);
                 }
 
-                // Map products to inspirations state
-                if (productsData && productsData.status === 'success' && productsData.response && productsData.response.listing) {
-                    // Show only featured listings. If none featured, fallback to 2 random listings
-                    let targetListings = productsData.response.listing.filter(item => item.Featured === true);
-                    if (targetListings.length === 0 && productsData.response.listing.length > 0) {
-                        const originalList = productsData.response.listing;
-                        if (originalList.length <= 2) {
-                            targetListings = [...originalList];
-                        } else {
-                            const selectedIndices = new Set();
-                            while (selectedIndices.size < 2) {
-                                const randIdx = Math.floor(Math.random() * originalList.length);
-                                selectedIndices.add(randIdx);
-                            }
-                            targetListings = [...selectedIndices].map(idx => originalList[idx]);
-                        }
-                    }
+                // Map products/listing to inspirations state
+                let targetListings = [];
+                let useFallback = true;
 
+                // 1. Try to use the listing from homepage_tips response (tipsData)
+                if (tipsData && tipsData.status === 'success' && tipsData.response && tipsData.response.listing && tipsData.response.listing.length > 0) {
+                    targetListings = tipsData.response.listing;
+                    useFallback = false;
+                }
+
+                // 2. If no listing in it, fallback to 2 random listings from product listing (productsData)
+                if (useFallback && productsData && productsData.status === 'success' && productsData.response && productsData.response.listing && productsData.response.listing.length > 0) {
+                    const originalList = productsData.response.listing;
+                    if (originalList.length <= 2) {
+                        targetListings = [...originalList];
+                    } else {
+                        const selectedIndices = new Set();
+                        while (selectedIndices.size < 2) {
+                            const randIdx = Math.floor(Math.random() * originalList.length);
+                            selectedIndices.add(randIdx);
+                        }
+                        targetListings = [...selectedIndices].map(idx => originalList[idx]);
+                    }
+                }
+
+                if (targetListings.length > 0) {
                     const mappedInspirations = targetListings.map((item, idx) => {
                         const id = item._id || item.id || `api_insp_${idx}`;
                         const title = item.title || item.Title || 'Kein Titel';

@@ -167,7 +167,7 @@ export default function BusinessProfilePage() {
             setLoading(true);
             try {
                 // Fetch F_users from hompage_tips
-                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/version-test/api/1.1/wf/homepage_tips/', {
+                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage_tips/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -265,6 +265,12 @@ export default function BusinessProfilePage() {
                     if (matchedUser['Logo/Profile']) {
                         const rawLogo = matchedUser['Logo/Profile'];
                         logo = rawLogo.startsWith('//') ? `https:${rawLogo}` : rawLogo;
+                        if (/\.heic$/i.test(logo.split('?')[0]) && logo.includes('cdn.bubble.io')) {
+                            logo = logo.replace(
+                                /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                            );
+                        }
                     }
 
                     // Cover URL
@@ -272,6 +278,12 @@ export default function BusinessProfilePage() {
                     if (matchedUser.Cover) {
                         const rawCover = matchedUser.Cover;
                         coverImage = rawCover.startsWith('//') ? `https:${rawCover}` : rawCover;
+                        if (/\.heic$/i.test(coverImage.split('?')[0]) && coverImage.includes('cdn.bubble.io')) {
+                            coverImage = coverImage.replace(
+                                /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                            );
+                        }
                     }
 
                     const dynamicProviderObj = {

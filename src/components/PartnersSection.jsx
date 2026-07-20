@@ -54,6 +54,12 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                         if (user['Logo/Profile']) {
                             const rawLogo = user['Logo/Profile'];
                             logo = rawLogo.startsWith('//') ? `https:${rawLogo}` : rawLogo;
+                            if (/\.heic$/i.test(logo.split('?')[0]) && logo.includes('cdn.bubble.io')) {
+                                logo = logo.replace(
+                                    /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                    '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                                );
+                            }
                         }
 
                         // Cover URL formatted
@@ -61,6 +67,12 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                         if (user.Cover) {
                             const rawCover = user.Cover;
                             coverImage = rawCover.startsWith('//') ? `https:${rawCover}` : rawCover;
+                            if (/\.heic$/i.test(coverImage.split('?')[0]) && coverImage.includes('cdn.bubble.io')) {
+                                coverImage = coverImage.replace(
+                                    /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+                                    '$1cdn-cgi/image/f=auto,fit=cover/$2'
+                                );
+                            }
                         }
 
                         return {
