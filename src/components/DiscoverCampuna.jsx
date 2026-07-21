@@ -421,7 +421,7 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-2"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4"
                     >
                         {tips.map((tip) => (
                             <div
@@ -459,11 +459,7 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className={
-                            inspirations.length === 1
-                                ? "flex justify-center"
-                                : "grid grid-cols-1 md:grid-cols-2 gap-6"
-                        }
+                        className="grid grid-cols-1 gap-6"
                     >
                         {inspirations.map((insp) => (
                             <div
@@ -472,8 +468,7 @@ export default function DiscoverCampuna() {
                                     const slug = buildListingSlug(insp.title, insp.id);
                                     navigateTo(`/listing_details/${slug}`);
                                 }}
-                                className={`group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[260px] ${inspirations.length === 1 ? 'max-w-3xl w-full' : 'w-full'
-                                    }`}
+                                className="group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[260px] w-full"
                             >
                                 <div className="relative w-full sm:w-2/5 h-48 sm:h-full overflow-hidden bg-sand/10">
                                     <img
