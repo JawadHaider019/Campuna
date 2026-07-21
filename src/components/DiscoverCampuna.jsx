@@ -207,10 +207,10 @@ export default function DiscoverCampuna() {
                 };
 
                 // Helper to sort listings by latest first and limit to max 2
-                const getLatestTwoListings = (list) => {
+                const getLatestOneListing = (list) => {
                     return [...list]
                         .sort((a, b) => getListingTime(b) - getListingTime(a))
-                        .slice(0, 2);
+                        .slice(0, 1);
                 };
 
                 // Map products/listing to inspirations state
@@ -219,13 +219,13 @@ export default function DiscoverCampuna() {
 
                 // 1. Try to use the listing from homepage_tips response (tipsData)
                 if (tipsData && tipsData.status === 'success' && tipsData.response && tipsData.response.listing && tipsData.response.listing.length > 0) {
-                    targetListings = getLatestTwoListings(tipsData.response.listing);
+                    targetListings = getLatestOneListing(tipsData.response.listing);
                     useFallback = false;
                 }
 
                 // 2. If no listing in it, fallback to 2 latest listings from product listing (productsData)
                 if (useFallback && productsData && productsData.status === 'success' && productsData.response && productsData.response.listing && productsData.response.listing.length > 0) {
-                    targetListings = getLatestTwoListings(productsData.response.listing);
+                    targetListings = getLatestOneListing(productsData.response.listing);
                 }
 
                 if (targetListings.length > 0) {
@@ -416,6 +416,7 @@ export default function DiscoverCampuna() {
             case 'tips':
                 return (
                     <motion.div
+                        key="tips"
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
@@ -453,6 +454,7 @@ export default function DiscoverCampuna() {
             case 'inspiration':
                 return (
                     <motion.div
+                        key="inspiration"
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
@@ -532,6 +534,7 @@ export default function DiscoverCampuna() {
             case 'community':
                 return (
                     <motion.div
+                        key="community"
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
@@ -554,6 +557,7 @@ export default function DiscoverCampuna() {
             case 'tools':
                 return (
                     <motion.div
+                        key="tools"
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
@@ -999,42 +1003,70 @@ export default function DiscoverCampuna() {
                 <div className="flex flex-wrap border-b border-forest/10 mb-8 gap-1">
                     <button
                         onClick={() => handleTabChange('tips')}
-                        className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tips'
-                            ? 'border-forest text-forest'
-                            : 'border-transparent text-charcoal/50 hover:text-forest'
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tips'
+                            ? 'text-forest'
+                            : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Lightbulb className="w-4 h-4" /> Camping-Tipps
+                        {activeTab === 'tips' && (
+                            <motion.div
+                                layoutId="activeTabUnderline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
+                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                            />
+                        )}
                     </button>
                     <button
                         onClick={() => handleTabChange('inspiration')}
-                        className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'inspiration'
-                            ? 'border-forest text-forest'
-                            : 'border-transparent text-charcoal/50 hover:text-forest'
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'inspiration'
+                            ? 'text-forest'
+                            : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Compass className="w-4 h-4" />
                         <span className="block sm:hidden">Empfehlung</span>
                         <span className="hidden sm:block">Campuna-Empfehlung</span>
+                        {activeTab === 'inspiration' && (
+                            <motion.div
+                                layoutId="activeTabUnderline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
+                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                            />
+                        )}
                     </button>
                     {/* Commented out as requested by user to hide this tab */}
                     {/* <button
                         onClick={() => handleTabChange('community')}
-                        className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'community'
-                            ? 'border-forest text-forest'
-                            : 'border-transparent text-charcoal/50 hover:text-forest'
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'community'
+                            ? 'text-forest'
+                            : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <MessageSquare className="w-4 h-4" /> Community-Fragen
+                        {activeTab === 'community' && (
+                            <motion.div
+                                layoutId="activeTabUnderline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
+                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                            />
+                        )}
                     </button> */}
                     <button
                         onClick={() => handleTabChange('tools')}
-                        className={`flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border-b-2 ${activeTab === 'tools'
-                            ? 'border-forest text-forest'
-                            : 'border-transparent text-charcoal/50 hover:text-forest'
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tools'
+                            ? 'text-forest'
+                            : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
                         <Calculator className="w-4 h-4" /> Interaktive Camping-Tools
+                        {activeTab === 'tools' && (
+                            <motion.div
+                                layoutId="activeTabUnderline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
+                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                            />
+                        )}
                     </button>
                 </div>
 
