@@ -482,7 +482,7 @@ export default function DiscoverCampuna() {
 
                                     {insp.isFeatured && (
                                         <div className="absolute top-3 left-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
-                                            Featured
+                                            Ausgewählt
                                         </div>
                                     )}
                                 </div>
@@ -519,7 +519,7 @@ export default function DiscoverCampuna() {
                                             }}
                                             className="group/btn flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors duration-200 cursor-pointer"
                                         >
-                                            <span>Zum Produkt</span>
+                                            <span>Zum Inserat</span>
                                             <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform text-gold" style={{ display: 'inline-block' }} />
                                         </button>
                                     </div>
@@ -1014,8 +1014,8 @@ export default function DiscoverCampuna() {
                             }`}
                     >
                         <Compass className="w-4 h-4" />
-                        <span className="block sm:hidden">recommendation</span>
-                        <span className="hidden sm:block">campuna recommendation</span>
+                        <span className="block sm:hidden">Empfehlung</span>
+                        <span className="hidden sm:block">Campuna-Empfehlung</span>
                     </button>
                     {/* Commented out as requested by user to hide this tab */}
                     {/* <button
