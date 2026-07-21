@@ -114,6 +114,15 @@ export default function DiscoverCampuna() {
     const [inspirations, setInspirations] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedTip, setSelectedTip] = useState(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const media = window.matchMedia('(max-width: 640px)');
+        setIsMobile(media.matches);
+        const listener = (e) => setIsMobile(e.matches);
+        media.addEventListener('change', listener);
+        return () => media.removeEventListener('change', listener);
+    }, []);
 
     useEffect(() => {
         const fetchTipsAndInspirations = async () => {
@@ -459,47 +468,122 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="grid grid-cols-1 gap-6"
+                        className="grid grid-cols-1 px-4 gap-6"
                     >
                         {inspirations.map((insp) => (
-                            <div
+                            <motion.div
                                 key={insp.id}
                                 onClick={() => {
                                     const slug = buildListingSlug(insp.title, insp.id);
                                     navigateTo(`/listing_details/${slug}`);
                                 }}
-                                className="group bg-white rounded-3xl overflow-hidden border border-forest/5 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row cursor-pointer h-[400px] sm:h-[260px] w-full"
+                                className="group bg-white  rounded-3xl overflow-hidden border border-forest/5 flex flex-col sm:flex-row cursor-pointer h-[450px] sm:h-[300px] w-full subpixel-antialiased relative"
+                                style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+                                initial={{
+                                    scale: 1,
+                                    boxShadow: "0 4px 6px -1px rgba(26, 54, 38, 0.08), 0 2px 4px -1px rgba(26, 54, 38, 0.04)"
+                                }}
+                                whileHover={{
+                                    scale: 1.008,
+                                    boxShadow: "0 20px 25px -5px rgba(26, 54, 38, 0.12), 0 10px 10px -5px rgba(26, 54, 38, 0.06)"
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 25
+                                }}
                             >
-                                <div className="relative w-full sm:w-2/5 h-48 sm:h-full overflow-hidden bg-sand/10">
-                                    <img
+                                {/* Premium Glassmorphic Shine Overlay */}
+                                <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-20">
+                                    <motion.div
+                                        className="absolute -inset-y-16 w-[35%] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]"
+                                        animate={{
+                                            left: ["-150%", "150%"]
+                                        }}
+                                        transition={{
+                                            duration: 1.5,
+                                            ease: "easeInOut",
+                                            repeat: Infinity,
+                                            repeatDelay: 3
+                                        }}
+                                    />
+
+                                </div>
+                                <div className="relative w-full sm:w-[40%] h-48 sm:h-full overflow-hidden bg-sand/10">
+                                    <motion.img
                                         src={insp.image}
                                         alt={insp.title}
-                                        className="w-full h-full object-cover transition-transform duration-[1s] group-hover:scale-105"
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                        animate={{
+                                            scale: [1, 1.05]
+                                        }}
+                                        transition={{
+                                            duration: 10,
+                                            ease: "easeInOut",
+                                            repeat: Infinity,
+                                            repeatType: "reverse"
+                                        }}
                                     />
 
                                     {insp.isFeatured && (
-                                        <div className="absolute top-3 left-3 bg-gold text-forest text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
-                                            Ausgewählt
-                                        </div>
+                                        <motion.div
+                                            className="absolute top-3 left-3 rounded-3xl bg-gradient-to-r from-forest to-black/80 backdrop-blur-sm  text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest z-10 flex items-center gap-2"
+                                            animate={{
+                                                y: isMobile ? 0 : [0, -4],
+                                                scale: [1, 1.05]
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                ease: "easeInOut",
+                                                repeat: Infinity,
+                                                repeatType: "reverse"
+                                            }}
+                                        >
+                                            <span className="relative flex h-1.5 w-1.5 shrink-0">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+                                            </span>
+                                            <span>Ausgewählt</span>
+                                        </motion.div>
                                     )}
                                 </div>
-                                <div className="p-6 flex-1 flex flex-col justify-between">
+                                <div className="p-6 flex-1 flex flex-col justify-between relative">
                                     <div>
+                                        {insp.isFeatured && (
+                                            <motion.div
+                                                className="absolute opacity-30 top-24 right-[-110px] rotate-[-90deg] text-[28px] font-bold px-3 py-1 uppercase tracking-widest z-10 flex items-center gap-2"
+                                                animate={{
+                                                    WebkitTextStrokeColor: ["#000", "#00630D"]
+                                                }}
+                                                transition={{
+                                                    duration: 6,
+                                                    ease: "easeInOut",
+                                                    repeat: Infinity
+                                                }}
+                                                style={{
+                                                    WebkitTextFillColor: "transparent",
+                                                    WebkitTextStrokeWidth: "1px",
+                                                    color: "transparent"
+                                                }}
+                                            >
+                                                Ausgewählt
+                                            </motion.div>
+                                        )}
+                                        <h3 className="font-display sm:text-xl text-lg font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 line-clamp-3">
+                                            {insp.title}
+                                        </h3>
+                                        <p className="font-sans sm:text-sm text-xs text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-2 sm:line-clamp-3">
+                                            {insp.description}
+                                        </p>
                                         <div className="flex flex-wrap gap-1 mb-2.5">
                                             {insp.tags.map((tag, idx) => (
-                                                <span key={idx} className="bg-sand text-forest font-mono text-[9px] font-bold py-0.5 px-2 rounded">
+                                                <span key={idx} className="bg-sand text-forest font-mono text-[10px] font-bold py-0.5 px-2 rounded">
                                                     #{tag}
                                                 </span>
                                             ))}
                                         </div>
-                                        <h3 className="font-display text-base font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 line-clamp-3">
-                                            {insp.title}
-                                        </h3>
-                                        <p className="font-sans text-[12.5px] text-charcoal/70 leading-relaxed font-light mb-4 line-clamp-2">
-                                            {insp.description}
-                                        </p>
                                     </div>
-                                    <div className="pt-3 border-t border-forest/5 flex items-center justify-between mt-auto">
+                                    <div className="pt-3  flex items-center justify-between mt-auto">
                                         <div>
                                             <span className="block text-[9px] uppercase tracking-widest text-charcoal/40 font-mono">
                                                 Preis
@@ -521,7 +605,7 @@ export default function DiscoverCampuna() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </motion.div>
                 );
