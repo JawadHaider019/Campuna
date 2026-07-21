@@ -421,17 +421,17 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-2"
                     >
                         {tips.map((tip) => (
                             <div
                                 key={tip.id}
                                 onClick={() => setSelectedTip(tip)}
-                                className="bg-white rounded-3xl p-6 border border-forest/5 shadow-md hover:shadow-xl hover:border-forest/10 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:scale-[1.01] h-[190px]"
+                                className="bg-white rounded-3xl p-4 border border-forest/5 shadow-md hover:shadow-xl hover:border-forest/10 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:scale-[1.01] h-[190px]"
                             >
                                 <div>
                                     <div className="flex items-center justify-between mb-4">
-                                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${tip.badgeColor}`}>
+                                        <span className={`text-[10px]  font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${tip.badgeColor}`}>
                                             {tip.category}
                                         </span>
                                         <span className="text-[11px] text-charcoal/40 font-mono">{tip.date}</span>
