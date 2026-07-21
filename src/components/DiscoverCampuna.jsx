@@ -990,7 +990,7 @@ export default function DiscoverCampuna() {
                             Camping-Wissen & Nützliche Tools
                         </h2>
                         <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-xl font-light">
-                            Finde hilfreiche Tipps, lass dich für deine nächste Route inspirieren, diskutiere mit der Community oder plane dein Fahrzeuggewicht.
+                            Finde hilfreiche Tipps, entdecke ausgewählte Inserate und berechne die Zuladung deines Fahrzeugs.
                         </p>
                     </div>
                 </div>
