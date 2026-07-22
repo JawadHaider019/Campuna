@@ -664,7 +664,7 @@ export default function DiscoverCampuna() {
                                 <Fuel className="w-4 h-4" />Sprit &<span className="sm:hidden block">Reise</span><span className=" sm:block hidden">Reisekostenrechner</span>
                             </button>
                         </div>
-
+<div style={{ display: 'none' }}>
                         {/* Zuladung (z.G.G.) Tool In Development Overlay */}
                         {activeTool === 'payload' && (
                             <div className="min-h-[250px] flex flex-col items-center justify-center text-center p-8 bg-sand/20 rounded-3xl border border-forest/10 mt-6 md:p-12">
@@ -694,9 +694,9 @@ export default function DiscoverCampuna() {
                                 </p>
                             </div>
                         )}
-
+</div>
                         {/* Keep calculator markup in the DOM but hidden */}
-                        <div style={{ display: 'none' }}>
+                        
                             {activeTool === 'payload' ? (
                                 // Option A: Payload Calculator
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
@@ -1051,7 +1051,7 @@ export default function DiscoverCampuna() {
                                     </div>
                                 </div>
                             )}
-                        </div>
+                  
                     </motion.div>
                 );
 
