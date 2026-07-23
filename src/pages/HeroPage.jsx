@@ -11,7 +11,6 @@ import FAQSection from '../components/FAQSection';
 import { FEATURED_LISTINGS } from '../data';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
-
 import { formatLocation } from '../utils/location';
 import WelcomeBanner from '../components/WelcomeBanner';
 import DiscoverCampuna from '../components/DiscoverCampuna';
@@ -240,6 +239,8 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
             {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
             <BlogSection />
+            {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
+            <DiscoverCampuna />
 
             {/* 7. Why Campuna Features Section */}
             <WhyCampuna />
