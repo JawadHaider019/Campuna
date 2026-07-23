@@ -110,7 +110,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
 
 
 export default function DiscoverCampuna() {
-    const [activeTab, setActiveTab] = useState('tips');
+    const [activeTab, setActiveTab] = useState('tools');
 
     // ── Pre-fetched Tips and Inspiration State ──
     const [tips, setTips] = useState([]);
