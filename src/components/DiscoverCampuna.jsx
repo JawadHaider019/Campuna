@@ -867,10 +867,10 @@ export default function DiscoverCampuna() {
                                             <div className="flex items-center justify-between mb-4">
                                                 <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em]">Ergebnis</h5>
                                                 <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${isOverloaded
-                                                        ? 'bg-rose-600 text-white shadow-xs'
-                                                        : isWarning
-                                                            ? 'bg-amber-500 text-white shadow-xs'
-                                                            : 'bg-emerald-600 text-white shadow-xs'
+                                                    ? 'bg-rose-600 text-white shadow-xs'
+                                                    : isWarning
+                                                        ? 'bg-amber-500 text-white shadow-xs'
+                                                        : 'bg-emerald-600 text-white shadow-xs'
                                                     }`}>
                                                     {isOverloaded ? 'Überladen' : isWarning ? 'Knapp' : 'Sicher'}
                                                 </span>
@@ -893,10 +893,10 @@ export default function DiscoverCampuna() {
                                                 <div className="flex justify-between items-baseline pt-2">
                                                     <span className="text-xs text-charcoal/60">Verbleibende Reserve:</span>
                                                     <span className={`text-xl font-extrabold ${isOverloaded
-                                                            ? 'text-rose-600 animate-pulse'
-                                                            : isWarning
-                                                                ? 'text-amber-600'
-                                                                : 'text-emerald-700'
+                                                        ? 'text-rose-600 animate-pulse'
+                                                        : isWarning
+                                                            ? 'text-amber-600'
+                                                            : 'text-emerald-700'
                                                         }`}>
                                                         {remainingPayload} kg
                                                     </span>
@@ -908,10 +908,10 @@ export default function DiscoverCampuna() {
                                                 <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5 relative">
                                                     <div
                                                         className={`h-full transition-all duration-300 rounded-full ${isOverloaded
-                                                                ? 'bg-rose-500'
-                                                                : isWarning
-                                                                    ? 'bg-amber-500'
-                                                                    : 'bg-emerald-500'
+                                                            ? 'bg-rose-500'
+                                                            : isWarning
+                                                                ? 'bg-amber-500'
+                                                                : 'bg-emerald-500'
                                                             }`}
                                                         style={{ width: `${Math.min(weightUsagePercent, 100)}%` }}
                                                     />
@@ -946,10 +946,10 @@ export default function DiscoverCampuna() {
                                         {/* Warning / Traffic Light Info Box */}
                                         <div>
                                             <div className={`mt-6 p-4 rounded-2xl flex items-start gap-3 border text-xs leading-relaxed transition-all ${isOverloaded
-                                                    ? 'bg-rose-50 border-rose-200 text-rose-900'
-                                                    : isWarning
-                                                        ? 'bg-amber-50 border-amber-200 text-amber-900'
-                                                        : 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                                                ? 'bg-rose-50 border-rose-200 text-rose-900'
+                                                : isWarning
+                                                    ? 'bg-amber-50 border-amber-200 text-amber-900'
+                                                    : 'bg-emerald-50 border-emerald-200 text-emerald-900'
                                                 }`}>
                                                 <div className="p-1.5 rounded-xl shrink-0 mt-0.5 bg-white/60">
                                                     {isOverloaded ? (
@@ -1277,7 +1277,7 @@ export default function DiscoverCampuna() {
     };
 
     return (
-        <section id="discover-campuna" className="py-16 bg-sand/15 border-t border-b border-forest/5">
+        <section id="discover-campuna" className="py-16 bg-sand/15 border-t border-b border-forest/5 scroll-mt-24">
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -1303,7 +1303,7 @@ export default function DiscoverCampuna() {
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Lightbulb className="w-4 h-4" /> Camping-Tipps
+                        <Lightbulb className="w-4 h-4" /> Camping Helper
                         {activeTab === 'tips' && (
                             <motion.div
                                 layoutId="activeTabUnderline"

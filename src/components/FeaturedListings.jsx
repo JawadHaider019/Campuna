@@ -226,7 +226,7 @@ export default function FeaturedListings({
   }, [firstRow, secondRow, row1Constraints, row2Constraints]);
 
   return (
-    <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-20 overflow-hidden">
+    <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-24 overflow-hidden">
       <div className="max-w-8xl mx-auto px-4 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div className="space-y-2">

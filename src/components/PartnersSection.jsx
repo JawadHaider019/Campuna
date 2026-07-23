@@ -231,7 +231,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
     );
 
     return (
-        <section id="campuna-spotlight" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden">
+        <section id="campuna-spotlight" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden scroll-mt-24">
             <div className="max-w-8xl mx-auto px-4 md:px-12">
 
                 {/* Section header */}
