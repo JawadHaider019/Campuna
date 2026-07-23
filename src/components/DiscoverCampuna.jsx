@@ -1297,14 +1297,14 @@ export default function DiscoverCampuna() {
                 {/* Categories Tab Navigation */}
                 <div className="flex flex-wrap border-b border-forest/10 mb-8 gap-1">
                     <button
-                        onClick={() => handleTabChange('tips')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tips'
+                        onClick={() => handleTabChange('tools')}
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tools'
                             ? 'text-forest'
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Lightbulb className="w-4 h-4" /> Camping Helper
-                        {activeTab === 'tips' && (
+                        <Calculator className="w-4 h-4" /> Camping-Helfer
+                        {activeTab === 'tools' && (
                             <motion.div
                                 layoutId="activeTabUnderline"
                                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
@@ -1348,14 +1348,14 @@ export default function DiscoverCampuna() {
                         )}
                     </button> */}
                     <button
-                        onClick={() => handleTabChange('tools')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tools'
+                        onClick={() => handleTabChange('tips')}
+                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tips'
                             ? 'text-forest'
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Calculator className="w-4 h-4" /> Camping-Helfer
-                        {activeTab === 'tools' && (
+                        <Lightbulb className="w-4 h-4" /> Camping-Tipps
+                        {activeTab === 'tips' && (
                             <motion.div
                                 layoutId="activeTabUnderline"
                                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
