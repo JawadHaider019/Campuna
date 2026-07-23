@@ -872,7 +872,7 @@ export default function DiscoverCampuna() {
                                                             ? 'bg-amber-500 text-white shadow-xs'
                                                             : 'bg-emerald-600 text-white shadow-xs'
                                                     }`}>
-                                                    {isOverloaded ? 'Überladen (Rot)' : isWarning ? 'Knapp (Orange)' : 'Sicher (Grün)'}
+                                                    {isOverloaded ? 'Überladen' : isWarning ? 'Knapp' : 'Sicher'}
                                                 </span>
                                             </div>
 
@@ -923,12 +923,22 @@ export default function DiscoverCampuna() {
                                                 </div>
                                             </div>
 
-                                            {/* Percentage Usage Banner (Point 4) */}
+                                            {/* Percentage & Remaining Payload Usage Banner */}
                                             <div className="mt-4 p-3 bg-white/80 rounded-2xl border border-forest/10 text-center">
                                                 <p className="text-xs text-charcoal/80 font-medium leading-relaxed">
-                                                    <strong className={isOverloaded ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-emerald-700'}>
-                                                        {weightUsagePercent.toFixed(0)}%
-                                                    </strong> des zulässigen Gesamtgewichts wird derzeit genutzt.
+                                                    {remainingPayload >= 0 ? (
+                                                        <>
+                                                            <strong className={isWarning ? 'text-amber-600' : 'text-emerald-700'}>
+                                                                {remainingPayload} kg verbleibende Zuladung verfügbar
+                                                            </strong> ({weightUsagePercent.toFixed(0)}% des Gesamtgewichts genutzt).
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <strong className="text-rose-600">
+                                                                {Math.abs(remainingPayload)} kg Überladung
+                                                            </strong> ({weightUsagePercent.toFixed(0)}% des Gesamtgewichts genutzt).
+                                                        </>
+                                                    )}
                                                 </p>
                                             </div>
                                         </div>
@@ -1120,10 +1130,10 @@ export default function DiscoverCampuna() {
                                                 </div>
                                             </div>
 
-                                            {/* Additional travel costs (renamed from Other Budget) */}
+                                            {/* Travel Extras (Tolls, Ferries, Vignettes, etc.) */}
                                             <div className="space-y-1.5 pt-2">
                                                 <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                    Zusätzliche Reisekosten (€)
+                                                    Reise-Extras (Maut, Fähren, Vignetten etc.) (€)
                                                 </label>
                                                 <input
                                                     type="number"
@@ -1158,7 +1168,7 @@ export default function DiscoverCampuna() {
 
                                                 {/* Additional costs */}
                                                 <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Zusätzliche Reisekosten:</span>
+                                                    <span className="text-xs text-charcoal/60">Reise-Extras (Maut, Fähren etc.):</span>
                                                     <span className="text-sm font-semibold text-charcoal/80">{otherBudget.toFixed(2)} €</span>
                                                 </div>
 
