@@ -16,8 +16,8 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     { label: 'Startseite', id: 'top' },
     { label: 'Zum Stöbern', id: 'exclusive-offers' },
     { label: 'Spotlight', id: 'campuna-spotlight' },
-    { label: 'Entdecke', id: 'discover-campuna' },
     { label: 'Ratgeber', id: 'journal' },
+    { label: 'Entdecke', id: 'discover-campuna' },
   ];
 
   const handleNavClick = (id) => {
@@ -97,9 +97,8 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-4 ${
-        isScrolled || !isHomepage ? 'top-0 shadow-md border-b border-forest/5' : 'top-[70px] sm:top-[64px] md:top-[74px] lg:top-[64px]'
-      }`}
+      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-4 ${isScrolled || !isHomepage ? 'top-0 shadow-md border-b border-forest/5' : 'top-[70px] sm:top-[64px] md:top-[74px] lg:top-[64px]'
+        }`}
     >
       <div className="max-w-8xl mx-auto px-4 md:px-12">
         <div className="flex items-center justify-between">
@@ -122,9 +121,8 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className={`relative font-sans text-sm font-medium tracking-wide transition-colors duration-200 py-1 ${
-                    isActive ? 'text-gold font-semibold' : 'text-forest hover:text-gold'
-                  }`}
+                  className={`relative font-sans text-sm font-medium tracking-wide transition-colors duration-200 py-1 ${isActive ? 'text-gold font-semibold' : 'text-forest hover:text-gold'
+                    }`}
                 >
                   {link.label}
                   {isActive && (
@@ -198,9 +196,8 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
                   <button
                     key={link.id}
                     onClick={() => handleNavClick(link.id)}
-                    className={`font-sans text-base font-medium text-left transition-colors duration-200 flex items-center justify-between py-1.5 ${
-                      isActive ? 'text-gold font-bold' : 'text-forest hover:text-gold'
-                    }`}
+                    className={`font-sans text-base font-medium text-left transition-colors duration-200 flex items-center justify-between py-1.5 ${isActive ? 'text-gold font-bold' : 'text-forest hover:text-gold'
+                      }`}
                   >
                     <span>{link.label}</span>
                     {isActive && <div className="w-2 h-2 rounded-full bg-gold" />}
