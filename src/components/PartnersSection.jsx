@@ -1,28 +1,21 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue } from 'motion/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
-import { PROVIDERS } from '../data';
+
 import { navigateTo } from '../utils/navigation';
 
 export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
-    const [randomizedProviders, setRandomizedProviders] = useState(() =>
-        [...PROVIDERS].sort(() => Math.random() - 0.5)
-    );
+    const [randomizedProviders, setRandomizedProviders] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         let active = true;
         const loadProvidersAndCounts = async () => {
             try {
-                // Fetch F_users from hompage_tips
+                // Fetch F_users and listing from homepage_tips API payload
                 const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage_tips/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                // Fetch products to count online listings
-                const productsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage-products/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -32,22 +25,23 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
 
                 if (tipsRes.ok) {
                     const tipsData = await tipsRes.json();
-                    if (tipsData && tipsData.status === 'success' && tipsData.response && Array.isArray(tipsData.response.F_users)) {
-                        users = tipsData.response.F_users;
-                    }
-                }
-
-                if (productsRes.ok) {
-                    const productsData = await productsRes.json();
-                    if (productsData && productsData.status === 'success' && productsData.response && Array.isArray(productsData.response.listing)) {
-                        listings = productsData.response.listing;
+                    if (tipsData && tipsData.status === 'success' && tipsData.response) {
+                        if (Array.isArray(tipsData.response.F_users)) {
+                            users = tipsData.response.F_users;
+                        }
+                        if (Array.isArray(tipsData.response.listing)) {
+                            listings = tipsData.response.listing;
+                        }
                     }
                 }
 
                 if (users.length > 0) {
                     const mappedProviders = users.map(user => {
-                        // Count how many listings belong to this user
+                        // Count how many listings belong to this user from API listing array as fallback
                         const count = listings.filter(l => l['Created By'] === user._id).length;
+                        const listingsCount = (user['Total Listings'] !== undefined && user['Total Listings'] !== null)
+                            ? Number(user['Total Listings'])
+                            : count;
 
                         // Logo URL formatted
                         let logo = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
@@ -82,7 +76,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                             coverImage,
                             description: user.Bio || 'Dein Partner für Camping Abenteuer.',
                             slug: `?uid=${user._id}`,
-                            listingsCount: count
+                            listingsCount
                         };
                     });
 
@@ -93,6 +87,10 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                 }
             } catch (err) {
                 console.error("Error fetching providers API in PartnersSection:", err);
+            } finally {
+                if (active) {
+                    setIsLoading(false);
+                }
             }
         };
 
@@ -211,6 +209,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                 {/* Bottom row: Badge & Arrow */}
                 <div className="flex items-center justify-between mt-2 pt-2 w-full">
                     {/* Badge */}
+
                     <div className="inline-flex items-center space-x-1 bg-white/10 backdrop-blur-md px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full text-white shadow-sm shrink-0">
                         <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold" />
                         <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wide">
@@ -218,8 +217,9 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                         </span>
                     </div>
 
+
                     {/* Arrow button */}
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
+                    <div className=" w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
                         <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </div>
                 </div>
@@ -265,22 +265,40 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                     <div className="hidden md:block absolute inset-y-0 left-0 w-24 lg:w-32 bg-gradient-to-r from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
                     <div className="hidden md:block absolute inset-y-0 right-0 w-24 lg:w-32 bg-gradient-to-l from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
 
-                    <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing" ref={rowRef}>
-                        <motion.div
-                            drag="x"
-                            dragConstraints={{ right: 0, left: -constraints }}
-                            style={{ x }}
-                            onDragStart={() => { isDraggingRef.current = true; }}
-                            onDragEnd={() => { isDraggingRef.current = false; }}
-                            onMouseEnter={() => { isHoveredRef.current = true; }}
-                            onMouseLeave={() => { isHoveredRef.current = false; }}
-                            className="flex gap-4 w-max px-4 sm:px-16 md:px-32 pb-3"
-                        >
-                            {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (
-                                <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />
+                    {isLoading ? (
+                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 pb-3">
+                            {[1, 2, 3].map((n) => (
+                                <div
+                                    key={n}
+                                    className="flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] bg-black/5 animate-pulse flex items-center p-6 gap-4 border border-white/10"
+                                >
+                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/10 shrink-0" />
+                                    <div className="flex-1 space-y-3">
+                                        <div className="h-5 bg-black/10 rounded w-1/2" />
+                                        <div className="h-3 bg-black/10 rounded w-3/4" />
+                                        <div className="h-3 bg-black/10 rounded w-1/3" />
+                                    </div>
+                                </div>
                             ))}
-                        </motion.div>
-                    </div>
+                        </div>
+                    ) : randomizedProviders.length > 0 ? (
+                        <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing" ref={rowRef}>
+                            <motion.div
+                                drag="x"
+                                dragConstraints={{ right: 0, left: -constraints }}
+                                style={{ x }}
+                                onDragStart={() => { isDraggingRef.current = true; }}
+                                onDragEnd={() => { isDraggingRef.current = false; }}
+                                onMouseEnter={() => { isHoveredRef.current = true; }}
+                                onMouseLeave={() => { isHoveredRef.current = false; }}
+                                className="flex gap-4 w-max px-4 sm:px-16 md:px-32 pb-3"
+                            >
+                                {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (
+                                    <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />
+                                ))}
+                            </motion.div>
+                        </div>
+                    ) : null}
 
                     {/* Mobile & Tablet Actions */}
                     <div className="mt-8 flex  items-center justify-center gap-4 sm:gap-6 lg:hidden">

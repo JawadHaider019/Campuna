@@ -31,8 +31,7 @@ export default function CTASection({ onSellClick }) {
               </h2>
 
               <p className="font-sans text-sm sm:text-base text-sand/85 font-light leading-relaxed max-w-xl pb-2">
-                Stell dein Inserat kostenlos ein – direkt für Camper, ohne Umwege. Erreiche täglich zehntausende kaufkräftige Camping-Begeisterte auf Campuna.
-              </p>
+                Präsentiere dein Angebot dort, wo sich Camper gezielt nach Produkten, Dienstleistungen und Angeboten rund ums Camping umsehen.  </p>
 
               <button
                 onClick={onSellClick}

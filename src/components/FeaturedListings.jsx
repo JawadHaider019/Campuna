@@ -3,9 +3,110 @@ import { motion, useMotionValue } from 'motion/react';
 import { Heart, MapPin, ShieldCheck, Eye, ArrowRight } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
+import { getHomepageProducts } from '../api/bubbleApi';
+import { formatLocation } from '../utils/location';
 
-const ListingCard = React.memo(({ item, isWishlisted, onToggleWishlist, onCardClick }) => {
+function normalizeListing(item) {
+  if (!item) return null;
+  // If item is already mapped with images array and formatted title, use it
+  if (item.id && Array.isArray(item.images) && item.displayLocation) {
+    return item;
+  }
+
+  const id = item._id || item.id || String(Math.random());
+
+  // Images resolution: Main Image first, then images array
+  let rawImages = [];
+  const mainImg = item["Main Image"] || item.MainImage;
+  if (mainImg) {
+    rawImages.push(mainImg);
+  }
+  if (item.images && Array.isArray(item.images)) {
+    item.images.forEach(img => {
+      if (img && img !== mainImg && !rawImages.includes(img)) {
+        rawImages.push(img);
+      }
+    });
+  } else if (item.images && typeof item.images === 'string') {
+    if (item.images !== mainImg) {
+      rawImages.push(item.images);
+    }
+  }
+
+  let images = rawImages
+    .filter(Boolean)
+    .map(url => {
+      url = url.startsWith('//') ? `https:${url}` : url;
+      if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
+        url = url.replace(
+          /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
+          '$1cdn-cgi/image/f=auto,fit=cover/$2'
+        );
+      }
+      return url;
+    });
+
+  if (images.length === 0) {
+    images.push('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80');
+  }
+
+  let category = item.Category || item.category || 'Camping Zubehör';
+  if (category === 'Ausrüstung und Zubehör') {
+    category = 'Camping Zubehör';
+  }
+
+  const rawLocation = item["location geo"]?.address || item.location || "Deutschland";
+  const displayLocation = formatLocation(rawLocation);
+
+  const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+  let pricePeriod = item.pricePeriod || 'Preis';
+  if (!item.pricePeriod) {
+    if (category === 'Mieten & Vermieten' || (item["Sub - Category"] && item["Sub - Category"].toLowerCase().includes('mieten'))) {
+      pricePeriod = 'pro Tag';
+    } else if (category === 'Wohnmobile & Camper' || category === 'Tiny Houses' || category === 'Fahrzeuge') {
+      pricePeriod = 'Kaufpreis';
+    }
+  }
+
+  const features = item.features ? [...item.features] : [];
+  if (features.length === 0) {
+    if (item["Condition item"]) {
+      const condMapping = { "New": "Neu", "Used": "Gebraucht", "Good": "Sehr gut", "Like New": "Neuwertig" };
+      features.push(condMapping[item["Condition item"]] || item["Condition item"]);
+    }
+    if (item["Sub - Category"]) {
+      features.push(String(item["Sub - Category"]).trim());
+    }
+    if (item["Type of offer"]) {
+      features.push(item["Type of offer"]);
+    }
+    if (features.length === 0) {
+      features.push("Camping");
+    }
+  }
+
+  const resolvedSellerType = item.listing_user_type || item["listing user type"] || (category === 'Mieten & Vermieten' || (item["Sub - Category"] && item["Sub - Category"].toLowerCase().includes('mieten')) ? 'Gewerblich' : 'Privat');
+
+  return {
+    id,
+    title: item.title || item.description || "Camping Angebot",
+    category,
+    price,
+    pricePeriod,
+    location: rawLocation,
+    displayLocation,
+    images,
+    listing_user_type: resolvedSellerType,
+    features
+  };
+}
+
+const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist, onCardClick }) => {
+  const item = useMemo(() => normalizeListing(rawItem), [rawItem]);
   const [imgIdx, setImgIdx] = useState(0);
+
+  if (!item) return null;
+
   const handleImgError = () => {
     if (imgIdx < item.images.length - 1) {
       setImgIdx(i => i + 1);
@@ -34,7 +135,7 @@ const ListingCard = React.memo(({ item, isWishlisted, onToggleWishlist, onCardCl
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onToggleWishlist(item.id);
+              if (onToggleWishlist) onToggleWishlist(item.id);
             }}
             className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
               ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
@@ -95,8 +196,9 @@ const ListingCard = React.memo(({ item, isWishlisted, onToggleWishlist, onCardCl
 ListingCard.displayName = 'ListingCard';
 
 export default function FeaturedListings({
-  listings,
-  wishlistedIds,
+  listings: propListings,
+  isLoading: propIsLoading,
+  wishlistedIds = [],
   onToggleWishlist,
   selectedCategoryFilter,
   onClearCategoryFilter,
@@ -107,9 +209,42 @@ export default function FeaturedListings({
   const row2Ref = useRef(null);
   const [row1Constraints, setRow1Constraints] = useState(0);
   const [row2Constraints, setRow2Constraints] = useState(0);
+  const [apiListings, setApiListings] = useState([]);
+  const [internalLoading, setInternalLoading] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    if (!propListings || propListings.length === 0) {
+      setInternalLoading(true);
+      getHomepageProducts()
+        .then(data => {
+          if (active && data && data.status === "success" && Array.isArray(data.response?.listing)) {
+            setApiListings(data.response.listing);
+          }
+        })
+        .catch(err => {
+          console.error("Failed to fetch products in FeaturedListings:", err);
+        })
+        .finally(() => {
+          if (active) setInternalLoading(false);
+        });
+    }
+    return () => { active = false; };
+  }, [propListings]);
+
+  const activeListings = useMemo(() => {
+    if (propListings && propListings.length > 0) {
+      return propListings;
+    }
+    return apiListings;
+  }, [propListings, apiListings]);
+
+  const isLoadingState = propIsLoading || (internalLoading && activeListings.length === 0);
 
   const filteredListings = useMemo(() => {
-    return listings.filter((item) => {
+    return activeListings.filter((rawItem) => {
+      const item = normalizeListing(rawItem);
+      if (!item) return false;
       if (selectedCategoryFilter && item.category !== selectedCategoryFilter) return false;
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
@@ -123,7 +258,7 @@ export default function FeaturedListings({
       }
       return true;
     });
-  }, [listings, selectedCategoryFilter, searchQuery, searchLocation]);
+  }, [activeListings, selectedCategoryFilter, searchQuery, searchLocation]);
 
   const { firstRow, secondRow } = useMemo(() => {
     const shuffled = [...filteredListings];
@@ -146,7 +281,6 @@ export default function FeaturedListings({
   const isDragging1Ref = useRef(false);
   const isDragging2Ref = useRef(false);
   const cardWidthRef = useRef(350);
-  const gap = 20;
 
   useEffect(() => {
     const measure = () => {
@@ -248,7 +382,22 @@ export default function FeaturedListings({
           </div>
         </div>
 
-        {filteredListings.length === 0 ? (
+        {isLoadingState ? (
+          <div className="space-y-4 relative">
+            <div className="flex gap-5 overflow-hidden">
+              {[1, 2, 3, 4].map(n => (
+                <div key={n} className="flex-shrink-0 w-[320px] md:w-[350px] h-[300px] bg-sand/30 animate-pulse rounded-[24px] border border-forest/5 p-4 flex flex-col justify-between">
+                  <div className="w-full h-40 bg-sand/60 rounded-[16px]" />
+                  <div className="space-y-2 mt-4">
+                    <div className="h-5 bg-sand/60 rounded w-3/4" />
+                    <div className="h-4 bg-sand/40 rounded w-1/2" />
+                  </div>
+                  <div className="h-6 bg-sand/60 rounded w-1/3 mt-4" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : filteredListings.length === 0 ? (
           <div className="text-center py-20 bg-sand/30 rounded-[32px] border border-dashed border-forest/10">
             <p className="font-display text-lg text-forest/70 mb-4">
               Keine Inserate entsprechen Ihren Filterkriterien.
@@ -277,41 +426,49 @@ export default function FeaturedListings({
                 onMouseLeave={() => { isHovered1Ref.current = false; }}
                 className="flex gap-5 w-max "
               >
-                {firstRow.map((item) => (
-                  <ListingCard
-                    key={item.id}
-                    item={item}
-                    isWishlisted={wishlistedIds.includes(item.id)}
-                    onToggleWishlist={onToggleWishlist}
-                    onCardClick={handleCardClick}
-                  />
-                ))}
+                {firstRow.map((item, idx) => {
+                  const normalized = normalizeListing(item);
+                  return (
+                    <ListingCard
+                      key={`${normalized.id}-${idx}`}
+                      item={item}
+                      isWishlisted={wishlistedIds.includes(normalized.id)}
+                      onToggleWishlist={onToggleWishlist}
+                      onCardClick={handleCardClick}
+                    />
+                  );
+                })}
               </motion.div>
             </div>
 
             {/* Row 2: Draggable Right to Left */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
-              <motion.div
-                drag="x"
-                dragConstraints={{ right: 0, left: -row2Constraints }}
-                style={{ x: x2 }}
-                onDragStart={() => { isDragging2Ref.current = true; }}
-                onDragEnd={() => { isDragging2Ref.current = false; }}
-                onMouseEnter={() => { isHovered2Ref.current = true; }}
-                onMouseLeave={() => { isHovered2Ref.current = false; }}
-                className="flex gap-5 w-max"
-              >
-                {secondRow.map((item) => (
-                  <ListingCard
-                    key={item.id}
-                    item={item}
-                    isWishlisted={wishlistedIds.includes(item.id)}
-                    onToggleWishlist={onToggleWishlist}
-                    onCardClick={handleCardClick}
-                  />
-                ))}
-              </motion.div>
-            </div>
+            {secondRow.length > 0 && (
+              <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
+                <motion.div
+                  drag="x"
+                  dragConstraints={{ right: 0, left: -row2Constraints }}
+                  style={{ x: x2 }}
+                  onDragStart={() => { isDragging2Ref.current = true; }}
+                  onDragEnd={() => { isDragging2Ref.current = false; }}
+                  onMouseEnter={() => { isHovered2Ref.current = true; }}
+                  onMouseLeave={() => { isHovered2Ref.current = false; }}
+                  className="flex gap-5 w-max"
+                >
+                  {secondRow.map((item, idx) => {
+                    const normalized = normalizeListing(item);
+                    return (
+                      <ListingCard
+                        key={`${normalized.id}-${idx}`}
+                        item={item}
+                        isWishlisted={wishlistedIds.includes(normalized.id)}
+                        onToggleWishlist={onToggleWishlist}
+                        onCardClick={handleCardClick}
+                      />
+                    );
+                  })}
+                </motion.div>
+              </div>
+            )}
 
             <div className="mt-7 flex justify-center lg:hidden">
               <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">

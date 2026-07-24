@@ -20,11 +20,9 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState('');
-    const [wishlistedIds, setWishlistedIds] = useState([]); // Empty wishlist initially, responsive to fetched IDs
-    const [listingsList, setListingsList] = useState(() => {
-        const initial = FEATURED_LISTINGS.map(l => ({ ...l, displayLocation: formatLocation(l.location) }));
-        return [...initial].sort(() => Math.random() - 0.5);
-    });
+    const [wishlistedIds, setWishlistedIds] = useState([]);
+    const [listingsList, setListingsList] = useState([]);
+    const [isLoadingListings, setIsLoadingListings] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -155,7 +153,11 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                     }
                 }
             } catch (error) {
-                console.error("Failed to load listings from Bubble API, keeping local design mock data:", error);
+                console.error("Failed to load listings from Bubble API:", error);
+            } finally {
+                if (active) {
+                    setIsLoadingListings(false);
+                }
             }
         };
 
@@ -228,6 +230,7 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             {/* 4. Exclusive Offers with filters & interactive search */}
             <FeaturedListings
                 listings={listingsList}
+                isLoading={isLoadingListings}
                 wishlistedIds={wishlistedIds}
                 onToggleWishlist={handleToggleWishlist}
                 selectedCategoryFilter={selectedCategory}

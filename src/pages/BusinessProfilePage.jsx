@@ -286,6 +286,10 @@ export default function BusinessProfilePage() {
                         }
                     }
 
+                    const providerListingsCount = (matchedUser['Total Listings'] !== undefined && matchedUser['Total Listings'] !== null)
+                        ? Number(matchedUser['Total Listings'])
+                        : userProducts.length;
+
                     const dynamicProviderObj = {
                         id: matchedUser._id,
                         name: matchedUser['BU - Company name'] || matchedUser.username || 'Camping Partner',
@@ -293,7 +297,7 @@ export default function BusinessProfilePage() {
                         coverImage,
                         description: matchedUser.Bio || 'Dein Partner für Camping Abenteuer.',
                         slug: `?uid=${matchedUser._id}`,
-                        listingsCount: userProducts.length,
+                        listingsCount: providerListingsCount,
                         email: matchedUser.email || matchedUser.authentication?.email?.email || 'kontakt@campuna.de',
                         memberSince,
                         phone: matchedUser['BU - phone'] || '+49 (0) 6051 4567-89',
