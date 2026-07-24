@@ -38,7 +38,7 @@ export default function BlogSection() {
 
         <div className="flex items-center justify-between text-[10px] text-charcoal/40 font-mono mt-3">
           <span>{post.date}</span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 shrink-0 ml-1">
             <Clock className="w-3.5 h-3.5" />
             {post.readTime}
           </span>

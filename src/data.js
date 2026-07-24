@@ -751,16 +751,16 @@ export const BLOG_POSTS = [
   },
   {
     id: 'blog_2',
-    title: 'Wohnwagen gebraucht kaufen: 10 wichtige Tipps vor dem Kauf',
+    title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden | Campuna',
     excerpt: 'Du möchtest einen Wohnwagen gebraucht kaufen? Beachte diese 10 essentiellen Tipps...',
     category: 'Campuna blogs',
-    image: '/blogs/Wohnwagen gebraucht 10  blog.avif',
+    image: '/blogs/Titelbild cover image.avif',
     readTime: '5 Min.',
     date: '09.06.2026',
     updateDate: 'Juni 9, 2026',
-    slug: 'wohnwagen-gebraucht-kaufen-tipps',
+    slug: 'wohnmobil-richtig-beladen-zuladung-berechnen',
     author: {
-      name: 'Experten-Tipp',
+      name: 'Campuna Redaktion',
       avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80'
     }
   },
@@ -781,17 +781,17 @@ export const BLOG_POSTS = [
   },
   {
     id: 'blog_4',
-    title: 'Wohnwagen gebraucht kaufen: Die wichtigste Checkliste für...',
-    excerpt: 'Mit unserer Checkliste bist du beim Kauf eines gebrauchten Wohnwagens auf der sicheren Seite.',
+    title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden | Campuna',
+    excerpt: 'Erfahre, wie du dein Wohnmobil oder deinen Wohnwagen richtig belädst, die Zuladung korrekt berechnest und gefährliche Überladung im Camping-Urlaub vermeidest.',
     category: 'Campuna blogs',
     image: '/blogs/Wohnwagen gebraucht Die blog.avif',
-    readTime: '10 Min.',
+    readTime: '8 Min.',
     date: '02.06.2026',
-    updateDate: 'Juni 2, 2026',
+    updateDate: '02.06.2026',
     slug: 'wohnwagen-gebraucht-kaufen',
     author: {
-      name: 'Checklisten-Profi',
-      avatar: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=100&q=80'
+      name: 'Campuna Redaktion',
+      avatar: '/logo.png'
     }
   }
 ];
