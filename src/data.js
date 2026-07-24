@@ -751,13 +751,13 @@ export const BLOG_POSTS = [
   },
   {
     id: 'blog_2',
-    title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden | Campuna',
+    title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden ',
     excerpt: 'Du möchtest einen Wohnwagen gebraucht kaufen? Beachte diese 10 essentiellen Tipps...',
     category: 'Campuna blogs',
     image: '/blogs/Titelbild cover image.avif',
     readTime: '5 Min.',
-    date: '09.06.2026',
-    updateDate: 'Juni 9, 2026',
+    date: '24.07.2026',
+    updateDate: 'Juli 24, 2026',
     slug: 'wohnmobil-richtig-beladen-zuladung-berechnen',
     author: {
       name: 'Campuna Redaktion',
@@ -766,7 +766,7 @@ export const BLOG_POSTS = [
   },
   {
     id: 'blog_3',
-    title: 'Dachzelt kaufen: Worauf Anfänger wirklich achten...',
+    title: 'Dachzelt kaufen: Worauf Anfänger wirklich achten sollten',
     excerpt: 'Dachzelte liegen voll im Trend. Aber worauf kommt es beim Kauf wirklich an?',
     category: 'Campuna blogs',
     image: '/blogs/Dachzelt kaufen blog.avif',
@@ -781,7 +781,7 @@ export const BLOG_POSTS = [
   },
   {
     id: 'blog_4',
-    title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden | Campuna',
+    title: 'Wohnwagen gebraucht kaufen: Die wichtigste Checkliste für Käufer',
     excerpt: 'Erfahre, wie du dein Wohnmobil oder deinen Wohnwagen richtig belädst, die Zuladung korrekt berechnest und gefährliche Überladung im Camping-Urlaub vermeidest.',
     category: 'Campuna blogs',
     image: '/blogs/Wohnwagen gebraucht Die blog.avif',
