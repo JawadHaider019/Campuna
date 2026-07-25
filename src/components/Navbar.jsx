@@ -105,22 +105,65 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     }
   }, [location]);
 
-  // Handle hash scrolling on page load when navigating from another route
+  // Handle hash scrolling on page load — scroll after API data loads
   useEffect(() => {
     if (isHomepage && window.location.hash) {
       const targetId = window.location.hash.replace('#', '');
-      let attempts = 0;
 
-      const performScroll = () => {
-        const success = scrollToSection(targetId);
-        if (!success && attempts < 10) {
-          attempts++;
-          setTimeout(performScroll, 100);
-        }
+      // Suppress browser default hash jump
+      window.scrollTo(0, 0);
+
+      let scrolled = false;
+      const initialHeight = document.body.scrollHeight;
+      let heightChanged = false;
+      let stableCount = 0;
+      let lastHeight = initialHeight;
+
+      const doScroll = () => {
+        if (scrolled) return;
+        scrolled = true;
+        scrollToSection(targetId);
       };
 
-      const timer = setTimeout(performScroll, 150);
-      return () => clearTimeout(timer);
+      const check = () => {
+        if (scrolled) return;
+
+        const h = document.body.scrollHeight;
+
+        // Detect when API data has loaded (height jumps from skeleton to real content)
+        if (h !== initialHeight) {
+          heightChanged = true;
+        }
+
+        // Only start counting stability AFTER height has changed at least once
+        if (heightChanged) {
+          if (h === lastHeight) {
+            stableCount++;
+          } else {
+            stableCount = 0;
+          }
+          lastHeight = h;
+
+          // Stable for 2 checks (~200ms) after API data loaded → scroll
+          if (stableCount >= 2) {
+            doScroll();
+            return;
+          }
+        }
+
+        setTimeout(check, 100);
+      };
+
+      // Start monitoring immediately
+      const timer = setTimeout(check, 50);
+
+      // Hard fallback at 4s in case height never changes (no API data / already cached)
+      const fallback = setTimeout(doScroll, 4000);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(fallback);
+      };
     }
   }, [isHomepage]);
 
