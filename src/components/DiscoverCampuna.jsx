@@ -1277,7 +1277,7 @@ export default function DiscoverCampuna() {
     };
 
     return (
-        <section id="discover-campuna" className="py-16 bg-sand/15 border-t border-b border-forest/5 scroll-mt-24">
+        <section id="tool" className="py-16 bg-sand/15 border-t border-b border-forest/5 scroll-mt-24">
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">

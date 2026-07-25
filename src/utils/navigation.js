@@ -38,7 +38,7 @@ export function navigateTo(path) {
         // Standalone - navigate current window
         if (import.meta.env.DEV) {
             const cleanPath = path.startsWith('/') ? path : '/' + path;
-            window.location.pathname = cleanPath;
+            window.location.href = cleanPath;
         } else {
             window.location.href = targetUrl;
         }

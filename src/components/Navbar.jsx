@@ -17,8 +17,24 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     { label: 'Zum Stöbern', id: 'exclusive-offers' },
     { label: 'Spotlight', id: 'campuna-spotlight' },
     { label: 'Ratgeber', id: 'journal' },
-    { label: 'Entdecke', id: 'discover-campuna' },
+    { label: 'Entdecke', id: 'tool' },
   ];
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const navHeaderOffset = 85;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navHeaderOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      return true;
+    }
+    return false;
+  };
 
   const handleNavClick = (id) => {
     setIsOpen(false);
@@ -26,6 +42,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     if (id === 'top') {
       if (isHomepage) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.history.replaceState(null, '', window.location.pathname);
       } else {
         navigateTo('/');
       }
@@ -33,10 +50,8 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     }
 
     if (isHomepage) {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      scrollToSection(id);
+      window.history.replaceState(null, '', `#${id}`);
     } else {
       navigateTo(`/#${id}`);
     }
@@ -58,14 +73,14 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
         return;
       }
 
-      const scrollPosition = window.scrollY + 180;
-      const sectionIds = ['exclusive-offers', 'campuna-spotlight', 'discover-campuna', 'journal'];
+      const scrollPosition = window.scrollY + 130;
+      const sectionIds = ['exclusive-offers', 'campuna-spotlight', 'journal', 'tool'];
 
       let current = 'top';
       for (const sectionId of sectionIds) {
         const el = document.getElementById(sectionId);
         if (el) {
-          const top = el.offsetTop;
+          const top = el.getBoundingClientRect().top + window.scrollY;
           const height = el.offsetHeight;
           if (scrollPosition >= top && scrollPosition < top + height) {
             current = sectionId;
@@ -80,19 +95,34 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomepage]);
 
-  // Handle hash scrolling on page load / route change
+  // Auto-correct encoded hash URLs (%23 -> #)
+  useEffect(() => {
+    if (window.location.pathname.includes('%23')) {
+      const decodedPath = decodeURIComponent(window.location.pathname);
+      const [pathPart, hashPart] = decodedPath.split('#');
+      const newPath = (pathPart || '/') + (hashPart ? `#${hashPart}` : '');
+      window.location.replace(newPath);
+    }
+  }, [location]);
+
+  // Handle hash scrolling on page load when navigating from another route
   useEffect(() => {
     if (isHomepage && window.location.hash) {
       const targetId = window.location.hash.replace('#', '');
-      const timer = setTimeout(() => {
-        const element = document.getElementById(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+      let attempts = 0;
+
+      const performScroll = () => {
+        const success = scrollToSection(targetId);
+        if (!success && attempts < 10) {
+          attempts++;
+          setTimeout(performScroll, 100);
         }
-      }, 200);
+      };
+
+      const timer = setTimeout(performScroll, 150);
       return () => clearTimeout(timer);
     }
-  }, [isHomepage, location]);
+  }, [isHomepage]);
 
   return (
     <nav
