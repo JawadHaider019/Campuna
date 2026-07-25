@@ -32,8 +32,7 @@ const App = () => {
     }, 850);
 
     const receive = (event) => {
-      console.log("Origin:", event.origin);
-      console.log("Data:", event.data);
+      console.log("Message received:", event.data);
 
       window.__lastReceivedMessage = {
         origin: event.origin,
@@ -82,6 +81,22 @@ const App = () => {
         // Clear loader once the message is received
         clearTimeout(safetyTimeout);
         setIsLoading(false);
+      }
+
+      if (event.data?.type === "SCROLL_TO") {
+        const target = event.data.target;
+        const section = document.getElementById(target) || (target === 'tools' ? document.getElementById('tool') : null) || (target === 'tool' ? document.getElementById('tools') : null);
+
+        if (section) {
+          console.log("Scrolling to:", target);
+
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        } else {
+          console.log("Section not found:", target);
+        }
       }
     };
 
