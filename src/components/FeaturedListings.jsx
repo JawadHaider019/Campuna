@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion, useMotionValue } from 'motion/react';
-import { Heart, MapPin, ShieldCheck, Eye, ArrowRight } from 'lucide-react';
+import { Heart, MapPin, ShieldCheck, Eye, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
@@ -105,12 +105,41 @@ function normalizeListing(item) {
 const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist, onCardClick }) => {
   const item = useMemo(() => normalizeListing(rawItem), [rawItem]);
   const [imgIdx, setImgIdx] = useState(0);
+  const tagsRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    if (tagsRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tagsRef.current;
+      setCanScrollLeft(scrollLeft > 2);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const timer = setTimeout(checkScroll, 200);
+    window.addEventListener('resize', checkScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkScroll);
+    };
+  }, [item?.features, checkScroll]);
 
   if (!item) return null;
 
   const handleImgError = () => {
     if (imgIdx < item.images.length - 1) {
       setImgIdx(i => i + 1);
+    }
+  };
+
+  const scrollTags = (e, direction) => {
+    e.stopPropagation();
+    if (tagsRef.current) {
+      const scrollAmount = direction === 'left' ? -90 : 90;
+      tagsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -164,15 +193,41 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
           <h3 className="font-display text-md font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-1">
             {item.title}
           </h3>
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {item.features.slice(0, 3).map((feat, idx) => (
-              <span
-                key={idx}
-                className="text-[10px] text-charcoal/60 bg-sand px-2 py-1 rounded-md border border-forest/5"
+          <div className="relative group/tags mb-2" onClick={(e) => e.stopPropagation()}>
+            {canScrollLeft && (
+              <button
+                type="button"
+                onClick={(e) => scrollTags(e, 'left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-4 h-4 bg-white/90 hover:bg-white text-forest shadow rounded-full flex items-center justify-center border border-forest/10 transition-all duration-200"
+                aria-label="Scroll tags left"
               >
-                {feat}
-              </span>
-            ))}
+                <ChevronLeft className="w-2.5 h-2.5" />
+              </button>
+            )}
+            <div
+              ref={tagsRef}
+              onScroll={checkScroll}
+              className="flex overflow-x-auto gap-1.5 no-scrollbar scroll-smooth"
+            >
+              {item.features.map((feat, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] text-charcoal/60 bg-sand px-2 py-1 rounded-md border border-forest/5 whitespace-nowrap shrink-0 select-none"
+                >
+                  {feat}
+                </span>
+              ))}
+            </div>
+            {canScrollRight && (
+              <button
+                type="button"
+                onClick={(e) => scrollTags(e, 'right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-4 h-4 bg-white/90 hover:bg-white text-forest shadow rounded-full flex items-center justify-center border border-forest/10 transition-all duration-200"
+                aria-label="Scroll tags right"
+              >
+                <ChevronRight className="w-2.5 h-2.5" />
+              </button>
+            )}
           </div>
         </div>
         <div className="pt-2 border-t border-forest/5 flex items-center justify-between">

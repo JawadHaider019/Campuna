@@ -20,9 +20,8 @@ export default function CTASection({ onSellClick }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
 
             {/* Left Column: Headline and bullet perks */}
-            <div className="lg:col-span-8 space-y-4 text-left">
-              <div className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block"
-              >
+            <div className="lg:col-span-8 space-y-4 text-center lg:text-left flex flex-col items-center lg:items-start">
+              <div className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                 Anbieter werden
               </div>
 
@@ -31,11 +30,12 @@ export default function CTASection({ onSellClick }) {
               </h2>
 
               <p className="font-sans text-sm sm:text-base text-sand/85 font-light leading-relaxed max-w-xl pb-2">
-                Präsentiere dein Angebot dort, wo sich Camper gezielt nach Produkten, Dienstleistungen und Angeboten rund ums Camping umsehen.  </p>
+                Präsentiere dein Angebot dort, wo sich Camper gezielt nach Produkten, Dienstleistungen und Angeboten rund ums Camping umsehen.
+              </p>
 
               <button
                 onClick={onSellClick}
-                className="w-[280px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center space-x-2 text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02]"
+                className="w-[280px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center space-x-2 text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02] mx-auto lg:mx-0"
               >
                 <span>Inserat erstellen – kostenlos</span>
                 <ArrowRight className="w-4 h-4" />

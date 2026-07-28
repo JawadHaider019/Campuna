@@ -564,14 +564,14 @@ export default function DiscoverCampuna() {
                                                 Preis
                                             </span>
                                             <span className="font-display text-base font-extrabold text-forest">
-                                                {insp.price ? `${insp.price.toLocaleString('de-DE')} â‚¬` : 'Auf Anfrage'}
+                                                {insp.price ? `${insp.price.toLocaleString('de-DE')} €` : ''}
                                             </span>
                                         </div>
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 const slug = buildListingSlug(insp.title, insp.id);
-                                                navigateTo(`/listing_details/${slug}`);
+                                                navigateTo(`/ listing_details / ${slug}`);
                                             }}
                                             className="group/btn flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors duration-200 cursor-pointer"
                                         >
