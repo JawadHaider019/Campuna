@@ -5,6 +5,7 @@ import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { formatLocation } from '../utils/location';
+import { rotateListings } from '../utils/rotation';
 
 function normalizeListing(item) {
   if (!item) return null;
@@ -116,7 +117,7 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
   return (
     <div
       onClick={() => onCardClick(item)}
-      className="listing-card group relative flex-shrink-0 w-[320px] md:w-[350px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
+      className="listing-card group relative flex-shrink-0 w-[300px] md:w-[320px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
         <img
@@ -160,7 +161,7 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
       </div>
       <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
-          <h3 className="font-display text-lg font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-2">
+          <h3 className="font-display text-md font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-1">
             {item.title}
           </h3>
           <div className="flex flex-wrap gap-1.5 mb-2">
@@ -174,19 +175,15 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
             ))}
           </div>
         </div>
-        <div className="pt-2 border-t border-forest/5 flex items-end justify-between">
-          <div>
-            <span className="block text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
-              {item.pricePeriod}
-            </span>
-            <span className="font-display text-xl font-extrabold text-forest">
-              {item.price.toLocaleString('de-DE')} €
-            </span>
-          </div>
-          <span className="font-sans text-xs font-bold text-forest group-hover:text-gold flex items-center space-x-1 transition-colors">
-            <span>Details</span>
-            <span className="transform group-hover:translate-x-1 transition-transform inline-block">→</span>
+        <div className="pt-2 border-t border-forest/5 flex items-center justify-between">
+
+          <span className="block text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
+            {item.pricePeriod}
           </span>
+          <span className="font-display text-lg font-bold text-forest">
+            {item.price.toLocaleString('de-DE')} €
+          </span>
+
         </div>
       </div>
     </div>
@@ -261,16 +258,39 @@ export default function FeaturedListings({
   }, [activeListings, selectedCategoryFilter, searchQuery, searchLocation]);
 
   const { firstRow, secondRow } = useMemo(() => {
-    const shuffled = [...filteredListings];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    if (!filteredListings || filteredListings.length === 0) {
+      return { firstRow: [], secondRow: [] };
     }
-    const midPoint = Math.ceil(shuffled.length / 2);
-    return {
-      firstRow: shuffled.slice(0, midPoint),
-      secondRow: shuffled.slice(midPoint)
+
+    // Helper to get exactly 25 items (padding only if total unique items < 25)
+    const get25Items = (arr) => {
+      if (!arr || arr.length === 0) return [];
+      const result = [];
+      while (result.length < 25) {
+        for (let i = 0; i < arr.length && result.length < 25; i++) {
+          result.push(arr[i]);
+        }
+      }
+      return result;
     };
+
+    if (filteredListings.length >= 50) {
+      // 50+ listings: 25 unique items in row 1, 25 distinct unique items in row 2
+      const rotated = rotateListings(filteredListings, 50);
+      return {
+        firstRow: rotated.slice(0, 25),
+        secondRow: rotated.slice(25, 50)
+      };
+    } else {
+      // Less than 50 listings: each row gets up to 25 unique items from separate random shuffles
+      const rotated1 = rotateListings(filteredListings, filteredListings.length);
+      const rotated2 = rotateListings([...filteredListings].reverse(), filteredListings.length);
+
+      return {
+        firstRow: get25Items(rotated1),
+        secondRow: get25Items(rotated2)
+      };
+    }
   }, [filteredListings]);
 
   const dir1Ref = useRef(-1); // -1 = left, 1 = right

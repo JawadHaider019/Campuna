@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Lightbulb,
@@ -23,14 +23,16 @@ import {
     AlertTriangle,
     ShieldAlert
 } from 'lucide-react';
-import { navigateTo } from '../utils/navigation';
+import { navigateTo, getParentNavigationUrl } from '../utils/navigation';
 import { buildListingSlug } from '../utils/slugify';
+import PayloadCalculator from './PayloadCalculator';
+import BudgetCalculator from './BudgetCalculator';
 
 
 const INITIAL_COMMUNITY_QUESTIONS = [
     {
         id: 'q_1',
-        question: 'Welche Solartasche mit 100W bis 120W ist aktuell die zuverlässigste für Autarkie?',
+        question: 'Welche Solartasche mit 100W bis 120W ist aktuell die zuverlÃ¤ssigste fÃ¼r Autarkie?',
         user: 'CamperVince',
         liked: false,
         upvotes: 42,
@@ -51,7 +53,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c1_1',
                 user: 'SunSeeker',
-                text: 'Ich nutze seit letztem Jahr eine Wattstunde Solartasche. Sie liefert zuverlässig Strom, selbst bei leichter Bewölkung.',
+                text: 'Ich nutze seit letztem Jahr eine Wattstunde Solartasche. Sie liefert zuverlÃ¤ssig Strom, selbst bei leichter BewÃ¶lkung.',
                 date: 'Vor 2 Tagen'
             }
         ]
@@ -62,7 +64,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
         user: 'DachzeltNeuling',
         liked: false,
         upvotes: 27,
-        tags: ['Dachzelt', 'Zubehör', 'PKW-Lasten'],
+        tags: ['Dachzelt', 'ZubehÃ¶r', 'PKW-Lasten'],
         comments: [
             {
                 id: 'c2_3',
@@ -73,20 +75,20 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c2_2',
                 user: 'CampingFreak',
-                text: 'Genau, dynamisch ist für die Fahrt relevant. Dachzelt + Träger dürfen das nicht überschreiten.',
+                text: 'Genau, dynamisch ist fÃ¼r die Fahrt relevant. Dachzelt + TrÃ¤ger dÃ¼rfen das nicht Ã¼berschreiten.',
                 date: 'Vor 2 Tagen'
             },
             {
                 id: 'c2_1',
                 user: 'RooftopExplorer',
-                text: 'Die dynamische Dachlast findest du im Handbuch deines PKWs (meistens 75kg oder 100kg). Die statische im Stand ist viel höher!',
+                text: 'Die dynamische Dachlast findest du im Handbuch deines PKWs (meistens 75kg oder 100kg). Die statische im Stand ist viel hÃ¶her!',
                 date: 'Vor 3 Tagen'
             }
         ]
     },
     {
         id: 'q_3',
-        question: 'Wie reinigt/desinfiziert ihr euren Wassertank nach einer längeren Standzeit (z.B. Winterpause)?',
+        question: 'Wie reinigt/desinfiziert ihr euren Wassertank nach einer lÃ¤ngeren Standzeit (z.B. Winterpause)?',
         user: 'HappyTrailer',
         liked: false,
         upvotes: 68,
@@ -95,13 +97,13 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c3_2',
                 user: 'HappyTrailer',
-                text: 'Am einfachsten geht es mit Chlordioxid-Präparaten, das reinigt geruchslos und gründlich...',
+                text: 'Am einfachsten geht es mit Chlordioxid-PrÃ¤paraten, das reinigt geruchslos und grÃ¼ndlich...',
                 date: 'Vor 4 Tagen'
             },
             {
                 id: 'c3_1',
                 user: 'CleanWater',
-                text: 'Ich benutze immer biologisch abbaubare Reiniger auf Zitronensäurebasis, danach gut durchspülen.',
+                text: 'Ich benutze immer biologisch abbaubare Reiniger auf ZitronensÃ¤urebasis, danach gut durchspÃ¼len.',
                 date: 'Vor 5 Tagen'
             }
         ]
@@ -112,7 +114,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
 export default function DiscoverCampuna() {
     const [activeTab, setActiveTab] = useState('tools');
 
-    // ── Pre-fetched Tips and Inspiration State ──
+    // â”€â”€ Pre-fetched Tips and Inspiration State â”€â”€
     const [tips, setTips] = useState([]);
     const [inspirations, setInspirations] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -304,7 +306,7 @@ export default function DiscoverCampuna() {
         fetchTipsAndInspirations();
     }, []);
 
-    // ── Community Q&A State ──
+    // â”€â”€ Community Q&A State â”€â”€
     const [questions, setQuestions] = useState(INITIAL_COMMUNITY_QUESTIONS);
     const [expandedQuestionId, setExpandedQuestionId] = useState(null);
 
@@ -391,44 +393,6 @@ export default function DiscoverCampuna() {
 
     // Custom tools state variables
     const [activeTool, setActiveTool] = useState('payload'); // 'payload' or 'costs'
-    const [activeTooltip, setActiveTooltip] = useState(null); // 'maxWeight' | 'emptyWeight' | null
-
-    // ── Tool 1: Payload Calculator State ──
-    const [maxWeight, setMaxWeight] = useState(3500);
-    const [emptyWeight, setEmptyWeight] = useState(2850);
-    const [driverWeight, setDriverWeight] = useState(75);
-    const [passengers, setPassengers] = useState(1);
-    const [passengersWeight, setPassengersWeight] = useState(75);
-    const [waterWater, setWaterWater] = useState(80);
-    const [gasWeight, setGasWeight] = useState(22);
-    const [baggage, setBaggage] = useState(150);
-    const [equipment, setEquipment] = useState(80);
-
-    // Calculations for Payload
-    const totalPassengersWeight = passengers * passengersWeight;
-    const currentTotalWeight = emptyWeight + driverWeight + totalPassengersWeight + waterWater + gasWeight + baggage + equipment;
-    const remainingPayload = maxWeight - currentTotalWeight;
-    const payloadPercentage = Math.min(Math.max(((currentTotalWeight - emptyWeight) / (maxWeight - emptyWeight || 1)) * 100, 0), 100);
-    const weightUsagePercent = maxWeight > 0 ? (currentTotalWeight / maxWeight) * 100 : 0;
-
-    // Traffic light status logic: Green = safe (>=50kg), Orange = low remaining (<50kg), Red = overloaded (<0kg)
-    const isOverloaded = remainingPayload < 0;
-    const isWarning = remainingPayload >= 0 && remainingPayload < 50;
-    const isSafe = remainingPayload >= 50;
-
-    // ── Tool 2: Trip Cost Calculator State ──
-    const [distance, setDistance] = useState(600);
-    const [consumption, setConsumption] = useState(10.5);
-    const [fuelPrice, setFuelPrice] = useState(1.75);
-    const [campsiteCost, setCampsiteCost] = useState(35);
-    const [nights, setNights] = useState(5);
-    const [otherBudget, setOtherBudget] = useState(100);
-
-    // Calculations for Cost
-    const fuelCostTotal = (distance / 100) * consumption * fuelPrice;
-    const campsiteCostTotal = campsiteCost * nights;
-    const totalCost = fuelCostTotal + campsiteCostTotal + otherBudget;
-    const dailyCost = totalCost / Math.max(nights, 1);
 
     // Render content according to active tab
     const renderTabContent = () => {
@@ -554,7 +518,7 @@ export default function DiscoverCampuna() {
                                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                                                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
                                             </span>
-                                            <span>Ausgewählt</span>
+                                            <span>AusgewÃ¤hlt</span>
                                         </motion.div>
                                     )}
                                 </div>
@@ -577,7 +541,7 @@ export default function DiscoverCampuna() {
                                                     color: "transparent"
                                                 }}
                                             >
-                                                Ausgewählt
+                                                AusgewÃ¤hlt
                                             </motion.div>
                                         )}
                                         <h3 className="font-display sm:text-xl text-lg font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 line-clamp-3">
@@ -600,7 +564,7 @@ export default function DiscoverCampuna() {
                                                 Preis
                                             </span>
                                             <span className="font-display text-base font-extrabold text-forest">
-                                                {insp.price ? `${insp.price.toLocaleString('de-DE')} €` : 'Auf Anfrage'}
+                                                {insp.price ? `${insp.price.toLocaleString('de-DE')} â‚¬` : 'Auf Anfrage'}
                                             </span>
                                         </div>
                                         <button
@@ -638,7 +602,7 @@ export default function DiscoverCampuna() {
                                 Tool in Entwicklung
                             </h4>
                             <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
-                                Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
+                                Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in KÃ¼rze zur VerfÃ¼gung.
                             </p>
                         </div>
                     </motion.div>
@@ -681,590 +645,33 @@ export default function DiscoverCampuna() {
                         </div>
 
                         {activeTool === 'payload' ? (
-                            // Option A: Payload Calculator (Zuladungsrechner)
-                            <div>
-                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-                                    {/* Inputs */}
-                                    <div className="lg:col-span-7 space-y-5">
-                                        <div className="flex items-center gap-2 text-forest mb-2">
-                                            <Scale className="w-5 h-5 text-forest" />
-                                            <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
-                                        </div>
-                                        <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
-                                            Berechne das verbleibende Gewicht deines Fahrzeugs, um Überladung und hohe Bußgelder im Camping-Urlaub zu vermeiden.
-                                        </p>
-
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {/* Max Weight with Info Icon & Tooltip */}
-                                            <div className="space-y-1.5 relative">
-                                                <div className="flex items-center gap-1.5">
-                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Zul. Gesamtgewicht (kg)
-                                                    </label>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setActiveTooltip(activeTooltip === 'maxWeight' ? null : 'maxWeight')}
-                                                        className="text-forest/60 hover:text-forest transition-colors cursor-pointer p-0.5"
-                                                        title="Information anzeigen"
-                                                    >
-                                                        <Info className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </div>
-
-                                                {activeTooltip === 'maxWeight' && (
-                                                    <div className="absolute left-0 top-12 z-30 w-72 p-3 bg-forest text-white text-xs rounded-2xl shadow-xl border border-gold/30 font-sans leading-relaxed">
-                                                        <div className="flex justify-between items-start mb-1">
-                                                            <strong className="text-gold font-bold">Zulässiges Gesamtgewicht (z.G.G.)</strong>
-                                                            <button onClick={() => setActiveTooltip(null)} className="text-white/60 hover:text-white">
-                                                                <X className="w-3.5 h-3.5" />
-                                                            </button>
-                                                        </div>
-                                                        Das maximale Gesamtgewicht, das dein Fahrzeug inklusive aller Insassen, Gepäck, Flüssigkeiten und Ausrüstung im Straßenverkehr wiegen darf (siehe Fahrzeugschein Feld F.1).
-                                                    </div>
-                                                )}
-
-                                                <input
-                                                    type="number"
-                                                    value={maxWeight}
-                                                    onChange={e => setMaxWeight(Number(e.target.value) || 0)}
-                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                />
-                                            </div>
-
-                                            {/* Empty Weight with Info Icon & Tooltip */}
-                                            <div className="space-y-1.5 relative">
-                                                <div className="flex items-center gap-1.5">
-                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Masse fahrbereit (kg)
-                                                    </label>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setActiveTooltip(activeTooltip === 'emptyWeight' ? null : 'emptyWeight')}
-                                                        className="text-forest/60 hover:text-forest transition-colors cursor-pointer p-0.5"
-                                                        title="Information anzeigen"
-                                                    >
-                                                        <Info className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </div>
-
-                                                {activeTooltip === 'emptyWeight' && (
-                                                    <div className="absolute left-0 top-12 z-30 w-72 p-3 bg-forest text-white text-xs rounded-2xl shadow-xl border border-gold/30 font-sans leading-relaxed">
-                                                        <div className="flex justify-between items-start mb-1">
-                                                            <strong className="text-gold font-bold">Masse fahrbereit</strong>
-                                                            <button onClick={() => setActiveTooltip(null)} className="text-white/60 hover:text-white">
-                                                                <X className="w-3.5 h-3.5" />
-                                                            </button>
-                                                        </div>
-                                                        Das werkseitige Leergewicht des Fahrzeugs inklusive zu 90% gefülltem Kraftstofftank, Fahrer (standardisiert mit 75 kg), gefülltem Frischwassertank und Gasflaschen ab Werk (siehe Fahrzeugschein Feld G).
-                                                    </div>
-                                                )}
-
-                                                <input
-                                                    type="number"
-                                                    value={emptyWeight}
-                                                    onChange={e => setEmptyWeight(Number(e.target.value) || 0)}
-                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Cargo Sliders */}
-                                        <div className="space-y-4 pt-3">
-                                            {/* Driver, Passengers */}
-                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Fahrer (kg)</span>
-                                                        <span>{driverWeight} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="50" max="150" step="1"
-                                                        value={driverWeight} onChange={e => setDriverWeight(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Beifahrer / Mitf.</span>
-                                                        <span>{passengers} Pers.</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="0" max="6" step="1"
-                                                        value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Gew. je Beif. (kg)</span>
-                                                        <span>{passengersWeight} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="40" max="120" step="1"
-                                                        value={passengersWeight} onChange={e => setPassengersWeight(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Water and Gas */}
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Wasser (Liter/kg)</span>
-                                                        <span>{waterWater} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="0" max="250" step="5"
-                                                        value={waterWater} onChange={e => setWaterWater(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Gasflaschen (kg)</span>
-                                                        <span>{gasWeight} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="0" max="60" step="1"
-                                                        value={gasWeight} onChange={e => setGasWeight(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Baggage and Equipment */}
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Gepäck & Vorräte (kg)</span>
-                                                        <span>{baggage} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="20" max="500" step="5"
-                                                        value={baggage} onChange={e => setBaggage(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Ausrüstung / Stühle (kg)</span>
-                                                        <span>{equipment} kg</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="0" max="300" step="5"
-                                                        value={equipment} onChange={e => setEquipment(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Results Screen with Traffic Light Indicators */}
-                                    <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
-                                        <div>
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em]">Ergebnis</h5>
-                                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${isOverloaded
-                                                    ? 'bg-rose-600 text-white shadow-xs'
-                                                    : isWarning
-                                                        ? 'bg-amber-500 text-white shadow-xs'
-                                                        : 'bg-emerald-600 text-white shadow-xs'
-                                                    }`}>
-                                                    {isOverloaded ? 'Überladen' : isWarning ? 'Knapp' : 'Sicher'}
-                                                </span>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                {/* Current Total */}
-                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Aktuelles Gesamtgewicht:</span>
-                                                    <span className="text-xl font-bold text-forest">{currentTotalWeight} kg</span>
-                                                </div>
-
-                                                {/* Max Limit */}
-                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Zulässiges Limit:</span>
-                                                    <span className="text-sm font-semibold text-charcoal/80">{maxWeight} kg</span>
-                                                </div>
-
-                                                {/* Remaining capacity */}
-                                                <div className="flex justify-between items-baseline pt-2">
-                                                    <span className="text-xs text-charcoal/60">Verbleibende Reserve:</span>
-                                                    <span className={`text-xl font-extrabold ${isOverloaded
-                                                        ? 'text-rose-600 animate-pulse'
-                                                        : isWarning
-                                                            ? 'text-amber-600'
-                                                            : 'text-emerald-700'
-                                                        }`}>
-                                                        {remainingPayload} kg
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            {/* Visual Traffic Light Progress Bar */}
-                                            <div className="mt-6 space-y-1.5">
-                                                <div className="h-3 w-full bg-sand rounded-full overflow-hidden border border-forest/5 relative">
-                                                    <div
-                                                        className={`h-full transition-all duration-300 rounded-full ${isOverloaded
-                                                            ? 'bg-rose-500'
-                                                            : isWarning
-                                                                ? 'bg-amber-500'
-                                                                : 'bg-emerald-500'
-                                                            }`}
-                                                        style={{ width: `${Math.min(weightUsagePercent, 100)}%` }}
-                                                    />
-                                                </div>
-                                                <div className="flex justify-between text-[9px] font-mono text-charcoal/50">
-                                                    <span>0 kg</span>
-                                                    <span className="font-bold text-forest">{weightUsagePercent.toFixed(0)}% Gesamtkapazität</span>
-                                                    <span>{maxWeight} kg</span>
-                                                </div>
-                                            </div>
-
-                                            {/* Percentage & Remaining Payload Usage Banner */}
-                                            <div className="mt-4 p-3 bg-white/80 rounded-2xl border border-forest/10 text-center">
-                                                <p className="text-xs text-charcoal/80 font-medium leading-relaxed">
-                                                    {remainingPayload >= 0 ? (
-                                                        <>
-                                                            <strong className={isWarning ? 'text-amber-600' : 'text-emerald-700'}>
-                                                                {remainingPayload} kg verbleibende Zuladung verfügbar
-                                                            </strong> ({weightUsagePercent.toFixed(0)}% des Gesamtgewichts genutzt).
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <strong className="text-rose-600">
-                                                                {Math.abs(remainingPayload)} kg Überladung
-                                                            </strong> ({weightUsagePercent.toFixed(0)}% des Gesamtgewichts genutzt).
-                                                        </>
-                                                    )}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {/* Warning / Traffic Light Info Box */}
-                                        <div>
-                                            <div className={`mt-6 p-4 rounded-2xl flex items-start gap-3 border text-xs leading-relaxed transition-all ${isOverloaded
-                                                ? 'bg-rose-50 border-rose-200 text-rose-900'
-                                                : isWarning
-                                                    ? 'bg-amber-50 border-amber-200 text-amber-900'
-                                                    : 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                                                }`}>
-                                                <div className="p-1.5 rounded-xl shrink-0 mt-0.5 bg-white/60">
-                                                    {isOverloaded ? (
-                                                        <ShieldAlert className="w-5 h-5 text-rose-600" />
-                                                    ) : isWarning ? (
-                                                        <AlertTriangle className="w-5 h-5 text-amber-600" />
-                                                    ) : (
-                                                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <strong className="text-sm block mb-0.5">
-                                                        {isOverloaded
-                                                            ? 'Achtung: Dein Fahrzeug ist überladen!'
-                                                            : isWarning
-                                                                ? 'Vorsicht: Sehr knappe Zuladungsreserve!'
-                                                                : 'Gute Fahrt! Alles im grünen Bereich.'}
-                                                    </strong>
-                                                    <p className="font-light opacity-90">
-                                                        {isOverloaded
-                                                            ? `Du überschreitest das zulässige Gesamtgewicht um ${Math.abs(remainingPayload)} kg. In Deutschland und Europa drohen bei Polizeikontrollen empfindliche Bußgelder und Weiterfahrverbote.`
-                                                            : isWarning
-                                                                ? `Die verbleibende Zuladung beträgt nur noch ${remainingPayload} kg. Wenn weitere Personen zusteigen oder Gepäck hinzukommt, riskierst du eine Überladung.`
-                                                                : 'Deine Zuladung liegt absolut sicher im grünen Bereich. Achte weiterhin auf eine gleichmäßige Gewichtsverteilung.'}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Disclaimer at bottom (Point 5) */}
-                                            <div className="mt-4 pt-3 border-t border-forest/10 text-[11px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                                                <Info className="w-3.5 h-3.5 text-charcoal/40 shrink-0 mt-0.5" />
-                                                <p>
-                                                    <strong>Hinweis:</strong> Diese Berechnung dient lediglich als Orientierungshilfe und ersetzt weder die offiziellen Fahrzeugangaben noch eine tatsächliche Wägung des Fahrzeugs.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* SEO Information Section Below Payload Calculator (Point 6) */}
-                                <div className="mt-10 pt-8 border-t border-forest/10">
-                                    <div className="mb-6">
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold block mb-1">
-                                            Ratgeber & Wissenswertes
-                                        </span>
-                                        <h4 className="font-display text-xl font-bold text-forest">
-                                            Häufige Fragen zur Fahrzeug-Zuladung
-                                        </h4>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Warum ist die Zuladung wichtig?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Eine korrekte Zuladung ist entscheidend für die Fahrsicherheit. Überladung verlängert den Bremsweg erheblich, verschlechtert das Kurvenverhalten und kann zu Reifenplatzern führen. Zudem schützen eingehaltene Gewichtsgrenzen vor empfindlichen Bußgeldern.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Was zählt alles zur Zuladung?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Zur Zuladung gehören alle Mitfahrer (abzüglich 75 kg Fahrergewicht), Gepäck, Kleidung, Proviant, Fahrräder, Campingmöbel, Nachrüstungen (Markise, Solar, Klimaanlage) sowie Frischwasser, Abwasser und Gasflaschen.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Wo finde ich das zulässige Gesamtgewicht?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Das zulässige Gesamtgewicht (z.G.G.) steht in deiner Zulassungsbescheinigung Teil I (Fahrzeugschein) unter Feld <strong>F.1</strong>. Das Leergewicht (Masse im fahrbereiten Zustand) findest du unter Feld <strong>G</strong>.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Was passiert, wenn das Fahrzeug überladen ist?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Bei Kontrollen drohen Bußgelder und Punkte in Flensburg. In Urlaubsländern wie Österreich oder der Schweiz gelten strenge Toleranzen mit Strafen bis in vierstellige Höhen und erzwungenem Entladen vor Ort. Zudem kann die Versicherung die Haftung reduzieren.
-                                            </p>
-                                        </div>
-                                    </div>
+                            <div className="mt-4">
+                                <PayloadCalculator compact={true} />
+                                {/* Link to dedicated page */}
+                                <div className="hidden mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                    <a
+                                        href={getParentNavigationUrl('camping-helfer/zuladungsrechner')}
+                                        target="_parent"
+                                        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
+                                    >
+                                        <span>Zur Vollversion mit Ratgeber & FAQ</span>
+                                        <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-gold" />
+                                    </a>
                                 </div>
                             </div>
                         ) : (
-                            // Option B: Camping Travel Budget Calculator (Reisebudget-Rechner)
-                            <div>
-                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-                                    {/* Inputs */}
-                                    <div className="lg:col-span-7 space-y-5">
-                                        <div className="flex items-center gap-2 text-forest mb-2">
-                                            <Fuel className="w-5 h-5 text-forest" />
-                                            <h4 className="font-display text-base font-bold">Camping-Reisebudget-Rechner</h4>
-                                        </div>
-                                        <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
-                                            Berechne deine Gesamtkosten für Sprit, Übernachtung und Nebenkosten deiner Campingreise.
-                                        </p>
-
-                                        <div className="space-y-4">
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                {/* Distance (Total out & return) */}
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Reiseentfernung (Hin- & Rückfahrt)</span>
-                                                        <span>{distance} km</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="50" max="4000" step="50"
-                                                        value={distance} onChange={e => setDistance(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                    <span className="text-[10px] text-charcoal/50 italic block mt-0.5">
-                                                        Gesamte Strecke inklusive Hin- & Rückweg sowie Ausflügen
-                                                    </span>
-                                                </div>
-
-                                                {/* Nights */}
-                                                <div className="space-y-1">
-                                                    <div className="flex justify-between text-xs text-charcoal/80 font-mono">
-                                                        <span>Anzahl Nächte</span>
-                                                        <span>{nights} Nächte</span>
-                                                    </div>
-                                                    <input
-                                                        type="range" min="1" max="60" step="1"
-                                                        value={nights} onChange={e => setNights(Number(e.target.value))}
-                                                        className="w-full accent-forest"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
-                                                {/* Fuel Consumption */}
-                                                <div className="space-y-1.5">
-                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Verbrauch (l/100km)
-                                                    </label>
-                                                    <input
-                                                        type="number" step="0.1"
-                                                        value={consumption}
-                                                        onChange={e => setConsumption(Number(e.target.value) || 0)}
-                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                    />
-                                                </div>
-
-                                                {/* Spritpreis */}
-                                                <div className="space-y-1.5">
-                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Spritpreis (€/l)
-                                                    </label>
-                                                    <input
-                                                        type="number" step="0.01"
-                                                        value={fuelPrice}
-                                                        onChange={e => setFuelPrice(Number(e.target.value) || 0)}
-                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                    />
-                                                </div>
-
-                                                {/* Campsite charge */}
-                                                <div className="space-y-1.5">
-                                                    <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                        Stellplatz / Nacht (€)
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        value={campsiteCost}
-                                                        onChange={e => setCampsiteCost(Number(e.target.value) || 0)}
-                                                        className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Travel Extras (Tolls, Ferries, Vignettes, etc.) */}
-                                            <div className="space-y-1.5 pt-2">
-                                                <label className="block text-[11px] font-bold text-forest uppercase tracking-widest">
-                                                    Reise-Extras (Maut, Fähren, Vignetten etc.) (€)
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    value={otherBudget}
-                                                    onChange={e => setOtherBudget(Number(e.target.value) || 0)}
-                                                    className="w-full bg-sand/30 border border-forest/10 p-2.5 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-forest text-charcoal"
-                                                />
-                                                <span className="text-[10px] text-charcoal/50 italic block mt-1 leading-snug">
-                                                    Inkl. Maut, Vignetten, Fähren, Parkgebühren, Verpflegung & sonstige Ausgaben
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Results Screen */}
-                                    <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
-                                        <div>
-                                            <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
-
-                                            <div className="space-y-3.5">
-                                                {/* Fuel costs */}
-                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Kraftstoffkosten:</span>
-                                                    <span className="text-sm font-semibold text-charcoal/80">{fuelCostTotal.toFixed(2)} €</span>
-                                                </div>
-
-                                                {/* Camping costs */}
-                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Übernachtungskosten:</span>
-                                                    <span className="text-sm font-semibold text-charcoal/80">{campsiteCostTotal.toFixed(2)} €</span>
-                                                </div>
-
-                                                {/* Additional costs */}
-                                                <div className="flex justify-between items-baseline border-b border-forest/5 pb-2">
-                                                    <span className="text-xs text-charcoal/60">Reise-Extras (Maut, Fähren etc.):</span>
-                                                    <span className="text-sm font-semibold text-charcoal/80">{otherBudget.toFixed(2)} €</span>
-                                                </div>
-
-                                                {/* Total cost */}
-                                                <div className="flex justify-between items-baseline pt-2">
-                                                    <span className="text-xs text-forest font-bold uppercase tracking-wider">Gesamtbedarf:</span>
-                                                    <span className="text-2xl font-extrabold text-forest">
-                                                        {totalCost.toFixed(2)} €
-                                                    </span>
-                                                </div>
-
-                                                {/* Average Cost Per Day (Point 4) */}
-                                                <div className="bg-white/80 p-3 rounded-2xl border border-forest/10 flex justify-between items-center mt-2">
-                                                    <span className="text-xs text-charcoal/70 font-medium">Durchschnitt pro Tag:</span>
-                                                    <span className="text-sm font-bold text-forest">
-                                                        {dailyCost.toFixed(2)} € / Tag
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            {/* Summary Box */}
-                                            <div className="mt-6 p-4 rounded-2xl flex items-start gap-2.5 border bg-emerald-50 border-emerald-100 text-emerald-900 text-xs leading-relaxed">
-                                                <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest" />
-                                                <div>
-                                                    <strong>Budgetübersicht bereit!</strong>
-                                                    <p className="mt-1 font-light opacity-90">
-                                                        Für deine {distance} km lange Reise mit {nights} Übernachtungen benötigst du ca. <strong className="font-semibold">{totalCost.toFixed(0)} €</strong> (durchschnittlich ca. <strong className="font-semibold">{dailyCost.toFixed(0)} € pro Tag</strong>).
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Disclaimer at bottom (Point 5) */}
-                                            <div className="mt-4 pt-3 border-t border-forest/10 text-[11px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                                                <Info className="w-3.5 h-3.5 text-charcoal/40 shrink-0 mt-0.5" />
-                                                <p>
-                                                    <strong>Hinweis:</strong> Diese Berechnung stellt eine unverbindliche Schätzung dar. Die tatsächlichen Reisekosten können je nach Fahrweise, aktuellen Kraftstoffpreisen und individuellen Nebenkosten abweichen.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* SEO Information Section Below Travel Budget Calculator (Point 6) */}
-                                <div className="mt-10 pt-8 border-t border-forest/10">
-                                    <div className="mb-6">
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold block mb-1">
-                                            Ratgeber & Ausgabenplanung
-                                        </span>
-                                        <h4 className="font-display text-xl font-bold text-forest">
-                                            Wissenswertes zu deinen Camping-Reisekosten
-                                        </h4>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Was kostet ein Campingurlaub typischerweise?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Ein Campingurlaub kostet im Durchschnitt zwischen 40 € und 120 € pro Tag für zwei Personen. Die Gesamtkosten setzen sich aus Sprit, Stellplatzgebühren, Maut und Verpflegung zusammen.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Wie berechnet man die Kraftstoffkosten richtig?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Formel: (Gesamtkilometer / 100) × Durchschnittsverbrauch × Spritpreis. Rechnen Sie bei voller Beladung, Dachboxen oder gebirgigen Strecken stets etwa 10–15% Mehrverbrauch hinzu.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Welche Reisekosten werden oft vergessen?
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Häufig übersehen werden Mautgebühren, länderspezifische Vignetten, Fährkosten, Parkgebühren, Strom- und Wasserpauschalen auf Campingplätzen sowie Kurtaxen und Gasverbrauch.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                                Tipps zum Geldsparen beim Camping
-                                            </h5>
-                                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                                Nutzen Sie Rabattkarten (z.B. ACSI), reisen Sie in der Nebensaison, buchen Sie Vignetten vorab digital, tanken Sie abseits der Autobahn und kochen Sie öfter selbst im Wohnmobil.
-                                            </p>
-                                        </div>
-                                    </div>
+                            <div className="mt-4">
+                                <BudgetCalculator compact={true} />
+                                {/* Link to dedicated page */}
+                                <div className="hidden mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                    <a
+                                        href={getParentNavigationUrl('camping-helfer/reisekostenrechner')}
+                                        target="_parent"
+                                        className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
+                                    >
+                                        <span>Zur Vollversion mit Ratgeber & FAQ</span>
+                                        <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-gold" />
+                                    </a>
                                 </div>
                             </div>
                         )}
@@ -1289,7 +696,7 @@ export default function DiscoverCampuna() {
                             Camping-Wissen & Nützliche Tools
                         </h2>
                         <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-xl font-light">
-                            Finde hilfreiche Tipps, entdecke ausgewählte Inserate und nutze unsere Camping-Helfer zur Urlaubsplanung.
+                            Finde hilfreiche Tipps, entdecke ausgewÃ¤hlte Inserate und nutze unsere Camping-Helfer zur Urlaubsplanung.
                         </p>
                     </div>
                 </div>

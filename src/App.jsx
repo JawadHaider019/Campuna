@@ -11,6 +11,8 @@ import ScrollToTop from './components/ScrollToTop';
 import HeroPage from './pages/HeroPage';
 import HomePage from './pages/Homepage';
 import CreateListingPage from './pages/CreateListingPage';
+import ZuladungsrechnerPage from './pages/ZuladungsrechnerPage';
+import ReisekostenrechnerPage from './pages/ReisekostenrechnerPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -148,6 +150,8 @@ const App = () => {
         <Route path="/my_account" element={<CreateListingPage />} />
         <Route path="/create_listing" element={<CreateListingPage />} />
         <Route path="/create-listing" element={<CreateListingPage />} />
+        <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+        <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
       </Routes>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}

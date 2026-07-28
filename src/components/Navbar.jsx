@@ -14,10 +14,10 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
   const navLinks = [
     { label: 'Startseite', id: 'top' },
-    { label: 'Zum Stöbern', id: 'exclusive-offers' },
-    { label: 'Spotlight', id: 'campuna-spotlight' },
-    { label: 'Ratgeber', id: 'journal' },
     { label: 'Entdecke', id: 'tool' },
+    { label: 'Spotlight', id: 'campuna-spotlight' },
+    { label: 'Zum Stöbern', id: 'exclusive-offers' },
+    { label: 'Ratgeber', id: 'journal' },
   ];
 
   const scrollToSection = (id) => {

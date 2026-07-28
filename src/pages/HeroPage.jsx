@@ -12,6 +12,7 @@ import { FEATURED_LISTINGS } from '../data';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 import { formatLocation } from '../utils/location';
+import { rotateListings } from '../utils/rotation';
 import WelcomeBanner from '../components/WelcomeBanner';
 import DiscoverCampuna from '../components/DiscoverCampuna';
 
@@ -142,12 +143,11 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                     });
 
                     if (active) {
-                        // Shuffle mapped listings randomly when the API is successfully called
-                        const shuffled = [...mapped].sort(() => Math.random() - 0.5);
-                        setListingsList(shuffled);
-                        // Optionally auto-wishlist the first two items for beautiful visual design representation
-                        if (shuffled.length >= 2) {
-                            setWishlistedIds([shuffled[0].id, shuffled[1].id]);
+                        // Dynamically rotate all listings to ensure fresh, non-repeating ads on every refresh
+                        const rotated = rotateListings(mapped, mapped.length);
+                        setListingsList(rotated);
+                        if (rotated.length >= 2) {
+                            setWishlistedIds([rotated[0].id, rotated[1].id]);
                         }
                     }
                 }
@@ -223,7 +223,11 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             <div className="-mt-20 md:-mt-24" >
                 <CategoriesSection />
             </div>
+            {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
+            <DiscoverCampuna />
 
+            {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
+            <PartnersSection isLoggedIn={isLoggedIn} />
 
             {/* 4. Exclusive Offers with filters & interactive search */}
             <FeaturedListings
@@ -237,13 +241,9 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                 searchLocation={searchLocation}
             />
 
-            {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-            <PartnersSection isLoggedIn={isLoggedIn} />
 
             {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
             <BlogSection />
-            {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
-            <DiscoverCampuna />
 
             {/* 7. Why Campuna Features Section */}
             <WhyCampuna />

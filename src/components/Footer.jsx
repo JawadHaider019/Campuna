@@ -93,6 +93,7 @@ bleib.`}
             </ul>
           </div>
 
+
           {/* Support Column */}
           <div className="space-y-4 min-w-[150px]">
             <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
