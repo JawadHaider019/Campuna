@@ -54,9 +54,9 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
 
     return (
         <div>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {/* Inputs */}
-                <div className="lg:col-span-7 space-y-5">
+                <div className="lg:col-span-7 space-y-5 p-6">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Scale className="w-5 h-5 text-forest" />
                         <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
@@ -230,6 +230,13 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                             </div>
                         </div>
                     </div>
+                    {/* Disclaimer */}
+                    <div className="mt-4 pt-4 border-t border-forest/10 text-[13px] text-charcoal/50 leading-relaxed flex items-start gap-2">
+                        <Info className="w-4 h-4 text-charcoal/40 shrink-0 mt-0.5" />
+                        <p>
+                            <strong>Hinweis:</strong> Diese Berechnung dient lediglich als Orientierungshilfe und ersetzt weder die offiziellen Fahrzeugangaben noch eine tatsächliche Wägung des Fahrzeugs.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Results Screen with Traffic Light Indicators */}
@@ -349,72 +356,11 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                             </div>
                         </div>
 
-                        {/* Disclaimer */}
-                        <div className="mt-4 pt-3 border-t border-forest/10 text-[11px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                            <Info className="w-3.5 h-3.5 text-charcoal/40 shrink-0 mt-0.5" />
-                            <p>
-                                <strong>Hinweis:</strong> Diese Berechnung dient lediglich als Orientierungshilfe und ersetzt weder die offiziellen Fahrzeugangaben noch eine tatsächliche Wägung des Fahrzeugs.
-                            </p>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
-            {/* FAQ Section – shown only when not in compact mode */}
-            {!compact && (
-                <div className="mt-10 pt-8 border-t border-forest/10">
-                    <div className="mb-6">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold block mb-1">
-                            Ratgeber & Wissenswertes
-                        </span>
-                        <h4 className="font-display text-xl font-bold text-forest">
-                            Häufige Fragen zur Fahrzeug-Zuladung
-                        </h4>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Warum ist die Zuladung wichtig?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Eine korrekte Zuladung ist entscheidend für die Fahrsicherheit. Überladung verlängert den Bremsweg erheblich, verschlechtert das Kurvenverhalten und kann zu Reifenplatzern führen. Zudem schützen eingehaltene Gewichtsgrenzen vor empfindlichen Bußgeldern.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Was zählt alles zur Zuladung?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Zur Zuladung gehören alle Mitfahrer (abzüglich 75 kg Fahrergewicht), Gepäck, Kleidung, Proviant, Fahrräder, Campingmöbel, Nachrüstungen (Markise, Solar, Klimaanlage) sowie Frischwasser, Abwasser und Gasflaschen.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Wo finde ich das zulässige Gesamtgewicht?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Das zulässige Gesamtgewicht (z.G.G.) steht in deiner Zulassungsbescheinigung Teil I (Fahrzeugschein) unter Feld <strong>F.1</strong>. Das Leergewicht (Masse im fahrbereiten Zustand) findest du unter Feld <strong>G</strong>.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Was passiert, wenn das Fahrzeug überladen ist?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Bei Kontrollen drohen Bußgelder und Punkte in Flensburg. In Urlaubsländern wie Österreich oder der Schweiz gelten strenge Toleranzen mit Strafen bis in vierstellige Höhen und erzwungenem Entladen vor Ort. Zudem kann die Versicherung die Haftung reduzieren.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

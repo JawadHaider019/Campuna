@@ -4,6 +4,7 @@ import { ArrowRight, ChevronRight, ChevronDown, Scale, Fuel, HelpCircle, BookOpe
 import SEO from './SEO';
 import PayloadCalculator from './PayloadCalculator';
 import BudgetCalculator from './BudgetCalculator';
+import RelatedListings from './RelatedListings';
 import { TOOLS_LIST } from '../data/toolsData';
 import { useToolAnalytics } from '../utils/useToolAnalytics';
 import { getParentNavigationUrl, navigateTo } from '../utils/navigation';
@@ -31,78 +32,60 @@ export default function ToolLandingPage({ tool }) {
             />
 
             {/* 2. Top Header & Hero Area */}
-            <div className="bg-gradient-to-b from-sand/50 via-sand/20 to-white border-b border-forest/5">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 pt-20 sm:pt-24 pb-8">
-
-                    {/* Breadcrumbs Navigation */}
-                    <nav className="flex items-center space-x-2 text-xs text-charcoal/60 mb-6 overflow-x-auto">
-                        <a
-                            href={getParentNavigationUrl('')}
-                            target="_parent"
-                            className="hover:text-forest transition-colors font-medium shrink-0"
-                        >
-                            Startseite
-                        </a>
-                        <ChevronRight className="w-3.5 h-3.5 text-charcoal/40 shrink-0" />
-                        <span className="text-forest font-bold shrink-0">{tool.shortTitle}</span>
-                    </nav>
+            <div className="pt-20 sm:pt-24 px-3 sm:px-6 md:px-12 max-w-8xl mx-auto">
+                <section
+                    className="relative rounded-3xl sm:rounded-4xl p-6 sm:p-10 md:p-12 overflow-hidden  border border-forest/10"
+                    style={{
+                        backgroundImage: `linear-gradient(to bottom, rgba(16, 42, 28, 0.88) 0%, rgba(20, 50, 34, 0.78) 60%, rgba(10, 28, 18, 0.95) 100%), url('/hero-campuna.png')`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                >
 
                     {/* Header Title & Tool Selector Tabs */}
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 sm:p-4 bg-forest text-gold rounded-2xl shrink-0 shadow-md">
-                                {tool.calculatorType === 'payload' ? (
-                                    <Scale className="w-7 h-7 sm:w-8 sm:h-8" />
-                                ) : (
-                                    <Fuel className="w-7 h-7 sm:w-8 sm:h-8" />
-                                )}
-                            </div>
-                            <div>
-                                <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-gold block mb-1">
-                                    Kostenloses Camping-Tool
-                                </span>
-                                <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-forest leading-tight">
-                                    {tool.title}
-                                </h1>
-                                <p className="font-sans text-xs sm:text-sm text-charcoal/70 font-light mt-1.5 max-w-2xl leading-relaxed">
-                                    {tool.heroSubtitle}
-                                </p>
-                            </div>
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                        <div>
+                            <span className="inline-block text-[10px] font-bold uppercase tracking-[0.25em] text-gold bg-gold/15 backdrop-blur-md border border-gold/30 px-3 py-1 rounded-full mb-2">
+                                Kostenloses Camping-Tool
+                            </span>
+                            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-md">
+                                {tool.title}
+                            </h1>
+                            <p className="font-sans text-xs sm:text-sm text-white/90 font-light mt-2 max-w-2xl leading-relaxed drop-shadow-sm">
+                                {tool.heroSubtitle}
+                            </p>
                         </div>
 
-                        {/* Switcher Tabs to other tools */}
-                        <div className="flex shrink-0 self-start lg:self-auto">
-                            {TOOLS_LIST.filter(t => t.id !== tool.id).map((t) => {
-                                const IconComp = t.icon || Scale;
-                                return (
-                                    <button
-                                        key={t.id}
-                                        onClick={() => handleToolSwitch(t.slug)}
-                                        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold bg-forest text-gold hover:bg-gold hover:text-forest transition-all duration-300 shadow-md hover:shadow-lg border border-forest/10"
-                                    >
-                                        <IconComp className="w-4 h-4" />
-                                        <span>Zum {t.shortTitle}</span>
-                                    </button>
-                                );
-                            })}
+                        {/* Right side Container: Icon & Tool Switcher Tabs */}
+                        <div className="flex flex-wrap items-center gap-4 shrink-0 self-start lg:self-auto">
+                            {/* Icon display on right */}
+                            <div className="p-3.5 sm:p-4 bg-white/10 backdrop-blur-md border border-white/20 text-gold rounded-2xl shrink-0 shadow-lg flex items-center justify-center">
+                                {tool.calculatorType === 'payload' ? (
+                                    <Scale className="w-18 h-18 sm:w-20 sm:h-20 text-gold" />
+                                ) : (
+                                    <Fuel className="w-18 h-18 sm:w-20 sm:h-20 text-gold" />
+                                )}
+                            </div>
+
+
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
             {/* 3. Main Calculator Workspace */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-10">
-                <div className="bg-white rounded-3xl border border-forest/10 shadow-xl p-4 sm:p-8 md:p-10">
-                    {tool.calculatorType === 'payload' ? (
-                        <PayloadCalculator
-                            onCalculation={(data) => trackUsage('calculate', data)}
-                        />
-                    ) : (
-                        <BudgetCalculator
-                            onCalculation={(data) => trackUsage('calculate', data)}
-                        />
-                    )}
-                </div>
+                {tool.calculatorType === 'payload' ? (
+                    <PayloadCalculator
+                        onCalculation={(data) => trackUsage('calculate', data)}
+                    />
+                ) : (
+                    <BudgetCalculator
+                        onCalculation={(data) => trackUsage('calculate', data)}
+                    />
+                )}
+
+
             </div>
 
             {/* 4. Integrated Guides & FAQ Section */}
@@ -114,20 +97,19 @@ export default function ToolLandingPage({ tool }) {
                             <BookOpen className="w-3.5 h-3.5 text-gold" />
                             <span>Ratgeber & Expertenwissen</span>
                         </div>
-                        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-forest">
+                        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-forest">
                             Alles was du zu {tool.shortTitle} wissen musst
                         </h2>
                     </div>
 
                     {/* Guides Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
                         {tool.guides.map((guide, idx) => (
                             <div
                                 key={idx}
-                                className="bg-white rounded-2xl p-6 sm:p-8 border border-forest/10 shadow-sm hover:shadow-md transition-shadow"
+                                className="group bg-white rounded-2xl p-6 sm:p-8 border border-forest/10 hover:border-gold shadow-sm hover:shadow-md transition-all duration-300"
                             >
-                                <h3 className="font-display text-lg sm:text-xl font-bold text-forest mb-3 flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-gold" />
+                                <h3 className="font-display text-lg sm:text-xl font-bold text-forest group-hover:text-gold transition-colors duration-300 mb-3 flex items-center gap-2">
                                     {guide.title}
                                 </h3>
                                 {guide.text && (
@@ -156,9 +138,9 @@ export default function ToolLandingPage({ tool }) {
                                 <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                                     Häufig gestellte Fragen
                                 </span>
-                                <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-forest">
+                                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-forest">
                                     FAQ zum {tool.shortTitle}
-                                </h3>
+                                </h2>
                             </div>
 
                             <div className="space-y-4">
@@ -172,8 +154,8 @@ export default function ToolLandingPage({ tool }) {
                                             viewport={{ once: true }}
                                             transition={{ delay: idx * 0.05 }}
                                             className={`group border rounded-[24px] transition-all duration-500 overflow-hidden ${isOpen
-                                                    ? 'border-forest/20 bg-sand/10 shadow-xl shadow-forest/5'
-                                                    : 'border-forest/5 bg-white hover:border-forest/15 hover:shadow-lg'
+                                                ? 'border-forest/20 bg-sand/10 shadow-xl shadow-forest/5'
+                                                : 'border-forest/5 bg-white hover:border-forest/15 hover:shadow-lg'
                                                 }`}
                                         >
                                             <button
@@ -223,6 +205,8 @@ export default function ToolLandingPage({ tool }) {
                 </div>
             </div>
 
+            {/* 5. Related Campuna Listings (Filtered products in 1 row) */}
+            <RelatedListings tool={tool} />
 
             {/* 6. Scalable Cross-Internal Links Footer */}
             <div className="bg-sand/30 py-10 border-t border-forest/10 text-charcoal">
@@ -240,9 +224,10 @@ export default function ToolLandingPage({ tool }) {
                             {TOOLS_LIST.filter(t => t.id !== tool.id).map((t) => (
                                 <a
                                     key={t.id}
-                                    href={getParentNavigationUrl(t.slug)}
+                                    // href={getParentNavigationUrl(t.slug)}
+                                    href={`https://campuna.vercel.app/${t.slug}`}
                                     target="_parent"
-                                    className="px-4 py-2 bg-white rounded-full border border-forest/10 text-xs font-bold text-forest hover:bg-forest hover:text-gold transition-all duration-300 shadow-sm"
+                                    className="px-4 py-2 bg-white rounded-full border border-forest/10 text-xs font-bold text-forest hover:bg-forest hover:text-white transition-all duration-300 shadow-sm"
                                 >
                                     {t.shortTitle}
                                 </a>
@@ -250,7 +235,7 @@ export default function ToolLandingPage({ tool }) {
                             <a
                                 href={getParentNavigationUrl('all_listings')}
                                 target="_parent"
-                                className="px-4 py-2 bg-forest text-gold rounded-full text-xs font-bold hover:bg-gold hover:text-forest transition-all duration-300 shadow-sm"
+                                className="px-4 py-2 bg-forest text-white rounded-full text-xs font-bold hover:bg-gold hover:text-forest transition-all duration-300 shadow-sm"
                             >
                                 Alle Inserate
                             </a>

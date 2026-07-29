@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Lightbulb,
@@ -518,7 +518,9 @@ export default function DiscoverCampuna() {
                                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                                                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
                                             </span>
-                                            <span>AusgewÃ¤hlt</span>
+                                            <span>
+                                                Ausgewählt
+                                            </span>
                                         </motion.div>
                                     )}
                                 </div>
@@ -541,7 +543,7 @@ export default function DiscoverCampuna() {
                                                     color: "transparent"
                                                 }}
                                             >
-                                                AusgewÃ¤hlt
+                                                Ausgewählt
                                             </motion.div>
                                         )}
                                         <h3 className="font-display sm:text-xl text-lg font-bold text-forest leading-snug mb-2 group-hover:text-gold transition-colors duration-200 line-clamp-3">
@@ -623,7 +625,7 @@ export default function DiscoverCampuna() {
                             <button
                                 onClick={() => setActiveTool('payload')}
                                 className={`flex items-center gap-2 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'payload'
-                                    ? 'bg-forest text-gold shadow-md'
+                                    ? 'bg-forest text-white shadow-md'
                                     : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
@@ -634,7 +636,7 @@ export default function DiscoverCampuna() {
                             <button
                                 onClick={() => setActiveTool('costs')}
                                 className={`flex items-center gap-2 py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${activeTool === 'costs'
-                                    ? 'bg-forest text-gold shadow-md'
+                                    ? 'bg-forest text-white shadow-md'
                                     : 'text-charcoal/60 hover:bg-sand hover:text-forest'
                                     }`}
                             >
@@ -648,7 +650,7 @@ export default function DiscoverCampuna() {
                             <div className="mt-4">
                                 <PayloadCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('zuladungsrechner')}
                                         target="_parent"
@@ -660,10 +662,10 @@ export default function DiscoverCampuna() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="mt-4">
+                            <div className="mt-4 ">
                                 <BudgetCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('reisekostenrechner')}
                                         target="_parent"

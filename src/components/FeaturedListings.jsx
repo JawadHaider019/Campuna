@@ -158,8 +158,8 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
           onError={handleImgError}
         />
         <div className="absolute top-4 inset-x-4 flex items-center justify-between">
-          <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
-            <ShieldCheck className="w-3 h-3 text-gold" />
+          <span className="bg-forest flex items-center gap-1 justify-center text-white text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
+            <ShieldCheck className="w-3 h-3 text-white" />
             {item.listing_user_type}
           </span>
           <button
@@ -255,7 +255,10 @@ export default function FeaturedListings({
   selectedCategoryFilter,
   onClearCategoryFilter,
   searchQuery,
-  searchLocation
+  searchLocation,
+  badge = "ZUM STÖBERN",
+  title = "Camping-Angebote auf Campuna",
+  subtitle = "Entdecke wechselnde Inserate von Campern, Anbietern und Unternehmen."
 }) {
   const row1Ref = useRef(null);
   const row2Ref = useRef(null);
@@ -424,13 +427,13 @@ export default function FeaturedListings({
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div className="space-y-2">
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
-              ZUM STÖBERN
+              {badge}
             </span>
             <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-black">
-              Camping-Angebote auf Campuna
+              {title}
             </h2>
             <p className="font-sans text-sm text-charcoal/60 leading-relaxed font-light">
-              Entdecke wechselnde Inserate von Campern, Anbietern und Unternehmen.
+              {subtitle}
             </p>
           </div>
           <div className="hidden lg:block">

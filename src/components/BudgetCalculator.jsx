@@ -33,7 +33,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Inputs */}
-                <div className="lg:col-span-7 space-y-5">
+                <div className="lg:col-span-7 space-y-5 p-6">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Fuel className="w-5 h-5 text-forest" />
                         <h4 className="font-display text-base font-bold">Camping-Reisebudget-Rechner</h4>
@@ -130,6 +130,12 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                                 Inkl. Maut, Vignetten, Fähren, Parkgebühren, Verpflegung & sonstige Ausgaben
                             </span>
                         </div>
+                        <div className="mt-4 pt-4 border-t border-forest/10 text-[13px] text-charcoal/50 leading-relaxed flex items-start gap-2">
+                            <Info className="w-4 h-4 text-charcoal/40 shrink-0 mt-0.5" />
+                            <p>
+                                <strong>Hinweis:</strong> Diese Berechnung stellt eine unverbindliche Schätzung dar. Die tatsächlichen Reisekosten können je nach Fahrweise, aktuellen Kraftstoffpreisen und individuellen Nebenkosten abweichen.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -187,72 +193,12 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                             </div>
                         </div>
 
-                        {/* Disclaimer */}
-                        <div className="mt-4 pt-3 border-t border-forest/10 text-[11px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                            <Info className="w-3.5 h-3.5 text-charcoal/40 shrink-0 mt-0.5" />
-                            <p>
-                                <strong>Hinweis:</strong> Diese Berechnung stellt eine unverbindliche Schätzung dar. Die tatsächlichen Reisekosten können je nach Fahrweise, aktuellen Kraftstoffpreisen und individuellen Nebenkosten abweichen.
-                            </p>
-                        </div>
+
+
                     </div>
                 </div>
             </div>
 
-            {/* FAQ Section – shown only when not in compact mode */}
-            {!compact && (
-                <div className="mt-10 pt-8 border-t border-forest/10">
-                    <div className="mb-6">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold block mb-1">
-                            Ratgeber & Ausgabenplanung
-                        </span>
-                        <h4 className="font-display text-xl font-bold text-forest">
-                            Wissenswertes zu deinen Camping-Reisekosten
-                        </h4>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Was kostet ein Campingurlaub typischerweise?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Ein Campingurlaub kostet im Durchschnitt zwischen 40 € und 120 € pro Tag für zwei Personen. Die Gesamtkosten setzen sich aus Sprit, Stellplatzgebühren, Maut und Verpflegung zusammen.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Wie berechnet man die Kraftstoffkosten richtig?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Formel: (Gesamtkilometer / 100) × Durchschnittsverbrauch × Spritpreis. Rechnen Sie bei voller Beladung, Dachboxen oder gebirgigen Strecken stets etwa 10–15% Mehrverbrauch hinzu.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Welche Reisekosten werden oft vergessen?
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Häufig übersehen werden Mautgebühren, länderspezifische Vignetten, Fährkosten, Parkgebühren, Strom- und Wasserpauschalen auf Campingplätzen sowie Kurtaxen und Gasverbrauch.
-                            </p>
-                        </div>
-
-                        <div className="bg-sand/20 rounded-2xl p-4 border border-forest/10 hover:border-forest/20 transition-all">
-                            <h5 className="font-display text-sm font-bold text-forest mb-2 flex items-center gap-2">
-                                <HelpCircle className="w-4 h-4 text-gold shrink-0" />
-                                Tipps zum Geldsparen beim Camping
-                            </h5>
-                            <p className="text-xs text-charcoal/70 leading-relaxed font-light">
-                                Nutzen Sie Rabattkarten (z.B. ACSI), reisen Sie in der Nebensaison, buchen Sie Vignetten vorab digital, tanken Sie abseits der Autobahn und kochen Sie öfter selbst im Wohnmobil.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

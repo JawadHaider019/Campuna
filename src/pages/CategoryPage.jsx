@@ -160,8 +160,8 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
 
                 {/* Top badge row */}
                 <div className="absolute top-2 sm:top-4 inset-x-2 sm:inset-x-4 flex items-center justify-between">
-                    <span className="bg-forest flex items-center gap-0.5 sm:gap-1 justify-center text-gold text-[7px] sm:text-[8px] font-semibold uppercase tracking-widest px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg backdrop-blur-md">
-                        <ShieldCheck className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-gold" />
+                    <span className="bg-forest flex items-center gap-0.5 sm:gap-1 justify-center text-white text-[7px] sm:text-[8px] font-semibold uppercase tracking-widest px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg backdrop-blur-md">
+                        <ShieldCheck className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-white" />
                         {item.listing_user_type || item.seller?.type || 'Privat'}
                     </span>
 
