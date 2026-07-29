@@ -650,7 +650,7 @@ export default function DiscoverCampuna() {
                                 {/* Link to dedicated page */}
                                 <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
                                     <a
-                                        href={getParentNavigationUrl('camping-helfer/zuladungsrechner')}
+                                        href={getParentNavigationUrl('zuladungsrechner')}
                                         target="_parent"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >
@@ -665,7 +665,7 @@ export default function DiscoverCampuna() {
                                 {/* Link to dedicated page */}
                                 <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
                                     <a
-                                        href={getParentNavigationUrl('camping-helfer/reisekostenrechner')}
+                                        href={getParentNavigationUrl('reisekostenrechner')}
                                         target="_parent"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >

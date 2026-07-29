@@ -17,7 +17,7 @@ export default function ToolLandingPage({ tool }) {
     };
 
     const handleToolSwitch = (targetSlug) => {
-        navigateTo(`camping-helfer/${targetSlug}`);
+        navigateTo(targetSlug);
     };
 
     return (
@@ -42,14 +42,6 @@ export default function ToolLandingPage({ tool }) {
                             className="hover:text-forest transition-colors font-medium shrink-0"
                         >
                             Startseite
-                        </a>
-                        <ChevronRight className="w-3.5 h-3.5 text-charcoal/40 shrink-0" />
-                        <a
-                            href={getParentNavigationUrl('camping-helfer')}
-                            target="_parent"
-                            className="hover:text-forest transition-colors font-medium shrink-0"
-                        >
-                            Camping-Helfer
                         </a>
                         <ChevronRight className="w-3.5 h-3.5 text-charcoal/40 shrink-0" />
                         <span className="text-forest font-bold shrink-0">{tool.shortTitle}</span>
@@ -248,7 +240,7 @@ export default function ToolLandingPage({ tool }) {
                             {TOOLS_LIST.filter(t => t.id !== tool.id).map((t) => (
                                 <a
                                     key={t.id}
-                                    href={getParentNavigationUrl(`camping-helfer/${t.slug}`)}
+                                    href={getParentNavigationUrl(t.slug)}
                                     target="_parent"
                                     className="px-4 py-2 bg-white rounded-full border border-forest/10 text-xs font-bold text-forest hover:bg-forest hover:text-gold transition-all duration-300 shadow-sm"
                                 >

@@ -4,7 +4,7 @@ export const TOOLS_DATA = {
     zuladungsrechner: {
         id: 'zuladungsrechner',
         slug: 'zuladungsrechner',
-        canonicalPath: 'camping-helfer/zuladungsrechner',
+        canonicalPath: 'zuladungsrechner',
         title: 'Zuladungsrechner für Wohnmobil & Wohnwagen',
         shortTitle: 'Zuladungsrechner',
         metaTitle: 'Zuladungsrechner für Wohnmobil & Wohnwagen | Campuna',
@@ -23,7 +23,7 @@ export const TOOLS_DATA = {
                 "@type": "WebApplication",
                 "name": "Zuladungsrechner für Wohnmobil & Wohnwagen",
                 "description": "Berechne die verbleibende Zuladung deines Wohnmobils oder Wohnwagens. Vermeide Überladung, Bußgelder und gefährliche Situationen im Camping-Urlaub.",
-                "url": "https://campuna.de/camping-helfer/zuladungsrechner",
+                "url": "https://campuna.de/zuladungsrechner",
                 "applicationCategory": "UtilityApplication",
                 "operatingSystem": "Web",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -72,14 +72,8 @@ export const TOOLS_DATA = {
                     {
                         "@type": "ListItem",
                         "position": 2,
-                        "name": "Camping-Helfer Tools",
-                        "item": "https://campuna.de/camping-helfer"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 3,
                         "name": "Zuladungsrechner",
-                        "item": "https://campuna.de/camping-helfer/zuladungsrechner"
+                        "item": "https://campuna.de/zuladungsrechner"
                     }
                 ]
             }
@@ -126,7 +120,7 @@ export const TOOLS_DATA = {
     reisekostenrechner: {
         id: 'reisekostenrechner',
         slug: 'reisekostenrechner',
-        canonicalPath: 'camping-helfer/reisekostenrechner',
+        canonicalPath: 'reisekostenrechner',
         title: 'Camping Reisekosten-Rechner',
         shortTitle: 'Reisekosten-Rechner',
         metaTitle: 'Camping Reisekosten-Rechner – Budget für deine Campingreise | Campuna',
@@ -145,7 +139,7 @@ export const TOOLS_DATA = {
                 "@type": "WebApplication",
                 "name": "Camping Reisekosten-Rechner",
                 "description": "Berechne die Gesamtkosten deiner Campingreise: Sprit, Stellplatzgebühren, Maut, Fähren und Nebenkosten auf einen Blick.",
-                "url": "https://campuna.de/camping-helfer/reisekostenrechner",
+                "url": "https://campuna.de/reisekostenrechner",
                 "applicationCategory": "UtilityApplication",
                 "operatingSystem": "Web",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -194,14 +188,8 @@ export const TOOLS_DATA = {
                     {
                         "@type": "ListItem",
                         "position": 2,
-                        "name": "Camping-Helfer Tools",
-                        "item": "https://campuna.de/camping-helfer"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 3,
                         "name": "Reisekosten-Rechner",
-                        "item": "https://campuna.de/camping-helfer/reisekostenrechner"
+                        "item": "https://campuna.de/reisekostenrechner"
                     }
                 ]
             }
