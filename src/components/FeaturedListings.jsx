@@ -317,33 +317,33 @@ export default function FeaturedListings({
       return { firstRow: [], secondRow: [] };
     }
 
-    // Helper to get exactly 25 items (padding only if total unique items < 25)
-    const get25Items = (arr) => {
+    // Helper to get exactly 12 items (padding only if total unique items < 12)
+    const get12Items = (arr) => {
       if (!arr || arr.length === 0) return [];
       const result = [];
-      while (result.length < 25) {
-        for (let i = 0; i < arr.length && result.length < 25; i++) {
+      while (result.length < 12) {
+        for (let i = 0; i < arr.length && result.length < 12; i++) {
           result.push(arr[i]);
         }
       }
       return result;
     };
 
-    if (filteredListings.length >= 50) {
-      // 50+ listings: 25 unique items in row 1, 25 distinct unique items in row 2
-      const rotated = rotateListings(filteredListings, 50);
+    if (filteredListings.length >= 24) {
+      // Pick 24 random items total without overlap from previous session (12 in row 1, 12 in row 2)
+      const rotated = rotateListings(filteredListings, 24);
       return {
-        firstRow: rotated.slice(0, 25),
-        secondRow: rotated.slice(25, 50)
+        firstRow: rotated.slice(0, 12),
+        secondRow: rotated.slice(12, 24)
       };
     } else {
-      // Less than 50 listings: each row gets up to 25 unique items from separate random shuffles
+      // Less than 24 listings available: split between rows with 12 items per row
       const rotated1 = rotateListings(filteredListings, filteredListings.length);
       const rotated2 = rotateListings([...filteredListings].reverse(), filteredListings.length);
 
       return {
-        firstRow: get25Items(rotated1),
-        secondRow: get25Items(rotated2)
+        firstRow: get12Items(rotated1),
+        secondRow: get12Items(rotated2)
       };
     }
   }, [filteredListings]);
@@ -450,8 +450,8 @@ export default function FeaturedListings({
             </p>
           </div>
           <div className="hidden lg:block">
-            <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
-              <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Angebote</span>
+            <button onClick={() => navigateTo('/camping-helfer')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+              <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Camping-Helfer Tools</span>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -478,10 +478,10 @@ export default function FeaturedListings({
               Keine Inserate entsprechen Ihren Filterkriterien.
             </p>
             <button
-              onClick={onClearCategoryFilter}
+              onClick={() => navigateTo('/camping-helfer')}
               className="bg-forest text-sand text-xs font-semibold uppercase tracking-wider py-3 px-6 rounded-full hover:bg-gold hover:text-forest transition-colors duration-300"
             >
-              Alle Angebote anzeigen
+              Camping-Helfer Tools
             </button>
           </div>
         ) : (
@@ -546,8 +546,8 @@ export default function FeaturedListings({
             )}
 
             <div className="mt-7 flex justify-center lg:hidden">
-              <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
-                <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Angebote</span>
+              <button onClick={() => navigateTo('/camping-helfer')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+                <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Camping-Helfer Tools</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

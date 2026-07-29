@@ -143,11 +143,9 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                     });
 
                     if (active) {
-                        // Dynamically rotate all listings to ensure fresh, non-repeating ads on every refresh
-                        const rotated = rotateListings(mapped, mapped.length);
-                        setListingsList(rotated);
-                        if (rotated.length >= 2) {
-                            setWishlistedIds([rotated[0].id, rotated[1].id]);
+                        setListingsList(mapped);
+                        if (mapped.length >= 2) {
+                            setWishlistedIds([mapped[0].id, mapped[1].id]);
                         }
                     }
                 }

@@ -7,10 +7,13 @@
  * @param {number} targetCount - Number of listings to select for display (default: 24)
  * @returns {Array} Rotated array of selected listings
  */
-export function rotateListings(listings, targetCount = listings?.length || 50) {
+export function rotateListings(listings, targetCount = 24) {
     if (!Array.isArray(listings) || listings.length === 0) return [];
-    if (listings.length <= targetCount) {
-        // Simple Fisher-Yates shuffle if total count is small
+
+    const count = targetCount || 24;
+
+    if (listings.length <= count) {
+        // Simple Fisher-Yates shuffle if total count is <= targetCount
         const copy = [...listings];
         for (let i = copy.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -38,34 +41,27 @@ export function rotateListings(listings, targetCount = listings?.length || 50) {
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
 
-    // Separate into unseen and seen items
-    const seenSet = new Set(seenIds);
+    // Separate into unseen and seen items based on seenIds
+    const seenSet = new Set(seenIds.map(String));
     const unseen = shuffled.filter(item => item && item.id && !seenSet.has(String(item.id)));
     const seen = shuffled.filter(item => item && item.id && seenSet.has(String(item.id)));
 
     let selected = [];
-    let updatedSeenIds = [...seenIds];
 
-    if (unseen.length >= targetCount) {
-        // Plenty of unseen items available – select targetCount from unseen
-        selected = unseen.slice(0, targetCount);
-        selected.forEach(item => updatedSeenIds.push(String(item.id)));
+    if (unseen.length >= count) {
+        // Plenty of unseen items available – select count from unseen
+        selected = unseen.slice(0, count);
     } else {
-        // Not enough unseen items – take all unseen, fill rest from seen, then reset session tracker
+        // Not enough unseen items – take all unseen, fill rest from seen
         selected = [...unseen];
-        const remainingNeeded = targetCount - selected.length;
+        const remainingNeeded = count - selected.length;
         selected = selected.concat(seen.slice(0, remainingNeeded));
-        // Reset seen IDs to just the currently selected batch for next cycles
-        updatedSeenIds = selected.map(item => String(item.id));
     }
 
-    // Save updated seen IDs to sessionStorage
+    // Save current batch's IDs to sessionStorage so the NEXT view excludes these exact items
+    const currentBatchIds = selected.map(item => String(item.id));
     try {
-        // Keep array size reasonable (max 200 IDs)
-        if (updatedSeenIds.length > 200) {
-            updatedSeenIds = updatedSeenIds.slice(-200);
-        }
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(updatedSeenIds));
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentBatchIds));
     } catch (e) {
         console.warn('[Rotation] Failed to save seen IDs to sessionStorage:', e);
     }
