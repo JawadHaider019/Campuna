@@ -96,7 +96,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto bg-gradient-to-r from-gold to-beige text-forest hover:brightness-110 font-sans font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all duration-300 text-[12px] tracking-wider"
             >
-              Angebote entdecken
+              Camping-Helfer
             </motion.button>
             <motion.button
               onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
