@@ -1,26 +1,30 @@
 /**
  * Utility for session-aware dynamic listing rotation.
- * Ensures fresh ads/listings are shown on every page load/refresh by prioritizing unseen items
+ * Ensures fresh ads/listings are shown on every pick/refresh by prioritizing unseen items
  * from sessionStorage before looping back through seen items.
+ * Guaranteed to NEVER repeat the same product in the same pick.
  *
  * @param {Array} listings - Full array of mapped listings from API
- * @param {number} targetCount - Number of listings to select for display (default: 24)
- * @returns {Array} Rotated array of selected listings
+ * @param {number} targetCount - Maximum number of listings to select for display (default: 24)
+ * @returns {Array} Rotated array of unique selected listings
  */
 export function rotateListings(listings, targetCount = 24) {
     if (!Array.isArray(listings) || listings.length === 0) return [];
 
-    const count = targetCount || 24;
-
-    if (listings.length <= count) {
-        // Simple Fisher-Yates shuffle if total count is <= targetCount
-        const copy = [...listings];
-        for (let i = copy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [copy[i], copy[j]] = [copy[j], copy[i]];
+    // Deduplicate input array by item ID to guarantee no duplicates enter the pool
+    const uniqueMap = new Map();
+    listings.forEach(item => {
+        if (!item) return;
+        const itemId = item.id || item._id;
+        if (itemId && !uniqueMap.has(String(itemId))) {
+            uniqueMap.set(String(itemId), item);
         }
-        return copy;
-    }
+    });
+
+    const uniqueListings = Array.from(uniqueMap.values());
+    if (uniqueListings.length === 0) return [];
+
+    const count = Math.min(targetCount || 24, uniqueListings.length);
 
     // Retrieve seen IDs from sessionStorage
     const SESSION_KEY = 'campuna_seen_ad_ids';
@@ -34,8 +38,8 @@ export function rotateListings(listings, targetCount = 24) {
         console.warn('[Rotation] sessionStorage unavailable:', e);
     }
 
-    // Fisher-Yates shuffle full listings first for randomness
-    const shuffled = [...listings];
+    // Fisher-Yates shuffle unique listings first for maximum randomness
+    const shuffled = [...uniqueListings];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -43,8 +47,8 @@ export function rotateListings(listings, targetCount = 24) {
 
     // Separate into unseen and seen items based on seenIds
     const seenSet = new Set(seenIds.map(String));
-    const unseen = shuffled.filter(item => item && item.id && !seenSet.has(String(item.id)));
-    const seen = shuffled.filter(item => item && item.id && seenSet.has(String(item.id)));
+    const unseen = shuffled.filter(item => !seenSet.has(String(item.id || item._id)));
+    const seen = shuffled.filter(item => seenSet.has(String(item.id || item._id)));
 
     let selected = [];
 
@@ -58,13 +62,25 @@ export function rotateListings(listings, targetCount = 24) {
         selected = selected.concat(seen.slice(0, remainingNeeded));
     }
 
-    // Save current batch's IDs to sessionStorage so the NEXT view excludes these exact items
-    const currentBatchIds = selected.map(item => String(item.id));
+    // Double-check strict uniqueness in selected pick
+    const pickMap = new Map();
+    const finalSelected = [];
+    selected.forEach(item => {
+        const itemId = String(item.id || item._id);
+        if (!pickMap.has(itemId)) {
+            pickMap.set(itemId, true);
+            finalSelected.push(item);
+        }
+    });
+
+    // Save current batch's IDs to sessionStorage so the NEXT view prioritizes unseen items
+    const currentBatchIds = finalSelected.map(item => String(item.id || item._id));
     try {
         sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentBatchIds));
     } catch (e) {
         console.warn('[Rotation] Failed to save seen IDs to sessionStorage:', e);
     }
 
-    return selected;
+    return finalSelected;
 }
+

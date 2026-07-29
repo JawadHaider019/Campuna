@@ -317,36 +317,20 @@ export default function FeaturedListings({
       return { firstRow: [], secondRow: [] };
     }
 
-    // Helper to get exactly 12 items (padding only if total unique items < 12)
-    const get12Items = (arr) => {
-      if (!arr || arr.length === 0) return [];
-      const result = [];
-      while (result.length < 12) {
-        for (let i = 0; i < arr.length && result.length < 12; i++) {
-          result.push(arr[i]);
-        }
-      }
-      return result;
-    };
-
-    if (filteredListings.length >= 24) {
-      // Pick 24 random items total without overlap from previous session (12 in row 1, 12 in row 2)
-      const rotated = rotateListings(filteredListings, 24);
-      return {
-        firstRow: rotated.slice(0, 12),
-        secondRow: rotated.slice(12, 24)
-      };
-    } else {
-      // Less than 24 listings available: split between rows with 12 items per row
-      const rotated1 = rotateListings(filteredListings, filteredListings.length);
-      const rotated2 = rotateListings([...filteredListings].reverse(), filteredListings.length);
-
-      return {
-        firstRow: get12Items(rotated1),
-        secondRow: get12Items(rotated2)
-      };
+    // Get up to 24 unique random products for this pick
+    const rotated = rotateListings(filteredListings, 24);
+    if (!rotated || rotated.length === 0) {
+      return { firstRow: [], secondRow: [] };
     }
+
+    // Divide unique items between row 1 and row 2 with zero overlap
+    const half = Math.ceil(rotated.length / 2);
+    return {
+      firstRow: rotated.slice(0, half),
+      secondRow: rotated.slice(half)
+    };
   }, [filteredListings]);
+
 
   const dir1Ref = useRef(-1); // -1 = left, 1 = right
   const dir2Ref = useRef(1);  // 1 = right, -1 = left
