@@ -342,7 +342,7 @@ export default function RelatedListings({ tool }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
                 {/* Header Row */}
                 <div className="flex items-end justify-between mb-8">
-                    <div>
+                    <div className="w-full sm:w-auto text-center sm:text-left">
                         <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block mb-1">
                             CAMPUNA MARKTPLATZ
                         </span>

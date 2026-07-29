@@ -59,7 +59,7 @@ export default function ToolLandingPage({ tool }) {
                         {/* Right side Container: Icon & Tool Switcher Tabs */}
                         <div className="flex flex-wrap items-center gap-4 shrink-0 self-start lg:self-auto">
                             {/* Icon display on right */}
-                            <div className="p-3.5 sm:p-4 bg-white/10 backdrop-blur-md border border-white/20 text-gold rounded-2xl shrink-0 shadow-lg flex items-center justify-center">
+                            <div className="hidden sm:flex p-3.5 sm:p-4 bg-white/10 backdrop-blur-md border border-white/20 text-gold rounded-2xl shrink-0 shadow-lg items-center justify-center">
                                 {tool.calculatorType === 'payload' ? (
                                     <Scale className="w-18 h-18 sm:w-20 sm:h-20 text-gold" />
                                 ) : (
