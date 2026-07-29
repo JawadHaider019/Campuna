@@ -154,6 +154,9 @@ const App = () => {
         <Route path="/camping-helfer" element={<CampingHelferPage />} />
         <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
         <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
+        <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
+        <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+        <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
       </Routes>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}

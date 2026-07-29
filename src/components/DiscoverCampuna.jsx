@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Lightbulb,
@@ -648,13 +648,13 @@ export default function DiscoverCampuna() {
                             <div className="mt-4">
                                 <PayloadCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="hidden mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
                                     <a
                                         href={getParentNavigationUrl('camping-helfer/zuladungsrechner')}
                                         target="_parent"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >
-                                        <span>Zur Vollversion mit Ratgeber & FAQ</span>
+                                        <span>Zur Vollversion</span>
                                         <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-gold" />
                                     </a>
                                 </div>
@@ -663,13 +663,13 @@ export default function DiscoverCampuna() {
                             <div className="mt-4">
                                 <BudgetCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="hidden mt-6 pt-4 border-t border-forest/10 flex justify-end">
+                                <div className="mt-6 pt-4 border-t border-forest/10 flex justify-end">
                                     <a
                                         href={getParentNavigationUrl('camping-helfer/reisekostenrechner')}
                                         target="_parent"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >
-                                        <span>Zur Vollversion mit Ratgeber & FAQ</span>
+                                        <span>Zur Vollversion</span>
                                         <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-gold" />
                                     </a>
                                 </div>

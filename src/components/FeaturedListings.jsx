@@ -434,8 +434,8 @@ export default function FeaturedListings({
             </p>
           </div>
           <div className="hidden lg:block">
-            <button onClick={() => navigateTo('/camping-helfer')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
-              <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Camping-Helfer Tools</span>
+            <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+              <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Inserate</span>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -462,10 +462,10 @@ export default function FeaturedListings({
               Keine Inserate entsprechen Ihren Filterkriterien.
             </p>
             <button
-              onClick={() => navigateTo('/camping-helfer')}
+              onClick={() => navigateTo('/all_listings')}
               className="bg-forest text-sand text-xs font-semibold uppercase tracking-wider py-3 px-6 rounded-full hover:bg-gold hover:text-forest transition-colors duration-300"
             >
-              Camping-Helfer Tools
+              Alle Inserate ansehen
             </button>
           </div>
         ) : (
@@ -530,8 +530,8 @@ export default function FeaturedListings({
             )}
 
             <div className="mt-7 flex justify-center lg:hidden">
-              <button onClick={() => navigateTo('/camping-helfer')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
-                <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Camping-Helfer Tools</span>
+              <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
+                <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Inserate</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
-import CampingHelferPage from './CampingHelferPage';
+import ToolLandingPage from '../components/ToolLandingPage';
+import { TOOLS_DATA } from '../data/toolsData';
 
 export default function ReisekostenrechnerPage() {
-    return <CampingHelferPage initialTool="costs" />;
+    return <ToolLandingPage tool={TOOLS_DATA.reisekostenrechner} />;
 }
