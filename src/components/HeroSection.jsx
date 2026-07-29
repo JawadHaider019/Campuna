@@ -87,7 +87,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           >
             <motion.button
               onClick={() => {
-                const element = document.getElementById('exclusive-offers');
+                const element = document.getElementById('tool');
                 if (element) {
                   element.scrollIntoView({ behavior: 'smooth' });
                 }
