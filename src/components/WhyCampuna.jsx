@@ -63,7 +63,7 @@ export default function WhyCampuna() {
                 </div>
 
                 {/* Text Content */}
-                <h3 className="font-display text-2xl font-bold text-black mb-2 tracking-tight group-hover:text-gold transition-colors">
+                <h3 className="font-display  text-xl sm:text-2xl font-bold text-black mb-2 tracking-tight group-hover:text-gold transition-colors">
                   {item.title}
                 </h3>
                 <p className="font-sans text-sm text-charcoal/60 leading-relaxed font-light">

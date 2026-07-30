@@ -54,7 +54,7 @@ export default function FAQSection() {
                       }`}>
                       <HelpCircle className="w-4 h-4" />
                     </div>
-                    <span className={`font-display text-md md:text-lg font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
+                    <span className={`font-display text-sm md:text-lg font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
                       }`}>
                       {faq.question}
                     </span>
