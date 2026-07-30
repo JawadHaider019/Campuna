@@ -266,7 +266,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                     <div className="hidden md:block absolute inset-y-0 right-0 w-24 lg:w-32 bg-gradient-to-l from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
 
                     {isLoading ? (
-                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 pb-5">
+                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 py-4 sm:py-6">
                             {[1, 2, 3].map((n) => (
                                 <div
                                     key={n}
@@ -291,7 +291,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                                 onDragEnd={() => { isDraggingRef.current = false; }}
                                 onMouseEnter={() => { isHoveredRef.current = true; }}
                                 onMouseLeave={() => { isHoveredRef.current = false; }}
-                                className="flex gap-4 w-max px-4 sm:px-16 md:px-32 pb-3"
+                                className="flex gap-4 w-max px-4 sm:px-16 md:px-32 py-4 sm:py-6"
                             >
                                 {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (
                                     <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />

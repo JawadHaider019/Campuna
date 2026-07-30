@@ -302,7 +302,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                         </div>
 
                         {/* Percentage & Remaining Payload Usage Banner */}
-                        <div className="mt-4 p-3 bg-white/80 rounded-2xl border border-forest/10 text-center">
+                        <div className="mt-4 p-3 bg-white/80 rounded-2xl border border-forest/10 ">
                             <p className="text-xs text-charcoal/80 font-medium leading-relaxed">
                                 {remainingPayload >= 0 ? (
                                     <>
