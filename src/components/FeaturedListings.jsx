@@ -317,8 +317,8 @@ export default function FeaturedListings({
     if (!filteredListings || filteredListings.length === 0) {
       return [];
     }
-    // Take up to 10 unique random products for display
-    return rotateListings(filteredListings, 10);
+    // Take up to 15 unique random products for display
+    return rotateListings(filteredListings, 15);
   }, [filteredListings]);
 
   const dirRef = useRef(1); // 1 = right (left to right), -1 = left
@@ -369,7 +369,7 @@ export default function FeaturedListings({
 
       // Ping-pong scrolling for single row
       if (displayListings.length > 0 && !isHoveredRef.current && !isDraggingRef.current && rowConstraints > 0) {
-        let currentX = x.get() + dirRef.current * 40 * delta;
+        let currentX = x.get() + dirRef.current * 20 * delta;
         if (dirRef.current === -1 && currentX <= -rowConstraints) {
           currentX = -rowConstraints;
           dirRef.current = 1;
