@@ -694,7 +694,7 @@ export default function DiscoverCampuna() {
                         <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                             Entdecke Campuna
                         </span>
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-forest">
+                        <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest">
                             Camping-Wissen & Nützliche Tools
                         </h2>
                         <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-xl font-light">

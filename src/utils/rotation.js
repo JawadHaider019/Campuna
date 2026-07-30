@@ -8,7 +8,7 @@
  * @param {number} targetCount - Maximum number of listings to select for display (default: 24)
  * @returns {Array} Rotated array of unique selected listings
  */
-export function rotateListings(listings, targetCount = 24) {
+export function rotateListings(listings, targetCount = 10) {
     if (!Array.isArray(listings) || listings.length === 0) return [];
 
     // Deduplicate input array by item ID to guarantee no duplicates enter the pool
@@ -24,7 +24,7 @@ export function rotateListings(listings, targetCount = 24) {
     const uniqueListings = Array.from(uniqueMap.values());
     if (uniqueListings.length === 0) return [];
 
-    const count = Math.min(targetCount || 24, uniqueListings.length);
+    const count = Math.min(targetCount || 10, uniqueListings.length);
 
     // Retrieve seen IDs from sessionStorage
     const SESSION_KEY = 'campuna_seen_ad_ids';
@@ -73,10 +73,18 @@ export function rotateListings(listings, targetCount = 24) {
         }
     });
 
-    // Save current batch's IDs to sessionStorage so the NEXT view prioritizes unseen items
-    const currentBatchIds = finalSelected.map(item => String(item.id || item._id));
+    // Save current batch's IDs to sessionStorage with rolling window
+    const newBatchIds = finalSelected.map(item => String(item.id || item._id));
+    let updatedSeenIds = [...seenIds.filter(id => !newBatchIds.includes(id)), ...newBatchIds];
+
+    // Cap history size so products eventually become unseen again after cycling
+    const maxSeenHistory = Math.max(count, uniqueListings.length - count);
+    if (updatedSeenIds.length > maxSeenHistory) {
+        updatedSeenIds = updatedSeenIds.slice(updatedSeenIds.length - maxSeenHistory);
+    }
+
     try {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentBatchIds));
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(updatedSeenIds));
     } catch (e) {
         console.warn('[Rotation] Failed to save seen IDs to sessionStorage:', e);
     }

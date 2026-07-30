@@ -146,7 +146,7 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
   return (
     <div
       onClick={() => onCardClick(item)}
-      className="listing-card group relative flex-shrink-0 w-[300px] md:w-[320px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 select-none cursor-pointer"
+      className="listing-card group relative flex-shrink-0 w-[300px] md:w-[320px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-lg transition-all duration-300 select-none cursor-pointer"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
         <img
@@ -260,10 +260,8 @@ export default function FeaturedListings({
   title = "Camping-Angebote auf Campuna",
   subtitle = "Entdecke wechselnde Inserate von Campern, Anbietern und Unternehmen."
 }) {
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
-  const [row1Constraints, setRow1Constraints] = useState(0);
-  const [row2Constraints, setRow2Constraints] = useState(0);
+  const rowRef = useRef(null);
+  const [rowConstraints, setRowConstraints] = useState(0);
   const [apiListings, setApiListings] = useState([]);
   const [internalLoading, setInternalLoading] = useState(false);
 
@@ -315,46 +313,27 @@ export default function FeaturedListings({
     });
   }, [activeListings, selectedCategoryFilter, searchQuery, searchLocation]);
 
-  const { firstRow, secondRow } = useMemo(() => {
+  const displayListings = useMemo(() => {
     if (!filteredListings || filteredListings.length === 0) {
-      return { firstRow: [], secondRow: [] };
+      return [];
     }
-
-    // Get up to 24 unique random products for this pick
-    const rotated = rotateListings(filteredListings, 24);
-    if (!rotated || rotated.length === 0) {
-      return { firstRow: [], secondRow: [] };
-    }
-
-    // Divide unique items between row 1 and row 2 with zero overlap
-    const half = Math.ceil(rotated.length / 2);
-    return {
-      firstRow: rotated.slice(0, half),
-      secondRow: rotated.slice(half)
-    };
+    // Take up to 10 unique random products for display
+    return rotateListings(filteredListings, 10);
   }, [filteredListings]);
 
-
-  const dir1Ref = useRef(-1); // -1 = left, 1 = right
-  const dir2Ref = useRef(1);  // 1 = right, -1 = left
-
-  const isHovered1Ref = useRef(false);
-  const isHovered2Ref = useRef(false);
-  const isDragging1Ref = useRef(false);
-  const isDragging2Ref = useRef(false);
+  const dirRef = useRef(-1); // -1 = left, 1 = right
+  const isHoveredRef = useRef(false);
+  const isDraggingRef = useRef(false);
   const cardWidthRef = useRef(350);
 
   useEffect(() => {
     const measure = () => {
-      if (row1Ref.current) {
-        const card = row1Ref.current.querySelector('.listing-card');
+      if (rowRef.current) {
+        const card = rowRef.current.querySelector('.listing-card');
         if (card) {
           cardWidthRef.current = card.getBoundingClientRect().width;
         }
-        setRow1Constraints(row1Ref.current.scrollWidth - row1Ref.current.offsetWidth);
-      }
-      if (row2Ref.current) {
-        setRow2Constraints(row2Ref.current.scrollWidth - row2Ref.current.offsetWidth);
+        setRowConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
       }
     };
     const timer = setTimeout(measure, 100);
@@ -363,20 +342,18 @@ export default function FeaturedListings({
       clearTimeout(timer);
       window.removeEventListener('resize', measure);
     };
-  }, [firstRow, secondRow]);
+  }, [displayListings]);
 
   const handleCardClick = useCallback((item) => {
     const slug = buildListingSlug(item.title, item.id);
     navigateTo(`/listing_details/${slug}`);
   }, []);
 
-  const x1 = useMotionValue(0);
-  const x2 = useMotionValue(0);
+  const x = useMotionValue(0);
 
   useEffect(() => {
-    x1.set(0);
-    x2.set(-row2Constraints);
-  }, [firstRow, secondRow, row2Constraints]);
+    x.set(0);
+  }, [displayListings]);
 
   useEffect(() => {
     let animationFrameId;
@@ -385,46 +362,31 @@ export default function FeaturedListings({
       const delta = Math.min((time - lastTime) / 1000, 0.1);
       lastTime = time;
 
-      // Row 1: ping-pong scrolling
-      if (firstRow.length > 0 && !isHovered1Ref.current && !isDragging1Ref.current && row1Constraints > 0) {
-        let currentX = x1.get() + dir1Ref.current * 40 * delta;
-        if (dir1Ref.current === -1 && currentX <= -row1Constraints) {
-          currentX = -row1Constraints;
-          dir1Ref.current = 1;
-        } else if (dir1Ref.current === 1 && currentX >= 0) {
+      // Ping-pong scrolling for single row
+      if (displayListings.length > 0 && !isHoveredRef.current && !isDraggingRef.current && rowConstraints > 0) {
+        let currentX = x.get() + dirRef.current * 40 * delta;
+        if (dirRef.current === -1 && currentX <= -rowConstraints) {
+          currentX = -rowConstraints;
+          dirRef.current = 1;
+        } else if (dirRef.current === 1 && currentX >= 0) {
           currentX = 0;
-          dir1Ref.current = -1;
+          dirRef.current = -1;
         }
-        x1.set(currentX);
-      } else if (row1Constraints <= 0) {
-        x1.set(0);
-      }
-
-      // Row 2: ping-pong scrolling
-      if (secondRow.length > 0 && !isHovered2Ref.current && !isDragging2Ref.current && row2Constraints > 0) {
-        let currentX = x2.get() + dir2Ref.current * 38 * delta;
-        if (dir2Ref.current === -1 && currentX <= -row2Constraints) {
-          currentX = -row2Constraints;
-          dir2Ref.current = 1;
-        } else if (dir2Ref.current === 1 && currentX >= 0) {
-          currentX = 0;
-          dir2Ref.current = -1;
-        }
-        x2.set(currentX);
-      } else if (row2Constraints <= 0) {
-        x2.set(0);
+        x.set(currentX);
+      } else if (rowConstraints <= 0) {
+        x.set(0);
       }
 
       animationFrameId = requestAnimationFrame(loop);
     };
     animationFrameId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [firstRow, secondRow, row1Constraints, row2Constraints]);
+  }, [displayListings, rowConstraints]);
 
   return (
     <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-24 overflow-hidden">
       <div className="max-w-8xl mx-auto px-4 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-2">
           <div className="space-y-2">
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
               {badge}
@@ -476,19 +438,19 @@ export default function FeaturedListings({
             <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-            {/* Row 1: Draggable Left to Right */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row1Ref}>
+            {/* Single Row: Draggable & Auto-scrolling */}
+            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={rowRef}>
               <motion.div
                 drag="x"
-                dragConstraints={{ right: 0, left: -row1Constraints }}
-                style={{ x: x1 }}
-                onDragStart={() => { isDragging1Ref.current = true; }}
-                onDragEnd={() => { isDragging1Ref.current = false; }}
-                onMouseEnter={() => { isHovered1Ref.current = true; }}
-                onMouseLeave={() => { isHovered1Ref.current = false; }}
-                className="flex gap-5 w-max "
+                dragConstraints={{ right: 0, left: -rowConstraints }}
+                style={{ x }}
+                onDragStart={() => { isDraggingRef.current = true; }}
+                onDragEnd={() => { isDraggingRef.current = false; }}
+                onMouseEnter={() => { isHoveredRef.current = true; }}
+                onMouseLeave={() => { isHoveredRef.current = false; }}
+                className="flex gap-5 w-max"
               >
-                {firstRow.map((item, idx) => {
+                {displayListings.map((item, idx) => {
                   const normalized = normalizeListing(item);
                   return (
                     <ListingCard
@@ -502,35 +464,6 @@ export default function FeaturedListings({
                 })}
               </motion.div>
             </div>
-
-            {/* Row 2: Draggable Right to Left */}
-            {secondRow.length > 0 && (
-              <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={row2Ref}>
-                <motion.div
-                  drag="x"
-                  dragConstraints={{ right: 0, left: -row2Constraints }}
-                  style={{ x: x2 }}
-                  onDragStart={() => { isDragging2Ref.current = true; }}
-                  onDragEnd={() => { isDragging2Ref.current = false; }}
-                  onMouseEnter={() => { isHovered2Ref.current = true; }}
-                  onMouseLeave={() => { isHovered2Ref.current = false; }}
-                  className="flex gap-5 w-max"
-                >
-                  {secondRow.map((item, idx) => {
-                    const normalized = normalizeListing(item);
-                    return (
-                      <ListingCard
-                        key={`${normalized.id}-${idx}`}
-                        item={item}
-                        isWishlisted={wishlistedIds.includes(normalized.id)}
-                        onToggleWishlist={onToggleWishlist}
-                        onCardClick={handleCardClick}
-                      />
-                    );
-                  })}
-                </motion.div>
-              </div>
-            )}
 
             <div className="mt-7 flex justify-center lg:hidden">
               <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
