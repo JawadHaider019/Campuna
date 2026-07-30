@@ -162,7 +162,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                 navigateTo(`/all_business/${partner.slug}`);
             }}
             // Responsive card sizes: 280px mobile, 360px sm, 440px md, 550px lg+
-            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-500 select-none border border-white/10 flex"
+            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all duration-500 select-none border border-white/10 flex"
         >
             {/* Background Image & Overlay */}
             <div className="absolute inset-0 z-0">
@@ -236,7 +236,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
 
                 {/* Section header */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8 px-4">
-                    <div className="space-y-1 text-center md:text-left">
+                    <div className="space-y-1 ">
                         <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                             CAMPUNA SPOTLIGHT
                         </span>
@@ -266,7 +266,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                     <div className="hidden md:block absolute inset-y-0 right-0 w-24 lg:w-32 bg-gradient-to-l from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
 
                     {isLoading ? (
-                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 pb-3">
+                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 pb-5">
                             {[1, 2, 3].map((n) => (
                                 <div
                                     key={n}

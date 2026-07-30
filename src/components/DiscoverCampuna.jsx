@@ -686,7 +686,7 @@ export default function DiscoverCampuna() {
     };
 
     return (
-        <section id="tool" className="py-16 bg-sand/15 border-t border-b border-forest/5 scroll-mt-24">
+        <section id="tool" className="py-10 sm:py-16 bg-sand/15 border-t border-b border-forest/5 scroll-mt-24">
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -704,15 +704,17 @@ export default function DiscoverCampuna() {
                 </div>
 
                 {/* Categories Tab Navigation */}
-                <div className="flex flex-wrap border-b border-forest/10 mb-8 gap-1">
+                <div className="flex flex-nowrap border-b border-forest/10 mb-8 gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
                     <button
                         onClick={() => handleTabChange('tools')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tools'
+                        className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'tools'
                             ? 'text-forest'
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Calculator className="w-4 h-4" /> Camping-Helfer
+                        <Calculator className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                        <span className="block sm:hidden">Helfer</span>
+                        <span className="hidden sm:block">Camping-Helfer</span>
                         {activeTab === 'tools' && (
                             <motion.div
                                 layoutId="activeTabUnderline"
@@ -723,12 +725,12 @@ export default function DiscoverCampuna() {
                     </button>
                     <button
                         onClick={() => handleTabChange('inspiration')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'inspiration'
+                        className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'inspiration'
                             ? 'text-forest'
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Compass className="w-4 h-4" />
+                        <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                         <span className="block sm:hidden">Empfehlung</span>
                         <span className="hidden sm:block">Campuna-Empfehlung</span>
                         {activeTab === 'inspiration' && (
@@ -758,12 +760,14 @@ export default function DiscoverCampuna() {
                     </button> */}
                     <button
                         onClick={() => handleTabChange('tips')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'tips'
+                        className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'tips'
                             ? 'text-forest'
                             : 'text-charcoal/50 hover:text-forest'
                             }`}
                     >
-                        <Lightbulb className="w-4 h-4" /> Camping-Tipps
+                        <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                        <span className="block sm:hidden">Tipps</span>
+                        <span className="hidden sm:block">Camping-Tipps</span>
                         {activeTab === 'tips' && (
                             <motion.div
                                 layoutId="activeTabUnderline"

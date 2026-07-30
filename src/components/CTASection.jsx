@@ -35,10 +35,10 @@ export default function CTASection({ onSellClick }) {
 
               <button
                 onClick={onSellClick}
-                className="w-[280px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center space-x-2 text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02] mx-auto lg:mx-0"
+                className="relative w-full max-w-[300px] sm:w-[300px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02] mx-auto lg:mx-0 cursor-pointer"
               >
                 <span>Inserat erstellen – kostenlos</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 absolute right-5 shrink-0" />
               </button>
 
             </div>

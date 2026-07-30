@@ -33,7 +33,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Inputs */}
-                <div className="lg:col-span-7 space-y-5 p-6">
+                <div className="lg:col-span-7 space-y-5 p-4 sm:p-6 ">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Fuel className="w-5 h-5 text-forest" />
                         <h4 className="font-display text-base font-bold">Camping-Reisebudget-Rechner</h4>
@@ -131,7 +131,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                             </span>
                         </div>
                         <div className="mt-4 pt-4 border-t border-forest/10 text-[13px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                            <Info className="w-4 h-4 text-charcoal/40 shrink-0 mt-0.5" />
+                            <Info className="w-4 h-4 text-charcoal/40 shrink-0 mt-0.5 hidden sm:block" />
                             <p>
                                 <strong>Hinweis:</strong> Diese Berechnung stellt eine unverbindliche Schätzung dar. Die tatsächlichen Reisekosten können je nach Fahrweise, aktuellen Kraftstoffpreisen und individuellen Nebenkosten abweichen.
                             </p>
@@ -140,7 +140,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                 </div>
 
                 {/* Results Screen */}
-                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
+                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-4 sm:p-6 border border-forest/10 flex flex-col justify-between font-sans">
                     <div>
                         <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
 
@@ -184,7 +184,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                     <div>
                         {/* Summary Box */}
                         <div className="mt-6 p-4 rounded-2xl flex items-start gap-2.5 border bg-emerald-50 border-emerald-100 text-emerald-900 text-xs leading-relaxed">
-                            <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest" />
+                            <Euro className="w-4 h-4 shrink-0 mt-0.5 text-forest hidden sm:block" />
                             <div>
                                 <strong>Budgetübersicht bereit!</strong>
                                 <p className="mt-1 font-light opacity-90">

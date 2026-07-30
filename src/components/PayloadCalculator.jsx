@@ -56,7 +56,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 {/* Inputs */}
-                <div className="lg:col-span-7 space-y-5 p-6">
+                <div className="lg:col-span-7 space-y-5 p-4 sm:p-6 ">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Scale className="w-5 h-5 text-forest" />
                         <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
@@ -232,7 +232,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                     </div>
                     {/* Disclaimer */}
                     <div className="mt-4 pt-4 border-t border-forest/10 text-[13px] text-charcoal/50 leading-relaxed flex items-start gap-2">
-                        <Info className="w-4 h-4 text-charcoal/40 shrink-0 mt-0.5" />
+                        <Info className="w-4 hidden sm:block h-4 text-charcoal/40 shrink-0 mt-0.5" />
                         <p>
                             <strong>Hinweis:</strong> Diese Berechnung dient lediglich als Orientierungshilfe und ersetzt weder die offiziellen Fahrzeugangaben noch eine tatsächliche Wägung des Fahrzeugs.
                         </p>
@@ -240,7 +240,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                 </div>
 
                 {/* Results Screen with Traffic Light Indicators */}
-                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-6 border border-forest/10 flex flex-col justify-between font-sans">
+                <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-4 sm:p-6 border border-forest/10 flex flex-col justify-between font-sans">
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em]">Ergebnis</h5>
@@ -329,7 +329,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                                 ? 'bg-amber-50 border-amber-200 text-amber-900'
                                 : 'bg-emerald-50 border-emerald-200 text-emerald-900'
                             }`}>
-                            <div className="p-1.5 rounded-xl shrink-0 mt-0.5 bg-white/60">
+                            <div className="p-1.5 hidden sm:block rounded-xl shrink-0 mt-0.5 bg-white/60">
                                 {isOverloaded ? (
                                     <ShieldAlert className="w-5 h-5 text-rose-600" />
                                 ) : isWarning ? (

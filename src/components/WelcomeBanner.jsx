@@ -53,7 +53,7 @@ export default function WelcomeBanner({ isLoggedIn }) {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -120, opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="fixed top-0 left-0 w-full z-[100] bg-forest text-sand shadow-lg border-b border-white/10"
+                    className="fixed top-0 left-0 w-full z-[100] bg-forest text-sand"
                 >
                     <div className="w-[calc(100%-1rem)] max-w-5xl mx-auto flex flex-row items-center gap-2 sm:gap-4 px-4 py-3 sm:px-7 sm:py-3">
 

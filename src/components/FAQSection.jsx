@@ -11,7 +11,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="pb-10 sm:pb-16 bg-white relative overflow-hidden">
+    <section id="faq" className="py-10 sm:py-16 bg-white relative overflow-hidden">
       {/* Decorative background element */}
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-sand/30 rounded-full blur-3xl pointer-events-none opacity-50" />
 
@@ -50,9 +50,9 @@ export default function FAQSection() {
                   className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
                 >
                   <div className="flex items-center space-x-5">
-                    <div className={`w-10 h-10 shrink-0 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-forest text-white' : 'bg-sand text-forest group-hover:bg-forest/5 text-forest/40 group-hover:text-forest'
+                    <div className={`w-8 h-8 shrink-0 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-forest text-white' : 'bg-sand text-forest group-hover:bg-forest/5 text-forest/40 group-hover:text-forest'
                       }`}>
-                      <HelpCircle className="w-5 h-5" />
+                      <HelpCircle className="w-4 h-4" />
                     </div>
                     <span className={`font-display text-md md:text-lg font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
                       }`}>
@@ -78,7 +78,7 @@ export default function FAQSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     >
-                      <div className="px-8 md:px-10 pb-4 font-sans text-base text-charcoal/70 leading-relaxed font-light max-w-3xl whitespace-pre-line">
+                      <div className="px-8 md:px-10 pb-4 font-sans text-sm text-charcoal/70 leading-relaxed font-light max-w-3xl whitespace-pre-line">
                         {faq.answer}
                       </div>
                     </motion.div>
