@@ -321,7 +321,7 @@ export default function FeaturedListings({
     return rotateListings(filteredListings, 10);
   }, [filteredListings]);
 
-  const dirRef = useRef(-1); // -1 = left, 1 = right
+  const dirRef = useRef(1); // 1 = right (left to right), -1 = left
   const isHoveredRef = useRef(false);
   const isDraggingRef = useRef(false);
   const cardWidthRef = useRef(350);
@@ -352,8 +352,13 @@ export default function FeaturedListings({
   const x = useMotionValue(0);
 
   useEffect(() => {
-    x.set(0);
-  }, [displayListings]);
+    if (rowConstraints > 0) {
+      x.set(-rowConstraints);
+      dirRef.current = 1;
+    } else {
+      x.set(0);
+    }
+  }, [displayListings, rowConstraints]);
 
   useEffect(() => {
     let animationFrameId;
