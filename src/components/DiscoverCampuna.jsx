@@ -32,7 +32,7 @@ import BudgetCalculator from './BudgetCalculator';
 const INITIAL_COMMUNITY_QUESTIONS = [
     {
         id: 'q_1',
-        question: 'Welche Solartasche mit 100W bis 120W ist aktuell die zuverlÃ¤ssigste fÃ¼r Autarkie?',
+        question: 'Welche Solartasche mit 100W bis 120W ist aktuell die zuverlÃssigste fÃr Autarkie?',
         user: 'CamperVince',
         liked: false,
         upvotes: 42,
@@ -53,7 +53,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c1_1',
                 user: 'SunSeeker',
-                text: 'Ich nutze seit letztem Jahr eine Wattstunde Solartasche. Sie liefert zuverlÃ¤ssig Strom, selbst bei leichter BewÃ¶lkung.',
+                text: 'Ich nutze seit letztem Jahr eine Wattstunde Solartasche. Sie liefert zuverlÃssig Strom, selbst bei leichter BewÃlkung.',
                 date: 'Vor 2 Tagen'
             }
         ]
@@ -75,7 +75,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c2_2',
                 user: 'CampingFreak',
-                text: 'Genau, dynamisch ist fÃ¼r die Fahrt relevant. Dachzelt + TrÃ¤ger dÃ¼rfen das nicht Ã¼berschreiten.',
+                text: 'Genau, dynamisch ist fÃr die Fahrt relevant. Dachzelt + TrÃger dÃrfen das nicht Ãberschreiten.',
                 date: 'Vor 2 Tagen'
             },
             {
@@ -88,7 +88,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
     },
     {
         id: 'q_3',
-        question: 'Wie reinigt/desinfiziert ihr euren Wassertank nach einer lÃ¤ngeren Standzeit (z.B. Winterpause)?',
+        question: 'Wie reinigt/desinfiziert ihr euren Wassertank nach einer lÃngeren Standzeit (z.B. Winterpause)?',
         user: 'HappyTrailer',
         liked: false,
         upvotes: 68,
@@ -97,13 +97,13 @@ const INITIAL_COMMUNITY_QUESTIONS = [
             {
                 id: 'c3_2',
                 user: 'HappyTrailer',
-                text: 'Am einfachsten geht es mit Chlordioxid-PrÃ¤paraten, das reinigt geruchslos und grÃ¼ndlich...',
+                text: 'Am einfachsten geht es mit Chlordioxid-PrÃparaten, das reinigt geruchslos und grÃndlich...',
                 date: 'Vor 4 Tagen'
             },
             {
                 id: 'c3_1',
                 user: 'CleanWater',
-                text: 'Ich benutze immer biologisch abbaubare Reiniger auf ZitronensÃ¤urebasis, danach gut durchspÃ¼len.',
+                text: 'Ich benutze immer biologisch abbaubare Reiniger auf ZitronensÃurebasis, danach gut durchspÃlen.',
                 date: 'Vor 5 Tagen'
             }
         ]
@@ -604,7 +604,7 @@ export default function DiscoverCampuna() {
                                 Tool in Entwicklung
                             </h4>
                             <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
-                                Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in KÃ¼rze zur VerfÃ¼gung.
+                                Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
                             </p>
                         </div>
                     </motion.div>
@@ -698,7 +698,7 @@ export default function DiscoverCampuna() {
                             Camping-Wissen & Nützliche Tools
                         </h2>
                         <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-xl font-light">
-                            Finde hilfreiche Tipps, entdecke ausgewÃ¤hlte Inserate und nutze unsere Camping-Helfer zur Urlaubsplanung.
+                            Finde hilfreiche Tipps, entdecke Ausgewählte Inserate und nutze unsere Camping-Helfer zur Urlaubsplanung.
                         </p>
                     </div>
                 </div>
