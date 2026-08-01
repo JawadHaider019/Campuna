@@ -6,12 +6,29 @@ import { FEATURED_LISTINGS } from '../data';
 import { formatLocation } from '../utils/location';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
+import { rotateListings } from '../utils/rotation';
 
 // Category mapping helper
 const CATEGORY_MAPPINGS = {
-    'ausrüstung-und-zubehör': ['Camping Zubehör', 'Ausrüstung und Zubehör', 'Wohnmobile & Camper'],
-    'campingplätze-stellplätze': ['Stellplätze & Campingplätze', 'Camping Services', 'Mieten & Vermieten'],
-    'fahrzeuge': ['Wohnmobile & Camper', 'Fahrzeuge'],
+    'ausrüstung-und-zubehör': [
+        'Camping Zubehör',
+        'Ausrüstung und Zubehör',
+        'Wohnmobile & Camper',
+        'Fahrzeuge',
+        'Fahrräder & Träger',
+        'Wohnwagen'
+    ],
+    'campingplätze-stellplätze': [
+        'Stellplätze & Campingplätze',
+        'Campingplätze & Stellplätze',
+        'Camping Services',
+        'Mieten & Vermieten'
+    ],
+    'fahrzeuge': [
+        'Wohnmobile & Camper',
+        'Fahrzeuge',
+        'Wohnwagen'
+    ],
 };
 
 const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80';
@@ -261,29 +278,39 @@ export default function RelatedListings({ tool }) {
 
                 const normalized = allProducts.map(normalizeProduct).filter(Boolean);
 
-                // Filter logic based on tool relatedCategorySlug or keywords
+                // Strict category filtering logic based on tool relatedCategorySlug
                 const targetSlug = tool?.relatedCategorySlug || '';
                 const allowedCategories = CATEGORY_MAPPINGS[targetSlug] || [];
 
-                let matched = [];
+                let matchedCategory = [];
                 if (allowedCategories.length > 0) {
-                    matched = normalized.filter(item => allowedCategories.includes(item.category));
+                    const allowedSet = new Set(allowedCategories.map(c => c.toLowerCase().trim()));
+                    matchedCategory = normalized.filter(item => {
+                        if (!item || !item.category) return false;
+                        return allowedSet.has(String(item.category).toLowerCase().trim());
+                    });
                 }
 
-                // If not enough matches, fallback to adding remaining normalized products
-                if (matched.length < 4) {
-                    const matchedIds = new Set(matched.map(m => m.id));
+                let pool = [];
+                if (matchedCategory.length >= 6) {
+                    // Strict category filtering: use only category matched products
+                    pool = matchedCategory;
+                } else if (matchedCategory.length > 0) {
+                    // Use category matched products first, then fill remaining slots
+                    const matchedIds = new Set(matchedCategory.map(m => m.id));
                     const remaining = normalized.filter(item => !matchedIds.has(item.id));
-                    matched = [...matched, ...remaining];
+                    pool = [...matchedCategory, ...remaining];
+                } else {
+                    pool = normalized;
                 }
 
                 if (active) {
-                    setListings(matched.slice(0, 10)); // Top 10 related items in 1 row
+                    setListings(rotateListings(pool, 6));
                 }
             } catch (err) {
                 console.error("Failed to load related listings:", err);
                 const fallback = FEATURED_LISTINGS.map(normalizeProduct).filter(Boolean);
-                if (active) setListings(fallback.slice(0, 10));
+                if (active) setListings(rotateListings(fallback, 6));
             } finally {
                 if (active) setLoading(false);
             }

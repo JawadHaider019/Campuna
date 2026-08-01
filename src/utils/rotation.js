@@ -8,7 +8,7 @@
  * @param {number} targetCount - Maximum number of listings to select for display (default: 24)
  * @returns {Array} Rotated array of unique selected listings
  */
-export function rotateListings(listings, targetCount = 15) {
+export function rotateListings(listings, targetCount = 15, preferredCategories = []) {
     if (!Array.isArray(listings) || listings.length === 0) return [];
 
     // Deduplicate input array by item ID to guarantee no duplicate IDs enter the pool
@@ -52,13 +52,26 @@ export function rotateListings(listings, targetCount = 15) {
         return title.toLowerCase().replace(/[^a-z0-9äöüß\s]/gi, '').trim().split(/\s+/).slice(0, 3).join(' ');
     };
 
+    const normalizedPreferred = Array.isArray(preferredCategories)
+        ? preferredCategories.map(c => String(c).toLowerCase())
+        : [];
+
     // Weighted random score generation
     const scoredListings = uniqueListings.map(item => {
         const itemId = String(item.id || item._id);
         const isRecentlySeen = seenSet.has(itemId);
-        // Unseen items get full random weight (0.0 to 1.0)
-        // Recently seen items get reduced weight (0.0 to 0.25)
-        const weight = isRecentlySeen ? 0.25 : 1.0;
+
+        let categoryMultiplier = 1.0;
+        if (normalizedPreferred.length > 0 && item.category) {
+            const itemCat = String(item.category).toLowerCase();
+            if (normalizedPreferred.includes(itemCat)) {
+                categoryMultiplier = 2.5;
+            }
+        }
+
+        // Unseen items get full random weight (0.0 to 1.0) * categoryMultiplier
+        // Recently seen items get reduced weight (0.0 to 0.25) * categoryMultiplier
+        const weight = (isRecentlySeen ? 0.25 : 1.0) * categoryMultiplier;
         const score = Math.random() * weight;
         return { item, score, itemId, imgKey: getImageKey(item), titleKey: getTitleKey(item) };
     });
