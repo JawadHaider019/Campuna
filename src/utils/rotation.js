@@ -8,10 +8,10 @@
  * @param {number} targetCount - Maximum number of listings to select for display (default: 24)
  * @returns {Array} Rotated array of unique selected listings
  */
-export function rotateListings(listings, targetCount = 10) {
+export function rotateListings(listings, targetCount = 15) {
     if (!Array.isArray(listings) || listings.length === 0) return [];
 
-    // Deduplicate input array by item ID to guarantee no duplicates enter the pool
+    // Deduplicate input array by item ID to guarantee no duplicate IDs enter the pool
     const uniqueMap = new Map();
     listings.forEach(item => {
         if (!item) return;
@@ -24,9 +24,9 @@ export function rotateListings(listings, targetCount = 10) {
     const uniqueListings = Array.from(uniqueMap.values());
     if (uniqueListings.length === 0) return [];
 
-    const count = Math.min(targetCount || 10, uniqueListings.length);
+    const count = Math.min(targetCount || 15, uniqueListings.length);
 
-    // Retrieve seen IDs from sessionStorage
+    // Retrieve recently seen IDs from sessionStorage
     const SESSION_KEY = 'campuna_seen_ad_ids';
     let seenIds = [];
     try {
@@ -38,47 +38,85 @@ export function rotateListings(listings, targetCount = 10) {
         console.warn('[Rotation] sessionStorage unavailable:', e);
     }
 
-    // Fisher-Yates shuffle unique listings first for maximum randomness
-    const shuffled = [...uniqueListings];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-
-    // Separate into unseen and seen items based on seenIds
     const seenSet = new Set(seenIds.map(String));
-    const unseen = shuffled.filter(item => !seenSet.has(String(item.id || item._id)));
-    const seen = shuffled.filter(item => seenSet.has(String(item.id || item._id)));
 
-    let selected = [];
+    // Helper to get image signature / title signature to prevent visually repetitive listings
+    const getImageKey = (item) => {
+        if (Array.isArray(item.images) && item.images.length > 0) return String(item.images[0]);
+        if (typeof item.images === 'string') return item.images;
+        return item['Main Image'] || item.MainImage || item.title || '';
+    };
 
-    if (unseen.length >= count) {
-        // Plenty of unseen items available – select count from unseen
-        selected = unseen.slice(0, count);
-    } else {
-        // Not enough unseen items – take all unseen, fill rest from seen
-        selected = [...unseen];
-        const remainingNeeded = count - selected.length;
-        selected = selected.concat(seen.slice(0, remainingNeeded));
-    }
+    const getTitleKey = (item) => {
+        const title = item.title || item.description || '';
+        return title.toLowerCase().replace(/[^a-z0-9äöüß\s]/gi, '').trim().split(/\s+/).slice(0, 3).join(' ');
+    };
 
-    // Double-check strict uniqueness in selected pick
-    const pickMap = new Map();
-    const finalSelected = [];
-    selected.forEach(item => {
+    // Weighted random score generation
+    const scoredListings = uniqueListings.map(item => {
         const itemId = String(item.id || item._id);
-        if (!pickMap.has(itemId)) {
-            pickMap.set(itemId, true);
-            finalSelected.push(item);
-        }
+        const isRecentlySeen = seenSet.has(itemId);
+        // Unseen items get full random weight (0.0 to 1.0)
+        // Recently seen items get reduced weight (0.0 to 0.25)
+        const weight = isRecentlySeen ? 0.25 : 1.0;
+        const score = Math.random() * weight;
+        return { item, score, itemId, imgKey: getImageKey(item), titleKey: getTitleKey(item) };
     });
 
-    // Save current batch's IDs to sessionStorage with rolling window
-    const newBatchIds = finalSelected.map(item => String(item.id || item._id));
-    let updatedSeenIds = [...seenIds.filter(id => !newBatchIds.includes(id)), ...newBatchIds];
+    // Sort by weighted random score descending
+    scoredListings.sort((a, b) => b.score - a.score);
 
-    // Cap history size so products eventually become unseen again after cycling
-    const maxSeenHistory = Math.max(count, uniqueListings.length - count);
+    // Diversity selection: Ensure visually distinct listings in the 15-item batch
+    const selected = [];
+    const selectedImgCounts = new Map();
+    const selectedTitleCounts = new Map();
+    const remainingCandidates = [];
+
+    // Pass 1: Select items with unique images and unique titles
+    for (const candidate of scoredListings) {
+        if (selected.length >= count) break;
+
+        const imgCount = selectedImgCounts.get(candidate.imgKey) || 0;
+        const titleCount = selectedTitleCounts.get(candidate.titleKey) || 0;
+
+        if (imgCount === 0 && titleCount === 0) {
+            selected.push(candidate.item);
+            selectedImgCounts.set(candidate.imgKey, imgCount + 1);
+            selectedTitleCounts.set(candidate.titleKey, titleCount + 1);
+        } else {
+            remainingCandidates.push(candidate);
+        }
+    }
+
+    // Pass 2: If target count not reached, fill with items having soft duplicate caps (max 2 per image)
+    if (selected.length < count) {
+        for (const candidate of remainingCandidates) {
+            if (selected.length >= count) break;
+
+            const imgCount = selectedImgCounts.get(candidate.imgKey) || 0;
+            if (imgCount < 2) {
+                selected.push(candidate.item);
+                selectedImgCounts.set(candidate.imgKey, imgCount + 1);
+            }
+        }
+    }
+
+    // Pass 3: Final fallback to fill target count if needed
+    if (selected.length < count) {
+        for (const candidate of remainingCandidates) {
+            if (selected.length >= count) break;
+            if (!selected.includes(candidate.item)) {
+                selected.push(candidate.item);
+            }
+        }
+    }
+
+    // Save current batch's IDs to sessionStorage (rolling window of recent IDs)
+    const finalSelected = selected;
+    const newBatchIds = finalSelected.map(item => String(item.id || item._id));
+
+    let updatedSeenIds = [...seenIds.filter(id => !newBatchIds.includes(id)), ...newBatchIds];
+    const maxSeenHistory = Math.min(uniqueListings.length - 1, count * 2);
     if (updatedSeenIds.length > maxSeenHistory) {
         updatedSeenIds = updatedSeenIds.slice(updatedSeenIds.length - maxSeenHistory);
     }
@@ -91,4 +129,6 @@ export function rotateListings(listings, targetCount = 10) {
 
     return finalSelected;
 }
+
+
 

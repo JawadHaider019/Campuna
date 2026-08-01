@@ -267,7 +267,7 @@ export default function FeaturedListings({
 
   useEffect(() => {
     let active = true;
-    if (!propListings || propListings.length === 0) {
+    if ((!propListings || propListings.length === 0) && !propIsLoading) {
       setInternalLoading(true);
       getHomepageProducts()
         .then(data => {
@@ -283,7 +283,7 @@ export default function FeaturedListings({
         });
     }
     return () => { active = false; };
-  }, [propListings]);
+  }, [propListings, propIsLoading]);
 
   const activeListings = useMemo(() => {
     if (propListings && propListings.length > 0) {

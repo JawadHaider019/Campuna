@@ -93,12 +93,7 @@ export const TOOLS_DATA = {
             },
             {
                 title: 'Praktische Tipps zum Gewicht sparen im Wohnmobil',
-                bulletPoints: [
-                    'Frischwassertank nur für die Fahrt füllen (ca. 10–20 Liter) – am Campingplatz auffüllen.',
-                    'Campingmöbel & Geschirr aus Leichtbaumaterialien (Aluminium, Melamin, Bamboo) wählen.',
-                    'Schwere Vorräte erst am Reiseziel einkaufen.',
-                    'Gasflaschen aus Aluminium oder Kunststoff statt Stahl nutzen.'
-                ]
+                text: 'Fülle den Frischwassertank für die Fahrt nur auf ca. 10–20 Liter auf und befülle ihn erst am Campingplatz. Wähle Campingmöbel und Geschirr aus Leichtbaumaterialien wie Aluminium, Melamin oder Bamboo. Kaufe schwere Vorräte erst am Reiseziel ein und nutze Gasflaschen aus Aluminium oder Kunststoff statt aus Stahl.'
             }
         ],
         faqs: [
@@ -209,12 +204,7 @@ export const TOOLS_DATA = {
             },
             {
                 title: 'Effektive Spartipps für den Camping-Urlaub',
-                bulletPoints: [
-                    'Rabattkarten wie ACSI CampingCard in der Nebensaison nutzen (Übernachtungen oft für 15–25 €).',
-                    'Kostenlose Wohnmobilstellplätze oder einfache Naturstellplätze ansteuern.',
-                    'Vorausschauend fahren und Sprit sparen (optimal bei 90–100 km/h auf der Autobahn).',
-                    'Selbst kochen statt täglich im Restaurant zu essen.'
-                ]
+                text: 'Nutze Rabattkarten wie die ACSI CampingCard in der Nebensaison für günstige Übernachtungen (oft 15–25 €). Steuere kostenlose Wohnmobilstellplätze oder einfache Naturstellplätze an. Fahre vorausschauend bei optimalen 90–100 km/h auf der Autobahn, um Sprit zu sparen, und koche selbst statt täglich im Restaurant zu essen.'
             }
         ],
         faqs: [

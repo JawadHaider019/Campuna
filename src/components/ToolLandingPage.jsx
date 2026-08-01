@@ -118,11 +118,10 @@ export default function ToolLandingPage({ tool }) {
                                     </p>
                                 )}
                                 {guide.bulletPoints && (
-                                    <ul className="space-y-2 mt-3">
+                                    <ul className="space-y-2.5 mt-3">
                                         {guide.bulletPoints.map((pt, pIdx) => (
-                                            <li key={pIdx} className="flex items-start gap-2.5 text-sm text-charcoal/75">
-                                                <span className="text-forest font-bold text-base mt-0.5">•</span>
-                                                <span className="leading-snug">{pt}</span>
+                                            <li key={pIdx} className="text-sm text-charcoal/75 leading-relaxed">
+                                                {pt}
                                             </li>
                                         ))}
                                     </ul>
