@@ -224,7 +224,7 @@ export default function ToolLandingPage({ tool }) {
                                 <a
                                     key={t.id}
                                     // href={getParentNavigationUrl(t.slug)}
-                                    href={`https://campuna.vercel.app/${t.slug}`}
+                                    href={`https://campuna.de/${t.slug}`}
                                     target="_parent"
                                     className="px-4 py-2 bg-white rounded-full border border-forest/10 text-xs font-bold text-forest hover:bg-forest hover:text-white transition-all duration-300 shadow-sm"
                                 >

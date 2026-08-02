@@ -650,7 +650,7 @@ export default function DiscoverCampuna() {
                             <div className="mt-4">
                                 <PayloadCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="mt-6 hidden pt-4 border-t border-forest/10 flex justify-center">
+                                <div className="mt-6  pt-4 border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('zuladungsrechner')}
                                         target="_parent"
@@ -665,7 +665,7 @@ export default function DiscoverCampuna() {
                             <div className="mt-4 ">
                                 <BudgetCalculator compact={true} />
                                 {/* Link to dedicated page */}
-                                <div className="mt-6 pt-4 hidden border-t border-forest/10 flex justify-center">
+                                <div className="mt-6 pt-4  border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('reisekostenrechner')}
                                         target="_parent"
