@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Lightbulb,
@@ -653,7 +653,8 @@ export default function DiscoverCampuna() {
                                 <div className="mt-6  pt-4 border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('zuladungsrechner')}
-                                        target="_parent"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >
                                         <span>Zur Vollversion</span>
@@ -668,7 +669,8 @@ export default function DiscoverCampuna() {
                                 <div className="mt-6 pt-4  border-t border-forest/10 flex justify-center">
                                     <a
                                         href={getParentNavigationUrl('reisekostenrechner')}
-                                        target="_parent"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="group flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest hover:text-gold transition-colors"
                                     >
                                         <span>Zur Vollversion</span>
