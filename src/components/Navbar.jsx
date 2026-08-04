@@ -176,14 +176,15 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
       <div className="max-w-8xl mx-auto px-4 md:px-12">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <button onClick={() => handleNavClick('top')} className="flex items-center group">
+          <button onClick={() => handleNavClick('top')} className="flex items-start group relative">
             <img
               src="/logo.png"
-              alt="Campuna – Dein Camping-Marktplatz"
+              alt="Campuna® – Dein Camping-Marktplatz"
               width={120}
               height={38}
               className="w-[120px] h-[38px] object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
+            <span className="text-2xl sm:text-3xl font-normal text-forest ml-0.5 -mt-1 select-none leading-none">®</span>
           </button>
 
           {/* Desktop Navigation */}

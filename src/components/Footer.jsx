@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-14">
         <div className="mb-8">
           <p className="font-sans text-[13px] text-charcoal/70 italic leading-relaxed text-center">
-            Campuna ist Deutschlands Camping-Marktplatz für Wohnmobile, Wohnwagen, Campingbusse, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen rund ums Camping. Entdecke Angebote von privaten und gewerblichen Anbietern – alles an einem Ort.
+            Campuna® ist Deutschlands Camping-Marktplatz für Wohnmobile, Wohnwagen, Campingbusse, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen rund ums Camping. Entdecke Angebote von privaten und gewerblichen Anbietern – alles an einem Ort.
           </p>
         </div>
         {/* Main Footer Column Grid */}
@@ -27,13 +27,16 @@ export default function Footer() {
 
           {/* Logo & Manifesto Column */}
           <div className="flex flex-col space-y-4 max-w-xs items-start h-auto">
-            <img
-              src="/logo.png"
-              alt="Campuna – Dein Camping-Marktplatz"
-              width={130}
-              height={30}
-              className="h-[40px] w-[140px] object-cover"
-            />
+            <div className="flex items-start">
+              <img
+                src="/logo.png"
+                alt="Campuna® – Dein Camping-Marktplatz"
+                width={130}
+                height={30}
+                className="h-[40px] w-[140px] object-contain"
+              />
+              <span className="text-2xl sm:text-3xl font-normal text-forest ml-0.5 -mt-1 select-none leading-none">®</span>
+            </div>
             <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left whitespace-pre-line">
               {`Wir sind da. Nutze es. Wenn du möchtest,
 bleib.`}
@@ -158,7 +161,7 @@ bleib.`}
         {/* Sub-footer Section */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8 text-[12px] text-charcoal/80 font-sans">
           <p className="text-center font-normal">
-            © 2026 Campuna. Alle Rechte vorbehalten.
+            © 2026 Campuna®. Alle Rechte vorbehalten.
           </p>
 
           <div className="flex items-center gap-5 justify-center">

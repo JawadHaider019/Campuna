@@ -30,7 +30,7 @@ export default function SEO({ title, description, canonicalPath, structuredData,
             <meta property="og:description" content={description} />
             <meta property="og:url" content={canonicalUrl} />
             <meta property="og:type" content="website" />
-            <meta property="og:site_name" content="Campuna" />
+            <meta property="og:site_name" content="Campuna®" />
             <meta property="og:locale" content="de_DE" />
 
             {/* Structured Data (JSON-LD) */}
