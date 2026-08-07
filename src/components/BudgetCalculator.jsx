@@ -14,14 +14,31 @@ import {
  * @param {Function} [props.onCalculation] - Optional callback fired when values change
  * @param {boolean} [props.compact] - If true, hides the FAQ section below (used on homepage)
  */
-export default function BudgetCalculator({ onCalculation, compact = false }) {
+export default function BudgetCalculator({ onCalculation, compact = false, isTest = false }) {
+    const getSavedVal = (key, defaultVal) => {
+        if (!isTest) return defaultVal;
+        const saved = localStorage.getItem(key);
+        return saved !== null ? Number(saved) : defaultVal;
+    };
+
     // ── State ──
-    const [distance, setDistance] = useState(600);
-    const [consumption, setConsumption] = useState(10.5);
-    const [fuelPrice, setFuelPrice] = useState(1.75);
-    const [campsiteCost, setCampsiteCost] = useState(35);
-    const [nights, setNights] = useState(5);
-    const [otherBudget, setOtherBudget] = useState(100);
+    const [distance, setDistance] = useState(() => getSavedVal('campuna_budget_distance', 600));
+    const [consumption, setConsumption] = useState(() => getSavedVal('campuna_budget_consumption', 10.5));
+    const [fuelPrice, setFuelPrice] = useState(() => getSavedVal('campuna_budget_fuelPrice', 1.75));
+    const [campsiteCost, setCampsiteCost] = useState(() => getSavedVal('campuna_budget_campsiteCost', 35));
+    const [nights, setNights] = useState(() => getSavedVal('campuna_budget_nights', 5));
+    const [otherBudget, setOtherBudget] = useState(() => getSavedVal('campuna_budget_otherBudget', 100));
+
+    React.useEffect(() => {
+        if (isTest) {
+            localStorage.setItem('campuna_budget_distance', distance);
+            localStorage.setItem('campuna_budget_consumption', consumption);
+            localStorage.setItem('campuna_budget_fuelPrice', fuelPrice);
+            localStorage.setItem('campuna_budget_campsiteCost', campsiteCost);
+            localStorage.setItem('campuna_budget_nights', nights);
+            localStorage.setItem('campuna_budget_otherBudget', otherBudget);
+        }
+    }, [isTest, distance, consumption, fuelPrice, campsiteCost, nights, otherBudget]);
 
     // ── Calculations ──
     const fuelCostTotal = (distance / 100) * consumption * fuelPrice;

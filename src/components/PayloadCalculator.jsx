@@ -17,19 +17,39 @@ import {
  * @param {Function} [props.onCalculation] - Optional callback fired when values change, receives { currentTotalWeight, remainingPayload, isOverloaded }
  * @param {boolean} [props.compact] - If true, hides the FAQ section below (used on homepage)
  */
-export default function PayloadCalculator({ onCalculation, compact = false }) {
+export default function PayloadCalculator({ onCalculation, compact = false, isTest = false }) {
     const [activeTooltip, setActiveTooltip] = useState(null);
 
+    const getSavedVal = (key, defaultVal) => {
+        if (!isTest) return defaultVal;
+        const saved = localStorage.getItem(key);
+        return saved !== null ? Number(saved) : defaultVal;
+    };
+
     // ── State ──
-    const [maxWeight, setMaxWeight] = useState(3500);
-    const [emptyWeight, setEmptyWeight] = useState(2850);
-    const [driverWeight, setDriverWeight] = useState(75);
-    const [passengers, setPassengers] = useState(1);
-    const [passengersWeight, setPassengersWeight] = useState(75);
-    const [waterWater, setWaterWater] = useState(80);
-    const [gasWeight, setGasWeight] = useState(22);
-    const [baggage, setBaggage] = useState(150);
-    const [equipment, setEquipment] = useState(80);
+    const [maxWeight, setMaxWeight] = useState(() => getSavedVal('campuna_payload_maxWeight', 3500));
+    const [emptyWeight, setEmptyWeight] = useState(() => getSavedVal('campuna_payload_emptyWeight', 2850));
+    const [driverWeight, setDriverWeight] = useState(() => getSavedVal('campuna_payload_driverWeight', 75));
+    const [passengers, setPassengers] = useState(() => getSavedVal('campuna_payload_passengers', 1));
+    const [passengersWeight, setPassengersWeight] = useState(() => getSavedVal('campuna_payload_passengersWeight', 75));
+    const [waterWater, setWaterWater] = useState(() => getSavedVal('campuna_payload_waterWater', 80));
+    const [gasWeight, setGasWeight] = useState(() => getSavedVal('campuna_payload_gasWeight', 22));
+    const [baggage, setBaggage] = useState(() => getSavedVal('campuna_payload_baggage', 150));
+    const [equipment, setEquipment] = useState(() => getSavedVal('campuna_payload_equipment', 80));
+
+    React.useEffect(() => {
+        if (isTest) {
+            localStorage.setItem('campuna_payload_maxWeight', maxWeight);
+            localStorage.setItem('campuna_payload_emptyWeight', emptyWeight);
+            localStorage.setItem('campuna_payload_driverWeight', driverWeight);
+            localStorage.setItem('campuna_payload_passengers', passengers);
+            localStorage.setItem('campuna_payload_passengersWeight', passengersWeight);
+            localStorage.setItem('campuna_payload_waterWater', waterWater);
+            localStorage.setItem('campuna_payload_gasWeight', gasWeight);
+            localStorage.setItem('campuna_payload_baggage', baggage);
+            localStorage.setItem('campuna_payload_equipment', equipment);
+        }
+    }, [isTest, maxWeight, emptyWeight, driverWeight, passengers, passengersWeight, waterWater, gasWeight, baggage, equipment]);
 
     // ── Calculations ──
     const totalPassengersWeight = passengers * passengersWeight;
