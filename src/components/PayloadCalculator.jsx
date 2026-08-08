@@ -17,11 +17,10 @@ import {
  * @param {Function} [props.onCalculation] - Optional callback fired when values change, receives { currentTotalWeight, remainingPayload, isOverloaded }
  * @param {boolean} [props.compact] - If true, hides the FAQ section below (used on homepage)
  */
-export default function PayloadCalculator({ onCalculation, compact = false, isTest = false }) {
+export default function PayloadCalculator({ onCalculation, compact = false }) {
     const [activeTooltip, setActiveTooltip] = useState(null);
 
     const getSavedVal = (key, defaultVal) => {
-        if (!isTest) return defaultVal;
         const saved = localStorage.getItem(key);
         return saved !== null ? Number(saved) : defaultVal;
     };
@@ -38,18 +37,38 @@ export default function PayloadCalculator({ onCalculation, compact = false, isTe
     const [equipment, setEquipment] = useState(() => getSavedVal('campuna_payload_equipment', 80));
 
     React.useEffect(() => {
-        if (isTest) {
-            localStorage.setItem('campuna_payload_maxWeight', maxWeight);
-            localStorage.setItem('campuna_payload_emptyWeight', emptyWeight);
-            localStorage.setItem('campuna_payload_driverWeight', driverWeight);
-            localStorage.setItem('campuna_payload_passengers', passengers);
-            localStorage.setItem('campuna_payload_passengersWeight', passengersWeight);
-            localStorage.setItem('campuna_payload_waterWater', waterWater);
-            localStorage.setItem('campuna_payload_gasWeight', gasWeight);
-            localStorage.setItem('campuna_payload_baggage', baggage);
-            localStorage.setItem('campuna_payload_equipment', equipment);
-        }
-    }, [isTest, maxWeight, emptyWeight, driverWeight, passengers, passengersWeight, waterWater, gasWeight, baggage, equipment]);
+        localStorage.setItem('campuna_payload_maxWeight', maxWeight);
+        localStorage.setItem('campuna_payload_emptyWeight', emptyWeight);
+        localStorage.setItem('campuna_payload_driverWeight', driverWeight);
+        localStorage.setItem('campuna_payload_passengers', passengers);
+        localStorage.setItem('campuna_payload_passengersWeight', passengersWeight);
+        localStorage.setItem('campuna_payload_waterWater', waterWater);
+        localStorage.setItem('campuna_payload_gasWeight', gasWeight);
+        localStorage.setItem('campuna_payload_baggage', baggage);
+        localStorage.setItem('campuna_payload_equipment', equipment);
+    }, [maxWeight, emptyWeight, driverWeight, passengers, passengersWeight, waterWater, gasWeight, baggage, equipment]);
+
+    React.useEffect(() => {
+        const syncFromStorage = () => {
+            setMaxWeight(getSavedVal('campuna_payload_maxWeight', 3500));
+            setEmptyWeight(getSavedVal('campuna_payload_emptyWeight', 2850));
+            setDriverWeight(getSavedVal('campuna_payload_driverWeight', 75));
+            setPassengers(getSavedVal('campuna_payload_passengers', 1));
+            setPassengersWeight(getSavedVal('campuna_payload_passengersWeight', 75));
+            setWaterWater(getSavedVal('campuna_payload_waterWater', 80));
+            setGasWeight(getSavedVal('campuna_payload_gasWeight', 22));
+            setBaggage(getSavedVal('campuna_payload_baggage', 150));
+            setEquipment(getSavedVal('campuna_payload_equipment', 80));
+        };
+
+        window.addEventListener('storage', syncFromStorage);
+        window.addEventListener('focus', syncFromStorage);
+
+        return () => {
+            window.removeEventListener('storage', syncFromStorage);
+            window.removeEventListener('focus', syncFromStorage);
+        };
+    }, []);
 
     // ── Calculations ──
     const totalPassengersWeight = passengers * passengersWeight;

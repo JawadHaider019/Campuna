@@ -9,7 +9,7 @@ import { TOOLS_LIST } from '../data/toolsData';
 import { useToolAnalytics } from '../utils/useToolAnalytics';
 import { getParentNavigationUrl, navigateTo } from '../utils/navigation';
 
-export default function ToolLandingPage({ tool, isTest = false }) {
+export default function ToolLandingPage({ tool }) {
     const { trackUsage } = useToolAnalytics(tool.analyticsKey);
     const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
@@ -20,11 +20,6 @@ export default function ToolLandingPage({ tool, isTest = false }) {
     const handleToolSwitch = (targetSlug) => {
         navigateTo(targetSlug);
     };
-
-    const isTestPage = isTest || window.location.pathname.endsWith('/test');
-    const togglePath = isTestPage 
-        ? window.location.pathname.replace(/\/test$/, '') 
-        : `${window.location.pathname.replace(/\/$/, '')}/test`;
 
     return (
         <div className="bg-white min-h-screen font-sans text-charcoal">
@@ -51,33 +46,14 @@ export default function ToolLandingPage({ tool, isTest = false }) {
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
                         <div>
                             <span className="inline-block text-[10px] font-bold uppercase tracking-[0.25em] text-gold bg-gold/15 backdrop-blur-md border border-gold/30 px-3 py-1 rounded-full mb-2">
-                                {isTestPage ? 'Test-Modus (mit Speicherfunktion)' : 'Kostenloses Camping-Tool'}
+                                Kostenloses Camping-Tool
                             </span>
                             <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-md">
-                                {tool.title} {isTestPage && <span className="text-gold">(Test)</span>}
+                                {tool.title}
                             </h1>
                             <p className="font-sans text-xs sm:text-sm text-white/90 font-light mt-2 max-w-2xl leading-relaxed drop-shadow-sm">
                                 {tool.heroSubtitle}
                             </p>
-                            <div className="mt-4 flex items-center gap-3">
-                                {isTestPage ? (
-                                    <a
-                                        href={togglePath}
-                                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-white/15 hover:bg-white/25 text-white border border-white/20 hover:border-white/35 transition-all duration-300 backdrop-blur-sm shadow-md"
-                                    >
-                                        <span>Standard-Version anzeigen</span>
-                                        <ArrowRight className="w-3.5 h-3.5" />
-                                    </a>
-                                ) : (
-                                    <a
-                                        href={togglePath}
-                                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-gold/20 hover:bg-gold/30 text-gold border border-gold/30 hover:border-gold/50 transition-all duration-300 backdrop-blur-sm shadow-md"
-                                    >
-                                        <span>Test-Version mit Speicherfunktion</span>
-                                        <ArrowRight className="w-3.5 h-3.5" />
-                                    </a>
-                                )}
-                            </div>
                         </div>
 
                         {/* Right side Container: Icon & Tool Switcher Tabs */}
@@ -101,12 +77,10 @@ export default function ToolLandingPage({ tool, isTest = false }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-10">
                 {tool.calculatorType === 'payload' ? (
                     <PayloadCalculator
-                        isTest={isTestPage}
                         onCalculation={(data) => trackUsage('calculate', data)}
                     />
                 ) : (
                     <BudgetCalculator
-                        isTest={isTestPage}
                         onCalculation={(data) => trackUsage('calculate', data)}
                     />
                 )}

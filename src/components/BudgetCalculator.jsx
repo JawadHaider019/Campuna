@@ -14,9 +14,8 @@ import {
  * @param {Function} [props.onCalculation] - Optional callback fired when values change
  * @param {boolean} [props.compact] - If true, hides the FAQ section below (used on homepage)
  */
-export default function BudgetCalculator({ onCalculation, compact = false, isTest = false }) {
+export default function BudgetCalculator({ onCalculation, compact = false }) {
     const getSavedVal = (key, defaultVal) => {
-        if (!isTest) return defaultVal;
         const saved = localStorage.getItem(key);
         return saved !== null ? Number(saved) : defaultVal;
     };
@@ -30,15 +29,32 @@ export default function BudgetCalculator({ onCalculation, compact = false, isTes
     const [otherBudget, setOtherBudget] = useState(() => getSavedVal('campuna_budget_otherBudget', 100));
 
     React.useEffect(() => {
-        if (isTest) {
-            localStorage.setItem('campuna_budget_distance', distance);
-            localStorage.setItem('campuna_budget_consumption', consumption);
-            localStorage.setItem('campuna_budget_fuelPrice', fuelPrice);
-            localStorage.setItem('campuna_budget_campsiteCost', campsiteCost);
-            localStorage.setItem('campuna_budget_nights', nights);
-            localStorage.setItem('campuna_budget_otherBudget', otherBudget);
-        }
-    }, [isTest, distance, consumption, fuelPrice, campsiteCost, nights, otherBudget]);
+        localStorage.setItem('campuna_budget_distance', distance);
+        localStorage.setItem('campuna_budget_consumption', consumption);
+        localStorage.setItem('campuna_budget_fuelPrice', fuelPrice);
+        localStorage.setItem('campuna_budget_campsiteCost', campsiteCost);
+        localStorage.setItem('campuna_budget_nights', nights);
+        localStorage.setItem('campuna_budget_otherBudget', otherBudget);
+    }, [distance, consumption, fuelPrice, campsiteCost, nights, otherBudget]);
+
+    React.useEffect(() => {
+        const syncFromStorage = () => {
+            setDistance(getSavedVal('campuna_budget_distance', 600));
+            setConsumption(getSavedVal('campuna_budget_consumption', 10.5));
+            setFuelPrice(getSavedVal('campuna_budget_fuelPrice', 1.75));
+            setCampsiteCost(getSavedVal('campuna_budget_campsiteCost', 35));
+            setNights(getSavedVal('campuna_budget_nights', 5));
+            setOtherBudget(getSavedVal('campuna_budget_otherBudget', 100));
+        };
+
+        window.addEventListener('storage', syncFromStorage);
+        window.addEventListener('focus', syncFromStorage);
+
+        return () => {
+            window.removeEventListener('storage', syncFromStorage);
+            window.removeEventListener('focus', syncFromStorage);
+        };
+    }, []);
 
     // ── Calculations ──
     const fuelCostTotal = (distance / 100) * consumption * fuelPrice;

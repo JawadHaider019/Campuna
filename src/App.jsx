@@ -153,14 +153,10 @@ const App = () => {
         <Route path="/create-listing" element={<CreateListingPage />} />
         <Route path="/camping-helfer" element={<CampingHelferPage />} />
         <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-        <Route path="/camping-helfer/zuladungsrechner/test" element={<ZuladungsrechnerPage isTest={true} />} />
         <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-        <Route path="/camping-helfer/reisekostenrechner/test" element={<ReisekostenrechnerPage isTest={true} />} />
         <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
         <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-        <Route path="/zuladungsrechner/test" element={<ZuladungsrechnerPage isTest={true} />} />
         <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-        <Route path="/reisekostenrechner/test" element={<ReisekostenrechnerPage isTest={true} />} />
       </Routes>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}
