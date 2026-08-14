@@ -700,7 +700,7 @@ export default function DiscoverCampuna() {
                             Camping-Wissen & Nützliche Tools
                         </h2>
                         <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-xl font-light">
-                            Finde hilfreiche Tipps, entdecke Ausgewählte Inserate und nutze unsere Camping-Helfer zur Urlaubsplanung.
+                            Praktische Helfer, Empfehlungen und Wissen für deinen Campingalltag – weil Campuna mehr sein soll als nur Kaufen und Verkaufen.
                         </p>
                     </div>
                 </div>

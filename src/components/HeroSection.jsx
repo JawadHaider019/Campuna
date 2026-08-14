@@ -62,9 +62,9 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.4, duration: 0.8 }}
             className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-[1.1]"
           >
-            Alles rund ums Camping.<br />
+            Wir bringen Camping{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-beige to-white">
-              An einem Ort.
+              an einem Ort zusammen.
             </span>
           </motion.h1>
 
@@ -75,7 +75,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             transition={{ delay: 0.6, duration: 0.8 }}
             className="font-sans text-sm sm:text-md md:text-lg text-sand/85 leading-relaxed max-w-2xl mx-auto mb-10 font-light"
           >
-            Entdecke Fahrzeuge, Zubehör, Stellplätze, Vermietungen und Services – oder stelle dein eigenes Camping-Angebot kostenlos ein.
+            Angebote, Anbieter, Campingplätze, Wissen und praktische Helfer rund ums Camping – auf einer spezialisierten Plattform, die gemeinsam mit der Community wächst.
           </motion.p>
 
           {/* Action Buttons */}

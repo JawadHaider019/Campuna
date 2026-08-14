@@ -37,9 +37,8 @@ export default function Footer() {
               />
               <span className="text-2xl sm:text-3xl font-normal text-forest ml-0.5 -mt-1 select-none leading-none">®</span>
             </div>
-            <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left whitespace-pre-line">
-              {`Wir sind da. Nutze es. Wenn du möchtest,
-bleib.`}
+            <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left">
+              Campuna wächst mit euch.
             </p>
 
           </div>

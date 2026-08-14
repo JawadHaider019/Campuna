@@ -26,18 +26,18 @@ export default function CTASection({ onSellClick }) {
               </div>
 
               <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
-                Verkaufst du etwas rund ums Camping?
+                Werde Teil von Campuna.
               </h2>
 
               <p className="font-sans text-sm sm:text-base text-sand/85 font-light leading-relaxed max-w-xl pb-2">
-                Präsentiere dein Angebot dort, wo sich Camper gezielt nach Produkten, Dienstleistungen und Angeboten rund ums Camping umsehen.
+                Du verkaufst, vermietest oder bietest etwas rund ums Camping an? Sei von Anfang an dabei und erreiche Camper auf einer Plattform, die sich ausschließlich um Camping dreht.
               </p>
 
               <button
                 onClick={onSellClick}
-                className="relative w-full max-w-[300px] sm:w-[300px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02] mx-auto lg:mx-0 cursor-pointer"
+                className="relative w-full max-w-[320px] sm:w-[320px] bg-gradient-to-r from-gold to-beige hover:brightness-110 text-forest font-sans font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center text-[10px] uppercase tracking-wider shadow-lg hover:scale-[1.02] mx-auto lg:mx-0 cursor-pointer"
               >
-                <span>Inserat erstellen – kostenlos</span>
+                <span>INSERAT ERSTELLEN – KOSTENLOS</span>
                 <ArrowRight className="w-4 h-4 absolute right-5 shrink-0" />
               </button>
 

@@ -62,7 +62,24 @@ export default function CategoriesSection({ onSelectCategory, excludeCategory })
       : "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-9 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x";
 
   return (
-    <section id="categories" className="relative  z-20 max-w-7xl mx-auto px-4 ">
+    <section id="categories" className="relative z-20 mx-4 md:mx-8 lg:mx-12 my-8">
+      <div className="max-w-7xl mx-auto">
+      {/* Section Headline */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-8 space-y-2 text-left"
+      >
+        <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+          Kategorien
+        </span>
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-forest leading-[1.1]">
+          Camping hat viele Seiten. Wir bringen sie zusammen.
+        </h2>
+      </motion.div>
+
       {/* Horizontal Scroll on Mobile, Grid on Desktop */}
       <div className={gridClass}>
         {filteredCategories.map((cat, index) => {
@@ -97,6 +114,7 @@ export default function CategoriesSection({ onSelectCategory, excludeCategory })
           );
         })}
       </div>
-    </section>
+    </div>
+  </section>
   );
 }

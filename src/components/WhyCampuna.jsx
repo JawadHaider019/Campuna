@@ -5,21 +5,21 @@ export default function WhyCampuna() {
   const FEATURES = [
     {
       id: '01',
-      icon: Layers,
-      title: 'Kein Plattform-Chaos',
-      desc: 'Keine themenfremden Anzeigen. Auf Campuna geht es ausschließlich um Camping.',
+      icon: Compass,
+      title: 'Camping an einem Ort',
+      desc: 'Angebote, Anbieter, Campingplätze, Services, Wissen und hilfreiche Funktionen auf einer spezialisierten Plattform.',
     },
     {
       id: '02',
       icon: Users,
-      title: 'Von Campern für Camper',
-      desc: 'Eine spezialisierte Plattform für private und gewerbliche Camping-Angebote.',
+      title: 'Von Campern gedacht',
+      desc: 'Wir bauen die Campingplattform, die wir selbst vermisst haben.',
     },
     {
       id: '03',
-      icon: Compass,
-      title: 'Alles an einem Ort',
-      desc: 'Angebote, Anbieter, Stellplätze, Services und Ratgeber auf einer Plattform.',
+      icon: Layers,
+      title: 'Campuna wächst mit euch',
+      desc: 'Camper, private Anbieter, Händler, Campingplätze und Dienstleister bringen Campuna gemeinsam zum Leben.',
     }
   ];
 

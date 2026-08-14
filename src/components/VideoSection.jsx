@@ -22,20 +22,26 @@ export default function VideoSection() {
               viewport={{ once: true }}
               className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block"
             >
-              Ein Ort für Camper.
-            </motion.span>
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
               Das ist Campuna
+            </motion.span>
+            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight max-w-3xl mx-auto">
+              Wir bauen die Campingplattform, die wir selbst vermisst haben.
             </h2>
           </div>
 
-          <div className="font-sans text-sm sm:text-base md:text-lg text-sand/80 max-w-xl mx-auto leading-relaxed font-light space-y-1">
-            <p>Ohne Druck. Ohne Lärm.</p>
-            <p>Ohne versteckte Spielchen.</p>
-            <p className="pt-2 text-white font-medium italic">Hier geht es nicht um Klicks, sondern um echte Angebote.</p>
-            <p className="pt-2">Wenn du etwas suchst, findest du es.</p>
-            <p>Wenn du etwas verkaufen willst, geht es einfach.</p>
-            <p className="text-gold font-medium mt-4">Und wenn du bleiben willst, bleib.</p>
+          <div className="font-sans text-sm sm:text-base md:text-lg text-sand/80 max-w-xl mx-auto leading-relaxed font-light space-y-3">
+            <p>
+              Camping findet heute an vielen verschiedenen Orten statt. Angebote hier, Tipps dort, Campingplätze wieder woanders.
+            </p>
+            <p className="pt-1 text-white font-medium">
+              Unsere Idee ist einfach: <span className="text-gold">Wir wollen Camping an einem Ort zusammenbringen.</span>
+            </p>
+            <p className="pt-1">
+              Das Fundament steht. Jetzt wächst Campuna mit jedem Camper, jedem Inserat, jedem Anbieter und jedem Campingplatz weiter.
+            </p>
+            <p className="text-gold font-semibold text-lg sm:text-xl pt-2">
+              Campuna wächst mit euch.
+            </p>
           </div>
         </div>
 

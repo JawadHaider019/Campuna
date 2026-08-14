@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import HeroSection from '../components/HeroSection';
+import VisionBridgeSection from '../components/VisionBridgeSection';
 import CategoriesSection from '../components/CategoriesSection';
 import FeaturedListings from '../components/FeaturedListings';
 import PartnersSection from '../components/PartnersSection';
@@ -217,8 +218,11 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                 isLoggedIn={isLoggedIn}
             />
 
+            {/* 2. Vision Bridge Section */}
+            <VisionBridgeSection />
+
             {/* 3. Grid Categories */}
-            <div className="-mt-20 md:-mt-24" >
+            <div>
                 <CategoriesSection />
             </div>
             {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
