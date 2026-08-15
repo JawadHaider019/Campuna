@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView, useAnimation } from 'motion/react';
 import { Compass, Users, Layers, ShieldCheck, Heart, Sparkles, Send, CheckCircle2, ArrowRight, Mail, ChevronsDown } from 'lucide-react';
 import SEO from '../components/SEO';
 import { navigateTo } from '../utils/navigation';
@@ -112,6 +112,22 @@ export default function AboutPage() {
 
   const [isMobile, setIsMobile] = useState(false);
 
+  // Scroll-triggered shine on the story image
+  const shineRef = useRef(null);
+  const isShineInView = useInView(shineRef, { once: false, amount: 0.3 });
+  const shineControls = useAnimation();
+
+  useEffect(() => {
+    if (isShineInView) {
+      shineControls.set({ left: '-100%' });
+      shineControls.start({
+        left: '150%',
+        transition: { duration: 1.0, ease: 'easeOut', delay: 0.2 }
+      });
+    }
+  }, [isShineInView, shineControls]);
+
+
   // Check if mobile on mount and when window resizes
   useEffect(() => {
     const checkMobile = () => {
@@ -213,7 +229,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl  font-bold tracking-tight animate-text-shine mb-6 drop-shadow-lg leading-tight text-center"
+            className="font-display text-[28px] sm:text-4xl md:text-5xl  font-bold tracking-tight animate-text-shine mb-6 drop-shadow-lg leading-tight text-center"
           >
             Wir wollen Camping an einem Ort zusammenbringen.
           </motion.h1>
@@ -227,49 +243,84 @@ export default function AboutPage() {
             Campuna ist entstanden, weil wir selbst einen spezialisierten Ort vermisst haben, an dem Angebote, Anbieter, Campingplätze, Wissen und hilfreiche Funktionen rund ums Camping zusammenkommen.
           </motion.p>
 
-          {/* Scroll Down Arrow */}
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{
-              opacity: 1,
-              y: [0, 6, 0]
-            }}
-            transition={{
-              opacity: { delay: 0.4, duration: 0.6 },
-              y: { repeat: Infinity, duration: 2, ease: "easeInOut" }
-            }}
-            onClick={() => {
-              const nextSection = document.getElementById('about-story');
-              if (nextSection) {
-                nextSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            className="mt-8 flex   items-center gap-2.5 px-6 py-3 rounded-full border border-white/20 bg-forest/80 text-white hover:text-gold hover:border-gold/50 transition-all cursor-pointer shadow-lg outline-none group font-sans text-[11px] sm:text-xs uppercase tracking-widest font-semibold"
-            aria-label="Mehr über uns erfahren"
-          >
-            <span>Mehr über uns erfahren</span>
-            <ChevronsDown className="w-4 h-4 transition-colors" />
-          </motion.button>
+          {/* Scroll Down Button with continuous glow */}
+          <div className="relative mt-8 flex items-center justify-center">
+            {/* Continuous glow ring */}
+            <motion.span
+              className="absolute inset-0 rounded-full bg-forest/40 blur-md"
+              animate={{
+                scale: [1, 1.35, 1],
+                opacity: [0.5, 0.15, 0.5],
+              }}
+              transition={{
+                duration: 2.2,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+            />
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{
+                opacity: 1,
+                y: [0, 6, 0]
+              }}
+              transition={{
+                opacity: { delay: 0.4, duration: 0.6 },
+                y: { repeat: Infinity, duration: 2, ease: "easeInOut" }
+              }}
+              onClick={() => {
+                const nextSection = document.getElementById('about-story');
+                if (nextSection) {
+                  nextSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="relative overflow-hidden flex items-center gap-2.5 px-6 py-3 rounded-full border border-white/20 bg-forest/80 text-white cursor-pointer shadow-lg outline-none font-sans text-[11px] sm:text-xs uppercase tracking-widest font-semibold"
+              aria-label="Mehr über uns erfahren"
+            >
+              {/* Continuous shine sweep */}
+              <motion.span
+                className="absolute top-0 h-full w-[45%] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-25deg] pointer-events-none"
+                animate={{ left: ['-60%', '140%'] }}
+                transition={{
+                  duration: 1.4,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatDelay: 2.5,
+                }}
+              />
+              <span>Mehr über uns erfahren</span>
+              <ChevronsDown className="w-4 h-4" />
+            </motion.button>
+          </div>
         </div>
       </section>
 
       {/* SEO Marketplace Strip */}
-      <section className=" pt-12 text-white relative z-20 ">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4 ">
-          <div className="flex items-center gap-3">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-forest opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-forest"></span>
-            </span>
-            <h3 className="font-display text-lg font-bold tracking-wide text-forest">
-              Dein Camping-Marktplatz in Deutschland
-            </h3>
-          </div>
-          <p className="pl-5 sm:pl-0 font-sans text-sm text-black font-light  leading-relaxed">
-            Die spezialisierte Plattform für Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Vermietung und Dienstleistungen rund ums Camping.
-          </p>
+      <section className="pt-10 sm:pt-12 relative z-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-[28px] sm:rounded-[36px] border border-forest/10 shadow-[0_8px_40px_-8px_rgba(20,61,41,0.08)] px-6 sm:px-10 py-6 sm:py-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-forest opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-forest"></span>
+              </span>
+              <h3 className="font-display text-base sm:text-lg font-bold tracking-wide text-forest">
+                Dein Camping-Marktplatz in Deutschland
+              </h3>
+            </div>
+            <p className="font-sans text-sm text-charcoal/60 font-light leading-relaxed sm:text-right max-w-md">
+              Die spezialisierte Plattform für Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Vermietung und Dienstleistungen rund ums Camping.
+            </p>
+          </motion.div>
         </div>
       </section>
+
 
       {/* 2. "WARUM ES CAMPUNA GIBT" SECTION */}
       <section id="about-story" className="py-10 sm:py-16 bg-white relative">
@@ -328,26 +379,18 @@ export default function AboutPage() {
               {/* Interactive background shadow */}
               <div className="absolute inset-0 bg-gold/10 rounded-[32px] sm:rounded-[40px] transform rotate-3 translate-x-2 translate-y-2 -z-10 group-hover:rotate-1 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-500" />
 
-              <div className="relative overflow-hidden rounded-[32px] sm:rounded-[40px] shadow-2xl border border-forest/10 aspect-[1/1] bg-sand/5">
+              <div ref={shineRef} className="relative overflow-hidden rounded-[32px] sm:rounded-[40px] shadow-2xl border border-forest/10 aspect-[1/1] bg-sand/5">
                 <img
                   src="/about_founder.jpg"
                   alt="Campuna outdoor lifestyle sunset on a boat"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 />
 
-                {/* Auto-looping Shine effect (starts after page loads, runs every 4s) */}
+                {/* Scroll-triggered Shine effect — fires on every viewport entry */}
                 <motion.div
-                  className="absolute top-0 h-full w-[45%] pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                  style={{ skewX: -25 }}
-                  animate={{
-                    left: ['-60%', '140%'],
-                  }}
-                  transition={{
-                    duration: 1.6,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatDelay: 4.5,
-                  }}
+                  className="absolute top-0 h-full w-[50%] pointer-events-none bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-25deg]"
+                  initial={{ left: '-100%' }}
+                  animate={shineControls}
                 />
 
                 {/* Instant Hover Shine effect */}
@@ -397,7 +440,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="p-8 rounded-[32px] bg-white border border-forest/10 shadow-[0_16px_40px_-10px_rgba(20,61,41,0.04)] hover:shadow-[0_20px_50px_-8px_rgba(20,61,41,0.08)] hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+              className="px-4 py-6 md:p-8 rounded-[32px] bg-white border border-forest/10 shadow-[0_16px_40px_-10px_rgba(20,61,41,0.04)] hover:shadow-[0_20px_50px_-8px_rgba(20,61,41,0.08)] hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
             >
               {/* Subtle hover background highlight */}
               <div className="absolute inset-0 bg-gradient-to-br from-forest/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -473,7 +516,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="p-8 rounded-[32px] bg-gradient-to-br from-forest to-[#143d29] text-white border border-white/5 shadow-xl hover:shadow-[0_20px_50px_-8px_rgba(20,61,41,0.2)] hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+              className="px-4 py-6 md:p-8 rounded-[32px] bg-gradient-to-br from-forest to-[#143d29] text-white border border-white/5 shadow-xl hover:shadow-[0_20px_50px_-8px_rgba(20,61,41,0.2)] hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
             >
               {/* Moving shine effect for Vision Card */}
               <motion.div
@@ -546,10 +589,20 @@ export default function AboutPage() {
       </section>
 
       {/* 4. SIX VALUE CARDS */}
-      <section className="py-10 sm:py-16 bg-white relative">
+      <section className="py-10 sm:py-16 bg-white relative overflow-hidden">
+        {/* Ambient background accents */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold/4 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-forest/4 rounded-full blur-[100px] pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           {/* Section Title */}
-          <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto text-center mb-14 space-y-2"
+          >
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
               Unsere Werte
             </span>
@@ -563,144 +616,140 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="h-0.5 bg-gold mx-auto rounded-full mt-4"
             />
-          </div>
+          </motion.div>
 
-          {/* Interactive Timeline Layout */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px", amount: 0.1 }}
-            className="relative mt-8 md:mt-16"
-          >
-            {/* Vertical Line - Desktop only */}
-            {!isMobile && (
-              <motion.div
-                className="absolute left-1/2 -translate-x-1/2 w-[2px] h-full hidden md:block"
-                initial={{ scaleY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-                style={{ transformOrigin: "top" }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-forest via-gold to-forest" />
-                <div className="absolute inset-0 blur-[2px] bg-forest/30" />
-              </motion.div>
-            )}
+          {/* Pipeline Diagram with Rich Cards */}
+          {(() => {
+            const COLORS = ['#143D29', '#C8A96B', '#E11D48', '#6366F1', '#059669', '#D97706'];
 
-            {/* Mobile vertical line */}
-            {isMobile && (
-              <div className="absolute left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-forest/20 via-forest to-forest/20 md:hidden" />
-            )}
-
-            {VALUE_CARDS.map((item, index) => {
-              const Icon = item.icon;
-              const isLeft = !isMobile && index % 2 === 0;
-              const stepNumber = `0${index + 1}`;
-              const stepLabel = `Wert ${index + 1}`;
-
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className={`relative flex flex-col ${isMobile
-                    ? 'ml-12 mb-8'
-                    : `md:flex-row items-start gap-8 mb-8 last:mb-0 ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}`
-                    }`}
-                >
-                  {/* Number Circle with Icon */}
-                  <motion.div
-                    className={`${isMobile
-                      ? 'absolute -left-12 top-0 z-10'
-                      : 'absolute left-0 md:left-1/2 md:-translate-x-1/2 -top-2 md:top-1/2 md:-translate-y-1/2'
-                      }`}
-                    variants={numberVariants}
+            return (
+              <div className="relative w-full max-w-6xl mx-auto">
+                {/* Full-Section Overlay SVG Streams (Active on all screens) */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                  <svg
+                    viewBox="0 0 1000 680"
+                    preserveAspectRatio="none"
+                    className="w-full h-full overflow-visible"
                   >
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-lg cursor-default bg-white"
-                    >
-                      {/* Gradient Border */}
-                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-forest via-gold to-forest p-[2px]">
-                        <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                          <Icon className="w-4 h-4 md:w-5 md:h-5 text-forest" />
-                        </div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
+                    <defs>
+                      {VALUE_CARDS.map((_, i) => (
+                        <linearGradient key={i} id={`d-stream-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor={COLORS[i]} />
+                          <stop offset="100%" stopColor={COLORS[i]} stopOpacity="0.4" />
+                        </linearGradient>
+                      ))}
+                      <filter id="d-glow-effect" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="4" result="b" />
+                        <feComposite in="SourceGraphic" in2="b" operator="over" />
+                      </filter>
+                    </defs>
 
-                  {/* Content Card */}
-                  <div className={`w-full ${isMobile
-                    ? ''
-                    : `md:w-[calc(50%-40px)] ${isLeft ? 'md:pr-8' : 'md:pl-8 md:text-right'}`
-                    }`}>
-                    <motion.div
-                      variants={isMobile ? cardVariants : (isLeft ? leftCardVariants : rightCardVariants)}
-                      whileHover={!isMobile ? {
-                        y: -5,
-                        boxShadow: "0 20px 40px rgba(20,61,41,0.08)"
-                      } : {}}
-                      className="relative bg-white p-5 md:p-6 rounded-[32px] border border-forest/10 shadow-sm transition-all duration-300 overflow-hidden cursor-pointer"
-                    >
-                      {/* Value Index Badge - Positioned based on card side */}
-                      {!isMobile && (
-                        <div className={`absolute top-4 ${isLeft ? 'right-6' : 'left-6'}`}>
-                          <span className="font-sans text-[10px] font-bold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-gold to-[#a98a4b]">
-                            {stepLabel}
-                          </span>
-                        </div>
-                      )}
+                    {/* 6 Bezier Streams Anchored at Right Edge of Cards (56% = X=560) → Far-Right Hub (89% = X=890, Y=340) */}
+                    {[
+                      { path: 'M 560,50 C 680,50 810,340 890,340' },
+                      { path: 'M 560,166 C 680,166 810,340 890,340' },
+                      { path: 'M 560,282 C 680,282 810,340 890,340' },
+                      { path: 'M 560,398 C 680,398 810,340 890,340' },
+                      { path: 'M 560,514 C 680,514 810,340 890,340' },
+                      { path: 'M 560,630 C 680,630 810,340 890,340' }
+                    ].map((item, i) => (
+                      <g key={i}>
+                        <path
+                          d={item.path}
+                          fill="none"
+                          stroke={COLORS[i]}
+                          strokeWidth="8"
+                          strokeOpacity="0.16"
+                          vectorEffect="non-scaling-stroke"
+                          filter="url(#d-glow-effect)"
+                        />
+                        <path
+                          d={item.path}
+                          fill="none"
+                          stroke={`url(#d-stream-${i})`}
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        <motion.path
+                          d={item.path}
+                          fill="none"
+                          stroke="#fff"
+                          strokeWidth="2.5"
+                          strokeDasharray="18 110"
+                          strokeLinecap="round"
+                          vectorEffect="non-scaling-stroke"
+                          animate={{ strokeDashoffset: [128, -128] }}
+                          transition={{ duration: 2.6 + i * 0.2, repeat: Infinity, ease: 'linear' }}
+                        />
+                      </g>
+                    ))}
+                  </svg>
+                </div>
 
-                      {/* Mobile Title with Icon */}
-                      {isMobile && (
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[9px] font-sans text-gold font-bold uppercase tracking-wider">
-                            {stepLabel}
-                          </span>
-                        </div>
-                      )}
+                {/* Main Content Grid - Strictly Side-by-Side ROW */}
+                <div className="flex flex-row items-center justify-between gap-1 sm:gap-0 relative z-10">
+                  {/* LEFT: 6 Value Cards (56% Width - Universal Lock) */}
+                  <div className="w-[56%] space-y-3 sm:space-y-4">
+                    {VALUE_CARDS.map((item, index) => {
+                      const Icon = item.icon;
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+                          className="group relative bg-white border border-forest/10 rounded-[16px] sm:rounded-[24px] p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-[0_16px_40px_-10px_rgba(20,61,41,0.12)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer h-[92px] sm:h-[100px] flex flex-col justify-center"
+                        >
+                          {/* Top Header: Title + Icon Badge */}
+                          <div className="flex items-center justify-between gap-1 sm:gap-2 pl-1 sm:pl-2">
+                            <h3 className="font-display text-[10px] sm:text-[17px] lg:text-lg font-bold text-forest leading-snug">
+                              {item.title}
+                            </h3>
 
-                      {/* Title */}
-                      <h3 className={`font-display text-lg sm:text-xl font-bold text-forest mb-2 ${!isMobile && isLeft ? 'pr-20' : !isMobile && !isLeft ? 'pl-20' : ''
-                        }`}>
-                        {item.title}
-                      </h3>
+                            <div
+                              className="hidden lg:flex w-8 h-8 rounded-full items-center justify-center shrink-0 shadow-2xs"
+                              style={{ backgroundColor: `${COLORS[index]}15` }}
+                            >
+                              <Icon className="w-4 h-4" style={{ color: COLORS[index] }} />
+                            </div>
+                          </div>
 
-                      {/* Description */}
-                      <p className={`font-sans text-sm text-charcoal/65 leading-relaxed font-light ${!isMobile && isLeft ? 'pr-20' : !isMobile && !isLeft ? 'pl-20' : ''
-                        }`}>
-                        {item.desc}
-                      </p>
-
-                      {/* Bottom Accent Line */}
-                      <motion.div
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-forest to-gold"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: '30%' }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        viewport={{ once: true }}
-                      />
-
-                      {/* Watermark Step Number - Positioned based on card side */}
-                      {!isMobile && (
-                        <div className={`absolute top-1/2 -translate-y-1/2 ${isLeft ? 'left-6' : 'right-6'
-                          } opacity-20`}>
-                          <span className="font-display text-6xl md:text-7xl font-black text-forest/[0.04]">
-                            {stepNumber}
-                          </span>
-                        </div>
-                      )}
-                    </motion.div>
+                          {/* Description */}
+                          <p className="font-sans text-[10px] sm:text-[12px] lg:text-sm text-charcoal/70 leading-tight sm:leading-relaxed font-light pl-1 sm:pl-2 mt-0.5 sm:mt-1">
+                            {item.desc}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
                   </div>
 
-                  {/* Empty space for desktop alignment */}
-                  {!isMobile && <div className="hidden md:block md:w-[calc(50%-40px)]" />}
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                  {/* RIGHT: Campuna Hub (44% Width - Universal Lock) */}
+                  <div className="flex w-[44%] items-center justify-end pr-2 sm:pr-6 md:pr-10 lg:pr-14">
+                    <div className="relative flex items-center justify-center">
+                      <motion.div
+                        className="w-16 h-16 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-forest/30 flex items-center justify-center"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+                      />
+                      <motion.div
+                        className="absolute w-12 h-12 sm:w-22 sm:h-22 rounded-full border-2 border-gold/50"
+                        animate={{ scale: [1, 1.22, 1], opacity: [0.7, 0.2, 0.7] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                      />
+                      <div className="absolute w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-white border-2 sm:border-4 border-forest shadow-xl flex items-center justify-center overflow-hidden">
+                        <img src="/fav.png" alt="Campuna" className="w-6 h-6 sm:w-9 sm:h-9 object-contain" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
         </div>
+
 
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <motion.div
