@@ -170,7 +170,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   return (
     <nav
       id="main-navbar"
-      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-4 ${isScrolled || !isHomepage ? 'top-0 shadow-md border-b border-forest/5' : 'top-[75px] sm:top-[65px] md:top-[75px] lg:top-[64px]'
+      className={`fixed left-0 w-full z-50 transition-all duration-300 bg-white py-4 ${isScrolled || !isHomepage ? 'top-0 ' : 'top-[75px] sm:top-[65px] md:top-[75px] lg:top-[64px]'
         }`}
     >
       <div className="max-w-8xl mx-auto px-4 md:px-12">

@@ -390,7 +390,7 @@ export default function FeaturedListings({
 
   return (
     <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-24 overflow-hidden">
-      <div className="max-w-8xl mx-auto px-4 md:px-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
           <div className="space-y-2">
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">

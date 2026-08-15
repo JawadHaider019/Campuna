@@ -62,8 +62,8 @@ export default function CategoriesSection({ onSelectCategory, excludeCategory })
       : "flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-9 gap-3 md:gap-4 pb-4 lg:pb-1 no-scrollbar snap-x";
 
   return (
-    <section id="categories" className="relative z-20 mx-4 md:mx-8 lg:mx-12 my-8">
-      <div className="max-w-7xl mx-auto">
+    <section id="categories" className="relative z-20 my-8 py-4">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
       {/* Section Headline */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

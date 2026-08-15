@@ -24,7 +24,7 @@ export default function VideoSection() {
             >
               Das ist Campuna
             </motion.span>
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight max-w-3xl mx-auto">
+            <h2 className="font-display  text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl mx-auto">
               Wir bauen die Campingplattform, die wir selbst vermisst haben.
             </h2>
           </div>

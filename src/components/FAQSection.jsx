@@ -15,7 +15,7 @@ export default function FAQSection() {
       {/* Decorative background element */}
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-sand/30 rounded-full blur-3xl pointer-events-none opacity-50" />
 
-      <div className="max-w-4xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-8 space-y-3">
@@ -29,7 +29,7 @@ export default function FAQSection() {
         </div>
 
         {/* FAQ Accordion List - Refined Design */}
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-[90%] mx-auto">
           {FAQS.map((faq, index) => {
             const isOpen = openId === faq.id;
             return (
@@ -78,7 +78,7 @@ export default function FAQSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     >
-                      <div className="px-8 md:px-10 pb-4 font-sans text-sm text-charcoal/70 leading-relaxed font-light max-w-3xl whitespace-pre-line">
+                      <div className="px-8 md:px-10 pb-4 font-sans text-sm text-charcoal/70 leading-relaxed font-light whitespace-pre-line">
                         {faq.answer}
                       </div>
                     </motion.div>
