@@ -589,7 +589,7 @@ export default function AboutPage() {
       </section>
 
       {/* 4. SIX VALUE CARDS */}
-      <section className="py-10 sm:py-16 bg-white relative overflow-hidden">
+      <section className="pt-10 sm:pt-16 pb-2 sm:pb-10 bg-white relative overflow-hidden">
         {/* Ambient background accents */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold/4 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-forest/4 rounded-full blur-[100px] pointer-events-none" />
@@ -623,128 +623,247 @@ export default function AboutPage() {
             const COLORS = ['#143D29', '#C8A96B', '#E11D48', '#6366F1', '#059669', '#D97706'];
 
             return (
-              <div className="relative w-full max-w-6xl mx-auto">
-                {/* Full-Section Overlay SVG Streams (Active on all screens) */}
-                <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-                  <svg
-                    viewBox="0 0 1000 680"
-                    preserveAspectRatio="none"
-                    className="w-full h-full overflow-visible"
-                  >
-                    <defs>
-                      {VALUE_CARDS.map((_, i) => (
-                        <linearGradient key={i} id={`d-stream-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor={COLORS[i]} />
-                          <stop offset="100%" stopColor={COLORS[i]} stopOpacity="0.4" />
-                        </linearGradient>
+              <>
+                {/* DESKTOP DIAGRAM (Visible on md screens and up) */}
+                <div className="hidden md:block relative w-full max-w-6xl mx-auto">
+                  {/* Full-Section Overlay SVG Streams */}
+                  <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                    <svg
+                      viewBox="0 0 1000 680"
+                      preserveAspectRatio="none"
+                      className="w-full h-full overflow-visible"
+                    >
+                      <defs>
+                        {VALUE_CARDS.map((_, i) => (
+                          <linearGradient key={i} id={`d-stream-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor={COLORS[i]} />
+                            <stop offset="100%" stopColor={COLORS[i]} stopOpacity="0.4" />
+                          </linearGradient>
+                        ))}
+                        <filter id="d-glow-effect" x="-50%" y="-50%" width="200%" height="200%">
+                          <feGaussianBlur stdDeviation="4" result="b" />
+                          <feComposite in="SourceGraphic" in2="b" operator="over" />
+                        </filter>
+                      </defs>
+
+                      {/* 6 Bezier Streams Anchored at Right Edge of Cards (56% = X=560) → Far-Right Hub (89% = X=890, Y=340) */}
+                      {[
+                        { path: 'M 560,50 C 680,50 810,340 890,340' },
+                        { path: 'M 560,166 C 680,166 810,340 890,340' },
+                        { path: 'M 560,282 C 680,282 810,340 890,340' },
+                        { path: 'M 560,398 C 680,398 810,340 890,340' },
+                        { path: 'M 560,514 C 680,514 810,340 890,340' },
+                        { path: 'M 560,630 C 680,630 810,340 890,340' }
+                      ].map((item, i) => (
+                        <g key={i}>
+                          <path
+                            d={item.path}
+                            fill="none"
+                            stroke={COLORS[i]}
+                            strokeWidth="8"
+                            strokeOpacity="0.16"
+                            vectorEffect="non-scaling-stroke"
+                            filter="url(#d-glow-effect)"
+                          />
+                          <path
+                            d={item.path}
+                            fill="none"
+                            stroke={`url(#d-stream-${i})`}
+                            strokeWidth="3.5"
+                            strokeLinecap="round"
+                            vectorEffect="non-scaling-stroke"
+                          />
+                          <motion.path
+                            d={item.path}
+                            fill="none"
+                            stroke="#fff"
+                            strokeWidth="2.5"
+                            strokeDasharray="18 110"
+                            strokeLinecap="round"
+                            vectorEffect="non-scaling-stroke"
+                            animate={{ strokeDashoffset: [128, -128] }}
+                            transition={{ duration: 2.6 + i * 0.2, repeat: Infinity, ease: 'linear' }}
+                          />
+                        </g>
                       ))}
-                      <filter id="d-glow-effect" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="4" result="b" />
-                        <feComposite in="SourceGraphic" in2="b" operator="over" />
-                      </filter>
-                    </defs>
-
-                    {/* 6 Bezier Streams Anchored at Right Edge of Cards (56% = X=560) → Far-Right Hub (89% = X=890, Y=340) */}
-                    {[
-                      { path: 'M 560,50 C 680,50 810,340 890,340' },
-                      { path: 'M 560,166 C 680,166 810,340 890,340' },
-                      { path: 'M 560,282 C 680,282 810,340 890,340' },
-                      { path: 'M 560,398 C 680,398 810,340 890,340' },
-                      { path: 'M 560,514 C 680,514 810,340 890,340' },
-                      { path: 'M 560,630 C 680,630 810,340 890,340' }
-                    ].map((item, i) => (
-                      <g key={i}>
-                        <path
-                          d={item.path}
-                          fill="none"
-                          stroke={COLORS[i]}
-                          strokeWidth="8"
-                          strokeOpacity="0.16"
-                          vectorEffect="non-scaling-stroke"
-                          filter="url(#d-glow-effect)"
-                        />
-                        <path
-                          d={item.path}
-                          fill="none"
-                          stroke={`url(#d-stream-${i})`}
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          vectorEffect="non-scaling-stroke"
-                        />
-                        <motion.path
-                          d={item.path}
-                          fill="none"
-                          stroke="#fff"
-                          strokeWidth="2.5"
-                          strokeDasharray="18 110"
-                          strokeLinecap="round"
-                          vectorEffect="non-scaling-stroke"
-                          animate={{ strokeDashoffset: [128, -128] }}
-                          transition={{ duration: 2.6 + i * 0.2, repeat: Infinity, ease: 'linear' }}
-                        />
-                      </g>
-                    ))}
-                  </svg>
-                </div>
-
-                {/* Main Content Grid - Strictly Side-by-Side ROW */}
-                <div className="flex flex-row items-center justify-between gap-1 sm:gap-0 relative z-10">
-                  {/* LEFT: 6 Value Cards (56% Width - Universal Lock) */}
-                  <div className="w-[56%] space-y-3 sm:space-y-4">
-                    {VALUE_CARDS.map((item, index) => {
-                      const Icon = item.icon;
-                      return (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-                          className="group relative bg-white border border-forest/10 rounded-[16px] sm:rounded-[24px] p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-[0_16px_40px_-10px_rgba(20,61,41,0.12)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer h-[92px] sm:h-[100px] flex flex-col justify-center"
-                        >
-                          {/* Top Header: Title + Icon Badge */}
-                          <div className="flex items-center justify-between gap-1 sm:gap-2 pl-1 sm:pl-2">
-                            <h3 className="font-display text-[10px] sm:text-[17px] lg:text-lg font-bold text-forest leading-snug">
-                              {item.title}
-                            </h3>
-
-                            <div
-                              className="hidden lg:flex w-8 h-8 rounded-full items-center justify-center shrink-0 shadow-2xs"
-                              style={{ backgroundColor: `${COLORS[index]}15` }}
-                            >
-                              <Icon className="w-4 h-4" style={{ color: COLORS[index] }} />
-                            </div>
-                          </div>
-
-                          {/* Description */}
-                          <p className="font-sans text-[10px] sm:text-[12px] lg:text-sm text-charcoal/70 leading-tight sm:leading-relaxed font-light pl-1 sm:pl-2 mt-0.5 sm:mt-1">
-                            {item.desc}
-                          </p>
-                        </motion.div>
-                      );
-                    })}
+                    </svg>
                   </div>
 
-                  {/* RIGHT: Campuna Hub (44% Width - Universal Lock) */}
-                  <div className="flex w-[44%] items-center justify-end pr-2 sm:pr-6 md:pr-10 lg:pr-14">
-                    <div className="relative flex items-center justify-center">
-                      <motion.div
-                        className="w-16 h-16 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-forest/30 flex items-center justify-center"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-                      />
-                      <motion.div
-                        className="absolute w-12 h-12 sm:w-22 sm:h-22 rounded-full border-2 border-gold/50"
-                        animate={{ scale: [1, 1.22, 1], opacity: [0.7, 0.2, 0.7] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                      />
-                      <div className="absolute w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-white border-2 sm:border-4 border-forest shadow-xl flex items-center justify-center overflow-hidden">
-                        <img src="/fav.png" alt="Campuna" className="w-6 h-6 sm:w-9 sm:h-9 object-contain" />
+                  {/* Main Content Grid - Side-by-Side ROW */}
+                  <div className="flex flex-row items-center justify-between gap-0 relative z-10">
+                    {/* LEFT: 6 Value Cards (56% Width) */}
+                    <div className="w-[56%] space-y-4">
+                      {VALUE_CARDS.map((item, index) => {
+                        const Icon = item.icon;
+                        return (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+                            className="group relative bg-white border border-forest/10 rounded-[24px] p-5 shadow-sm hover:shadow-[0_16px_40px_-10px_rgba(20,61,41,0.12)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer h-[100px] flex flex-col justify-center"
+                          >
+                            {/* Top Header: Title + Icon Badge */}
+                            <div className="flex items-center justify-between gap-2 pl-2">
+                              <h3 className="font-display text-lg font-bold text-forest leading-snug">
+                                {item.title}
+                              </h3>
+
+                              <div
+                                className="flex w-8 h-8 rounded-full items-center justify-center shrink-0 shadow-2xs"
+                                style={{ backgroundColor: `${COLORS[index]}15` }}
+                              >
+                                <Icon className="w-4 h-4" style={{ color: COLORS[index] }} />
+                              </div>
+                            </div>
+
+                            {/* Description */}
+                            <p className="font-sans text-sm text-charcoal/70 leading-relaxed font-light pl-2 mt-1">
+                              {item.desc}
+                            </p>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+
+                    {/* RIGHT: Campuna Hub (44% Width) */}
+                    <div className="flex w-[44%] items-center justify-end pr-14">
+                      <div className="relative flex items-center justify-center">
+                        <motion.div
+                          className="w-28 h-28 rounded-full border-2 border-dashed border-forest/30 flex items-center justify-center"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+                        />
+                        <motion.div
+                          className="absolute w-22 h-22 rounded-full border-2 border-gold/50"
+                          animate={{ scale: [1, 1.22, 1], opacity: [0.7, 0.2, 0.7] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        />
+                        <div className="absolute w-16 h-16 rounded-full bg-white border-4 border-forest shadow-xl flex items-center justify-center overflow-hidden">
+                          <img src="/fav.png" alt="Campuna" className="w-9 h-9 object-contain" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+
+                {/* MOBILE DIAGRAM (Visible only on mobile: block md:hidden) */}
+                <div className="block md:hidden relative w-full max-w-md mx-auto px-2">
+                  {/* TOP: Logo / Hub */}
+                  <div className="flex flex-col items-center relative z-10 mb-1">
+                    <div className="relative flex items-center justify-center z-10">
+                      <motion.div
+                        className="w-20 h-20 rounded-full border-2 border-dashed border-forest/30 flex items-center justify-center bg-white/50 backdrop-blur-xs"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+                      />
+                      <motion.div
+                        className="absolute w-16 h-16 rounded-full border-2 border-gold/50"
+                        animate={{ scale: [1, 1.22, 1], opacity: [0.7, 0.2, 0.7] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                      />
+                      <div className="absolute w-12 h-12 rounded-full bg-white border-3 border-forest shadow-xl flex items-center justify-center overflow-hidden z-10">
+                        <img src="/fav.png" alt="Campuna" className="w-7 h-7 object-contain" />
+                      </div>
+                    </div>
+
+                    {/* Pipe Connecting Logo Bottom to 1st Card Top (Runs behind) */}
+                    <div className="relative flex justify-center items-center h-14 w-full pointer-events-none -my-3 z-0">
+                      <svg className="w-8 h-full overflow-visible" viewBox="0 0 24 56">
+                        <defs>
+                          <linearGradient id="v-pipe-logo-0" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#143D29" />
+                            <stop offset="100%" stopColor={COLORS[0]} />
+                          </linearGradient>
+                        </defs>
+                        <line x1="12" y1="0" x2="12" y2="56" stroke="#143D29" strokeWidth="8" strokeOpacity="0.45" strokeLinecap="round" />
+                        <line x1="12" y1="0" x2="12" y2="56" stroke="url(#v-pipe-logo-0)" strokeWidth="4" strokeLinecap="round" />
+                        <motion.line
+                          x1="12"
+                          y1="0"
+                          x2="12"
+                          y2="56"
+                          stroke="#ffffff"
+                          strokeWidth="3"
+                          strokeDasharray="12 28"
+                          strokeLinecap="round"
+                          animate={{ strokeDashoffset: [40, -40] }}
+                          transition={{ duration: 1.6, repeat: Infinity, ease: 'linear' }}
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* CARDS & PIPES VERTICAL FLOW */}
+                  <div className="flex flex-col items-center w-full">
+                    {VALUE_CARDS.map((item, index) => {
+                      const Icon = item.icon;
+                      const cardColor = COLORS[index];
+                      const nextColor = COLORS[index + 1] || COLORS[index];
+                      const isLast = index === VALUE_CARDS.length - 1;
+
+                      return (
+                        <React.Fragment key={index}>
+                          {/* Card */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: index * 0.06 }}
+                            className="group relative z-10 bg-white border border-forest/10 rounded-[20px] p-4 shadow-sm hover:shadow-md transition-all duration-300 w-full"
+                          >
+                            <div className="flex items-start gap-3">
+                              <div
+                                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-2xs mt-0.5"
+                                style={{ backgroundColor: `${cardColor}15` }}
+                              >
+                                <Icon className="w-5 h-5" style={{ color: cardColor }} />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="font-display text-base font-bold text-forest leading-snug">
+                                  {item.title}
+                                </h3>
+                                <p className="font-sans text-xs text-charcoal/70 leading-relaxed font-light mt-1">
+                                  {item.desc}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+
+                          {/* Pipe connecting bottom of card[index] to top of card[index + 1] (Runs behind) */}
+                          {!isLast && (
+                            <div className="relative flex justify-center items-center h-14 w-full pointer-events-none -my-3 z-0">
+                              <svg className="w-8 h-full overflow-visible" viewBox="0 0 24 56">
+                                <defs>
+                                  <linearGradient id={`v-pipe-card-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stopColor={cardColor} />
+                                    <stop offset="100%" stopColor={nextColor} />
+                                  </linearGradient>
+                                </defs>
+                                <line x1="12" y1="0" x2="12" y2="56" stroke={cardColor} strokeWidth="8" strokeOpacity="0.45" strokeLinecap="round" />
+                                <line x1="12" y1="0" x2="12" y2="56" stroke={`url(#v-pipe-card-${index})`} strokeWidth="4" strokeLinecap="round" />
+                                <motion.line
+                                  x1="12"
+                                  y1="0"
+                                  x2="12"
+                                  y2="56"
+                                  stroke="#ffffff"
+                                  strokeWidth="3"
+                                  strokeDasharray="12 28"
+                                  strokeLinecap="round"
+                                  animate={{ strokeDashoffset: [40, -40] }}
+                                  transition={{ duration: 1.6 + index * 0.1, repeat: Infinity, ease: 'linear' }}
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
             );
           })()}
 
@@ -774,7 +893,7 @@ export default function AboutPage() {
 
       {/* 6. NEWSLETTER / UPDATE SECTION */}
       <section id="newsletter-section" className="pb-16 bg-white relative">
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto relative z-10 px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
