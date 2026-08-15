@@ -14,6 +14,7 @@ import CreateListingPage from './pages/CreateListingPage';
 import CampingHelferPage from './pages/CampingHelferPage';
 import ZuladungsrechnerPage from './pages/ZuladungsrechnerPage';
 import ReisekostenrechnerPage from './pages/ReisekostenrechnerPage';
+import AboutPage from './pages/AboutPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -140,6 +141,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<HeroPage isLoggedIn={loggedIn} />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
         <Route path="/auth" element={<LoginSignupPage />} />
         <Route path="/category" element={<CategoryPage />} />
