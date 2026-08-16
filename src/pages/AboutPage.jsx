@@ -193,7 +193,7 @@ export default function AboutPage() {
       <SEO
         title="Über uns – Warum es Campuna gibt | Der Camping-Marktplatz"
         description="Erfahre mehr über die Vision von Campuna, warum wir die Campingplattform aufbauen, die wir selbst vermisst haben, und wie wir Camping an einem Ort zusammenbringen."
-        canonicalPath="about_us"
+        canonicalPath="uber_campuna"
       />
 
       {/* 1. HERO SECTION */}

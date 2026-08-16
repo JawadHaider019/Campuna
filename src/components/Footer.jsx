@@ -60,7 +60,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href={getParentNavigationUrl('about_us')} target="_parent" className="hover:text-forest transition-colors font-[400]">
+                <a href={getParentNavigationUrl('uber_campuna')} target="_parent" className="hover:text-forest transition-colors font-[400]">
                   Über uns
                 </a>
               </li>
