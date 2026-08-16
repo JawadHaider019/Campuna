@@ -142,6 +142,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HeroPage isLoggedIn={loggedIn} />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/about_us" element={<AboutPage />} />
         <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
         <Route path="/auth" element={<LoginSignupPage />} />
         <Route path="/category" element={<CategoryPage />} />

@@ -14,6 +14,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
 
   const navLinks = [
     { label: 'Startseite', id: 'top' },
+    { label: 'Über uns', path: '/about' },
     { label: 'Entdecke', id: 'tool' },
     { label: 'Spotlight', id: 'campuna-spotlight' },
     { label: 'Zum Stöbern', id: 'exclusive-offers' },
@@ -36,8 +37,13 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
     return false;
   };
 
-  const handleNavClick = (id) => {
+  const handleNavClick = (id, path) => {
     setIsOpen(false);
+
+    if (path) {
+      navigateTo(path);
+      return;
+    }
 
     if (id === 'top') {
       if (isHomepage) {
@@ -190,11 +196,13 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navLinks.map((link) => {
-              const isActive = isHomepage && activeSection === link.id;
+              const isActive = link.path
+                ? (location.pathname === link.path || (link.path === '/about' && location.pathname === '/about_us'))
+                : (isHomepage && activeSection === link.id);
               return (
                 <button
-                  key={link.id}
-                  onClick={() => handleNavClick(link.id)}
+                  key={link.id || link.path}
+                  onClick={() => handleNavClick(link.id, link.path)}
                   className={`relative font-sans text-sm font-medium tracking-wide transition-colors duration-200 py-1 ${isActive ? 'text-gold font-semibold' : 'text-forest hover:text-gold'
                     }`}
                 >
@@ -265,11 +273,13 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
           >
             <div className="px-6 py-6 flex flex-col space-y-4">
               {navLinks.map((link) => {
-                const isActive = isHomepage && activeSection === link.id;
+                const isActive = link.path
+                  ? (location.pathname === link.path || (link.path === '/about' && location.pathname === '/about_us'))
+                  : (isHomepage && activeSection === link.id);
                 return (
                   <button
-                    key={link.id}
-                    onClick={() => handleNavClick(link.id)}
+                    key={link.id || link.path}
+                    onClick={() => handleNavClick(link.id, link.path)}
                     className={`font-sans text-base font-medium text-left transition-colors duration-200 flex items-center justify-between py-1.5 ${isActive ? 'text-gold font-bold' : 'text-forest hover:text-gold'
                       }`}
                   >
