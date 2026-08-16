@@ -3,7 +3,7 @@ import { ArrowRight, BadgeCheck, PlusCircle, Sparkles, Mail, Phone } from 'lucid
 
 export default function CTASection({ onSellClick }) {
   return (
-    <section id="seller-cta" className="py-10 sm:py-16 bg-white">
+    <section id="seller-cta" className="py-5 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

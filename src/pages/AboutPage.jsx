@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView, useAnimation } from 'motion/react';
 import { Compass, Users, Layers, ShieldCheck, Heart, Sparkles, Send, CheckCircle2, ArrowRight, Mail, ChevronsDown } from 'lucide-react';
 import SEO from '../components/SEO';
+import CTASection from '../components/CTASection';
 import { navigateTo } from '../utils/navigation';
 
 // Variants for timeline animations
@@ -1016,6 +1017,7 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section> */}
+      <CTASection />
     </div>
   );
 }
