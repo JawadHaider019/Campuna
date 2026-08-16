@@ -314,7 +314,7 @@ export default function AboutPage() {
                 Dein Camping-Marktplatz in Deutschland
               </h3>
             </div>
-            <p className="font-sans text-sm text-charcoal/60 font-light leading-relaxed sm:text-right max-w-md">
+            <p className="pl-6 sm:pl-0 font-sans text-sm text-charcoal/60 font-light leading-relaxed sm:text-right max-w-md">
               Die spezialisierte Plattform für Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Vermietung und Dienstleistungen rund ums Camping.
             </p>
           </motion.div>
@@ -338,7 +338,7 @@ export default function AboutPage() {
                 <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                   Die Geschichte
                 </span>
-                <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest leading-tight">
+                <h2 className="font-display text-[26px] sm:text-[40px] font-bold tracking-tight text-forest leading-tight">
                   Warum es Campuna gibt
                 </h2>
                 <motion.div
@@ -876,11 +876,11 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="p-8 text-center space-y-4 "
+            className="p-6 text-center space-y-2 "
           >
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-forest leading-tight">
               Das Fundament steht.{' '}
-              <span className="text-gold font-medium block sm:inline">
+              <span className="text-gold text-sm sm:text-3xl md:text-4xl tracking-[0.2px] font-medium block sm:inline">
                 Was daraus wird, entsteht mit euch.
               </span>
             </h2>
@@ -892,14 +892,14 @@ export default function AboutPage() {
       </section>
 
       {/* 6. NEWSLETTER / UPDATE SECTION */}
-      <section id="newsletter-section" className="pb-16 bg-white relative">
+      <section id="newsletter-section" className="pb-10 bg-white relative">
         <div className="max-w-7xl mx-auto relative z-10 px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="group relative rounded-[40px] overflow-hidden bg-gradient-to-br from-forest via-forest to-[#143d29] px-8 py-16 sm:px-12 sm:py-20 lg:px-16 lg:py-16 shadow-lg border border-white/5"
+            className="group relative rounded-[40px] overflow-hidden bg-gradient-to-br from-forest via-forest to-[#143d29] px-8 py-16 sm:px-12 sm:py-20 lg:px-16 lg:py-16 shadow-md border border-white/5"
           >
             {/* Ambient glows */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
