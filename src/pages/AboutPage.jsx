@@ -478,7 +478,7 @@ export default function AboutPage() {
                     <div className="p-1 rounded-lg bg-forest/5 text-forest group-hover/item:bg-forest group-hover/item:text-white transition-all duration-300 shrink-0 mt-0.5">
                       <CheckCircle2 className="w-4 h-4" />
                     </div>
-                    <span><strong>Anbieter-Verzeichnis</strong> für gewerbliche Werkstätten, Vermieter und Dienstleister.</span>
+                    <span><strong>Gewerbliche Anbieter</strong> wie Werkstätten, Vermieter und Dienstleister mit eigenen Profilen und Angeboten.</span>
                   </motion.li>
 
                   <motion.li
@@ -491,7 +491,7 @@ export default function AboutPage() {
                     <div className="p-1 rounded-lg bg-forest/5 text-forest group-hover/item:bg-forest group-hover/item:text-white transition-all duration-300 shrink-0 mt-0.5">
                       <CheckCircle2 className="w-4 h-4" />
                     </div>
-                    <span><strong>Campingplätze</strong> mit Filtermöglichkeiten und Beschreibungen.</span>
+                    <span><strong>Campingplätze und Stellplätze</strong> mit Informationen und passenden Angeboten.</span>
                   </motion.li>
 
                   <motion.li
@@ -504,7 +504,7 @@ export default function AboutPage() {
                     <div className="p-1 rounded-lg bg-forest/5 text-forest group-hover/item:bg-forest group-hover/item:text-white transition-all duration-300 shrink-0 mt-0.5">
                       <CheckCircle2 className="w-4 h-4" />
                     </div>
-                    <span><strong>Camping-Wissen & Tools</strong> wie der Zuladungsrechner und Reisekostenrechner für unbeschwerte Reisen.</span>
+                    <span><strong>Camping-Wissen & Tools</strong> wie der Zuladungsrechner und Camping-Reisebudget-Rechner für unbeschwerte Reisen.</span>
                   </motion.li>
                 </ul>
               </div>
@@ -886,6 +886,9 @@ export default function AboutPage() {
             </h2>
             <p className="font-sans text-sm sm:text-base text-charcoal/70 max-w-2xl mx-auto leading-relaxed font-light">
               Campuna ist noch nicht am Ziel. Genau deshalb ist jetzt der richtige Zeitpunkt, von Anfang an dabei zu sein.
+            </p>
+            <p className="font-display text-base sm:text-lg text-forest font-semibold pt-3 tracking-wide">
+              „Campuna wächst mit euch. Sei von Anfang an dabei.“
             </p>
           </motion.div>
         </div>
