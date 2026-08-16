@@ -895,7 +895,7 @@ export default function AboutPage() {
       </section>
 
       {/* 6. NEWSLETTER / UPDATE SECTION */}
-      <section id="newsletter-section" className="pb-10 bg-white relative">
+      {/* <section id="newsletter-section" className="pb-10 bg-white relative">
         <div className="max-w-7xl mx-auto relative z-10 px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -904,13 +904,12 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="group relative rounded-[40px] overflow-hidden bg-gradient-to-br from-forest via-forest to-[#143d29] px-8 py-16 sm:px-12 sm:py-20 lg:px-16 lg:py-16  border border-white/5"
           >
-            {/* Ambient glows */}
+
             <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-black/40 rounded-full blur-3xl pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-13 gap-4 items-center relative z-10">
 
-              {/* Left Column: Headline, Description and Subscription Form */}
               <div className="lg:col-span-9 space-y-4 text-center lg:text-left flex flex-col items-center lg:items-start">
                 <div className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
                   Newsletter
@@ -1004,7 +1003,6 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Right Column: Floating Mail Icons matching CTASection */}
               <div className="relative lg:col-span-4 hidden lg:block items-center justify-center lg:justify-end">
                 <div className="absolute top-0 -right-30 flex items-center justify-center text-gold/80 transform -rotate-12 group-hover:scale-110 transition-all duration-700">
                   <Mail className="w-40 h-40 sm:w-80 sm:h-80 stroke-[1.5]" />
@@ -1017,7 +1015,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
