@@ -303,9 +303,9 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-[28px] sm:rounded-[36px] border border-forest/10 shadow-[0_8px_40px_-8px_rgba(20,61,41,0.08)] px-6 sm:px-10 py-6 sm:py-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+            className="bg-white rounded-[28px] sm:rounded-[36px] border border-forest/10 shadow-[0_8px_40px_-8px_rgba(20,61,41,0.08)] px-6 sm:px-10 py-6 sm:py-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
           >
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-forest opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-forest"></span>
@@ -314,7 +314,7 @@ export default function AboutPage() {
                 Dein Camping-Marktplatz in Deutschland
               </h3>
             </div>
-            <p className="pl-6 sm:pl-0 font-sans text-sm text-charcoal/60 font-light leading-relaxed sm:text-right max-w-md">
+            <p className="pl-6 sm:pl-0 font-sans text-sm text-charcoal/60 font-light leading-relaxed sm:text-right ">
               Die spezialisierte Plattform für Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Vermietung und Dienstleistungen rund ums Camping.
             </p>
           </motion.div>
