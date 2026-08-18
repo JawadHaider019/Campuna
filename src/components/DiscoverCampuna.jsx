@@ -112,7 +112,7 @@ const INITIAL_COMMUNITY_QUESTIONS = [
 
 
 export default function DiscoverCampuna() {
-    const [activeTab, setActiveTab] = useState('tools');
+    const [activeTab, setActiveTab] = useState('inspiration');
 
     // â”€â”€ Pre-fetched Tips and Inspiration State â”€â”€
     const [tips, setTips] = useState([]);
@@ -708,24 +708,6 @@ export default function DiscoverCampuna() {
                 {/* Categories Tab Navigation */}
                 <div className="flex flex-nowrap border-b border-forest/10 mb-8 gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
                     <button
-                        onClick={() => handleTabChange('tools')}
-                        className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'tools'
-                            ? 'text-forest'
-                            : 'text-charcoal/50 hover:text-forest'
-                            }`}
-                    >
-                        <Calculator className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-                        <span className="block sm:hidden">Helfer</span>
-                        <span className="hidden sm:block">Camping-Helfer</span>
-                        {activeTab === 'tools' && (
-                            <motion.div
-                                layoutId="activeTabUnderline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
-                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                            />
-                        )}
-                    </button>
-                    <button
                         onClick={() => handleTabChange('inspiration')}
                         className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'inspiration'
                             ? 'text-forest'
@@ -743,23 +725,6 @@ export default function DiscoverCampuna() {
                             />
                         )}
                     </button>
-                    {/* Commented out as requested by user to hide this tab */}
-                    {/* <button
-                        onClick={() => handleTabChange('community')}
-                        className={`relative flex items-center gap-2 py-3.5 px-5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${activeTab === 'community'
-                            ? 'text-forest'
-                            : 'text-charcoal/50 hover:text-forest'
-                            }`}
-                    >
-                        <MessageSquare className="w-4 h-4" /> Community-Fragen
-                        {activeTab === 'community' && (
-                            <motion.div
-                                layoutId="activeTabUnderline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
-                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                            />
-                        )}
-                    </button> */}
                     <button
                         onClick={() => handleTabChange('tips')}
                         className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'tips'
@@ -771,6 +736,24 @@ export default function DiscoverCampuna() {
                         <span className="block sm:hidden">Tipps</span>
                         <span className="hidden sm:block">Camping-Tipps</span>
                         {activeTab === 'tips' && (
+                            <motion.div
+                                layoutId="activeTabUnderline"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
+                                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                            />
+                        )}
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('tools')}
+                        className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3.5 px-2.5 sm:px-5 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-colors duration-300 shrink-0 ${activeTab === 'tools'
+                            ? 'text-forest'
+                            : 'text-charcoal/50 hover:text-forest'
+                            }`}
+                    >
+                        <Calculator className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                        <span className="block sm:hidden">Helfer</span>
+                        <span className="hidden sm:block">Camping-Helfer</span>
+                        {activeTab === 'tools' && (
                             <motion.div
                                 layoutId="activeTabUnderline"
                                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-forest"
