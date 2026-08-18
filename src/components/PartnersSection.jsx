@@ -232,7 +232,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
 
     return (
         <section id="campuna-spotlight" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden scroll-mt-24">
-            <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <div className="max-w-8xl mx-auto px-6 md:px-12">
 
                 {/* Section header */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">

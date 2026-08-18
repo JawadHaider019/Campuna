@@ -260,8 +260,10 @@ export default function FeaturedListings({
   title = "Camping-Angebote auf Campuna",
   subtitle = "Entdecke wechselnde Inserate von Campern, Anbietern und Unternehmen."
 }) {
-  const rowRef = useRef(null);
-  const [rowConstraints, setRowConstraints] = useState(0);
+  const rowRef1 = useRef(null);
+  const rowRef2 = useRef(null);
+  const [rowConstraints1, setRowConstraints1] = useState(0);
+  const [rowConstraints2, setRowConstraints2] = useState(0);
   const [apiListings, setApiListings] = useState([]);
   const [internalLoading, setInternalLoading] = useState(false);
 
@@ -317,23 +319,35 @@ export default function FeaturedListings({
     if (!filteredListings || filteredListings.length === 0) {
       return [];
     }
-    // Take up to 15 unique random products for display
-    return rotateListings(filteredListings, 15);
+    // Take up to 30 unique random products for display across 2 rows (15 in each row, no repeats)
+    return rotateListings(filteredListings, 30);
   }, [filteredListings]);
 
-  const dirRef = useRef(1); // 1 = right (left to right), -1 = left
-  const isHoveredRef = useRef(false);
-  const isDraggingRef = useRef(false);
-  const cardWidthRef = useRef(350);
+  const { row1Listings, row2Listings } = useMemo(() => {
+    if (displayListings.length <= 1) {
+      return { row1Listings: displayListings, row2Listings: [] };
+    }
+    const countPerRow = Math.min(15, Math.ceil(displayListings.length / 2));
+    return {
+      row1Listings: displayListings.slice(0, countPerRow),
+      row2Listings: displayListings.slice(countPerRow, countPerRow * 2)
+    };
+  }, [displayListings]);
+
+  const dirRef1 = useRef(1); // 1 = move right, -1 = move left
+  const dirRef2 = useRef(-1);
+  const isHoveredRef1 = useRef(false);
+  const isHoveredRef2 = useRef(false);
+  const isDraggingRef1 = useRef(false);
+  const isDraggingRef2 = useRef(false);
 
   useEffect(() => {
     const measure = () => {
-      if (rowRef.current) {
-        const card = rowRef.current.querySelector('.listing-card');
-        if (card) {
-          cardWidthRef.current = card.getBoundingClientRect().width;
-        }
-        setRowConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
+      if (rowRef1.current) {
+        setRowConstraints1(Math.max(0, rowRef1.current.scrollWidth - rowRef1.current.offsetWidth));
+      }
+      if (rowRef2.current) {
+        setRowConstraints2(Math.max(0, rowRef2.current.scrollWidth - rowRef2.current.offsetWidth));
       }
     };
     const timer = setTimeout(measure, 100);
@@ -342,23 +356,33 @@ export default function FeaturedListings({
       clearTimeout(timer);
       window.removeEventListener('resize', measure);
     };
-  }, [displayListings]);
+  }, [row1Listings, row2Listings]);
 
   const handleCardClick = useCallback((item) => {
     const slug = buildListingSlug(item.title, item.id);
     navigateTo(`/listing_details/${slug}`);
   }, []);
 
-  const x = useMotionValue(0);
+  const x1 = useMotionValue(0);
+  const x2 = useMotionValue(0);
 
   useEffect(() => {
-    if (rowConstraints > 0) {
-      x.set(-rowConstraints);
-      dirRef.current = 1;
+    if (rowConstraints1 > 0) {
+      x1.set(-rowConstraints1);
+      dirRef1.current = 1;
     } else {
-      x.set(0);
+      x1.set(0);
     }
-  }, [displayListings, rowConstraints]);
+  }, [row1Listings, rowConstraints1]);
+
+  useEffect(() => {
+    if (rowConstraints2 > 0) {
+      x2.set(0);
+      dirRef2.current = -1;
+    } else {
+      x2.set(0);
+    }
+  }, [row2Listings, rowConstraints2]);
 
   useEffect(() => {
     let animationFrameId;
@@ -367,30 +391,45 @@ export default function FeaturedListings({
       const delta = Math.min((time - lastTime) / 1000, 0.1);
       lastTime = time;
 
-      // Ping-pong scrolling for single row
-      if (displayListings.length > 0 && !isHoveredRef.current && !isDraggingRef.current && rowConstraints > 0) {
-        let currentX = x.get() + dirRef.current * 20 * delta;
-        if (dirRef.current === -1 && currentX <= -rowConstraints) {
-          currentX = -rowConstraints;
-          dirRef.current = 1;
-        } else if (dirRef.current === 1 && currentX >= 0) {
-          currentX = 0;
-          dirRef.current = -1;
+      // Ping-pong scrolling for Row 1
+      if (row1Listings.length > 0 && !isHoveredRef1.current && !isDraggingRef1.current && rowConstraints1 > 0) {
+        let currentX1 = x1.get() + dirRef1.current * 20 * delta;
+        if (dirRef1.current === -1 && currentX1 <= -rowConstraints1) {
+          currentX1 = -rowConstraints1;
+          dirRef1.current = 1;
+        } else if (dirRef1.current === 1 && currentX1 >= 0) {
+          currentX1 = 0;
+          dirRef1.current = -1;
         }
-        x.set(currentX);
-      } else if (rowConstraints <= 0) {
-        x.set(0);
+        x1.set(currentX1);
+      } else if (rowConstraints1 <= 0) {
+        x1.set(0);
+      }
+
+      // Ping-pong scrolling for Row 2
+      if (row2Listings.length > 0 && !isHoveredRef2.current && !isDraggingRef2.current && rowConstraints2 > 0) {
+        let currentX2 = x2.get() + dirRef2.current * 20 * delta;
+        if (dirRef2.current === -1 && currentX2 <= -rowConstraints2) {
+          currentX2 = -rowConstraints2;
+          dirRef2.current = 1;
+        } else if (dirRef2.current === 1 && currentX2 >= 0) {
+          currentX2 = 0;
+          dirRef2.current = -1;
+        }
+        x2.set(currentX2);
+      } else if (rowConstraints2 <= 0) {
+        x2.set(0);
       }
 
       animationFrameId = requestAnimationFrame(loop);
     };
     animationFrameId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [displayListings, rowConstraints]);
+  }, [row1Listings, row2Listings, rowConstraints1, rowConstraints2]);
 
   return (
     <section id="exclusive-offers" className="py-10 sm:py-16 bg-white scroll-mt-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-8xl mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
           <div className="space-y-2">
             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
@@ -412,10 +451,22 @@ export default function FeaturedListings({
         </div>
 
         {isLoadingState ? (
-          <div className="space-y-4 relative">
+          <div className="space-y-5 relative">
             <div className="flex gap-5 overflow-hidden">
               {[1, 2, 3, 4].map(n => (
-                <div key={n} className="flex-shrink-0 w-[320px] md:w-[350px] h-[300px] bg-sand/30 animate-pulse rounded-[24px] border border-forest/5 p-4 flex flex-col justify-between">
+                <div key={`sk1-${n}`} className="flex-shrink-0 w-[300px] md:w-[320px] h-[300px] bg-sand/30 animate-pulse rounded-[24px] border border-forest/5 p-4 flex flex-col justify-between">
+                  <div className="w-full h-40 bg-sand/60 rounded-[16px]" />
+                  <div className="space-y-2 mt-4">
+                    <div className="h-5 bg-sand/60 rounded w-3/4" />
+                    <div className="h-4 bg-sand/40 rounded w-1/2" />
+                  </div>
+                  <div className="h-6 bg-sand/60 rounded w-1/3 mt-4" />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-5 overflow-hidden">
+              {[1, 2, 3, 4].map(n => (
+                <div key={`sk2-${n}`} className="flex-shrink-0 w-[300px] md:w-[320px] h-[300px] bg-sand/30 animate-pulse rounded-[24px] border border-forest/5 p-4 flex flex-col justify-between">
                   <div className="w-full h-40 bg-sand/60 rounded-[16px]" />
                   <div className="space-y-2 mt-4">
                     <div className="h-5 bg-sand/60 rounded w-3/4" />
@@ -439,36 +490,67 @@ export default function FeaturedListings({
             </button>
           </div>
         ) : (
-          <div className="space-y-2 relative">
+          <div className="space-y-5 relative">
             <div className="hidden md:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-            {/* Single Row: Draggable & Auto-scrolling */}
-            <div className="relative overflow-hidden pb-4 cursor-grab active:cursor-grabbing" ref={rowRef}>
-              <motion.div
-                drag="x"
-                dragConstraints={{ right: 0, left: -rowConstraints }}
-                style={{ x }}
-                onDragStart={() => { isDraggingRef.current = true; }}
-                onDragEnd={() => { isDraggingRef.current = false; }}
-                onMouseEnter={() => { isHoveredRef.current = true; }}
-                onMouseLeave={() => { isHoveredRef.current = false; }}
-                className="flex gap-5 w-max"
-              >
-                {displayListings.map((item, idx) => {
-                  const normalized = normalizeListing(item);
-                  return (
-                    <ListingCard
-                      key={`${normalized.id}-${idx}`}
-                      item={item}
-                      isWishlisted={wishlistedIds.includes(normalized.id)}
-                      onToggleWishlist={onToggleWishlist}
-                      onCardClick={handleCardClick}
-                    />
-                  );
-                })}
-              </motion.div>
-            </div>
+            {/* Row 1: Draggable & Auto-scrolling */}
+            {row1Listings.length > 0 && (
+              <div className="relative overflow-hidden pb-1 cursor-grab active:cursor-grabbing" ref={rowRef1}>
+                <motion.div
+                  drag="x"
+                  dragConstraints={{ right: 0, left: -rowConstraints1 }}
+                  style={{ x: x1 }}
+                  onDragStart={() => { isDraggingRef1.current = true; }}
+                  onDragEnd={() => { isDraggingRef1.current = false; }}
+                  onMouseEnter={() => { isHoveredRef1.current = true; }}
+                  onMouseLeave={() => { isHoveredRef1.current = false; }}
+                  className="flex gap-5 w-max"
+                >
+                  {row1Listings.map((item, idx) => {
+                    const normalized = normalizeListing(item);
+                    return (
+                      <ListingCard
+                        key={`${normalized.id}-r1-${idx}`}
+                        item={item}
+                        isWishlisted={wishlistedIds.includes(normalized.id)}
+                        onToggleWishlist={onToggleWishlist}
+                        onCardClick={handleCardClick}
+                      />
+                    );
+                  })}
+                </motion.div>
+              </div>
+            )}
+
+            {/* Row 2: Draggable & Auto-scrolling */}
+            {row2Listings.length > 0 && (
+              <div className="relative overflow-hidden pb-1 cursor-grab active:cursor-grabbing" ref={rowRef2}>
+                <motion.div
+                  drag="x"
+                  dragConstraints={{ right: 0, left: -rowConstraints2 }}
+                  style={{ x: x2 }}
+                  onDragStart={() => { isDraggingRef2.current = true; }}
+                  onDragEnd={() => { isDraggingRef2.current = false; }}
+                  onMouseEnter={() => { isHoveredRef2.current = true; }}
+                  onMouseLeave={() => { isHoveredRef2.current = false; }}
+                  className="flex gap-5 w-max"
+                >
+                  {row2Listings.map((item, idx) => {
+                    const normalized = normalizeListing(item);
+                    return (
+                      <ListingCard
+                        key={`${normalized.id}-r2-${idx}`}
+                        item={item}
+                        isWishlisted={wishlistedIds.includes(normalized.id)}
+                        onToggleWishlist={onToggleWishlist}
+                        onCardClick={handleCardClick}
+                      />
+                    );
+                  })}
+                </motion.div>
+              </div>
+            )}
 
             <div className="mt-7 flex justify-center lg:hidden">
               <button onClick={() => navigateTo('/all_listings')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer">
