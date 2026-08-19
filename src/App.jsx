@@ -8,7 +8,7 @@ import BusinessProfilePage from './pages/BusinessProfilePage';
 import ListingDetailPage from './pages/ListingDetailPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/Homepage';
 import CreateListingPage from './pages/CreateListingPage';
 import CampingHelferPage from './pages/CampingHelferPage';
 import ZuladungsrechnerPage from './pages/ZuladungsrechnerPage';
