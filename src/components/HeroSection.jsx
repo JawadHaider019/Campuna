@@ -135,6 +135,7 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
               {/* Search Button */}
               <button
                 type="submit"
+                aria-label="Suchen"
                 className="text-gold font-sans font-semibold p-2 rounded-full transition-all duration-300 flex items-center justify-center space-x-2 shrink-0"
               >
                 <Search className="w-5 h-5" />

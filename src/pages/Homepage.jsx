@@ -4,6 +4,7 @@ import FeaturedListings from '../components/FeaturedListings';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 import { formatLocation } from '../utils/location';
+import { optimizeBubbleImageUrl } from '../utils/image';
 
 // Lazy load below-the-fold components for code splitting & initial render performance boost
 const VisionBridgeSection = lazy(() => import('../components/VisionBridgeSection'));
@@ -62,17 +63,7 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
                         let images = rawImages
                             .filter(Boolean)
-                            .map(url => {
-                                url = url.startsWith('//') ? `https:${url}` : url;
-                                // Convert HEIC to web-compatible format via Bubble CDN image transformation
-                                if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
-                                    url = url.replace(
-                                        /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
-                                        '$1cdn-cgi/image/f=auto,fit=cover/$2'
-                                    );
-                                }
-                                return url;
-                            });
+                            .map(url => optimizeBubbleImageUrl(url, 600, 80));
 
                         if (images.length === 0) {
                             images.push('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80');

@@ -22,6 +22,8 @@ export default function BlogSection() {
           src={post.image}
           alt={post.title}
           className="w-full h-full object-cover transition-transform duration-[1s] group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
         />
       </div>
@@ -86,6 +88,8 @@ export default function BlogSection() {
                 src={featuredPost.image}
                 alt={featuredPost.title}
                 className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />

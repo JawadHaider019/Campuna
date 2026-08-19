@@ -3,6 +3,7 @@ import { motion, useMotionValue } from 'motion/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 import { navigateTo } from '../utils/navigation';
+import { optimizeBubbleImageUrl } from '../utils/image';
 
 export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
     const rowRef = useRef(null);
@@ -46,27 +47,13 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                         // Logo URL formatted
                         let logo = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
                         if (user['Logo/Profile']) {
-                            const rawLogo = user['Logo/Profile'];
-                            logo = rawLogo.startsWith('//') ? `https:${rawLogo}` : rawLogo;
-                            if (/\.heic$/i.test(logo.split('?')[0]) && logo.includes('cdn.bubble.io')) {
-                                logo = logo.replace(
-                                    /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
-                                    '$1cdn-cgi/image/f=auto,fit=cover/$2'
-                                );
-                            }
+                            logo = optimizeBubbleImageUrl(user['Logo/Profile'], 200, 80);
                         }
 
                         // Cover URL formatted
                         let coverImage = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80';
                         if (user.Cover) {
-                            const rawCover = user.Cover;
-                            coverImage = rawCover.startsWith('//') ? `https:${rawCover}` : rawCover;
-                            if (/\.heic$/i.test(coverImage.split('?')[0]) && coverImage.includes('cdn.bubble.io')) {
-                                coverImage = coverImage.replace(
-                                    /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
-                                    '$1cdn-cgi/image/f=auto,fit=cover/$2'
-                                );
-                            }
+                            coverImage = optimizeBubbleImageUrl(user.Cover, 800, 80);
                         }
 
                         return {

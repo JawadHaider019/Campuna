@@ -6,6 +6,7 @@ import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { formatLocation } from '../utils/location';
 import { rotateListings } from '../utils/rotation';
+import { optimizeBubbleImageUrl } from '../utils/image';
 
 function normalizeListing(item) {
   if (!item) return null;
@@ -36,16 +37,7 @@ function normalizeListing(item) {
 
   let images = rawImages
     .filter(Boolean)
-    .map(url => {
-      url = url.startsWith('//') ? `https:${url}` : url;
-      if (/\.heic$/i.test(url.split('?')[0]) && url.includes('cdn.bubble.io')) {
-        url = url.replace(
-          /(https:\/\/[^/]+\.cdn\.bubble\.io\/)(f[0-9x]+\/)/,
-          '$1cdn-cgi/image/f=auto,fit=cover/$2'
-        );
-      }
-      return url;
-    });
+    .map(url => optimizeBubbleImageUrl(url, 600, 80));
 
   if (images.length === 0) {
     images.push('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80');
@@ -163,6 +155,8 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
             {item.listing_user_type}
           </span>
           <button
+            type="button"
+            aria-label={isWishlisted ? "Von Merkzettel entfernen" : "Auf den Merkzettel"}
             onClick={(e) => {
               e.stopPropagation();
               if (onToggleWishlist) onToggleWishlist(item.id);
