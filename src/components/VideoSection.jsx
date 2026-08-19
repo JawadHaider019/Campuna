@@ -58,6 +58,8 @@ export default function VideoSection() {
             <img
               src="https://img.youtube.com/vi/7VLlgt1Rgr4/maxresdefault.jpg"
               alt="Campuna Video Vorschau"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover brightness-75 group-hover:scale-105 transition-transform duration-[6s] ease-out"
             />
           </div>

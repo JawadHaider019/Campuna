@@ -34,6 +34,8 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
             alt="Cinematic luxury camping under starry night"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
+            fetchPriority="high"
+            decoding="sync"
           />
         </motion.div>
         {/* Deep luxurious multi-layered gradient overlay */}

@@ -1,9 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useInView, useAnimation } from 'motion/react';
 import { Compass, Users, Layers, ShieldCheck, Heart, Sparkles, Send, CheckCircle2, ArrowRight, Mail, ChevronsDown } from 'lucide-react';
 import SEO from '../components/SEO';
-import CTASection from '../components/CTASection';
 import { navigateTo } from '../utils/navigation';
+
+const CTASection = lazy(() => import('../components/CTASection'));
+
+const VALUE_CARDS = [
+  {
+    title: 'Camping im Mittelpunkt',
+    icon: Compass,
+    desc: 'Bei Campuna ist Camping keine Kategorie unter vielen – die gesamte Plattform dreht sich darum.',
+  },
+  {
+    title: 'Alles an einem Ort',
+    icon: Layers,
+    desc: 'Angebote, Anbieter, Plätze, Vermietung, Services, Wissen und praktische Helfer sollen Schritt für Schritt zusammenkommen.',
+  },
+  {
+    title: 'Von Campern gedacht',
+    icon: Heart,
+    desc: 'Wir bauen die Campingplattform, die wir selbst vermisst haben.',
+  },
+  {
+    title: 'Offen für alle Seiten',
+    icon: Users,
+    desc: 'Private Camper, Händler, Campingplätze, Vermieter und Dienstleister gehören zur gleichen Campingwelt.',
+  },
+  {
+    title: 'Einfach und transparent',
+    icon: ShieldCheck,
+    desc: 'Campuna soll übersichtlich bleiben und ohne unnötige Hürden funktionieren.',
+  },
+  {
+    title: 'Campuna wächst mit euch',
+    icon: Sparkles,
+    desc: 'Jedes Inserat, jeder Anbieter und jeder aktive Camper macht die Plattform ein Stück wertvoller.',
+  },
+];
 
 // Variants for timeline animations
 const containerVariants = {
@@ -128,17 +162,13 @@ export default function AboutPage() {
     }
   }, [isShineInView, shineControls]);
 
-
-  // Check if mobile on mount and when window resizes
+  // Efficient mobile check via matchMedia without pixel-by-pixel resize spam
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => window.removeEventListener('resize', checkMobile);
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mediaQuery.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
   const handleSubscribe = (e) => {
@@ -153,39 +183,6 @@ export default function AboutPage() {
       setEmail('');
     }, 1000);
   };
-
-  const VALUE_CARDS = [
-    {
-      title: 'Camping im Mittelpunkt',
-      icon: Compass,
-      desc: 'Bei Campuna ist Camping keine Kategorie unter vielen – die gesamte Plattform dreht sich darum.',
-    },
-    {
-      title: 'Alles an einem Ort',
-      icon: Layers,
-      desc: 'Angebote, Anbieter, Plätze, Vermietung, Services, Wissen und praktische Helfer sollen Schritt für Schritt zusammenkommen.',
-    },
-    {
-      title: 'Von Campern gedacht',
-      icon: Heart,
-      desc: 'Wir bauen die Campingplattform, die wir selbst vermisst haben.',
-    },
-    {
-      title: 'Offen für alle Seiten',
-      icon: Users,
-      desc: 'Private Camper, Händler, Campingplätze, Vermieter und Dienstleister gehören zur gleichen Campingwelt.',
-    },
-    {
-      title: 'Einfach und transparent',
-      icon: ShieldCheck,
-      desc: 'Campuna soll übersichtlich bleiben und ohne unnötige Hürden funktionieren.',
-    },
-    {
-      title: 'Campuna wächst mit euch',
-      icon: Sparkles,
-      desc: 'Jedes Inserat, jeder Anbieter und jeder aktive Camper macht die Plattform ein Stück wertvoller.',
-    },
-  ];
 
   return (
     <div className="bg-white min-h-screen font-sans text-charcoal overflow-hidden">
@@ -212,6 +209,8 @@ export default function AboutPage() {
               src="/about_camping_together.jpg"
               alt="Campers enjoying camping together outdoors"
               className="w-full h-full object-cover"
+              loading="eager"
+              decoding="async"
               referrerPolicy="no-referrer"
             />
           </motion.div>
@@ -385,6 +384,8 @@ export default function AboutPage() {
                   src="/about_founder.jpg"
                   alt="Campuna outdoor lifestyle sunset on a boat"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Scroll-triggered Shine effect — fires on every viewport entry */}
@@ -1017,7 +1018,9 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section> */}
-      <CTASection />
+      <Suspense fallback={<div className="py-12 bg-sand/30 animate-pulse rounded-2xl mx-4 my-8" />}>
+        <CTASection />
+      </Suspense>
     </div>
   );
 }

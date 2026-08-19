@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Users } from 'lucide-react';
 
-export default function VisionBridgeSection() {
+const VisionBridgeSection = React.memo(function VisionBridgeSection() {
   return (
     <section className="relative z-30 mx-4 md:mx-8 lg:mx-12 -mt-16 sm:-mt-32 text-center pointer-events-none">
       <motion.div
@@ -34,4 +34,6 @@ export default function VisionBridgeSection() {
       </motion.div>
     </section>
   );
-}
+});
+
+export default VisionBridgeSection;

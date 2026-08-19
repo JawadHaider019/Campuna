@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, MessageSquare, ShieldCheck, HelpCircle } from 'lucide-react';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FAQS } from '../data';
 
-export default function FAQSection() {
+const FAQSection = React.memo(function FAQSection() {
   const [openId, setOpenId] = useState('faq_1');
 
   const toggleFAQ = (id) => {
@@ -23,50 +23,39 @@ export default function FAQSection() {
             Häufig gestellte Fragen
           </span>
           <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest">
-            Alles, was du wissen musst
+            Alles, was du über Campuna® wissen musst
           </h2>
-
+          <p className="font-sans text-sm text-charcoal/60 max-w-2xl mx-auto leading-relaxed">
+            Du hast Fragen zur Buchung, Vermietung oder Sicherheit? Hier findest du die Antworten auf die wichtigsten Fragen.
+          </p>
         </div>
 
-        {/* FAQ Accordion List - Refined Design */}
-        <div className="space-y-4 max-w-[90%] mx-auto">
-          {FAQS.map((faq, index) => {
+        {/* FAQ Accordion List */}
+        <div className="max-w-5xl mx-auto space-y-4">
+          {FAQS.map((faq, idx) => {
             const isOpen = openId === faq.id;
             return (
               <motion.div
                 key={faq.id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className={`group border rounded-[24px] transition-all duration-500 ${isOpen
-                  ? 'border-forest/20 bg-sand/10 shadow-xl shadow-forest/5'
-                  : 'border-forest/5 bg-white hover:border-forest/15 hover:shadow-lg'
+                transition={{ delay: idx * 0.05, duration: 0.4 }}
+                className={`border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen
+                  ? 'border-gold bg-sand/20 shadow-md'
+                  : 'border-forest/10 bg-white hover:border-forest/30'
                   }`}
               >
-                {/* Accordion Toggle Header */}
                 <button
                   onClick={() => toggleFAQ(faq.id)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
+                  className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 focus:outline-none"
                 >
-                  <div className="flex items-center space-x-5">
-                    <div className={`w-8 h-8 shrink-0 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-forest text-white' : 'bg-sand text-forest group-hover:bg-forest/5 text-forest/40 group-hover:text-forest'
-                      }`}>
-                      <HelpCircle className="w-4 h-4" />
-                    </div>
-                    <span className={`font-display text-sm md:text-lg font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-forest' : 'text-forest/70 group-hover:text-forest'
-                      }`}>
-                      {faq.question}
-                    </span>
+                  <span className="font-display text-base sm:text-lg font-bold text-forest leading-snug">
+                    {faq.question}
+                  </span>
+                  <div className={`p-2 rounded-full transition-transform duration-300 ${isOpen ? 'rotate-180 bg-gold/10 text-gold' : 'bg-sand text-forest'}`}>
+                    <ChevronDown className="w-4 h-4" />
                   </div>
-                  <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors duration-300 ${isOpen ? 'bg-gold text-forest' : 'bg-sand/50 text-forest/30'
-                      }`}
-                  >
-                    <ChevronDown className="w-5 h-5" />
-                  </motion.div>
                 </button>
 
                 {/* Accordion Animated Body */}
@@ -89,9 +78,9 @@ export default function FAQSection() {
           })}
         </div>
 
-
-
       </div>
     </section>
   );
-}
+});
+
+export default FAQSection;

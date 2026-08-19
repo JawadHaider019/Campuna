@@ -1,21 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, lazy, Suspense } from 'react';
 import HeroSection from '../components/HeroSection';
-import VisionBridgeSection from '../components/VisionBridgeSection';
-import CategoriesSection from '../components/CategoriesSection';
 import FeaturedListings from '../components/FeaturedListings';
-import PartnersSection from '../components/PartnersSection';
-import BlogSection from '../components/BlogSection';
-import WhyCampuna from '../components/WhyCampuna';
-import VideoSection from '../components/VideoSection';
-import CTASection from '../components/CTASection';
-import FAQSection from '../components/FAQSection';
-import { FEATURED_LISTINGS } from '../data';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { navigateTo } from '../utils/navigation';
 import { formatLocation } from '../utils/location';
-import { rotateListings } from '../utils/rotation';
 
-import DiscoverCampuna from '../components/DiscoverCampuna';
+// Lazy load below-the-fold components for code splitting & initial render performance boost
+const VisionBridgeSection = lazy(() => import('../components/VisionBridgeSection'));
+const CategoriesSection = lazy(() => import('../components/CategoriesSection'));
+const DiscoverCampuna = lazy(() => import('../components/DiscoverCampuna'));
+const PartnersSection = lazy(() => import('../components/PartnersSection'));
+const BlogSection = lazy(() => import('../components/BlogSection'));
+const WhyCampuna = lazy(() => import('../components/WhyCampuna'));
+const VideoSection = lazy(() => import('../components/VideoSection'));
+const CTASection = lazy(() => import('../components/CTASection'));
+const FAQSection = lazy(() => import('../components/FAQSection'));
+const WelcomeBanner = lazy(() => import('../components/WelcomeBanner'));
+
+// Light fallback placeholder to prevent layout shifts during section loading
+const SectionFallback = () => <div className="py-12 bg-gray-50/50 min-h-[120px] animate-pulse rounded-lg my-4" />;
 
 export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -31,7 +34,6 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
             setIsLoggedIn(propIsLoggedIn);
         }
     }, [propIsLoggedIn]);
-
 
     useEffect(() => {
         let active = true;
@@ -168,8 +170,13 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
     // Ref for scrolling to listings or search
     const searchRef = useRef(null);
 
-    // Handle Search Submission
-    const handleSearch = (filters) => {
+    // Memoized navigation handlers
+    const handleExploreClick = useCallback(() => navigateTo('/signup_login'), []);
+    const handleSellClick = useCallback(() => navigateTo('/signup_login'), []);
+    const handleCTASellClick = useCallback(() => navigateTo('/my_account?n=yes'), []);
+
+    // Memoized Search Submission
+    const handleSearch = useCallback((filters) => {
         setSelectedCategory(filters.category);
         setSearchLocation(filters.location);
         setSearchQuery(filters.query);
@@ -179,55 +186,48 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
-    };
+    }, []);
 
-    // Toggle Wishlist
-    const handleToggleWishlist = (id) => {
+    // Memoized Toggle Wishlist
+    const handleToggleWishlist = useCallback((id) => {
         setWishlistedIds((prev) =>
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
-    };
+    }, []);
 
-    const handleClearFilters = () => {
+    const handleClearFilters = useCallback(() => {
         setSelectedCategory('');
         setSearchQuery('');
         setSearchLocation('');
-    };
-
-    // Submit new listing
-    const handleCreateListing = (newListing) => {
-        setListingsList((prev) => [newListing, ...prev]);
-        setTimeout(() => {
-            const element = document.getElementById('exclusive-offers');
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 100);
-    };
+    }, []);
 
     return (
         <div className="bg-white min-h-screen relative font-sans text-charcoal">
 
+            {/* 1. Hero Section (Eager load critical initial render) */}
+            <HeroSection
+                onSearch={handleSearch}
+                onExploreClick={handleExploreClick}
+                onSellClick={handleSellClick}
+                searchRef={searchRef}
+                isLoggedIn={isLoggedIn}
+            />
 
-            {/* 1. Hero Section */}
-            <div className="-mt-18">
-                <HeroSection
-                    onSearch={handleSearch}
-                    onExploreClick={() => navigateTo('/signup_login')}
-                    onSellClick={() => navigateTo('/signup_login')}
-                    searchRef={searchRef}
-                    isLoggedIn={isLoggedIn}
-                />
-            </div>
+            <Suspense fallback={<SectionFallback />}>
+                {/* 2. Vision Bridge Section */}
+                <VisionBridgeSection />
 
-            {/* 2. Vision Bridge Section */}
-            <VisionBridgeSection />
+                {/* 3. Grid Categories */}
+                <div>
+                    <CategoriesSection />
+                </div>
 
-            {/* 3. Grid Categories */}
-            <div>
-                <CategoriesSection />
-            </div>
+                {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
+                <DiscoverCampuna />
 
+                {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
+                <PartnersSection isLoggedIn={isLoggedIn} />
+            </Suspense>
 
             {/* 4. Exclusive Offers with filters & interactive search */}
             <FeaturedListings
@@ -241,26 +241,24 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                 searchLocation={searchLocation}
             />
 
-            {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-            <PartnersSection isLoggedIn={isLoggedIn} />
+            <Suspense fallback={<SectionFallback />}>
+                {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
+                <BlogSection />
 
-            {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
-            <BlogSection />
+                {/* 7. Why Campuna Features Section */}
+                <WhyCampuna />
 
-            {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
-            <DiscoverCampuna />
+                {/* 8. High-End Video Display */}
+                <VideoSection />
 
-            {/* 7. Why Campuna Features Section */}
-            <WhyCampuna />
+                {/* 9. Secondary Seller CTA Section */}
+                <CTASection onSellClick={handleCTASellClick} />
 
-            {/* 8. High-End Video Display */}
-            <VideoSection />
+                {/* 11. Custom FAQ Accordion */}
+                <FAQSection />
 
-            {/* 9. Secondary Seller CTA Section */}
-            <CTASection onSellClick={() => navigateTo('/my_account?n=yes')} />
-
-            {/* 11. Custom FAQ Accordion */}
-            <FAQSection />
-        </div >
+                <WelcomeBanner isLoggedIn={isLoggedIn} />
+            </Suspense>
+        </div>
     );
 }

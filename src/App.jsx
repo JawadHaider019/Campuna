@@ -8,8 +8,7 @@ import BusinessProfilePage from './pages/BusinessProfilePage';
 import ListingDetailPage from './pages/ListingDetailPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import HeroPage from './pages/HeroPage';
-import HomePage from './pages/Homepage';
+import HomePage from './pages/HomePage';
 import CreateListingPage from './pages/CreateListingPage';
 import CampingHelferPage from './pages/CampingHelferPage';
 import ZuladungsrechnerPage from './pages/ZuladungsrechnerPage';
@@ -140,7 +139,7 @@ const App = () => {
       {!isLoginPage && <Navbar isLoggedIn={loggedIn} alertCount={alertCount} />}
 
       <Routes>
-        <Route path="/" element={<HeroPage isLoggedIn={loggedIn} />} />
+        <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/about_us" element={<AboutPage />} />
         <Route path="/uber_campuna" element={<AboutPage />} />
