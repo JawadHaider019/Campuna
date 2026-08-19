@@ -70,6 +70,8 @@ export default function VideoSection() {
           {/* Center Play Button */}
           <div className="absolute inset-0 z-20 flex items-center justify-center">
             <motion.button
+              type="button"
+              aria-label="Campuna Video abspielen"
               onClick={() => setIsPlaying(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

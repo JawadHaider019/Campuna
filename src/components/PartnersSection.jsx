@@ -224,7 +224,7 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
                 {/* Section header */}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">
                     <div className="space-y-1 ">
-                        <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+                        <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold-dark block">
                             CAMPUNA SPOTLIGHT
                         </span>
                         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">

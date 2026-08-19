@@ -212,9 +212,9 @@ export default function ToolLandingPage({ tool }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                         <div>
-                            <h4 className="font-display font-bold text-forest text-base mb-1">
+                            <h3 className="font-display font-bold text-forest text-base mb-1">
                                 Entdecke weitere Camping-Helfer Tools & Marktplatz-Kategorien
-                            </h4>
+                            </h3>
                             <p className="text-xs text-charcoal/60">
                                 Wir erweitern unsere Tools stetig für deinen perfekten Campingurlaub.
                             </p>

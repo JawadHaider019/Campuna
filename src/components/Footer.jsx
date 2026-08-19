@@ -45,9 +45,9 @@ export default function Footer() {
 
           {/* Navigation Column */}
           <div className="space-y-4 min-w-[150px] h-auto">
-            <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
+            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Navigation
-            </h4>
+            </h3>
             <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
               <li>
                 <a href={getParentNavigationUrl('')} target="_parent" className="hover:text-forest transition-colors font-[400]">
@@ -74,9 +74,9 @@ export default function Footer() {
 
           {/* Categories Column */}
           <div className="space-y-4 min-w-[180px] h-auto">
-            <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
+            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Kategorie
-            </h4>
+            </h3>
             <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
               {CATEGORIES.map((cat) => {
                 const slug = CATEGORY_SLUGS[cat.name] || '';
@@ -98,9 +98,9 @@ export default function Footer() {
 
           {/* Support Column */}
           <div className="space-y-4 min-w-[150px]">
-            <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
+            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Support
-            </h4>
+            </h3>
             <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
               <li>
                 <a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-forest transition-colors font-[400]">
@@ -128,9 +128,9 @@ export default function Footer() {
 
           {/* Rechtliches Column */}
           <div className="space-y-4 min-w-[150px]">
-            <h4 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
+            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
               Rechtliches
-            </h4>
+            </h3>
             <ul className="space-y-3 font-sans text-[14px]  text-charcoal/80">
               <li>
                 <a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-forest transition-colors font-[400] ">

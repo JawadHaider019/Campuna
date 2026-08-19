@@ -138,29 +138,31 @@ const App = () => {
       {/* Only show Navbar if NOT on login page */}
       {!isLoginPage && <Navbar isLoggedIn={loggedIn} alertCount={alertCount} />}
 
-      <Routes>
-        <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/about_us" element={<AboutPage />} />
-        <Route path="/uber_campuna" element={<AboutPage />} />
-        <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
-        <Route path="/auth" element={<LoginSignupPage />} />
-        <Route path="/category" element={<CategoryPage />} />
-        <Route path="/category/:slug" element={<CategoryPage />} />
-        <Route path="/all_listings" element={<AllListingsPage />} />
-        <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
-        <Route path="/all_business" element={<BusinessProfilePage />} />
-        <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
-        <Route path="/my_account" element={<CreateListingPage />} />
-        <Route path="/create_listing" element={<CreateListingPage />} />
-        <Route path="/create-listing" element={<CreateListingPage />} />
-        <Route path="/camping-helfer" element={<CampingHelferPage />} />
-        <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-        <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-        <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
-        <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-        <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-      </Routes>
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/about_us" element={<AboutPage />} />
+          <Route path="/uber_campuna" element={<AboutPage />} />
+          <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
+          <Route path="/auth" element={<LoginSignupPage />} />
+          <Route path="/category" element={<CategoryPage />} />
+          <Route path="/category/:slug" element={<CategoryPage />} />
+          <Route path="/all_listings" element={<AllListingsPage />} />
+          <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
+          <Route path="/all_business" element={<BusinessProfilePage />} />
+          <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
+          <Route path="/my_account" element={<CreateListingPage />} />
+          <Route path="/create_listing" element={<CreateListingPage />} />
+          <Route path="/create-listing" element={<CreateListingPage />} />
+          <Route path="/camping-helfer" element={<CampingHelferPage />} />
+          <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+          <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
+          <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
+          <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+          <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
+        </Routes>
+      </main>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}
       {!isLoginPage && (

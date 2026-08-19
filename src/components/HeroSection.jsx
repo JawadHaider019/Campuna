@@ -29,14 +29,17 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           transition={{ duration: 1.8, ease: 'easeOut' }}
           className="w-full h-full"
         >
-          <img
-            src="/hero-campuna.jpg"
-            alt="Cinematic luxury camping under starry night"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-            fetchPriority="high"
-            decoding="async"
-          />
+          <picture className="w-full h-full">
+            <source media="(max-width: 768px)" srcSet="/hero-campuna-mobile.jpg" />
+            <img
+              src="/hero-campuna.jpg"
+              alt="Cinematic luxury camping under starry night"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
         </motion.div>
         {/* Deep luxurious multi-layered gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-forest/60  to-black/40" />
@@ -58,17 +61,14 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
 
 
           {/* Luxury Large Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+          <h1
             className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-[1.1]"
           >
             Wir bringen Camping{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-beige to-white">
               an einem Ort zusammen.
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Editorial Subheadline */}
           <motion.p

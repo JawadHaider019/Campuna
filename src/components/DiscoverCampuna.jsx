@@ -600,9 +600,9 @@ export default function DiscoverCampuna() {
                             <div className="bg-forest/10 p-4 rounded-full text-forest mb-4 animate-pulse">
                                 <Wrench className="w-8 h-8" />
                             </div>
-                            <h4 className="font-display text-lg font-bold text-forest mb-2">
+                            <h3 className="font-display text-lg font-bold text-forest mb-2">
                                 Tool in Entwicklung
-                            </h4>
+                            </h3>
                             <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-sm leading-relaxed font-light">
                                 Unser Community-Fragen Bereich befindet sich aktuell in der Entwicklung und steht Ihnen in Kürze zur Verfügung.
                             </p>

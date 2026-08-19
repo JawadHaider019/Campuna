@@ -33,9 +33,9 @@ export default function BlogSection() {
           <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-gold bg-forest px-2 py-0.5 rounded inline-block">
             {post.category}
           </span>
-          <h4 className="font-display text-sm font-bold text-forest group-hover:text-gold transition-colors duration-200 line-clamp-2 leading-tight">
+          <h3 className="font-display text-sm font-bold text-forest group-hover:text-gold transition-colors duration-200 line-clamp-2 leading-tight">
             {post.title}
-          </h4>
+          </h3>
         </div>
 
         <div className="flex items-center justify-between text-[10px] text-charcoal/40 font-mono mt-3">
@@ -55,7 +55,7 @@ export default function BlogSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <div className="space-y-4">
-            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold-dark block">
               Campuna Ratgeber
             </span>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">

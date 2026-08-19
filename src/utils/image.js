@@ -7,7 +7,7 @@
  * @param {number} quality - Image compression quality 1-100 (default 80)
  * @returns {string} Optimized image URL
  */
-export function optimizeBubbleImageUrl(url, width = 800, quality = 80) {
+export function optimizeBubbleImageUrl(url, width = 500, quality = 75) {
   if (!url || typeof url !== 'string') return '';
   let formattedUrl = url.trim();
   if (formattedUrl.startsWith('//')) {

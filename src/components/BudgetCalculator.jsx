@@ -69,7 +69,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                 <div className="lg:col-span-7 space-y-5 p-4 sm:p-6 ">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Fuel className="w-5 h-5 text-forest" />
-                        <h4 className="font-display text-base font-bold">Camping-Reisebudget-Rechner</h4>
+                        <h3 className="font-display text-base font-bold">Camping-Reisebudget-Rechner</h3>
                     </div>
                     <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
                         Berechne deine Gesamtkosten für Sprit, Übernachtung und Nebenkosten deiner Campingreise.
@@ -175,7 +175,7 @@ export default function BudgetCalculator({ onCalculation, compact = false }) {
                 {/* Results Screen */}
                 <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-4 sm:p-6 border border-forest/10 flex flex-col justify-between font-sans">
                     <div>
-                        <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h5>
+                        <h4 className="text-xs font-bold text-forest uppercase tracking-[0.2em] mb-4">Kostenschätzung</h4>
 
                         <div className="space-y-3.5">
                             {/* Fuel costs */}

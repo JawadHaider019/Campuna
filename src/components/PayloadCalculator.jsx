@@ -98,7 +98,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                 <div className="lg:col-span-7 space-y-5 p-4 sm:p-6 ">
                     <div className="flex items-center gap-2 text-forest mb-2">
                         <Scale className="w-5 h-5 text-forest" />
-                        <h4 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h4>
+                        <h3 className="font-display text-base font-bold">Wohnmobil / Wohnwagen Zuladung</h3>
                     </div>
                     <p className="font-sans text-[12.5px] text-charcoal/60 leading-relaxed font-light mb-4">
                         Berechne das verbleibende Gewicht deines Fahrzeugs, um Überladung und hohe Bußgelder im Camping-Urlaub zu vermeiden.
@@ -282,7 +282,7 @@ export default function PayloadCalculator({ onCalculation, compact = false }) {
                 <div className="lg:col-span-5 bg-sand/30 rounded-3xl p-4 sm:p-6 border border-forest/10 flex flex-col justify-between font-sans">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <h5 className="text-xs font-bold text-forest uppercase tracking-[0.2em]">Ergebnis</h5>
+                            <h4 className="text-xs font-bold text-forest uppercase tracking-[0.2em]">Ergebnis</h4>
                             <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${isOverloaded
                                 ? 'bg-rose-600 text-white shadow-xs'
                                 : isWarning

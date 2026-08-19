@@ -36,7 +36,7 @@ const WhyCampuna = React.memo(function WhyCampuna() {
             viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest/5 border border-forest/10 mb-4 text-forest font-sans text-xs font-semibold uppercase tracking-wider"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-gold" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-gold-dark" />
             <span>Mehr als nur ein Marktplatz</span>
           </motion.div>
           <motion.h2 

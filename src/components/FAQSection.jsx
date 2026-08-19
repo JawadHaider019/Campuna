@@ -19,7 +19,7 @@ const FAQSection = React.memo(function FAQSection() {
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-8 space-y-3">
-          <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+          <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold-dark block">
             Häufig gestellte Fragen
           </span>
           <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest">
