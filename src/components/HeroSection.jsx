@@ -30,12 +30,12 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           className="w-full h-full"
         >
           <img
-            src="/hero-campuna.png"
+            src="/hero-campuna.jpg"
             alt="Cinematic luxury camping under starry night"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             fetchPriority="high"
-            decoding="sync"
+            decoding="async"
           />
         </motion.div>
         {/* Deep luxurious multi-layered gradient overlay */}
