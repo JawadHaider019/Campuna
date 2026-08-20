@@ -739,7 +739,7 @@ export const BLOG_POSTS = [
     title: 'Was ist Campuna? | Der Camping-Marktplatz für...',
     excerpt: 'Campuna ist der spezialisierte Camping-Marktplatz für private und gewerbliche Angebote in Deutschland.',
     category: 'Campuna blogs',
-    image: '/blogs/Was ist Campuna blog.avif',
+    image: '/blogs/Was ist Campuna blog.webp',
     readTime: '6 Min.',
     date: '09.05.2026',
     updateDate: 'Mai 9, 2026',
@@ -754,7 +754,7 @@ export const BLOG_POSTS = [
     title: 'Wohnmobil richtig beladen – Zuladung berechnen & Überladung vermeiden ',
     excerpt: 'Du möchtest einen Wohnwagen gebraucht kaufen? Beachte diese 10 essentiellen Tipps...',
     category: 'Campuna blogs',
-    image: '/blogs/Titelbild cover image.avif',
+    image: '/blogs/Titelbild cover image.webp',
     readTime: '5 Min.',
     date: '24.07.2026',
     updateDate: 'Juli 24, 2026',
@@ -769,7 +769,7 @@ export const BLOG_POSTS = [
     title: 'Dachzelt kaufen: Worauf Anfänger wirklich achten sollten',
     excerpt: 'Dachzelte liegen voll im Trend. Aber worauf kommt es beim Kauf wirklich an?',
     category: 'Campuna blogs',
-    image: '/blogs/Dachzelt kaufen blog.avif',
+    image: '/blogs/Dachzelt kaufen blog.webp',
     readTime: '7 Min.',
     date: '16.06.2026',
     updateDate: 'Juni 16, 2026',
@@ -784,14 +784,14 @@ export const BLOG_POSTS = [
     title: 'Wohnwagen gebraucht kaufen: Die wichtigste Checkliste für Käufer',
     excerpt: 'Erfahre, wie du dein Wohnmobil oder deinen Wohnwagen richtig belädst, die Zuladung korrekt berechnest und gefährliche Überladung im Camping-Urlaub vermeidest.',
     category: 'Campuna blogs',
-    image: '/blogs/Wohnwagen gebraucht Die blog.avif',
+    image: '/blogs/Wohnwagen gebraucht Die blog.webp',
     readTime: '8 Min.',
     date: '02.06.2026',
     updateDate: '02.06.2026',
     slug: 'wohnwagen-gebraucht-kaufen',
     author: {
       name: 'Campuna Redaktion',
-      avatar: '/logo.png'
+      avatar: '/logo.webp'
     }
   }
 ];

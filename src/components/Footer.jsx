@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="flex flex-col space-y-4 max-w-xs items-start h-auto">
             <div className="flex items-start">
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Campuna® – Dein Camping-Marktplatz"
                 width={130}
                 height={30}

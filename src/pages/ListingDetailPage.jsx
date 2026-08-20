@@ -111,7 +111,7 @@ export default function ListingDetailPage() {
                                     return url;
                                 });
 
-                            if (images.length === 0) images.push('/hero-campuna.png');
+                            if (images.length === 0) images.push('/hero-campuna.webp');
 
                             const resolvedSellerType = apiMatch['listing user type'] || 'Privat';
                             const sellerName = resolvedSellerType === 'Gewerblich' ? 'Gewerblicher Anbieter' : 'Privatverkäufer';
@@ -754,7 +754,7 @@ export default function ListingDetailPage() {
                                     {/* Campuna entry image */}
                                     <div className="aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#eaeaea] shadow-sm bg-white select-none">
                                         <img
-                                            src={listing.images[0] || '/hero-campuna.png'}
+                                            src={listing.images[0] || '/hero-campuna.webp'}
                                             alt="Campuna-Eintragsbild"
                                             className="w-full h-full object-cover"
                                         />
@@ -948,7 +948,7 @@ export default function ListingDetailPage() {
                                         {/* Campuna entry image */}
                                         <div className="aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#eaeaea] shadow-sm bg-white select-none">
                                             <img
-                                                src={listing.images[0] || '/hero-campuna.png'}
+                                                src={listing.images[0] || '/hero-campuna.webp'}
                                                 alt="Campuna-Eintragsbild"
                                                 className="w-full h-full object-cover"
                                             />

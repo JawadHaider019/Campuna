@@ -184,7 +184,7 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
           {/* Logo */}
           <button onClick={() => handleNavClick('top')} className="flex items-start group relative">
             <img
-              src="/logo.png"
+              src="/logo.webp"
               alt="Campuna® – Dein Camping-Marktplatz"
               width={120}
               height={38}

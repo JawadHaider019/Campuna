@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import LoginSignupPage from './pages/LoginSignupPage';
-import CategoryPage from './pages/CategoryPage';
-import AllListingsPage from './pages/AllListingsPage';
-import BusinessProfilePage from './pages/BusinessProfilePage';
-import ListingDetailPage from './pages/ListingDetailPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import HomePage from './pages/Homepage';
-import CreateListingPage from './pages/CreateListingPage';
-import CampingHelferPage from './pages/CampingHelferPage';
-import ZuladungsrechnerPage from './pages/ZuladungsrechnerPage';
-import ReisekostenrechnerPage from './pages/ReisekostenrechnerPage';
-import AboutPage from './pages/AboutPage';
+import HomePage from './pages/HomePage';
+
+const LoginSignupPage = lazy(() => import('./pages/LoginSignupPage'));
+const CategoryPage = lazy(() => import('./pages/CategoryPage'));
+const AllListingsPage = lazy(() => import('./pages/AllListingsPage'));
+const BusinessProfilePage = lazy(() => import('./pages/BusinessProfilePage'));
+const ListingDetailPage = lazy(() => import('./pages/ListingDetailPage'));
+const CreateListingPage = lazy(() => import('./pages/CreateListingPage'));
+const CampingHelferPage = lazy(() => import('./pages/CampingHelferPage'));
+const ZuladungsrechnerPage = lazy(() => import('./pages/ZuladungsrechnerPage'));
+const ReisekostenrechnerPage = lazy(() => import('./pages/ReisekostenrechnerPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -139,29 +140,35 @@ const App = () => {
       {!isLoginPage && <Navbar isLoggedIn={loggedIn} alertCount={alertCount} />}
 
       <main id="main-content">
-        <Routes>
-          <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/about_us" element={<AboutPage />} />
-          <Route path="/uber_campuna" element={<AboutPage />} />
-          <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
-          <Route path="/auth" element={<LoginSignupPage />} />
-          <Route path="/category" element={<CategoryPage />} />
-          <Route path="/category/:slug" element={<CategoryPage />} />
-          <Route path="/all_listings" element={<AllListingsPage />} />
-          <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
-          <Route path="/all_business" element={<BusinessProfilePage />} />
-          <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
-          <Route path="/my_account" element={<CreateListingPage />} />
-          <Route path="/create_listing" element={<CreateListingPage />} />
-          <Route path="/create-listing" element={<CreateListingPage />} />
-          <Route path="/camping-helfer" element={<CampingHelferPage />} />
-          <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-          <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-          <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
-          <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
-          <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
-        </Routes>
+        <Suspense fallback={
+          <div className="min-h-screen bg-sand flex items-center justify-center">
+            <div className="w-10 h-10 border-4 border-forest border-t-transparent rounded-full animate-spin" />
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about_us" element={<AboutPage />} />
+            <Route path="/uber_campuna" element={<AboutPage />} />
+            <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
+            <Route path="/auth" element={<LoginSignupPage />} />
+            <Route path="/category" element={<CategoryPage />} />
+            <Route path="/category/:slug" element={<CategoryPage />} />
+            <Route path="/all_listings" element={<AllListingsPage />} />
+            <Route path="/listing_details/:slug" element={<ListingDetailPage />} />
+            <Route path="/all_business" element={<BusinessProfilePage />} />
+            <Route path="/all_business/:uid" element={<BusinessProfilePage />} />
+            <Route path="/my_account" element={<CreateListingPage />} />
+            <Route path="/create_listing" element={<CreateListingPage />} />
+            <Route path="/create-listing" element={<CreateListingPage />} />
+            <Route path="/camping-helfer" element={<CampingHelferPage />} />
+            <Route path="/camping-helfer/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+            <Route path="/camping-helfer/reisekostenrechner" element={<ReisekostenrechnerPage />} />
+            <Route path="/camping-helfer/:slug" element={<CampingHelferPage />} />
+            <Route path="/zuladungsrechner" element={<ZuladungsrechnerPage />} />
+            <Route path="/reisekostenrechner" element={<ReisekostenrechnerPage />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Only show Footer, ScrollToTop if NOT on login page */}

@@ -127,7 +127,7 @@ function mapListing(item) {
         });
 
     if (images.length === 0) {
-        images.push('/hero-campuna.png');
+        images.push('/hero-campuna.webp');
     }
 
     let category = item.Category || 'Camping Zubehör';
@@ -530,7 +530,7 @@ export default function AllListingsPage() {
             <section
                 className="relative mt-20 pt-12 pb-16 px-4 mx-4 md:mx-6 lg:mx-8 overflow-hidden rounded-3xl md:rounded-4xl"
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(0,61,3,0.7) 0%, rgba(0,0,0,0.45) 50%, rgba(0, 0, 0, 0.9) 100%), url('/hero-campuna.png')`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(0,61,3,0.7) 0%, rgba(0,0,0,0.45) 50%, rgba(0, 0, 0, 0.9) 100%), url('/hero-campuna.webp')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}

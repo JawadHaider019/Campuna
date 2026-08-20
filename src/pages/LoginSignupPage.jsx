@@ -88,7 +88,7 @@ export default function LoginSignupPage() {
 
             {/* ── Full-screen background image ── */}
             <motion.img
-                src="/hero-campuna.png"
+                src="/hero-campuna.webp"
                 alt="Camping"
                 className="absolute inset-0 w-full h-full object-cover z-0"
                 initial={{ scale: 1.07, opacity: 0 }}
@@ -115,7 +115,7 @@ export default function LoginSignupPage() {
                     {/* Logo + mode label row */}
                     <div className="flex items-center justify-between mb-1">
                         <button onClick={() => navigateTo('/')} className="pointer-events-auto flex items-start">
-                            <img src="/logo.png" alt="Campuna®"
+                            <img src="/logo.webp" alt="Campuna®"
                                 className="w-[110px] h-[32px] object-contain brightness-0 invert opacity-85 hover:opacity-100 transition-opacity" />
                             <span className="text-2xl sm:text-3xl font-normal text-white ml-0.5 -mt-1 select-none leading-none">®</span>
                         </button>

@@ -206,7 +206,7 @@ export default function AboutPage() {
             className="w-full h-full"
           >
             <img
-              src="/about_camping_together.jpg"
+              src="/about_camping_together.webp"
               alt="Campers enjoying camping together outdoors"
               className="w-full h-full object-cover"
               loading="eager"
@@ -381,7 +381,7 @@ export default function AboutPage() {
 
               <div ref={shineRef} className="relative overflow-hidden rounded-[32px] sm:rounded-[40px] shadow-2xl border border-forest/10 aspect-[1/1] bg-sand/5">
                 <img
-                  src="/about_founder.jpg"
+                  src="/about_founder.webp"
                   alt="Campuna outdoor lifestyle sunset on a boat"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                   loading="lazy"
@@ -743,7 +743,7 @@ export default function AboutPage() {
                           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                         />
                         <div className="absolute w-16 h-16 rounded-full bg-white border-4 border-forest shadow-xl flex items-center justify-center overflow-hidden">
-                          <img src="/fav.png" alt="Campuna" className="w-9 h-9 object-contain" />
+                          <img src="/fav.webp" alt="Campuna" className="w-9 h-9 object-contain" />
                         </div>
                       </div>
                     </div>
@@ -766,7 +766,7 @@ export default function AboutPage() {
                         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                       />
                       <div className="absolute w-12 h-12 rounded-full bg-white border-3 border-forest shadow-xl flex items-center justify-center overflow-hidden z-10">
-                        <img src="/fav.png" alt="Campuna" className="w-7 h-7 object-contain" />
+                        <img src="/fav.webp" alt="Campuna" className="w-7 h-7 object-contain" />
                       </div>
                     </div>
 

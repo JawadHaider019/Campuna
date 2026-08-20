@@ -36,7 +36,7 @@ export default function ToolLandingPage({ tool }) {
                 <section
                     className="relative rounded-3xl sm:rounded-4xl p-6 sm:p-10 md:p-12 overflow-hidden  border border-forest/10"
                     style={{
-                        backgroundImage: `linear-gradient(to bottom, rgba(16, 42, 28, 0.88) 0%, rgba(20, 50, 34, 0.78) 60%, rgba(10, 28, 18, 0.95) 100%), url('/hero-campuna.png')`,
+                        backgroundImage: `linear-gradient(to bottom, rgba(16, 42, 28, 0.88) 0%, rgba(20, 50, 34, 0.78) 60%, rgba(10, 28, 18, 0.95) 100%), url('/hero-campuna.webp')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                     }}

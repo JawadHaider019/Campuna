@@ -30,9 +30,9 @@ export default function HeroSection({ onSearch, onExploreClick, onSellClick, sea
           className="w-full h-full"
         >
           <picture className="w-full h-full">
-            <source media="(max-width: 768px)" srcSet="/hero-campuna-mobile.jpg" />
+            <source media="(max-width: 768px)" srcSet="/hero-campuna-mobile.webp" />
             <img
-              src="/hero-campuna.jpg"
+              src="/hero-campuna.webp"
               alt="Cinematic luxury camping under starry night"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"

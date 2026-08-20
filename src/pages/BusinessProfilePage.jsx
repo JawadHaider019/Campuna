@@ -236,7 +236,7 @@ export default function BusinessProfilePage() {
                             });
 
                         if (images.length === 0) {
-                            images.push('/hero-campuna.png');
+                            images.push('/hero-campuna.webp');
                         }
 
                         return {
@@ -429,7 +429,7 @@ export default function BusinessProfilePage() {
                     {/* Cover Picture */}
                     <div className="relative w-full aspect-[3/1] md:aspect-[4.5/1] overflow-hidden bg-sand/20">
                         <img
-                            src={provider.coverImage || '/hero-campuna.png'}
+                            src={provider.coverImage || '/hero-campuna.webp'}
                             alt={`${providerName} Banner`}
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
@@ -442,7 +442,7 @@ export default function BusinessProfilePage() {
                         {/* Round profile image overlapping bottom of cover */}
                         <div className="-mt-14 md:-mt-24 w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white bg-white shadow-xl overflow-hidden flex items-center justify-center shrink-0 z-10 select-none">
                             <img
-                                src={provider.logo || '/logo.png'}
+                                src={provider.logo || '/logo.webp'}
                                 alt={`${providerName} Logo`}
                                 className="w-full h-full object-cover"
                                 referrerPolicy="no-referrer"
