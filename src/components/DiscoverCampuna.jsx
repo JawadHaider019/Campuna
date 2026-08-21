@@ -443,9 +443,13 @@ export default function DiscoverCampuna() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -15 }}
                         transition={{ duration: 0.4 }}
-                        className="grid grid-cols-1 px-4 gap-6"
+                        className="space-y-4"
                     >
-                        {inspirations.map((insp) => (
+                        <p className="px-4 font-sans text-xs sm:text-sm text-charcoal/70 font-light">
+                            Ein Inserat, das uns aufgefallen ist und das wir euch hier besonders zeigen möchten.
+                        </p>
+                        <div className="grid grid-cols-1 px-4 gap-6">
+                            {inspirations.map((insp) => (
                             <motion.div
                                 key={insp.id}
                                 onClick={() => {
@@ -584,6 +588,7 @@ export default function DiscoverCampuna() {
                                 </div>
                             </motion.div>
                         ))}
+                        </div>
                     </motion.div>
                 );
 
@@ -715,8 +720,8 @@ export default function DiscoverCampuna() {
                             }`}
                     >
                         <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-                        <span className="block sm:hidden">Empfehlung</span>
-                        <span className="hidden sm:block">Campuna-Empfehlung</span>
+                        <span className="block sm:hidden">Fundstück</span>
+                        <span className="hidden sm:block">Unser Campuna-Fundstück</span>
                         {activeTab === 'inspiration' && (
                             <motion.div
                                 layoutId="activeTabUnderline"
