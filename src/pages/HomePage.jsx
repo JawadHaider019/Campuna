@@ -234,11 +234,11 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
 
 
             <Suspense fallback={<SectionFallback />}>
-                {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
-                <BlogSection />
 
                 {/* 7. Why Campuna Features Section */}
                 <WhyCampuna />
+                {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
+                <BlogSection />
 
                 {/* 8. High-End Video Display */}
                 <VideoSection />
