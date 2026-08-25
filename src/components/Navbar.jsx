@@ -15,9 +15,9 @@ export default function Navbar({ onSearchFocus, onOpenSellModal, onOpenAuthModal
   const navLinks = [
     { label: 'Startseite', id: 'top' },
     { label: 'Über uns', path: '/uber_campuna' },
-    { label: 'Entdecke', id: 'tool' },
-    { label: 'Spotlight', id: 'campuna-spotlight' },
     { label: 'Zum Stöbern', id: 'exclusive-offers' },
+    { label: 'Spotlight', id: 'campuna-spotlight' },
+    { label: 'Entdecke', id: 'tool' },
     { label: 'Ratgeber', id: 'journal' },
   ];
 
