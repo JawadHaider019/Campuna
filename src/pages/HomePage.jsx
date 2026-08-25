@@ -212,25 +212,26 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                 <div>
                     <CategoriesSection />
                 </div>
-
+                {/* 4. Exclusive Offers with filters & interactive search */}
+                <FeaturedListings
+                    listings={listingsList}
+                    isLoading={isLoadingListings}
+                    wishlistedIds={wishlistedIds}
+                    onToggleWishlist={handleToggleWishlist}
+                    selectedCategoryFilter={selectedCategory}
+                    onClearCategoryFilter={handleClearFilters}
+                    searchQuery={searchQuery}
+                    searchLocation={searchLocation}
+                />
+                {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
+                <PartnersSection isLoggedIn={isLoggedIn} />
                 {/* Discover Campuna - Dynamic Knowledge, Inspiration, and Tools */}
                 <DiscoverCampuna />
 
-                {/* 5. Campuna Spotlight - Recommended Providers Marquee */}
-                <PartnersSection isLoggedIn={isLoggedIn} />
+
             </Suspense>
 
-            {/* 4. Exclusive Offers with filters & interactive search */}
-            <FeaturedListings
-                listings={listingsList}
-                isLoading={isLoadingListings}
-                wishlistedIds={wishlistedIds}
-                onToggleWishlist={handleToggleWishlist}
-                selectedCategoryFilter={selectedCategory}
-                onClearCategoryFilter={handleClearFilters}
-                searchQuery={searchQuery}
-                searchLocation={searchLocation}
-            />
+
 
             <Suspense fallback={<SectionFallback />}>
                 {/* 6. Camping-Ratgeber & Tipps (Blog Section) */}
