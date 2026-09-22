@@ -56,8 +56,14 @@ export function rotateListings(listings, targetCount = 15, preferredCategories =
         ? preferredCategories.map(c => String(c).toLowerCase())
         : [];
 
-    // Weighted random score generation
-    const scoredListings = uniqueListings.map(item => {
+    const isItemFeatured = (item) => Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?']);
+
+    // Separate featured and standard listings
+    const featuredItems = uniqueListings.filter(isItemFeatured);
+    const standardItems = uniqueListings.filter(item => !isItemFeatured(item));
+
+    // Weighted random score generation for standard listings
+    const scoredStandardListings = standardItems.map(item => {
         const itemId = String(item.id || item._id);
         const isRecentlySeen = seenSet.has(itemId);
 
@@ -76,24 +82,35 @@ export function rotateListings(listings, targetCount = 15, preferredCategories =
         return { item, score, itemId, imgKey: getImageKey(item), titleKey: getTitleKey(item) };
     });
 
-    // Sort by weighted random score descending
-    scoredListings.sort((a, b) => b.score - a.score);
+    // Sort standard listings by weighted random score descending
+    scoredStandardListings.sort((a, b) => b.score - a.score);
 
-    // Diversity selection: Ensure visually distinct listings in the 15-item batch
-    const selected = [];
+    // Selected array starts with all featured listings (guaranteed inclusion)
+    const selected = [...featuredItems.slice(0, count)];
+    const selectedIds = new Set(selected.map(item => String(item.id || item._id)));
     const selectedImgCounts = new Map();
     const selectedTitleCounts = new Map();
+
+    selected.forEach(item => {
+        const imgK = getImageKey(item);
+        const titleK = getTitleKey(item);
+        selectedImgCounts.set(imgK, (selectedImgCounts.get(imgK) || 0) + 1);
+        selectedTitleCounts.set(titleK, (selectedTitleCounts.get(titleK) || 0) + 1);
+    });
+
     const remainingCandidates = [];
 
-    // Pass 1: Select items with unique images and unique titles
-    for (const candidate of scoredListings) {
+    // Pass 1: Select standard items with unique images and unique titles
+    for (const candidate of scoredStandardListings) {
         if (selected.length >= count) break;
+        if (selectedIds.has(candidate.itemId)) continue;
 
         const imgCount = selectedImgCounts.get(candidate.imgKey) || 0;
         const titleCount = selectedTitleCounts.get(candidate.titleKey) || 0;
 
         if (imgCount === 0 && titleCount === 0) {
             selected.push(candidate.item);
+            selectedIds.add(candidate.itemId);
             selectedImgCounts.set(candidate.imgKey, imgCount + 1);
             selectedTitleCounts.set(candidate.titleKey, titleCount + 1);
         } else {
@@ -105,10 +122,12 @@ export function rotateListings(listings, targetCount = 15, preferredCategories =
     if (selected.length < count) {
         for (const candidate of remainingCandidates) {
             if (selected.length >= count) break;
+            if (selectedIds.has(candidate.itemId)) continue;
 
             const imgCount = selectedImgCounts.get(candidate.imgKey) || 0;
             if (imgCount < 2) {
                 selected.push(candidate.item);
+                selectedIds.add(candidate.itemId);
                 selectedImgCounts.set(candidate.imgKey, imgCount + 1);
             }
         }
@@ -118,8 +137,9 @@ export function rotateListings(listings, targetCount = 15, preferredCategories =
     if (selected.length < count) {
         for (const candidate of remainingCandidates) {
             if (selected.length >= count) break;
-            if (!selected.includes(candidate.item)) {
+            if (!selectedIds.has(candidate.itemId)) {
                 selected.push(candidate.item);
+                selectedIds.add(candidate.itemId);
             }
         }
     }

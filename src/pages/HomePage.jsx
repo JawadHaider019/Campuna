@@ -132,7 +132,9 @@ export default function HomePage({ isLoggedIn: propIsLoggedIn }) {
                             },
                             listing_user_type: resolvedSellerType,
                             features,
-                            isExclusive: sum % 3 === 0
+                            isExclusive: sum % 3 === 0,
+                            isFeatured: Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?']),
+                            Featured: Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?'])
                         };
                     });
 

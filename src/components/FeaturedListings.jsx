@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion, useMotionValue } from 'motion/react';
-import { Heart, MapPin, ShieldCheck, Eye, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, MapPin, ShieldCheck, Eye, ArrowRight, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
@@ -10,9 +10,14 @@ import { optimizeBubbleImageUrl } from '../utils/image';
 
 function normalizeListing(item) {
   if (!item) return null;
+  const isFeatured = Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?']);
+
   // If item is already mapped with images array and formatted title, use it
   if (item.id && Array.isArray(item.images) && item.displayLocation) {
-    return item;
+    return {
+      ...item,
+      isFeatured
+    };
   }
 
   const id = item._id || item.id || String(Math.random());
@@ -90,7 +95,8 @@ function normalizeListing(item) {
     displayLocation,
     images,
     listing_user_type: resolvedSellerType,
-    features
+    features,
+    isFeatured
   };
 }
 
@@ -138,8 +144,28 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
   return (
     <div
       onClick={() => onCardClick(item)}
-      className="listing-card group relative flex-shrink-0 w-[300px] md:w-[320px] flex flex-col h-full bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-lg transition-all duration-300 select-none cursor-pointer"
+      className={`listing-card group relative flex-shrink-0 w-[300px] md:w-[320px] flex flex-col h-full rounded-[24px] overflow-hidden transition-all duration-300 select-none cursor-pointer ${
+        item.isFeatured
+          ? 'bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EE] to-[#F5EFE3] border border-[#D4AF37]/35 hover:border-[#D4AF37]/65 shadow-[0_4px_20px_-2px_rgba(212,175,55,0.14)] hover:shadow-[0_10px_30px_-3px_rgba(212,175,55,0.25)]'
+          : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-lg'
+      }`}
     >
+      {item.isFeatured && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[24px] z-20">
+          <motion.div
+            className="absolute -inset-y-[50%] -left-[100%] w-[60%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
+            animate={{
+              x: ['0%', '350%']
+            }}
+            transition={{
+              duration: 2.8,
+              repeat: Infinity,
+              repeatDelay: 3.5,
+              ease: 'easeInOut'
+            }}
+          />
+        </div>
+      )}
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
         <img
           src={item.images[imgIdx]}
@@ -149,11 +175,19 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
           loading="lazy"
           onError={handleImgError}
         />
-        <div className="absolute top-4 inset-x-4 flex items-center justify-between">
-          <span className="bg-forest flex items-center gap-1 justify-center text-white text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
-            <ShieldCheck className="w-3 h-3 text-white" />
-            {item.listing_user_type}
-          </span>
+        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10">
+          <div className="flex items-center gap-1.5 flex-wrap max-w-[80%]">
+            {item.isFeatured && (
+              <span className="bg-gradient-to-r from-[#9E782F] via-[#C9A85C] to-[#9E782F] text-white flex items-center gap-1 text-[8px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-full shadow-md border border-white/25">
+                <Sparkles className="w-2.5 h-2.5 text-amber-100 shrink-0" />
+                Premium
+              </span>
+            )}
+            <span className="bg-forest/90 flex items-center gap-1 justify-center text-white text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md">
+              <ShieldCheck className="w-3 h-3 text-white" />
+              {item.listing_user_type}
+            </span>
+          </div>
           <button
             type="button"
             aria-label={isWishlisted ? "Von Merkzettel entfernen" : "Auf den Merkzettel"}
@@ -161,7 +195,7 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
               e.stopPropagation();
               if (onToggleWishlist) onToggleWishlist(item.id);
             }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
+            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md shrink-0 ${isWishlisted
               ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
               : 'bg-white/70 hover:bg-white text-forest hover:scale-110'
               }`}
@@ -184,7 +218,9 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
       </div>
       <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
-          <h3 className="font-display text-md font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-2 line-clamp-1">
+          <h3 className={`font-display text-md font-semibold text-black transition-colors duration-200 mb-2 line-clamp-1 ${
+            item.isFeatured ? 'group-hover:text-[#9E782F]' : 'group-hover:text-gold'
+          }`}>
             {item.title}
           </h3>
           <div className="relative group/tags mb-2" onClick={(e) => e.stopPropagation()}>
@@ -206,7 +242,11 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
               {item.features.map((feat, idx) => (
                 <span
                   key={idx}
-                  className="text-[10px] text-charcoal/60 bg-sand px-2 py-1 rounded-md border border-forest/5 whitespace-nowrap shrink-0 select-none"
+                  className={`text-[10px] px-2 py-1 rounded-md whitespace-nowrap shrink-0 select-none ${
+                    item.isFeatured
+                      ? 'text-charcoal/75 bg-[#EFE8DA] border border-[#DECDB3]'
+                      : 'text-charcoal/60 bg-sand border border-forest/5'
+                  }`}
                 >
                   {feat}
                 </span>
@@ -224,7 +264,9 @@ const ListingCard = React.memo(({ item: rawItem, isWishlisted, onToggleWishlist,
             )}
           </div>
         </div>
-        <div className="pt-2 border-t border-forest/5 flex items-center justify-between">
+        <div className={`pt-2 border-t flex items-center justify-between ${
+          item.isFeatured ? 'border-[#E5D7BE]' : 'border-forest/5'
+        }`}>
 
           <span className="block text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
             {item.pricePeriod}
@@ -322,14 +364,35 @@ export default function FeaturedListings({
       return { row1Listings: displayListings, row2Listings: [] };
     }
     const countPerRow = Math.min(15, Math.ceil(displayListings.length / 2));
+
+    const featured = displayListings.filter(item => item.isFeatured || item.Featured);
+    const standard = displayListings.filter(item => !item.isFeatured && !item.Featured);
+
+    let row1 = [];
+    let row2 = [];
+
+    if (featured.length > 0) {
+      // Place featured items in the center of the top row
+      const leadCount = Math.min(2, Math.floor(standard.length / 2));
+      const leadStandard = standard.slice(0, leadCount);
+      const remainingStandardForTop = standard.slice(leadCount, countPerRow - featured.length + leadCount);
+      const standardForBottom = standard.slice(countPerRow - featured.length + leadCount);
+
+      row1 = [...leadStandard, ...featured, ...remainingStandardForTop];
+      row2 = standardForBottom.slice(0, countPerRow);
+    } else {
+      row1 = displayListings.slice(0, countPerRow);
+      row2 = displayListings.slice(countPerRow, countPerRow * 2);
+    }
+
     return {
-      row1Listings: displayListings.slice(0, countPerRow),
-      row2Listings: displayListings.slice(countPerRow, countPerRow * 2)
+      row1Listings: row1,
+      row2Listings: row2
     };
   }, [displayListings]);
 
-  const dirRef1 = useRef(1); // 1 = move right, -1 = move left
-  const dirRef2 = useRef(-1);
+  const dirRef1 = useRef(-1); // -1 = move left, 1 = move right (reversed: top row moves left)
+  const dirRef2 = useRef(1);  // 1 = move right, -1 = move left (reversed: bottom row moves right)
   const isHoveredRef1 = useRef(false);
   const isHoveredRef2 = useRef(false);
   const isDraggingRef1 = useRef(false);
@@ -361,20 +424,19 @@ export default function FeaturedListings({
   const x2 = useMotionValue(0);
 
   useEffect(() => {
-    if (rowConstraints1 > 0) {
-      x1.set(-rowConstraints1);
-      dirRef1.current = 1;
-    } else {
-      x1.set(0);
-    }
+    // Top row starts at 0 and slides left
+    x1.set(0);
+    dirRef1.current = -1;
   }, [row1Listings, rowConstraints1]);
 
   useEffect(() => {
+    // Bottom row starts at -rowConstraints2 and slides right
     if (rowConstraints2 > 0) {
-      x2.set(0);
-      dirRef2.current = -1;
+      x2.set(-rowConstraints2);
+      dirRef2.current = 1;
     } else {
       x2.set(0);
+      dirRef2.current = 1;
     }
   }, [row2Listings, rowConstraints2]);
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Heart, MapPin, ShieldCheck, Eye, ArrowLeft, SlidersHorizontal, X } from 'lucide-react';
+import { Heart, MapPin, ShieldCheck, Eye, ArrowLeft, SlidersHorizontal, X, Sparkles } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
 import { getHomepageProducts } from '../api/bubbleApi';
@@ -119,6 +119,7 @@ function mapListing(item) {
         listing_user_type: resolvedSellerType,
         features,
         isExclusive: sum % 3 === 0,
+        isFeatured: Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?'])
     };
 }
 
@@ -145,8 +146,28 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             onClick={handleCardClick}
-            className="group relative flex flex-col bg-white rounded-[16px] sm:rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            className={`group relative flex flex-col rounded-[16px] sm:rounded-[24px] overflow-hidden transition-all duration-300 cursor-pointer ${
+                item.isFeatured
+                    ? 'bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EE] to-[#F5EFE3] border border-[#D4AF37]/35 hover:border-[#D4AF37]/65 shadow-[0_4px_20px_-2px_rgba(212,175,55,0.14)] hover:shadow-[0_10px_30px_-3px_rgba(212,175,55,0.25)]'
+                    : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-xl'
+            }`}
         >
+            {item.isFeatured && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[16px] sm:rounded-[24px] z-20">
+                    <motion.div
+                        className="absolute -inset-y-[50%] -left-[100%] w-[60%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
+                        animate={{
+                            x: ['0%', '350%']
+                        }}
+                        transition={{
+                            duration: 2.8,
+                            repeat: Infinity,
+                            repeatDelay: 3.5,
+                            ease: 'easeInOut'
+                        }}
+                    />
+                </div>
+            )}
             {/* Image Area */}
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
                 <img
@@ -159,15 +180,23 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                 />
 
                 {/* Top badge row */}
-                <div className="absolute top-2 sm:top-4 inset-x-2 sm:inset-x-4 flex items-center justify-between">
-                    <span className="bg-forest flex items-center gap-0.5 sm:gap-1 justify-center text-white text-[7px] sm:text-[8px] font-semibold uppercase tracking-widest px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg backdrop-blur-md">
-                        <ShieldCheck className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-white" />
-                        {item.listing_user_type || item.seller?.type || 'Privat'}
-                    </span>
+                <div className="absolute top-2 sm:top-4 inset-x-2 sm:inset-x-4 flex items-center justify-between z-10">
+                    <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap max-w-[80%]">
+                        {item.isFeatured && (
+                            <span className="bg-gradient-to-r from-[#9E782F] via-[#C9A85C] to-[#9E782F] text-white flex items-center gap-1 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-md border border-white/25">
+                                <Sparkles className="w-2.5 sm:w-2.5 h-2.5 sm:h-2.5 text-amber-100 shrink-0" />
+                                Premium
+                            </span>
+                        )}
+                        <span className="bg-forest/90 flex items-center gap-0.5 sm:gap-1 justify-center text-white text-[7px] sm:text-[8px] font-semibold uppercase tracking-widest px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg backdrop-blur-md">
+                            <ShieldCheck className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-white" />
+                            {item.listing_user_type || item.seller?.type || 'Privat'}
+                        </span>
+                    </div>
 
                     <button
                         onClick={(e) => { e.stopPropagation(); onToggleWishlist(item.id); }}
-                        className={`w-6 sm:w-8 h-6 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
+                        className={`w-6 sm:w-8 h-6 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md shrink-0 ${isWishlisted
                             ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
                             : 'bg-white/70 hover:bg-white text-forest hover:scale-110'
                             }`}
@@ -199,14 +228,20 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             {/* Content Area */}
             <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between">
                 <div>
-                    <h3 className="font-display text-xs sm:text-base lg:text-lg font-bold text-black group-hover:text-gold transition-colors duration-200 mb-1.5 sm:mb-2 line-clamp-2 leading-tight">
+                    <h3 className={`font-display text-xs sm:text-base lg:text-lg font-bold text-black transition-colors duration-200 mb-1.5 sm:mb-2 line-clamp-2 leading-tight ${
+                        item.isFeatured ? 'group-hover:text-[#9E782F]' : 'group-hover:text-gold'
+                    }`}>
                         {item.title}
                     </h3>
                     <div className="flex flex-wrap gap-1 mb-1.5">
                         {item.features.slice(0, 2).map((feat, idx) => (
                             <span
                                 key={idx}
-                                className="text-[8px] sm:text-[10px] text-charcoal/60 bg-sand px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md border border-forest/5"
+                                className={`text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md border ${
+                                    item.isFeatured
+                                        ? 'text-charcoal/75 bg-[#EFE8DA] border-[#DECDB3]'
+                                        : 'text-charcoal/60 bg-sand border-forest/5'
+                                }`}
                             >
                                 {feat}
                             </span>
@@ -214,7 +249,9 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                     </div>
                 </div>
 
-                <div className="pt-1.5 sm:pt-2 border-t border-forest/5 flex items-end justify-between">
+                <div className={`pt-1.5 sm:pt-2 border-t flex items-end justify-between ${
+                    item.isFeatured ? 'border-[#E5D7BE]' : 'border-forest/5'
+                }`}>
                     <div>
                         <span className="block text-[8px] sm:text-[10px] uppercase tracking-widest text-charcoal/40 font-mono">
                             {item.pricePeriod}
@@ -299,8 +336,10 @@ export default function CategoryPage() {
         return item.title.toLowerCase().includes(q) || item.features.some(f => f.toLowerCase().includes(q));
     });
 
-    // Sort
+    // Sort (Featured listings prioritized to top)
     const sorted = [...filtered].sort((a, b) => {
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
         if (sortBy === 'price_asc') return a.price - b.price;
         if (sortBy === 'price_desc') return b.price - a.price;
         return 0; // newest = API order

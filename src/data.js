@@ -156,7 +156,9 @@ export const FEATURED_LISTINGS = [
       type: 'Privat'
     },
     features: ['Diesel', 'Schaltgetriebe', 'Küche', '4 Schlafplätze'],
-    isExclusive: true
+    isExclusive: true,
+    isFeatured: true,
+    Featured: true
   },
   {
     id: 'lst_2',
@@ -196,7 +198,9 @@ export const FEATURED_LISTINGS = [
       type: 'Privat'
     },
     features: ['Autark', 'Randger Ausbau', 'Standheizung'],
-    isExclusive: true
+    isExclusive: true,
+    isFeatured: true,
+    Featured: true
   },
   {
     id: 'lst_4',
@@ -236,7 +240,9 @@ export const FEATURED_LISTINGS = [
       type: 'Gewerblich'
     },
     features: ['Teintegrierter Camper', 'Einzelbetten', 'Große Heckgarage'],
-    isExclusive: true
+    isExclusive: true,
+    isFeatured: true,
+    Featured: true
   },
   {
     id: 'lst_6',
@@ -382,6 +388,8 @@ export const FEATURED_LISTINGS = [
     features: ['7 Schlafplätze', 'Gepflegt', 'Etagenbett', 'Rundsitzgruppe'],
     isExclusive: true,
     isNegotiable: true,
+    isFeatured: true,
+    Featured: true,
     publishedDate: '22.04.2026',
     anzeigeNr: 'CP-1067',
     viewsCount: 11,

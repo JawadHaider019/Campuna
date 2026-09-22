@@ -15,7 +15,8 @@ import {
     Grid,
     Tag,
     ChevronRight,
-    Filter
+    Filter,
+    Sparkles
 } from 'lucide-react';
 import { buildListingSlug } from '../utils/slugify';
 import { navigateTo } from '../utils/navigation';
@@ -190,7 +191,8 @@ function mapListing(item) {
         features,
         isExclusive: sum % 3 === 0,
         isNegotiable,
-        subCategory: item['Sub - Category'] || ''
+        subCategory: item['Sub - Category'] || '',
+        isFeatured: Boolean(item.Featured || item.isFeatured || item.is_featured || item['Featured?'])
     };
 }
 
@@ -217,8 +219,28 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             onClick={handleCardClick}
-            className="group relative flex flex-col bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 cursor-pointer h-full"
+            className={`group relative flex flex-col rounded-2xl md:rounded-3xl overflow-hidden transition-all duration-300 cursor-pointer h-full ${
+                item.isFeatured
+                    ? 'bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EE] to-[#F5EFE3] border border-[#D4AF37]/35 hover:border-[#D4AF37]/65 shadow-[0_4px_20px_-2px_rgba(212,175,55,0.14)] hover:shadow-[0_10px_30px_-3px_rgba(212,175,55,0.25)]'
+                    : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-xl'
+            }`}
         >
+            {item.isFeatured && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl md:rounded-3xl z-20">
+                    <motion.div
+                        className="absolute -inset-y-[50%] -left-[100%] w-[60%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
+                        animate={{
+                            x: ['0%', '350%']
+                        }}
+                        transition={{
+                            duration: 2.8,
+                            repeat: Infinity,
+                            repeatDelay: 3.5,
+                            ease: 'easeInOut'
+                        }}
+                    />
+                </div>
+            )}
             {/* Image Container */}
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-sand/20">
                 <img
@@ -232,17 +254,25 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
 
                 {/* Top Badges */}
                 <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
-                    <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg backdrop-blur-md">
-                        <ShieldCheck className="w-2.5 h-2.5 text-gold shrink-0" />
-                        {item.listing_user_type || item.seller?.type || 'Privat'}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap max-w-[80%]">
+                        {item.isFeatured && (
+                            <span className="bg-gradient-to-r from-[#9E782F] via-[#C9A85C] to-[#9E782F] text-white flex items-center gap-1 text-[7.5px] sm:text-[8px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md border border-white/20">
+                                <Sparkles className="w-2.5 h-2.5 text-amber-100 shrink-0" />
+                                Premium
+                            </span>
+                        )}
+                        <span className="bg-forest/90 flex items-center gap-1 justify-center text-white text-[8px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg backdrop-blur-md">
+                            <ShieldCheck className="w-2.5 h-2.5 text-white shrink-0" />
+                            {item.listing_user_type || item.seller?.type || 'Privat'}
+                        </span>
+                    </div>
 
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             onToggleWishlist(item.id);
                         }}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isWishlisted
+                        className={`w-7 h-7 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md shrink-0 ${isWishlisted
                             ? 'bg-rose-500 text-white hover:bg-rose-600 scale-105'
                             : 'bg-white/75 hover:bg-white text-forest hover:scale-105'
                             }`}
@@ -274,14 +304,20 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
             {/* Content Area */}
             <div className="p-3.5 md:p-4 flex flex-col flex-1 justify-between gap-3">
                 <div>
-                    <h3 className="font-display text-xs md:text-sm lg:text-base font-bold text-black group-hover:text-gold transition-colors duration-200 mb-1.5 line-clamp-2 leading-snug">
+                    <h3 className={`font-display text-xs md:text-sm lg:text-base font-bold text-black transition-colors duration-200 mb-1.5 line-clamp-2 leading-snug ${
+                        item.isFeatured ? 'group-hover:text-[#9E782F]' : 'group-hover:text-gold'
+                    }`}>
                         {item.title}
                     </h3>
                     <div className="flex flex-wrap gap-1">
                         {item.features?.slice(0, 2).map((feat, idx) => (
                             <span
                                 key={idx}
-                                className="text-[8px] md:text-[9.5px] text-charcoal/65 bg-sand px-2 py-0.5 rounded-md border border-forest/5 whitespace-nowrap"
+                                className={`text-[8px] md:text-[9.5px] px-2 py-0.5 rounded-md border whitespace-nowrap ${
+                                    item.isFeatured
+                                        ? 'text-charcoal/75 bg-[#EFE8DA] border-[#DECDB3]'
+                                        : 'text-charcoal/65 bg-sand border-forest/5'
+                                }`}
                             >
                                 {feat}
                             </span>
@@ -294,7 +330,9 @@ function ListingCard({ item, isWishlisted, onToggleWishlist }) {
                     </div>
                 </div>
 
-                <div className="pt-2 border-t border-forest/5 flex items-end justify-between">
+                <div className={`pt-2 border-t flex items-end justify-between ${
+                    item.isFeatured ? 'border-[#E5D7BE]' : 'border-forest/5'
+                }`}>
                     <div>
                         <span className="block text-[8px] md:text-[9.5px] uppercase tracking-widest text-charcoal/40 font-mono leading-none mb-1">
                             {item.pricePeriod}
@@ -516,8 +554,10 @@ export default function AllListingsPage() {
         return true;
     });
 
-    // Sort filtered listings
+    // Sort filtered listings (Featured listings always pinned to the top)
     const sortedListings = [...filteredListings].sort((a, b) => {
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
         if (sortBy === 'price_asc') return a.price - b.price;
         if (sortBy === 'price_desc') return b.price - a.price;
         return 0; // Newest / default order (API returns newest first)

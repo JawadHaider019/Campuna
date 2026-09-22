@@ -18,7 +18,9 @@ import {
     Lock,
     AlertCircle,
     User,
-    Check
+    Check,
+    Star,
+    Sparkles
 } from 'lucide-react';
 import { getHomepageProducts } from '../api/bubbleApi';
 import { FEATURED_LISTINGS } from '../data';
@@ -70,6 +72,7 @@ export default function ListingDetailPage() {
                     foundListing = {
                         ...mockMatch,
                         displayLocation: formatLocation(mockMatch.location),
+                        isFeatured: Boolean(mockMatch.Featured || mockMatch.isFeatured || mockMatch.is_featured)
                     };
                 }
 
@@ -139,7 +142,8 @@ export default function ListingDetailPage() {
                                 likesCount: 0,
                                 chatsCount: 0,
                                 condition: apiMatch['Condition item'] === 'Used' ? 'Gebraucht' : (apiMatch['Condition item'] === 'New' ? 'Neu' : 'Gut'),
-                                status: 'Aktiv'
+                                status: 'Aktiv',
+                                isFeatured: Boolean(apiMatch.Featured || apiMatch.isFeatured || apiMatch.is_featured || apiMatch['Featured?'])
                             };
                         }
                     }
@@ -369,6 +373,12 @@ export default function ListingDetailPage() {
                         Zurück
                     </button>
                     <div className="flex flex-wrap items-start gap-3">
+                        {listing.isFeatured && (
+                            <span className="bg-gradient-to-r from-[#9E782F] via-[#C9A85C] to-[#9E782F] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md flex items-center gap-1.5 border border-white/25">
+                                <Sparkles className="w-3.5 h-3.5 text-amber-100" />
+                                Premium Inserat
+                            </span>
+                        )}
                         {isSold && (
                             <span className="bg-red-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md flex items-center gap-1">
                                 <Lock className="w-3.5 h-3.5" />
@@ -573,12 +583,33 @@ export default function ListingDetailPage() {
                             {relatedListings.map((item) => {
                                 const slug = buildListingSlug(item.title, item.id);
                                 const userType = item.listing_user_type || (item.seller?.type === 'Gewerblich' ? 'Gewerblich' : 'Privat');
+                                const isItemFeat = Boolean(item.isFeatured || item.Featured);
                                 return (
                                     <div
                                         key={item.id}
                                         onClick={() => navigateTo(`/listing_details/${slug}`)}
-                                        className="group relative flex flex-col bg-white rounded-[24px] overflow-hidden border border-forest/5 hover:border-forest/10 hover:shadow-xl transition-all duration-300 cursor-pointer h-full shrink-0 w-[260px] sm:w-[280px] lg:w-auto lg:shrink snap-start text-left"
+                                        className={`group relative flex flex-col rounded-[24px] overflow-hidden transition-all duration-300 cursor-pointer h-full shrink-0 w-[260px] sm:w-[280px] lg:w-auto lg:shrink snap-start text-left ${
+                                            isItemFeat
+                                                ? 'bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EE] to-[#F5EFE3] border border-[#D4AF37]/35 hover:border-[#D4AF37]/65 shadow-[0_4px_20px_-2px_rgba(212,175,55,0.14)] hover:shadow-[0_10px_30px_-3px_rgba(212,175,55,0.25)]'
+                                                : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-xl'
+                                        }`}
                                     >
+                                        {isItemFeat && (
+                                            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[24px] z-20">
+                                                <motion.div
+                                                    className="absolute -inset-y-[50%] -left-[100%] w-[60%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-25deg]"
+                                                    animate={{
+                                                        x: ['0%', '350%']
+                                                    }}
+                                                    transition={{
+                                                        duration: 2.8,
+                                                        repeat: Infinity,
+                                                        repeatDelay: 3.5,
+                                                        ease: 'easeInOut'
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                         {/* Image Area */}
                                         <div className="relative aspect-[16/9] w-full overflow-hidden bg-sand/20">
                                             <img
@@ -590,11 +621,19 @@ export default function ListingDetailPage() {
                                             />
 
                                             {/* Top Bar inside image card */}
-                                            <div className="absolute top-4 inset-x-4 flex items-center justify-between">
-                                                <span className="bg-forest flex items-center gap-1 justify-center text-gold text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md font-sans">
-                                                    <ShieldCheck className="w-3 h-3 text-gold" />
-                                                    {userType}
-                                                </span>
+                                            <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10">
+                                                <div className="flex items-center gap-1 flex-wrap max-w-[80%]">
+                                                    {isItemFeat && (
+                                                        <span className="bg-gradient-to-r from-[#9E782F] via-[#C9A85C] to-[#9E782F] text-white flex items-center gap-1 text-[7.5px] sm:text-[8px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-1 rounded-full shadow-md border border-white/20">
+                                                            <Sparkles className="w-2.5 h-2.5 text-amber-100 shrink-0" />
+                                                            Premium
+                                                        </span>
+                                                    )}
+                                                    <span className="bg-forest/90 flex items-center gap-1 justify-center text-white text-[8px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg backdrop-blur-md font-sans">
+                                                        <ShieldCheck className="w-3 h-3 text-white" />
+                                                        {userType}
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             {/* Location overlay */}
