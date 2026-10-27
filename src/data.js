@@ -140,7 +140,8 @@ export const CATEGORIES = [
 export const FEATURED_LISTINGS = [
   {
     id: 'lst_1',
-    title: 'VW T6 Camper Van Bulli, G...',
+    slug: 'vw-t6-camper-van-bulli',
+    title: 'VW T6 Camper Van Bulli, Ausbau mit Aufstelldach',
     category: 'Wohnmobile & Camper',
     price: 36900,
     pricePeriod: 'Kaufpreis',
@@ -148,7 +149,8 @@ export const FEATURED_LISTINGS = [
     rating: 4.8,
     reviewsCount: 12,
     images: [
-      '/collection/vw t6.avif'
+      'https://images.unsplash.com/photo-1527786356703-4b100091cd2c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -162,7 +164,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_2',
-    title: 'Hindermann Four Seasons A...',
+    slug: 'hindermann-four-seasons-thermovorhang',
+    title: 'Hindermann Four Seasons Abdeckung & Thermomatte',
     category: 'Camping Zubehör',
     price: 75,
     pricePeriod: 'Preis',
@@ -170,7 +173,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 8,
     images: [
-      '/collection/Hindemann.avif'
+      'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -182,7 +185,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_3',
-    title: 'Ford Transit Randger R 53...',
+    slug: 'ford-transit-randger-r535',
+    title: 'Ford Transit Randger R 535 Allrad Campervan',
     category: 'Wohnmobile & Camper',
     price: 43500,
     pricePeriod: 'Kaufpreis',
@@ -190,7 +194,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.7,
     reviewsCount: 5,
     images: [
-      '/collection/ford transit.avif'
+      'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -204,7 +208,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_4',
-    title: '9 Sitzer Bus mieten...',
+    slug: '9-sitzer-bus-mieten',
+    title: '9 Sitzer Bus mieten für Camping & Gruppen',
     category: 'Mieten & Vermieten',
     price: 100,
     pricePeriod: 'pro Tag',
@@ -212,7 +217,7 @@ export const FEATURED_LISTINGS = [
     rating: 5.0,
     reviewsCount: 20,
     images: [
-      '/collection/9 sitzer.avif'
+      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
@@ -224,7 +229,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_5',
-    title: 'Carado T-447 mieten...',
+    slug: 'carado-t447-mieten',
+    title: 'Carado T-447 teilintegriertes Wohnmobil mieten',
     category: 'Mieten & Vermieten',
     price: 115,
     pricePeriod: 'pro Tag',
@@ -232,29 +238,30 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 15,
     images: [
-      '/collection/carado.avif'
+      'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
       verified: true,
       type: 'Gewerblich'
     },
-    features: ['Teintegrierter Camper', 'Einzelbetten', 'Große Heckgarage'],
+    features: ['Teilintegriert', 'Einzelbetten', 'Große Heckgarage'],
     isExclusive: true,
     isFeatured: true,
     Featured: true
   },
   {
     id: 'lst_6',
-    title: 'Camper Bus Vivaro zu verm...',
+    slug: 'camper-bus-vivaro-mieten',
+    title: 'Camper Bus Vivaro mit Ausbau zu vermieten',
     category: 'Mieten & Vermieten',
-    price: 100,
+    price: 95,
     pricePeriod: 'pro Tag',
     location: 'Bruchsal, BW',
     rating: 4.8,
     reviewsCount: 9,
     images: [
-      '/collection/camper bus.avif'
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Gewerblicher Anbieter',
@@ -266,7 +273,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_7',
-    title: 'Sonnenschirmständer für S...',
+    slug: 'sonnenschirmstaender-camping',
+    title: 'Sonnenschirmständer für Strand & Camping',
     category: 'Camping Zubehör',
     price: 40,
     pricePeriod: 'Preis',
@@ -274,7 +282,7 @@ export const FEATURED_LISTINGS = [
     rating: 5.0,
     reviewsCount: 3,
     images: [
-      '/collection/sonnenschirmstander.avif'
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -286,7 +294,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_8',
-    title: 'Kompakter Outdoortisch we...',
+    slug: 'kompakter-outdoortisch',
+    title: 'Kompakter Outdoortisch wetterfest & klappbar',
     category: 'Camping Zubehör',
     price: 50,
     pricePeriod: 'Preis',
@@ -294,7 +303,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.6,
     reviewsCount: 7,
     images: [
-      '/collection/kompakter.avif'
+      'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -306,7 +315,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_9',
-    title: 'Westfield Ambassador 2 Be...',
+    slug: 'westfield-ambassador-campingstuhl',
+    title: 'Westfield Ambassador 2 Bequemer Campingstuhl',
     category: 'Camping Zubehör',
     price: 22,
     pricePeriod: 'Preis',
@@ -314,7 +324,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.4,
     reviewsCount: 4,
     images: [
-      '/collection/westfield.avif'
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -326,7 +336,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_10',
-    title: 'Weinsberg Cara two...',
+    slug: 'weinsberg-caratwo-wohnwagen',
+    title: 'Weinsberg CaraTwo gepflegter Wohnwagen',
     category: 'Wohnmobile & Camper',
     price: 11500,
     pricePeriod: 'Kaufpreis',
@@ -334,7 +345,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.9,
     reviewsCount: 11,
     images: [
-      '/collection/weinsberg.avif'
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -346,7 +357,8 @@ export const FEATURED_LISTINGS = [
   },
   {
     id: 'lst_11',
-    title: 'Wohnwagen Knaus Deseo TR...',
+    slug: 'wohnwagen-knaus-deseo-transport',
+    title: 'Wohnwagen Knaus Deseo Transport-Caravan',
     category: 'Wohnmobile & Camper',
     price: 13800,
     pricePeriod: 'Kaufpreis',
@@ -354,7 +366,7 @@ export const FEATURED_LISTINGS = [
     rating: 4.8,
     reviewsCount: 6,
     images: [
-      '/collection/wohnwagen.avif'
+      'https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=1200&q=80'
     ],
     seller: {
       name: 'Privatverkäufer',
@@ -607,137 +619,81 @@ export const FEATURED_LISTINGS = [
 export const PROVIDERS = [
   {
     id: 'prov_1',
-    name: 'VTMCAMPING',
-    logo: '/partners/vtmcamping-logo.avif',
-    coverImage: '/partners/vtmcamping-cover.avif',
-    description: 'Wir lieben, was wir tun...',
-    slug: '?uid=1776803829229x189417462630120600',
-    listingsCount: 3,
+    name: 'Alpen Caravan & Reisemobile GmbH',
+    logo: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=1400&q=80',
+    description: 'Ihr Fachpartner für Wohnmobile, Kastenwagen und Wohnwagen. Meisterwerkstatt & Top Bewertung.',
+    slug: 'alpen-caravan-reisemobile-gmbh',
+    listingsCount: 4,
     rating: 4.9,
-    location: 'Deutschland'
+    location: 'München, Bayern',
+    isPioneer: true,
+    verified: true
   },
   {
     id: 'prov_2',
     name: 'CUBE4LIFE Campingboxen',
-    logo: '/partners/cube4life-logo.avif',
-    coverImage: '/partners/cube4life-cover.avif',
-    description: 'CUBE4LIFE – Dein Auto. Deine Freiheit. Dein System.',
-    slug: '?uid=1776160822121x699323185804907400',
+    logo: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1527786356703-4b100091cd2c?auto=format&fit=crop&w=1400&q=80',
+    description: 'CUBE4LIFE – Dein Auto. Deine Freiheit. Modulare Campingboxen & Ausbausysteme.',
+    slug: 'cube4life-campingboxen',
     listingsCount: 3,
     rating: 4.95,
-    location: 'Bielefeld'
+    location: 'Bielefeld, NRW',
+    isPioneer: true,
+    verified: true
   },
   {
     id: 'prov_3',
-    name: 'DümmerMobile',
-    logo: '/partners/dummermobile-logo.avif',
-    coverImage: '/partners/dummermobile-cover.avif',
-    description: 'Expertise in Wohnmobilen und Campern.',
-    slug: '?uid=1776869525532x299821018455849200',
+    name: 'DümmerMobile Reisemobile',
+    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1400&q=80',
+    description: 'Expertise in Wohnmobilen und Campern. Neufahrzeuge, Vermietung & Zubehörservice.',
+    slug: 'duemmermobile',
     listingsCount: 3,
     rating: 4.85,
-    location: 'Dümmer'
+    location: 'Dümmer, Niedersachsen',
+    isPioneer: true,
+    verified: true
   },
   {
     id: 'prov_4',
-    name: 'CVB',
-    logo: '/partners/cvb-logo.png',
-    coverImage: '/partners/cvb-cover.png',
-    slug: '?uid=1776687522610x609488749931111700',
-    listingsCount: 1,
+    name: 'GAS&GO Mobiler Gasservice',
+    logo: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1400&q=80',
+    description: 'Zertifizierter mobiler Gasservice für Wohnmobile und Caravans nach G607 und G608.',
+    slug: 'gas-and-go-berlin',
+    listingsCount: 2,
+    rating: 5.0,
+    location: 'Berlin & Umland',
+    isPioneer: true,
+    verified: true
   },
   {
     id: 'prov_5',
     name: 'Team Lorenz Wohnmobile',
-    logo: '/partners/teamlorenz-logo.png',
-    coverImage: '/partners/teamlorenz-cover.png',
-    slug: '?uid=1780250702063x648952957542537000',
+    logo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80',
+    description: 'Verkauf, Vermietung und professionelle Werkstatt für Reisemobile aller Art.',
+    slug: 'team-lorenz-wohnmobile',
     listingsCount: 3,
+    rating: 4.8,
+    location: 'Erfurt, Thüringen',
+    isPioneer: false,
+    verified: true
   },
   {
     id: 'prov_6',
-    name: 'Björn Lindemann',
-    logo: '/partners/björnlindemann-cover.png',
-    coverImage: '/partners/björnlindemann-cover.png',
-    slug: '?uid=1776890947085x969286827362994400',
-    listingsCount: 1,
-  },
-  {
-    id: 'prov_7',
-    name: 'Casamaki',
-    logo: '/partners/casamaki-logo.avif',
-    coverImage: '/partners/casemaki-cover.avif',
-    description: 'Nr. 1 Partner für Wohnkabinen 🚐 Festaufbau &...',
-    slug: '?uid=1774612775285x928668539058932000',
-    listingsCount: 3,
-    rating: 4.9,
-    location: 'Deutschland'
-  },
-  {
-    id: 'prov_8',
-    name: 'ProVerDa GmbH',
-    logo: '/partners/proverdaGmbh-logo.avif',
-    coverImage: '/partners/proverdaGmbh-cover.avif',
-    description: 'Professionelle Verkaufsdatenbank für Camper.',
-    slug: '?uid=1775591052758x777492336252758700',
-    listingsCount: 1,
-    rating: 4.7,
-    location: 'Gewerblich'
-  },
-  {
-    id: 'prov_9',
-    name: 'LuckyBoxOWL',
-    logo: '/partners/luckyboxowl-logo.avif',
-    coverImage: '/partners/luckbowlowl-cover.avif',
-    description: 'Wir sind ein kleines, familiengeführtes Unternehmen...',
-    slug: '?uid=1776402781762x371166055146309600',
-    listingsCount: 3,
-    rating: 4.8,
-    location: 'OWL'
-  },
-  {
-    id: 'prov_10',
-    name: 'NALUX | Professionelle ..',
-    logo: '/partners/nalux-logo.avif',
-    coverImage: '/partners/nalux-cover.avif',
-    description: 'Fahrzeugveredelung - Wohnmobil &...',
-    slug: '?uid=1776108717846x665627376733133800',
-    listingsCount: 3,
-    rating: 4.9,
-    location: 'Deutschland'
-  },
-  {
-    id: 'prov_11',
-    name: 'Trailer Manufaktur NRW',
-    logo: '/partners/trailer-logo.avif',
-    coverImage: '/partners/trailer-cover.jpg',
-    description: 'Umbauten von PKW Anhänger in...',
-    slug: '?uid=1774805620399x549661505373624900',
-    listingsCount: 1,
-    rating: 4.8,
-    location: 'NRW'
-  },
-  {
-    id: 'prov_12',
-    name: 'LivianEssence',
-    logo: '/partners/LivianEssense-logo.avif',
-    coverImage: '/partners/LivianEssense-cover.avif',
-    description: 'Livianessence | Tiny House...',
-    slug: '?uid=1775565921784x138051037995865710',
-    listingsCount: 3,
-    rating: 4.95,
-    location: 'Tiny Living'
-  },
-  {
-    id: 'prov_13',
     name: 'TS Caravanverleih',
-    logo: '/partners/tsCaravanverleih-logo.avif',
-    coverImage: '/partners/tsCaravanverleih-cover.avif',
-    description: 'Ihre Wohnwagenvermietung in und um Erfurt...',
-    slug: '?uid=1774108990415x175532623183632930',
+    logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=1400&q=80',
+    description: 'Ihre Wohnwagenvermietung in und um Erfurt. Familienfreundliche Caravans reisefertig.',
+    slug: 'ts-caravanverleih',
     listingsCount: 4,
     rating: 4.95,
-    location: 'Erfurt'
+    location: 'Erfurt, Thüringen',
+    isPioneer: true,
+    verified: true
   }
 ];
 
@@ -842,5 +798,85 @@ Egal ob du ein Wohnmobil, einen Wohnwagen, Campingzubehör, einen Stellplatz, ei
     id: 'faq_6',
     question: 'Wie finde ich passende Angebote auf Campuna?',
     answer: 'Nutze die Suchfunktion und filtere nach Kategorie, Preis oder Standort. So findest du schnell Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen – in deiner Nähe oder deutschlandweit.'
+  },
+  {
+    id: 'faq_7',
+    question: 'Wie sicher ist das Kaufen und Verkaufen von privat?',
+    answer: 'Campuna setzt auf direkte Kommunikation zwischen Käufer und Verkäufer und klare Regeln für sicheres Handeln. Wir empfehlen bei Fahrzeugen immer Besichtigung, Probefahrt und einen schriftlichen Kaufvertrag. Praktische Tipps dazu findest du im Ratgeber und auf unserer Informationsseite.'
+  }
+];
+
+export const PROVIDER_CATEGORIES = [
+  {
+    id: 'dealers',
+    name: 'Wohnmobil- & Wohnwagenhändler',
+    slug: 'wohnmobil-wohnwagenhaendler',
+    shortName: 'Händler & Autohäuser',
+    description: 'Verkauf von Neu- und Gebrauchtfahrzeugen, Caravans, Reisemobilen und Kastenwagen.',
+    iconName: 'Truck'
+  },
+  {
+    id: 'campsites',
+    name: 'Campingplätze & Stellplätze',
+    slug: 'campingplaetze-stellplaetze',
+    shortName: 'Camping- & Stellplätze',
+    description: 'Idyllische Campingplätze, Wohnmobilstellplätze, Ferienanlagen und naturnahe Übernachtungsorte.',
+    iconName: 'MapPin'
+  },
+  {
+    id: 'rental',
+    name: 'Vermietung & Rental',
+    slug: 'vermietung-rental',
+    shortName: 'Fahrzeugvermietung',
+    description: 'Wohnmobil- und Wohnwagenvermieter für den spontanen oder geplanten Traumurlaub.',
+    iconName: 'Compass'
+  },
+  {
+    id: 'workshops',
+    name: 'Werkstatt & Service',
+    slug: 'werkstatt-service',
+    shortName: 'Werkstatt & Gasprüfung',
+    description: 'Fachwerkstätten für Reparaturen, Gasprüfung (G607), Wartung, Einbauten und Aufbereitung.',
+    iconName: 'Wrench'
+  },
+  {
+    id: 'conversions',
+    name: 'Camper-Ausbau & Tuning',
+    slug: 'camper-ausbau',
+    shortName: 'Camper-Ausbau & Manufakturen',
+    description: 'Individueller Van-Ausbau, Möbelmodule, Aufstelldächer, Dämmung und Elektrik-Installationen.',
+    iconName: 'Hammer'
+  },
+  {
+    id: 'accessories',
+    name: 'Zubehör & Shop',
+    slug: 'zubehoer-shop',
+    shortName: 'Zubehör & Outdoor-Shops',
+    description: 'Fachgeschäfte und Onlineshops für Campingzubehör, Vorzelte, Solar, Grills und Lifestyle.',
+    iconName: 'ShoppingBag'
+  },
+  {
+    id: 'manufacturers',
+    name: 'Hersteller & Marken',
+    slug: 'hersteller-marken',
+    shortName: 'Hersteller & Marken',
+    description: 'Offizielle Hersteller von Freizeitfahrzeugen, Anhängern, Zeltaufbauten und Campingkomponenten.',
+    iconName: 'Building'
+  },
+  {
+    id: 'tinyhouses',
+    name: 'Tiny Houses & Modulheime',
+    slug: 'tiny-houses-modulheime',
+    shortName: 'Tiny Houses & Chalets',
+    description: 'Mobile Tiny Houses, Chalets, Wohnmodule und kompakte Lebensräume im Grünen.',
+    iconName: 'Home'
+  },
+  {
+    id: 'boats',
+    name: 'Boote & Wassersport',
+    slug: 'boote-wassersport',
+    shortName: 'Boote & Wassersport',
+    description: 'Kajaks, SUPs, Schlauchboote, Bootsmotoren, Trailer und Zubehör für Abenteuer auf dem Wasser.',
+    iconName: 'Anchor'
   }
 ];

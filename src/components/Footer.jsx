@@ -1,185 +1,183 @@
-import { TbBrandFacebook, TbBrandTiktok, TbBrandInstagram, TbBrandYoutube } from 'react-icons/tb';
-import { getParentNavigationUrl } from '../utils/navigation';
+import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useAnimation } from 'motion/react';
 import { CATEGORIES } from '../data';
 
 const CATEGORY_SLUGS = {
-  'Camping Zubehör': 'ausrüstung-und-zubehör',
-  'Wohnmobile & Camper': 'fahrzeuge',
-  'Zelte & Dachzelte': 'zelte-and-dachzelte',
-  'Fahrräder & Träger': 'fahrräder-träger',
-  'Stellplätze & Campingplätze': 'campingplätze-stellplätze',
-  'Camping Services': 'dienstleistungen',
-  'Tiny Houses': 'tiny-houses',
-  'Mieten & Vermieten': 'mieten-vermieten'
+    'Camping Zubehör': 'camping-zubehoer',
+    'Camping-Zubehör': 'camping-zubehoer',
+    'Wohnmobile & Camper': 'wohnmobile-camper',
+    'Zelte & Dachzelte': 'zelte-dachzelte',
+    'Fahrräder & Träger': 'fahrraeder-traeger',
+    'Stellplätze & Campingplätze': 'stellplaetze',
+    'Camping Services': 'camping-services',
+    'Camping-Services': 'camping-services',
+    'Tiny Houses': 'tiny-houses',
+    'Mieten & Vermieten': 'mieten-vermieten',
+    'Boote & Wassersport': 'boote-wassersport'
+};
+
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.18,
+            delayChildren: 0.05
+        }
+    }
+};
+
+const layerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { duration: 0.5, ease: 'easeOut' }
+    }
 };
 
 export default function Footer() {
-  return (
-    <footer id="footer" className="bg-sand text-charcoal pt-16 pb-4">
-      <div className="max-w-7xl mx-auto px-6 md:px-14">
-        <div className="mb-8">
-          <p className="font-sans text-[13px] text-charcoal/70 italic leading-relaxed text-center">
-            Campuna® ist Deutschlands Camping-Marktplatz für Wohnmobile, Wohnwagen, Campingbusse, Campingzubehör, Stellplätze, Campingplätze, Vermietungen und Dienstleistungen rund ums Camping. Entdecke Angebote von privaten und gewerblichen Anbietern – alles an einem Ort.
-          </p>
-        </div>
-        {/* Main Footer Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-start">
+    const footerRef = useRef(null);
+    const controls = useAnimation();
+    const hasAnimated = useRef(false);
 
-          {/* Logo & Manifesto Column */}
-          <div className="flex flex-col space-y-4 max-w-xs items-start h-auto">
-            <div className="flex items-start">
-              <img
-                src="/logo.webp"
-                alt="Campuna® – Dein Camping-Marktplatz"
-                width={130}
-                height={30}
-                className="h-[40px] w-[140px] object-contain"
-              />
-              <span className="text-2xl sm:text-3xl font-normal text-forest ml-0.5 -mt-1 select-none leading-none">®</span>
-            </div>
-            <p className="font-sans text-[15px] text-charcoal/80 font-normal leading-relaxed text-left">
-              Campuna wächst mit euch.
-            </p>
+    useEffect(() => {
+        const el = footerRef.current;
+        if (!el) return;
+        const trigger = () => {
+            if (hasAnimated.current) return;
+            hasAnimated.current = true;
+            controls.start('visible');
+        };
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { trigger(); observer.disconnect(); } },
+            { threshold: 0, rootMargin: '100px' }
+        );
+        observer.observe(el);
+        return () => { observer.disconnect(); };
+    }, [controls]);
 
-          </div>
+    return (
+        <footer
+            id="footer"
+            ref={footerRef}
+            className="relative bg-gradient-to-b from-[#F9F7F1] via-[#F4EFE6] to-[#ECE3D4] text-charcoal pt-16 pb-28 sm:pb-32 md:pb-8 border-t border-forest/10"
+        >
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-10 w-80 h-80 bg-forest/5 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Navigation Column */}
-          <div className="space-y-4 min-w-[150px] h-auto">
-            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
-              Navigation
-            </h3>
-            <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
-              <li>
-                <a href={getParentNavigationUrl('')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Startseite
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('my_account')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Mein Konto
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('uber_campuna')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Über uns
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('how_campuna_works')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  So funktioniert Campuna
-                </a>
-              </li>
-            </ul>
-          </div>
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate={controls}
+                className="max-w-7xl mx-auto px-6 md:px-12 relative z-10"
+            >
+                {/* Top Announcement Banner */}
+                <motion.div
+                    variants={layerVariants}
+                    className="bg-white/20 backdrop-blur-xs border border-forest/5 rounded-2xl p-4 sm:p-5 mb-12 text-center w-full"
+                >
+                    <p className="font-sans text-xs sm:text-sm md:text-[14.5px] text-charcoal/75 leading-relaxed font-light">
+                        <span className="font-semibold text-forest">Campuna, dein Camping-Marktplatz.</span> Campuna ist Deutschlands Marktplatz für die ganze Camping-Welt: Wohnmobile, Wohnwagen und Camper, Camping-Zubehör, Zelte und Dachzelte, Stellplätze und Campingplätze, Tiny Houses, Boote, Vermietung, Camping-Services und gewerbliche Anbieter. Kaufen, verkaufen und entdecken an einem Ort.
+                    </p>
+                </motion.div>
 
-          {/* Categories Column */}
-          <div className="space-y-4 min-w-[180px] h-auto">
-            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
-              Kategorie
-            </h3>
-            <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
-              {CATEGORIES.map((cat) => {
-                const slug = CATEGORY_SLUGS[cat.name] || '';
-                return (
-                  <li key={cat.id}>
-                    <a
-                      href={getParentNavigationUrl(`category/${slug}`)}
-                      target="_parent"
-                      className="hover:text-forest transition-colors font-[400]"
-                    >
-                      {cat.name}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                {/* 4 Footer Columns */}
+                <motion.div
+                    variants={layerVariants}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-10 gap-8 lg:gap-10 pb-12 border-b border-forest/10"
+                >
+                    {/* Col 1: Logo & Mission (4 cols on lg) */}
+                    <div className="lg:col-span-4 space-y-4">
+                        <div className="flex items-start">
+                            <img
+                                src="/logo.webp"
+                                alt="Campuna® – Dein Camping-Marktplatz"
+                                width={130}
+                                height={30}
+                                className="h-[40px] w-[140px] object-contain"
+                            />
+                            <span className="text-2xl sm:text-3xl font-normal text-forest ml-0.5 -mt-1 select-none leading-none">®</span>
+                        </div>
+                        <p className="font-display text-sm font-semibold text-forest">
+                            Wir bringen Camping an einem Ort zusammen.
+                        </p>
+                        <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed font-light max-w-sm">
+                            Deutschlands Marktplatz für Camping, Caravaning und Outdoor. Von Campern für Camper entwickelt.
+                        </p>
+                    </div>
 
+                    {/* Col 2: Categories (2 cols on lg) */}
+                    <div className="lg:col-span-2 space-y-3.5">
+                        <h3 className="font-sans text-xs font-bold text-forest tracking-[0.25em] uppercase pb-1 border-b border-forest/10 inline-block">
+                            Kategorien
+                        </h3>
+                        <ul className="space-y-2.5 font-sans text-sm text-charcoal/75">
+                            {CATEGORIES.map((cat) => {
+                                const slug = CATEGORY_SLUGS[cat.name] || cat.slug || '';
+                                return (
+                                    <li key={cat.id}>
+                                        <Link to={'/category/' + slug} className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">
+                                            {cat.name}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
 
-          {/* Support Column */}
-          <div className="space-y-4 min-w-[150px]">
-            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
-              Support
-            </h3>
-            <ul className="space-y-3 font-sans text-[14px] text-charcoal/80">
-              <li>
-                <a href={getParentNavigationUrl('faq_hilfe')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Hilfe & FAQ
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('contact_kontakt')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Kontakt
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('act_safely__sicher_handeln')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Sicher handeln
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('missing_anything__fehlt_dir_etwas')} target="_parent" className="hover:text-forest transition-colors font-[400] leading-tight block">
-                  Fehlt dir etwas?
-                  Sag es uns
-                </a>
-              </li>
-            </ul>
-          </div>
+                    {/* Col 3: Support & Tools (2 cols on lg) */}
+                    <div className="lg:col-span-2 space-y-3.5">
+                        <h3 className="font-sans text-xs font-bold text-forest tracking-[0.25em] uppercase pb-1 border-b border-forest/10 inline-block">
+                            Support & Tools
+                        </h3>
+                        <ul className="space-y-2.5 font-sans text-sm text-charcoal/75">
+                            <li><Link to="/#faq" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Hilfe & FAQ</Link></li>
+                            <li><Link to="/zuladungsrechner" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Zuladungsrechner</Link></li>
+                            <li><Link to="/reisekostenrechner" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Reisebudget-Rechner</Link></li>
+                            <li><Link to="/contact" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Kontakt & Feedback</Link></li>
+                            <li><Link to="/sicher-handeln" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Sicher handeln</Link></li>
+                        </ul>
+                    </div>
 
-          {/* Rechtliches Column */}
-          <div className="space-y-4 min-w-[150px]">
-            <h3 className="font-sans text-[16px] font-bold text-forest tracking-[0.2em] uppercase">
-              Rechtliches
-            </h3>
-            <ul className="space-y-3 font-sans text-[14px]  text-charcoal/80">
-              <li>
-                <a href={getParentNavigationUrl('agb')} target="_parent" className="hover:text-forest transition-colors font-[400] ">
-                  AGB
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('nutzungsbedingungen')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Nutzungsbedingungen
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('datenschutzerkl_rung')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Datenschutz
-                </a>
-              </li>
-              <li>
-                <a href={getParentNavigationUrl('impressum')} target="_parent" className="hover:text-forest transition-colors font-[400]">
-                  Impressum
-                </a>
-              </li>
-            </ul>
-          </div>
+                    {/* Col 4: Rechtliches (2 cols on lg) */}
+                    <div className="lg:col-span-2 space-y-3.5">
+                        <h3 className="font-sans text-xs font-bold text-forest tracking-[0.25em] uppercase pb-1 border-b border-forest/10 inline-block">
+                            Rechtliches
+                        </h3>
+                        <ul className="space-y-2.5 font-sans text-sm text-charcoal/75">
+                            <li><Link to="/agb" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">AGB</Link></li>
+                            <li><Link to="/nutzungsbedingungen" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Nutzungsbedingungen</Link></li>
+                            <li><Link to="/datenschutz" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Datenschutz</Link></li>
+                            <li><Link to="/impressum" className="hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Impressum</Link></li>
+                            <li><Link to="/vertraege-kuendigen" className="text-forest/90 font-semibold hover:text-forest hover:translate-x-1 inline-flex items-center transition-all duration-200">Verträge hier kündigen</Link></li>
+                        </ul>
+                    </div>
+                </motion.div>
 
-        </div>
-
-        {/* Sub-footer Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-7 mt-8 text-[12px] text-charcoal/80 font-sans">
-          <p className="text-center font-normal">
-            © 2026 Campuna®. Alle Rechte vorbehalten.
-          </p>
-
-          <div className="flex items-center gap-5 justify-center">
-            <a href="https://www.facebook.com/people/campunade/61580574896053/" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="Facebook">
-              <TbBrandFacebook className="w-6 h-6 text-forest" strokeWidth={1.5} />
-            </a>
-            <a href="https://www.tiktok.com/@campuna.de" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="TikTok">
-              <TbBrandTiktok className="w-6 h-6 text-forest" strokeWidth={1.5} />
-            </a>
-            <a href="https://www.instagram.com/campuna.de/" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="Instagram">
-              <TbBrandInstagram className="w-6 h-6 text-forest" strokeWidth={1.5} />
-            </a>
-            <a href="https://www.youtube.com/@campuna?si=YU8ngbf058KMRVy0" target="_blank" rel="noopener noreferrer" className="hover:opacity-75 transition-opacity" aria-label="YouTube">
-              <TbBrandYoutube className="w-6 h-6 text-forest" strokeWidth={1.5} />
-            </a>
-          </div>
-        </div>
-
-      </div>
-    </footer>
-  );
+                {/* Sub-footer Section */}
+                <motion.div
+                    variants={layerVariants}
+                    className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-charcoal/70 font-sans"
+                >
+                    <p className="text-center sm:text-left font-normal order-2 sm:order-1">
+                        © 2026 Campuna®. Alle Rechte vorbehalten.
+                    </p>
+                    <div className="flex items-center gap-3 justify-center order-1 sm:order-2">
+                        <a href="https://www.instagram.com/campuna.de/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/80 border border-forest/10 hover:border-forest/30 text-forest hover:bg-forest hover:text-sand flex items-center justify-center transition-all duration-200 shadow-xs" aria-label="Instagram">
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@campuna.de" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/80 border border-forest/10 hover:border-forest/30 text-forest hover:bg-forest hover:text-sand flex items-center justify-center transition-all duration-200 shadow-xs" aria-label="TikTok">
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@campuna?si=YU8ngbf058KMRVy0" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/80 border border-forest/10 hover:border-forest/30 text-forest hover:bg-forest hover:text-sand flex items-center justify-center transition-all duration-200 shadow-xs" aria-label="YouTube">
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61580574896053" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/80 border border-forest/10 hover:border-forest/30 text-forest hover:bg-forest hover:text-sand flex items-center justify-center transition-all duration-200 shadow-xs" aria-label="Facebook">
+                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </footer>
+    );
 }

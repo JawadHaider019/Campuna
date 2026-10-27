@@ -1,135 +1,146 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useMotionValue } from 'motion/react';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { motion, useMotionValue, animate } from 'motion/react';
+import {
+    ArrowRight,
+    ShieldCheck,
+    ChevronLeft,
+    ChevronRight,
+    MapPin,
+    Star,
+    Layers
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { PROVIDERS } from '../data';
+import PioneerBadge from './PioneerBadge';
 
-import { navigateTo } from '../utils/navigation';
-import { optimizeBubbleImageUrl } from '../utils/image';
+const ProviderCard = React.memo(({ partner, onPartnerClick }) => {
+    const navigate = useNavigate();
 
-export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
+    const handleClick = () => {
+        if (onPartnerClick) {
+            onPartnerClick(partner.name);
+        } else {
+            navigate(`/all_business/${partner.slug || partner.id}`);
+        }
+    };
+
+    return (
+        <div
+            onClick={handleClick}
+            className="provider-card group relative flex-shrink-0 w-[290px] sm:w-[320px] md:w-[340px] rounded-[28px] overflow-hidden cursor-pointer bg-white border-2 border-forest/10 hover:border-gold shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 select-none flex flex-col justify-between"
+        >
+            {/* Top Cover Image Area */}
+            <div className="relative h-[145px] sm:h-[160px] w-full bg-sand/30 border-b border-forest/10 overflow-hidden flex items-center justify-center">
+                <img
+                    src={partner.coverImage}
+                    alt={partner.name}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+
+                {/* Top Badges */}
+                <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
+                    <span className="bg-forest/90 text-sand border border-gold/40 text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md backdrop-blur-md inline-flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3 text-gold" />
+                        <span>Verifiziert</span>
+                    </span>
+
+                    {partner.isPioneer && (
+                        <PioneerBadge size="xs" variant="forest" text="Pioneer" />
+                    )}
+                </div>
+
+                {/* Location on cover */}
+                <div className="absolute bottom-2.5 right-3 text-[10px] text-white/90 bg-black/45 backdrop-blur-md px-2.5 py-0.5 rounded-full flex items-center gap-1 font-medium">
+                    <MapPin className="w-2.5 h-2.5 text-gold shrink-0" />
+                    <span className="truncate max-w-[120px]">{partner.location || 'Deutschland'}</span>
+                </div>
+            </div>
+
+            {/* Profile Info Body */}
+            <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between relative bg-white">
+                {/* Floating Logo */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-forest/10 group-hover:border-gold shadow-md overflow-hidden p-1 absolute -top-8 left-5 transition-transform duration-300 group-hover:scale-105">
+                    <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        className="w-full h-full object-contain rounded-xl"
+                        loading="lazy"
+                    />
+                </div>
+
+                {/* Title & Description */}
+                <div className="pt-7 space-y-1.5">
+                    <h3 className="font-display text-sm sm:text-base font-bold text-forest group-hover:text-gold transition-colors duration-200 line-clamp-1">
+                        {partner.name}
+                    </h3>
+                    <p className="font-sans text-xs text-charcoal/70 line-clamp-2 font-light leading-relaxed">
+                        {partner.description}
+                    </p>
+                </div>
+
+                {/* Bottom Stats */}
+                <div className="pt-3.5 mt-3 border-t border-forest/5 flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-[11px] font-bold text-forest">
+                        <Star className="w-3.5 h-3.5 fill-gold text-gold" />
+                        <span>{partner.rating || 4.9}</span>
+                        <span className="text-charcoal/40 font-normal">/ 5.0</span>
+                    </div>
+
+                    <div className="flex items-center gap-1 text-[11px] text-charcoal/60 bg-sand px-2.5 py-0.5 rounded-full font-mono">
+                        <Layers className="w-3 h-3 text-gold" />
+                        <span>{partner.listingsCount || 3} Angebote</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+ProviderCard.displayName = 'ProviderCard';
+
+export default function PartnersSection({ onPartnerClick }) {
+    const navigate = useNavigate();
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
-    const [randomizedProviders, setRandomizedProviders] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+
+    const x = useMotionValue(0);
+    const dirRef = useRef(-1);
+    const isHoveredRef = useRef(false);
+    const isDraggingRef = useRef(false);
 
     useEffect(() => {
-        let active = true;
-        const loadProvidersAndCounts = async () => {
-            try {
-                // Fetch F_users and listing from homepage_tips API payload
-                const tipsRes = await fetch('https://simoneasalvo.bubbleapps.io/api/1.1/wf/homepage_tips/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                let users = [];
-                let listings = [];
-
-                if (tipsRes.ok) {
-                    const tipsData = await tipsRes.json();
-                    if (tipsData && tipsData.status === 'success' && tipsData.response) {
-                        if (Array.isArray(tipsData.response.F_users)) {
-                            users = tipsData.response.F_users;
-                        }
-                        if (Array.isArray(tipsData.response.listing)) {
-                            listings = tipsData.response.listing;
-                        }
-                    }
-                }
-
-                if (users.length > 0) {
-                    const mappedProviders = users.map(user => {
-                        // Count how many listings belong to this user from API listing array as fallback
-                        const count = listings.filter(l => l['Created By'] === user._id).length;
-                        const listingsCount = (user['Total Listings'] !== undefined && user['Total Listings'] !== null)
-                            ? Number(user['Total Listings'])
-                            : count;
-
-                        // Logo URL formatted
-                        let logo = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
-                        if (user['Logo/Profile']) {
-                            logo = optimizeBubbleImageUrl(user['Logo/Profile'], 200, 80);
-                        }
-
-                        // Cover URL formatted
-                        let coverImage = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80';
-                        if (user.Cover) {
-                            coverImage = optimizeBubbleImageUrl(user.Cover, 800, 80);
-                        }
-
-                        return {
-                            id: user._id,
-                            name: user['BU - Company name'] || user.username || 'Camping Partner',
-                            logo,
-                            coverImage,
-                            description: user.Bio || 'Dein Partner für Camping Abenteuer.',
-                            slug: `?uid=${user._id}`,
-                            listingsCount
-                        };
-                    });
-
-                    if (active) {
-                        const shuffled = [...mappedProviders].sort(() => Math.random() - 0.5);
-                        setRandomizedProviders(shuffled);
-                    }
-                }
-            } catch (err) {
-                console.error("Error fetching providers API in PartnersSection:", err);
-            } finally {
-                if (active) {
-                    setIsLoading(false);
-                }
+        const measure = () => {
+            if (rowRef.current) {
+                setConstraints(Math.max(0, rowRef.current.scrollWidth - rowRef.current.offsetWidth));
             }
         };
 
-        loadProvidersAndCounts();
+        const timer = setTimeout(measure, 100);
+        window.addEventListener('resize', measure);
         return () => {
-            active = false;
+            clearTimeout(timer);
+            window.removeEventListener('resize', measure);
         };
     }, []);
 
-    const x = useMotionValue(0);
-    const isHoveredRef = useRef(false);
-    const isDraggingRef = useRef(false);
-    const cardWidthRef = useRef(360);
-    const gap = 16; // gap-4 = 16px
-
-    // Measure actual card width + gap from DOM
-    useEffect(() => {
-        const measureCard = () => {
-            if (!rowRef.current) return;
-            const card = rowRef.current.querySelector('.provider-card');
-            if (card) {
-                cardWidthRef.current = card.getBoundingClientRect().width;
-            }
-            setConstraints(rowRef.current.scrollWidth - rowRef.current.offsetWidth);
-        };
-
-        const timer = setTimeout(measureCard, 100);
-        window.addEventListener('resize', measureCard);
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener('resize', measureCard);
-        };
-    }, [randomizedProviders]);
-
-    // Auto-scroll loop using measured card width and requestAnimationFrame
     useEffect(() => {
         let animationFrameId;
         let lastTime = performance.now();
 
         const loop = (time) => {
-            const delta = (time - lastTime) / 1000; // in seconds
+            const delta = Math.min((time - lastTime) / 1000, 0.1);
             lastTime = time;
 
-            if (randomizedProviders.length > 0 && !isHoveredRef.current && !isDraggingRef.current) {
-                const step = cardWidthRef.current + gap;
-                const maxMove = step * randomizedProviders.length;
-                let currentX = x.get() - 30 * delta; // slides left, 30 px/s
-                while (currentX <= -maxMove) {
-                    currentX += maxMove;
-                }
-                while (currentX > 0) {
-                    currentX -= maxMove;
+            if (constraints > 0 && !isHoveredRef.current && !isDraggingRef.current) {
+                let currentX = x.get() + dirRef.current * 16 * delta;
+                if (dirRef.current === -1 && currentX <= -constraints) {
+                    currentX = -constraints;
+                    dirRef.current = 1;
+                } else if (dirRef.current === 1 && currentX >= 0) {
+                    currentX = 0;
+                    dirRef.current = -1;
                 }
                 x.set(currentX);
             }
@@ -139,167 +150,95 @@ export default function PartnersSection({ onPartnerClick, isLoggedIn }) {
 
         animationFrameId = requestAnimationFrame(loop);
         return () => cancelAnimationFrame(animationFrameId);
-    }, [randomizedProviders.length]);
+    }, [constraints, x]);
 
-    const ProviderCard = ({ partner }) => (
-        <div
-            onClick={() => {
-                if (onPartnerClick) onPartnerClick(partner.name);
+    const handleScrollStep = useCallback((direction) => {
+        if (constraints <= 0) return;
+        const step = 340;
+        const current = x.get();
+        const target = direction === 'left' ? Math.min(0, current + step) : Math.max(-constraints, current - step);
 
-                navigateTo(`/all_business/${partner.slug}`);
-            }}
-            // Responsive card sizes: 280px mobile, 360px sm, 440px md, 550px lg+
-            className="provider-card group relative flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition-all duration-500 select-none border border-white/10 flex"
-        >
-            {/* Background Image & Overlay */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    src={partner.coverImage}
-                    alt={partner.name}
-                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/65 transition-colors duration-500" />
-            </div>
-
-            {/* ── LEFT PANEL (35%) — Centered Circular Logo ── */}
-            <div className="relative z-10 flex items-center justify-center p-3 sm:p-4 shrink-0" style={{ width: '35%' }}>
-                {/* Subtle concentric rings */}
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-30">
-                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border border-white/20" />
-                    <div className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full border border-white/10" />
-                </div>
-
-                {/* Circular logo — scales across breakpoints */}
-                <div className="relative z-10 w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full bg-white shadow-md border-2 border-white/10 overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-                    <img
-                        src={partner.logo}
-                        alt={`${partner.name} Logo`}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                    />
-                </div>
-            </div>
-
-            {/* ── RIGHT PANEL (65%) — Text Content ── */}
-            <div className="relative z-10 py-4 pr-3 sm:pr-4 pl-0 flex flex-col justify-center items-start text-left shrink-0" style={{ width: '65%' }}>
-                {/* Name & Description */}
-                <div className="flex flex-col items-start text-left">
-                    <h3 className="font-display text-[18px] sm:text-[18px] md:text-xl lg:text-2xl font-extrabold text-white leading-tight tracking-tight group-hover:text-gold transition-colors duration-300">
-                        {partner.name}
-                    </h3>
-                    <p className="font-sans text-[10px] sm:text-xs md:text-sm text-white/75 leading-relaxed font-light mt-1 line-clamp-2 sm:line-clamp-3">
-                        {partner.description}
-                    </p>
-                </div>
-
-                {/* Bottom row: Badge & Arrow */}
-                <div className="flex items-center justify-between mt-2 pt-2 w-full">
-                    {/* Badge */}
-
-                    <div className="inline-flex items-center space-x-1 bg-white/10 backdrop-blur-md px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full text-white shadow-sm shrink-0">
-                        <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold" />
-                        <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wide">
-                            {partner.listingsCount} online
-                        </span>
-                    </div>
-
-
-                    {/* Arrow button */}
-                    <div className=" w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-forest flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-gold transition-all duration-300 shadow-md shrink-0">
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </div>
-                </div>
-            </div>
-
-            {/* Visual polish border */}
-            <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[24px] sm:rounded-[32px] transition-all duration-500 pointer-events-none z-20" />
-        </div>
-    );
+        animate(x, target, {
+            duration: 0.45,
+            ease: [0.22, 1, 0.36, 1]
+        });
+    }, [constraints, x]);
 
     return (
-        <section id="campuna-spotlight" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden scroll-mt-24">
-            <div className="max-w-8xl mx-auto px-6 md:px-12">
-
-                {/* Section header */}
-                <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-                    <div className="space-y-1 ">
-                        <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold-dark block">
-                            CAMPUNA SPOTLIGHT
+        <section id="partners" className="py-12 sm:py-16 md:py-20 bg-sand/30 relative overflow-hidden select-none scroll-mt-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+                {/* Header Row */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
+                    <div>
+                        <span className="font-sans text-[10px] sm:text-xs font-bold uppercase tracking-[0.35em] text-gold block mb-2">
+                            VERIFIZIERTE PARTNER
                         </span>
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">
-                            Camping-Anbieter im Spotlight
+                        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-forest leading-tight">
+                            Entdecke Camping-Partner & Experten
                         </h2>
-                        <div className="w-16 h-0.5 bg-gold rounded-full mt-4 mx-auto md:mx-0" />
+                        <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-2xl font-light leading-relaxed mt-1">
+                            Geprüfte Fachbetriebe, Ausbauer, Werkstätten und Händler aus ganz Deutschland.
+                        </p>
                     </div>
-                    {/* Desktop Actions */}
-                    <div className="hidden lg:flex items-center space-x-6">
-                        <button
-                            onClick={() => navigateTo('/signup_login')}
-                            className="text-charcoal/60 hover:text-forest text-[11px] font-sans font-semibold transition-colors border-b border-transparent hover:border-forest/30 pb-0.5"
-                        >
-                            Auch Anbieter werden
-                        </button>
-                        <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
-                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
-                            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                        </button>
-                    </div>
+
+                    <button
+                        onClick={() => navigate('/all_business')}
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-forest/15 hover:border-gold hover:text-gold-dark text-forest font-bold text-xs uppercase tracking-wider transition-all self-start md:self-auto shrink-0 shadow-2xs hover:shadow-xs cursor-pointer"
+                    >
+                        <span>Alle Partner ansehen</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-gold" />
+                    </button>
                 </div>
 
-                <div className="relative">
-                    {/* Side Fades */}
-                    <div className="hidden md:block absolute inset-y-0 left-0 w-24 lg:w-32 bg-gradient-to-r from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
-                    <div className="hidden md:block absolute inset-y-0 right-0 w-24 lg:w-32 bg-gradient-to-l from-sand via-sand/35 to-transparent z-10 pointer-events-none" />
+                {/* Marquee Row */}
+                <div
+                    className="group/partner-row relative overflow-hidden pb-2 cursor-grab active:cursor-grabbing"
+                    ref={rowRef}
+                    onMouseEnter={() => { isHoveredRef.current = true; }}
+                    onMouseLeave={() => { isHoveredRef.current = false; }}
+                >
+                    <button
+                        type="button"
+                        aria-label="Vorherige Partner"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleScrollStep('left');
+                        }}
+                        className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-forest hover:text-gold shadow-xl border border-forest/10 items-center justify-center transition-all duration-300 opacity-0 group-hover/partner-row:opacity-100 hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-sm"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
 
-                    {isLoading ? (
-                        <div className="flex gap-4 overflow-hidden px-4 sm:px-16 md:px-32 py-4 sm:py-6">
-                            {[1, 2, 3].map((n) => (
-                                <div
-                                    key={n}
-                                    className="flex-shrink-0 w-[360px] sm:w-[370px] md:w-[500px] lg:w-[550px] h-[150px] sm:h-[180px] md:h-[210px] lg:h-[240px] rounded-[24px] sm:rounded-[32px] bg-black/5 animate-pulse flex items-center p-6 gap-4 border border-white/10"
-                                >
-                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/10 shrink-0" />
-                                    <div className="flex-1 space-y-3">
-                                        <div className="h-5 bg-black/10 rounded w-1/2" />
-                                        <div className="h-3 bg-black/10 rounded w-3/4" />
-                                        <div className="h-3 bg-black/10 rounded w-1/3" />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : randomizedProviders.length > 0 ? (
-                        <div className="relative overflow-x-hidden cursor-grab active:cursor-grabbing" ref={rowRef}>
-                            <motion.div
-                                drag="x"
-                                dragConstraints={{ right: 0, left: -constraints }}
-                                style={{ x }}
-                                onDragStart={() => { isDraggingRef.current = true; }}
-                                onDragEnd={() => { isDraggingRef.current = false; }}
-                                onMouseEnter={() => { isHoveredRef.current = true; }}
-                                onMouseLeave={() => { isHoveredRef.current = false; }}
-                                className="flex gap-4 w-max px-4 sm:px-16 md:px-32 py-4 sm:py-6"
-                            >
-                                {[...randomizedProviders, ...randomizedProviders].map((partner, idx) => (
-                                    <ProviderCard key={`${partner.id}-${idx}`} partner={partner} />
-                                ))}
-                            </motion.div>
-                        </div>
-                    ) : null}
+                    <button
+                        type="button"
+                        aria-label="Nächste Partner"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleScrollStep('right');
+                        }}
+                        className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-forest hover:text-gold shadow-xl border border-forest/10 items-center justify-center transition-all duration-300 opacity-0 group-hover/partner-row:opacity-100 hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-sm"
+                    >
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
 
-                    {/* Mobile & Tablet Actions */}
-                    <div className="mt-8 flex  items-center justify-center gap-4 sm:gap-6 lg:hidden">
-                        <button
-                            onClick={() => navigateTo(isLoggedIn ? '/my_account?n=yes' : '/signup_login')}
-                            className="text-charcoal/60 hover:text-forest text-[11px] font-sans font-semibold transition-colors border-b border-transparent hover:border-forest/30 pb-0.5"
-                        >
-                            Auch Anbieter werden
-                        </button>
-                        <button onClick={() => navigateTo('/all_business')} className="group flex items-center space-x-3 text-xs font-bold uppercase tracking-widest text-forest">
-                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
-                            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                        </button>
-                    </div>
+                    <motion.div
+                        drag="x"
+                        dragConstraints={{ right: 0, left: -constraints }}
+                        style={{ x }}
+                        onDragStart={() => { isDraggingRef.current = true; isHoveredRef.current = true; }}
+                        onDragEnd={() => {
+                            setTimeout(() => { isDraggingRef.current = false; }, 150);
+                        }}
+                        className="flex gap-4 sm:gap-5 w-max"
+                    >
+                        {PROVIDERS.map((partner) => (
+                            <ProviderCard
+                                key={partner.id}
+                                partner={partner}
+                                onPartnerClick={onPartnerClick}
+                            />
+                        ))}
+                    </motion.div>
                 </div>
             </div>
         </section>

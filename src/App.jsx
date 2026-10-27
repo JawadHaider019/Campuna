@@ -2,7 +2,8 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
+import ToolsFloatingModal from './components/ToolsFloatingModal';
+import MobileBottomNav from './components/MobileBottomNav';
 import HomePage from './pages/HomePage';
 
 const LoginSignupPage = lazy(() => import('./pages/LoginSignupPage'));
@@ -171,11 +172,12 @@ const App = () => {
         </Suspense>
       </main>
 
-      {/* Only show Footer, ScrollToTop if NOT on login page */}
+      {/* Only show Footer, ToolsFloatingModal, MobileBottomNav if NOT on login page */}
       {!isLoginPage && (
         <>
           <Footer />
-          <ScrollToTop />
+          <ToolsFloatingModal />
+          <MobileBottomNav isLoggedIn={loggedIn} />
         </>
       )}
     </>
