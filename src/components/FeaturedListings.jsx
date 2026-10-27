@@ -9,7 +9,7 @@ import { formatCondition, formatListingPrice, formatCleanLocation, isListingSold
 import { isListingBoosted } from '../utils/sellerBadge';
 import { rotateListingsFairly, shuffleArray } from '../utils/highlighting';
 
-function normalizeListing(item) {
+export function normalizeListing(item) {
     if (!item) return null;
 
     const id = item.id || item._id || item.slug || item.title || 'listing-item';
@@ -72,7 +72,7 @@ function normalizeListing(item) {
     };
 }
 
-const ListingCard = React.memo(({ item: rawItem, onCardClick, isParentDragging, isFavorite, onToggleFavorite }) => {
+export const ListingCard = React.memo(({ item: rawItem, onCardClick, isParentDragging, isFavorite, onToggleFavorite, className = '', isGrid = false }) => {
     const item = useMemo(() => normalizeListing(rawItem), [rawItem]);
     const [imgIdx, setImgIdx] = useState(0);
     const [imgFailed, setImgFailed] = useState(false);
@@ -139,11 +139,13 @@ const ListingCard = React.memo(({ item: rawItem, onCardClick, isParentDragging, 
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onClick={handleCardClick}
-            className={`listing-card group relative flex-shrink-0 w-[220px] sm:w-[245px] md:w-[270px] lg:w-[280px] flex flex-col h-full rounded-2xl sm:rounded-[20px] overflow-hidden transition-all duration-300 select-none cursor-pointer ${
+            className={`listing-card group relative flex flex-col h-full rounded-2xl sm:rounded-[20px] overflow-hidden transition-all duration-300 select-none cursor-pointer ${
+                isGrid ? 'w-full' : 'flex-shrink-0 w-[220px] sm:w-[245px] md:w-[270px] lg:w-[280px]'
+            } ${
                 item.is_boosted
                     ? 'bg-gradient-to-b from-[#fdfbf7] to-[#fbf7ee] border border-amber-300/60 hover:border-amber-400/80 shadow-[0_4px_18px_-4px_rgba(202,152,43,0.18)] hover:shadow-[0_6px_24px_-4px_rgba(202,152,43,0.28)]'
                     : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-md'
-            }`}
+            } ${className}`}
         >
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-sand/20">
                 {hasImage ? (

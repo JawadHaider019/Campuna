@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ToolsFloatingModal from './components/ToolsFloatingModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import HomePage from './pages/HomePage';
+import HomePageOriginal from './pages/HomePageOriginal';
 
 const LoginSignupPage = lazy(() => import('./pages/LoginSignupPage'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage'));
@@ -148,6 +149,8 @@ const App = () => {
         }>
           <Routes>
             <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
+            <Route path="/original" element={<HomePageOriginal isLoggedIn={loggedIn} />} />
+            <Route path="/classic" element={<HomePageOriginal isLoggedIn={loggedIn} />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/about_us" element={<AboutPage />} />
             <Route path="/uber_campuna" element={<AboutPage />} />
