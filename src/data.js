@@ -764,7 +764,7 @@ export const FAQS = [
   {
     id: 'faq_1',
     question: 'Was ist Campuna?',
-    answer: `Campuna ist Deutschlands Camping-Marktplatz für alles rund ums Camping.
+    answer: `Campuna ist dein Marktplatz rund ums Camping.
 
 Auf Campuna findest du Wohnmobile, Wohnwagen, Campingbusse, Zelte, Campingzubehör, Stellplätze, Campingplätze, Vermietungen, Dienstleistungen und Angebote von privaten sowie gewerblichen Anbietern.
 

@@ -63,13 +63,13 @@ export default function MarketplaceNewListings({
         });
     }, [searchQuery, selectedCategory, selectedLocation]);
 
-    // Show initial 8-10 listings for the marketplace section
-    const displayListings = filteredListings.slice(0, 10);
+    // Show initial 4 listings for the top section (2 rows on mobile)
+    const displayListings = filteredListings.slice(0, 4);
 
     return (
-        <section className="my-6 sm:my-8" id="neu-auf-campuna">
+        <section className="my-4 sm:my-6 md:my-8" id="neu-auf-campuna">
             {/* Header: Headline matching user idea: "Neu auf Campuna" */}
-            <div className="flex items-center justify-between mb-3.5 px-0.5">
+            <div className="flex items-center justify-between mb-3 px-0.5">
                 <div>
                     <h2 className="font-display font-bold text-base sm:text-lg md:text-xl text-charcoal tracking-tight">
                         Neu auf Campuna
@@ -85,7 +85,7 @@ export default function MarketplaceNewListings({
                     to="/all_listings"
                     className="text-xs sm:text-sm font-semibold text-forest hover:text-gold transition-colors flex items-center gap-1 group"
                 >
-                    <span>Alle anzeigen</span>
+                    <span>Alle ansehen</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
             </div>
@@ -119,22 +119,6 @@ export default function MarketplaceNewListings({
                     ))}
                 </div>
             )}
-
-            {/* Note from Mockup */}
-            <p className="text-[10.5px] sm:text-xs text-charcoal/50 italic text-center mt-4 px-2">
-                Konzeptionelle Darstellung, keine fertige Gestaltung oder echten Campuna-Inserate.
-            </p>
-
-            {/* View All Button */}
-            <div className="mt-5 text-center">
-                <Link
-                    to="/all_listings"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-sand/60 text-forest border border-forest/25 hover:border-forest font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-xs hover:shadow-sm"
-                >
-                    <span>Alle Camping-Inserate auf Campuna ansehen</span>
-                    <ArrowRight className="w-4 h-4" />
-                </Link>
-            </div>
         </section>
     );
 }

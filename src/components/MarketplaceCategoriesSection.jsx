@@ -51,7 +51,7 @@ export default function MarketplaceCategoriesSection({
     };
 
     return (
-        <section className="my-6 sm:my-8" id="marketplace-categories">
+        <section className="my-4 sm:my-6 md:my-8" id="marketplace-categories">
             {/* Header: Headline + "Alle ansehen" Link */}
             <div className="flex items-center justify-between mb-3.5 px-0.5">
                 <div className="flex items-center gap-2">

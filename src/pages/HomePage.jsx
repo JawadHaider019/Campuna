@@ -1,12 +1,13 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Sparkles, ArrowLeftRight, CheckCircle2, RotateCcw } from 'lucide-react';
 import CompactMarketplaceSearch from '../components/CompactMarketplaceSearch';
 import MarketplaceCategoriesSection from '../components/MarketplaceCategoriesSection';
 import MarketplaceNewListings from '../components/MarketplaceNewListings';
+import CompactFeaturedGallery from '../components/CompactFeaturedGallery';
+import MarketplaceMoreListings from '../components/MarketplaceMoreListings';
 import FeaturedShowcaseSection from '../components/FeaturedShowcaseSection';
 import Providers from '../components/Providers';
-import FeaturedListings from '../components/FeaturedListings';
 import WhyCampuna from '../components/WhyCampuna';
 import BlogSection from '../components/BlogSection';
 import CTASection from '../components/CTASection';
@@ -14,6 +15,7 @@ import FAQSection from '../components/FAQSection';
 import ScrollSectionWrapper from '../components/ScrollSectionWrapper';
 import HomePageOriginal from './HomePageOriginal';
 import { FEATURED_LISTINGS } from '../data';
+import { isListingSold } from '../utils/formatters';
 
 export default function HomePage({ isLoggedIn = false }) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -45,6 +47,12 @@ export default function HomePage({ isLoggedIn = false }) {
         setSelectedLocation('');
     }, []);
 
+    // Featured listings for the small horizontal gallery (Hervorgehobene Angebote)
+    const featuredGalleryListings = useMemo(() => {
+        const featured = FEATURED_LISTINGS.filter(l => !isListingSold(l) && (l.isFeatured || l.Featured || l.isExclusive));
+        return featured.length >= 3 ? featured.slice(0, 6) : FEATURED_LISTINGS.slice(4, 9);
+    }, []);
+
     // If user switched to original layout
     if (layoutMode === 'original') {
         return (
@@ -73,10 +81,10 @@ export default function HomePage({ isLoggedIn = false }) {
     }
 
     return (
-        <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-24 sm:pt-28 md:pt-32">
+        <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-20 sm:pt-24 md:pt-28">
             {/* Design Test Preview Switcher Pill */}
-            <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-3">
-                <div className="flex items-center justify-between bg-sand/60 border border-gold/30 rounded-xl px-3 sm:px-4 py-2 text-xs text-charcoal/80">
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-2.5">
+                <div className="flex items-center justify-between bg-sand/60 border border-gold/30 rounded-xl px-3 sm:px-4 py-1.5 text-xs text-charcoal/80">
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                         <span className="font-medium text-forest">
@@ -124,30 +132,26 @@ export default function HomePage({ isLoggedIn = false }) {
                     selectedLocation={selectedLocation}
                     onResetFilters={handleResetFilters}
                 />
+
+                {/* 4. Optional: Small Featured Listing Gallery ("Hervorgehobene Angebote") */}
+                <CompactFeaturedGallery
+                    listings={featuredGalleryListings}
+                />
+
+                {/* 5. Second Two-Column Grid: "Weitere Camping-Inserate" with in-feed Werbeblock */}
+                <MarketplaceMoreListings
+                    searchQuery={searchQuery}
+                    selectedCategory={selectedCategory}
+                    selectedLocation={selectedLocation}
+                    onResetFilters={handleResetFilters}
+                />
             </div>
 
-            {/* 4. Additional Sections further down the page */}
-            <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
-                {/* Featured Weekly Showcase (Highlights & Entdeckungen) */}
-                <ScrollSectionWrapper delay={0.05}>
-                    {/* <FeaturedShowcaseSection /> */}
-                </ScrollSectionWrapper>
-
+            {/* Additional Sections further down the page */}
+            <div className="mt-10 sm:mt-14 space-y-10 sm:space-y-14">
                 {/* Provider / Commercial Spotlight */}
                 <ScrollSectionWrapper delay={0.05}>
                     <Providers />
-                </ScrollSectionWrapper>
-
-                {/* Draggable Live Offers Marquee */}
-                <ScrollSectionWrapper delay={0.05}>
-                    <FeaturedListings
-                        listings={FEATURED_LISTINGS}
-                        selectedCategoryFilter={selectedCategory}
-                        searchQuery={searchQuery}
-                        badge="WEITERE ANGEBOTE"
-                        title="Camping-Inserate entdecken"
-                        subtitle="Stöbere durch hunderte weitere Angebote aus ganz Deutschland."
-                    />
                 </ScrollSectionWrapper>
 
                 {/* Why Campuna (Trust Pillars) */}

@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, MapPin, ChevronDown, Check, X, Layers } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { CATEGORIES, FEATURED_LISTINGS } from '../data';
 import { formatCleanLocation, isListingSold } from '../utils/formatters';
 
-const QUICK_SEARCH_TAGS = [
-    'Wohnwagen',
-    'Campervan',
-    'Vorzelt',
-    'Dachzelt',
-    'Stellplatz',
-    'Fahrradträger',
-    'Campingstuhl'
+const QUICK_SEARCH_LINKS = [
+    { label: 'Wohnwagen', to: '/category/wohnmobile-camper' },
+    { label: 'Campervan', to: '/category/wohnmobile-camper' },
+    { label: 'Vorzelt', to: '/category/camping-zubehoer' },
+    { label: 'Dachzelt', to: '/category/zelte-dachzelte' },
+    { label: 'Stellplatz', to: '/category/stellplaetze' },
+    { label: 'Fahrradträger', to: '/category/fahrraeder-traeger' },
+    { label: 'Campingstuhl', to: '/category/camping-zubehoer' }
 ];
 
 export default function CompactMarketplaceSearch({
@@ -117,29 +117,18 @@ export default function CompactMarketplaceSearch({
     };
 
     return (
-        <div className="relative rounded-3xl p-5 sm:p-7 md:p-8 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_12px_40px_-10px_rgba(0,40,10,0.06)] z-20">
+        <div className="relative rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
             {/* Subtle background ambient radial glow contained inside rounded card */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(200,169,107,0.14),transparent_70%)]" />
-                <div className="absolute bottom-0 left-0 w-80 h-80 bg-[radial-gradient(circle,rgba(0,99,13,0.06),transparent_70%)]" />
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(200,169,107,0.12),transparent_70%)]" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[radial-gradient(circle,rgba(0,99,13,0.05),transparent_70%)]" />
             </div>
 
             <div className="relative z-10">
-                {/* Micro Brand Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest/8 text-forest border border-forest/15 text-[11px] sm:text-xs font-semibold mb-2.5 tracking-wide shadow-2xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-forest animate-pulse" />
-                    <span>DEUTSCHLANDS CAMPING-MARKTPLATZ</span>
-                </div>
-
-                {/* Main Headline & Subtitle */}
-                <div className="max-w-2xl mb-5 sm:mb-6">
-                    <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-charcoal tracking-tight leading-[1.15]">
-                        Alles rund ums Camping entdecken
-                    </h1>
-                    <p className="text-xs sm:text-sm text-charcoal/70 mt-1.5 font-normal leading-relaxed">
-                        Finde Wohnwagen, Wohnmobile, Outdoor-Zubehör und Stellplätze von privaten und gewerblichen Anbietern.
-                    </p>
-                </div>
+                {/* Main Headline (compact) */}
+                <h1 className="font-display font-bold text-lg sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug mb-2.5 sm:mb-3">
+                    Alles rund ums Camping entdecken
+                </h1>
 
                 {/* Form Search Console */}
                 <form onSubmit={handleFormSubmit}>
@@ -287,10 +276,10 @@ export default function CompactMarketplaceSearch({
                     </div>
 
                     {/* MOBILE CONSOLE (under md) */}
-                    <div className="md:hidden bg-white rounded-2xl border border-gray-200/90 p-3 sm:p-4 shadow-sm space-y-2.5">
+                    <div className="md:hidden bg-white rounded-xl border border-gray-200/90 p-2.5 sm:p-3 shadow-xs space-y-2">
                         {/* 1. Main Search Field */}
-                        <div className="relative flex items-center bg-sand/30 rounded-xl border border-gray-200/90 px-3.5 py-2.5 focus-within:border-forest/60 focus-within:bg-white transition-all">
-                            <Search className="w-4 h-4 text-forest shrink-0 mr-2.5" />
+                        <div className="relative flex items-center bg-sand/30 rounded-lg border border-gray-200/90 px-3 py-2 focus-within:border-forest/60 focus-within:bg-white transition-all">
+                            <Search className="w-4 h-4 text-forest shrink-0 mr-2" />
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -319,7 +308,7 @@ export default function CompactMarketplaceSearch({
                                         setIsCatDropdownOpen(prev => !prev);
                                         setIsLocDropdownOpen(false);
                                     }}
-                                    className={`w-full flex items-center justify-between bg-sand/30 rounded-xl border px-3 py-2.5 text-xs font-medium transition-all ${selectedCategory
+                                    className={`w-full flex items-center justify-between bg-sand/30 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all ${selectedCategory
                                         ? 'border-forest text-forest bg-forest/5'
                                         : 'border-gray-200/90 text-charcoal'
                                         }`}
@@ -414,7 +403,7 @@ export default function CompactMarketplaceSearch({
                         {/* 3. Mobile Submit Button */}
                         <button
                             type="submit"
-                            className="w-full bg-forest hover:bg-forest/90 text-white font-semibold text-xs sm:text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors"
+                            className="w-full bg-forest hover:bg-forest/90 text-white font-semibold text-xs sm:text-sm py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 shadow-xs transition-colors"
                         >
                             <Search className="w-4 h-4 text-gold" />
                             <span>Inserate finden</span>
@@ -423,23 +412,19 @@ export default function CompactMarketplaceSearch({
                 </form>
 
                 {/* Popular Quick Search Chips */}
-                <div className="mt-4 flex items-center gap-2 flex-wrap">
-                    <span className="text-[11px] font-semibold text-charcoal/50 uppercase tracking-wider">
+                <div className="mt-2.5 sm:mt-3 flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-charcoal/50 uppercase tracking-wider shrink-0 mr-0.5">
                         Häufig gesucht:
                     </span>
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                        {QUICK_SEARCH_TAGS.map(tag => (
-                            <button
-                                key={tag}
-                                type="button"
-                                onClick={() => handleQuickTagClick(tag)}
-                                className={`text-[11px] px-2.5 py-1 rounded-full border transition-all cursor-pointer ${searchQuery === tag
-                                    ? 'bg-forest text-white border-forest font-semibold'
-                                    : 'bg-white/90 hover:bg-white text-charcoal border-gray-200/90 hover:border-forest/40 hover:text-forest shadow-2xs'
-                                    }`}
+                    <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+                        {QUICK_SEARCH_LINKS.map(item => (
+                            <Link
+                                key={item.label}
+                                to={item.to}
+                                className="text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full border bg-white/90 hover:bg-white text-charcoal/80 hover:text-forest border-gray-200/80 hover:border-forest/30 shadow-2xs transition-colors"
                             >
-                                {tag}
-                            </button>
+                                {item.label}
+                            </Link>
                         ))}
                     </div>
                 </div>

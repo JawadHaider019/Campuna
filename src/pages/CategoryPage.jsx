@@ -21,6 +21,12 @@ const SLUG_TO_CATEGORY = {
     'tiny-houses': 'Tiny Houses',
     'mieten-vermieten': 'Mieten & Vermieten',
     'boote-wassersport': 'Boote & Wassersport',
+    'camping-zubehoer': 'Camping Zubehör',
+    'wohnmobile-camper': 'Wohnmobile & Camper',
+    'zelte-dachzelte': 'Zelte & Dachzelte',
+    'fahrraeder-traeger': 'Fahrräder & Träger',
+    'stellplaetze': 'Stellplätze & Campingplätze',
+    'camping-services': 'Camping Services',
 };
 
 
