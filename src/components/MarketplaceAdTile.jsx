@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Megaphone, MessageSquare, ArrowUpRight, Sparkles, Tent } from 'lucide-react';
+import { Megaphone, MessageSquare, ArrowUpRight, Sparkles, Tent, X } from 'lucide-react';
 
 export default function MarketplaceAdTile({
     type = 'sponsored', // 'sponsored' | 'feedback'
-    className = ''
+    className = '',
+    onDismiss
 }) {
     if (type === 'feedback') {
         return (
@@ -16,9 +17,21 @@ export default function MarketplaceAdTile({
                             <MessageSquare className="w-3.5 h-3.5 text-forest shrink-0" />
                             <span>Feedback geben</span>
                         </div>
-                        <span className="text-[9px] uppercase tracking-wider text-forest/50 font-semibold">
-                            Campuna
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[9px] uppercase tracking-wider text-forest/70 font-bold bg-forest/10 px-2 py-0.5 rounded-full">
+                                Testphase
+                            </span>
+                            {onDismiss && (
+                                <button
+                                    type="button"
+                                    onClick={onDismiss}
+                                    title="Feedback-Kachel schließen"
+                                    className="p-1 -mr-1 text-charcoal/40 hover:text-charcoal cursor-pointer rounded-full transition-colors"
+                                >
+                                    <X className="w-3.5 h-3.5" />
+                                </button>
+                            )}
+                        </div>
                     </div>
 
                     {/* Headline */}
@@ -26,7 +39,7 @@ export default function MarketplaceAdTile({
                         Hilf uns, deine Startseite zu verbessern.
                     </h3>
                     <p className="text-[10.5px] sm:text-xs text-charcoal/70 mt-1.5 font-normal leading-relaxed">
-                        Wie gefällt dir das neue Marktplatz-Design? Dein Feedback fließt direkt in die Optimierung ein.
+                        Wie gefällt dir das neue Marktplatz-Design? Während unserer Testphase fließt dein Feedback direkt in die Weiterentwicklung ein.
                     </p>
                 </div>
 
@@ -36,7 +49,7 @@ export default function MarketplaceAdTile({
                         to="/about"
                         className="inline-flex items-center justify-center w-full py-2 sm:py-2.5 px-4 rounded-full border border-forest/40 bg-white/70 hover:bg-forest text-forest hover:text-white text-[11px] sm:text-xs font-semibold shadow-2xs hover:shadow-sm transition-all"
                     >
-                        Zur Umfrage
+                        Zur kurzen Umfrage
                     </Link>
                 </div>
             </div>
@@ -53,7 +66,7 @@ export default function MarketplaceAdTile({
                     <Tent className="w-7 h-7 sm:w-8 sm:h-8 text-forest" />
                 </div>
 
-                {/* Legal compliance advertising badge ("Anzeige / Gesponsert") */}
+                {/* Legal compliance advertising badge ("Anzeige") */}
                 <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-xs text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-2xs">
                     Anzeige
                 </div>
@@ -76,7 +89,7 @@ export default function MarketplaceAdTile({
                     </h3>
 
                     <p className="text-[10px] sm:text-[11px] text-charcoal/65 mt-1 line-clamp-2 leading-relaxed">
-                        Erreiche monatlich tausende aktive Camper, Vanlifer & Outdoor-Fans in ganz Deutschland.
+                        Präsentiere deine Camping-Angebote oder dein Unternehmen gezielt der aktiven Campuna-Community.
                     </p>
                 </div>
 

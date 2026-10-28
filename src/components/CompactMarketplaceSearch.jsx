@@ -117,7 +117,7 @@ export default function CompactMarketplaceSearch({
     };
 
     return (
-        <div className="relative rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
+        <div className="relative rounded-2xl sm:rounded-3xl p-3 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
             {/* Subtle background ambient radial glow contained inside rounded card */}
             <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(200,169,107,0.12),transparent_70%)]" />
@@ -125,8 +125,8 @@ export default function CompactMarketplaceSearch({
             </div>
 
             <div className="relative z-10">
-                {/* Main Headline (compact) */}
-                <h1 className="font-display font-bold text-lg sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug mb-2.5 sm:mb-3">
+                {/* Main Headline (compact on mobile, spacious on desktop) */}
+                <h1 className="font-display font-bold text-[17px] sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug mb-2 sm:mb-3">
                     Alles rund ums Camping entdecken
                 </h1>
 
@@ -153,7 +153,7 @@ export default function CompactMarketplaceSearch({
                                 <button
                                     type="button"
                                     onClick={() => setSearchQuery('')}
-                                    className="p-1 text-gray-400 hover:text-charcoal"
+                                    className="p-1 text-gray-400 hover:text-charcoal cursor-pointer"
                                 >
                                     <X className="w-3.5 h-3.5" />
                                 </button>
@@ -171,7 +171,7 @@ export default function CompactMarketplaceSearch({
                                     setIsCatDropdownOpen(prev => !prev);
                                     setIsLocDropdownOpen(false);
                                 }}
-                                className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[210px] hover:bg-sand/40 rounded-xl transition-colors"
+                                className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[210px] hover:bg-sand/40 rounded-xl transition-colors cursor-pointer"
                             >
                                 <Layers className="w-4 h-4 text-forest shrink-0 mr-2.5" />
                                 <div className="flex-1 min-w-0">
@@ -222,7 +222,7 @@ export default function CompactMarketplaceSearch({
                                     setIsLocDropdownOpen(prev => !prev);
                                     setIsCatDropdownOpen(false);
                                 }}
-                                className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[220px] hover:bg-sand/40 rounded-xl transition-colors"
+                                className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[220px] hover:bg-sand/40 rounded-xl transition-colors cursor-pointer"
                             >
                                 <MapPin className="w-4 h-4 text-gold shrink-0 mr-2.5" />
                                 <div className="flex-1 min-w-0">
@@ -275,30 +275,30 @@ export default function CompactMarketplaceSearch({
                         </button>
                     </div>
 
-                    {/* MOBILE CONSOLE (under md) */}
-                    <div className="md:hidden bg-white rounded-xl border border-gray-200/90 p-2.5 sm:p-3 shadow-xs space-y-2">
+                    {/* MOBILE CONSOLE (under md): Ultra-sleek, compact, elegant */}
+                    <div className="md:hidden bg-white/95 backdrop-blur-xs rounded-2xl border border-gray-200/90 p-2.5 shadow-2xs space-y-2">
                         {/* 1. Main Search Field */}
-                        <div className="relative flex items-center bg-sand/30 rounded-lg border border-gray-200/90 px-3 py-2 focus-within:border-forest/60 focus-within:bg-white transition-all">
+                        <div className="relative flex items-center bg-[#FAF8F5] rounded-xl border border-gray-200/90 px-3 py-1.5 focus-within:border-forest/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-forest/10 transition-all">
                             <Search className="w-4 h-4 text-forest shrink-0 mr-2" />
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Was suchst du?"
-                                className="w-full bg-transparent text-sm text-charcoal placeholder-gray-400 font-normal focus:outline-none"
+                                placeholder="Was suchst du? (z.B. Wohnwagen...)"
+                                className="w-full bg-transparent text-xs sm:text-sm text-charcoal placeholder-gray-400 font-medium focus:outline-none"
                             />
                             {searchQuery && (
                                 <button
                                     type="button"
                                     onClick={() => setSearchQuery('')}
-                                    className="p-1 text-gray-400 hover:text-charcoal"
+                                    className="p-1 text-gray-400 hover:text-charcoal cursor-pointer"
                                 >
                                     <X className="w-3.5 h-3.5" />
                                 </button>
                             )}
                         </div>
 
-                        {/* 2. Split Row: Category & Simple Location dropdowns */}
+                        {/* 2. Split Row: Category & Location dropdowns */}
                         <div className="grid grid-cols-2 gap-2">
                             {/* Category Dropdown (Mobile) */}
                             <div className="relative" ref={catRef}>
@@ -308,9 +308,9 @@ export default function CompactMarketplaceSearch({
                                         setIsCatDropdownOpen(prev => !prev);
                                         setIsLocDropdownOpen(false);
                                     }}
-                                    className={`w-full flex items-center justify-between bg-sand/30 rounded-lg border px-2.5 py-2 text-xs font-medium transition-all ${selectedCategory
-                                        ? 'border-forest text-forest bg-forest/5'
-                                        : 'border-gray-200/90 text-charcoal'
+                                    className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-2.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${selectedCategory
+                                        ? 'border-forest text-forest bg-forest/5 font-semibold'
+                                        : 'border-gray-200/90 text-charcoal/80 hover:bg-white'
                                         }`}
                                 >
                                     <div className="flex items-center gap-1.5 truncate pr-1">
@@ -357,9 +357,9 @@ export default function CompactMarketplaceSearch({
                                         setIsLocDropdownOpen(prev => !prev);
                                         setIsCatDropdownOpen(false);
                                     }}
-                                    className={`w-full flex items-center justify-between bg-sand/30 rounded-xl border px-3 py-2.5 text-xs font-medium transition-all ${selectedLocation
-                                        ? 'border-forest text-forest bg-forest/5'
-                                        : 'border-gray-200/90 text-charcoal'
+                                    className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-2.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${selectedLocation
+                                        ? 'border-forest text-forest bg-forest/5 font-semibold'
+                                        : 'border-gray-200/90 text-charcoal/80 hover:bg-white'
                                         }`}
                                 >
                                     <div className="flex items-center gap-1.5 truncate pr-1">
@@ -403,16 +403,16 @@ export default function CompactMarketplaceSearch({
                         {/* 3. Mobile Submit Button */}
                         <button
                             type="submit"
-                            className="w-full bg-forest hover:bg-forest/90 text-white font-semibold text-xs sm:text-sm py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 shadow-xs transition-colors"
+                            className="w-full bg-forest hover:bg-forest/90 active:scale-[0.99] text-white font-semibold text-xs sm:text-sm py-2 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
                         >
-                            <Search className="w-4 h-4 text-gold" />
+                            <Search className="w-3.5 h-3.5 text-gold" />
                             <span>Inserate finden</span>
                         </button>
                     </div>
                 </form>
 
                 {/* Popular Quick Search Chips */}
-                <div className="mt-2.5 sm:mt-3 flex items-center gap-1.5 flex-wrap">
+                <div className="mt-2 sm:mt-2.5 flex items-center gap-1.5 flex-wrap">
                     <span className="text-[10px] sm:text-[11px] font-semibold text-charcoal/50 uppercase tracking-wider shrink-0 mr-0.5">
                         Häufig gesucht:
                     </span>

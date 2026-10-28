@@ -34,6 +34,45 @@ const CATEGORY_ICONS = {
     Building2
 };
 
+const SIX_MOBILE_CATEGORIES = [
+    {
+        id: 'dealers',
+        shortName: 'Händler & Autohäuser',
+        slug: 'wohnmobil-wohnwagenhaendler',
+        icon: Building2
+    },
+    {
+        id: 'campsites',
+        shortName: 'Campingplätze',
+        slug: 'campingplaetze-stellplaetze',
+        icon: MapPin
+    },
+    {
+        id: 'rental',
+        shortName: 'Vermietung',
+        slug: 'vermietung-rental',
+        icon: Truck
+    },
+    {
+        id: 'workshops',
+        shortName: 'Werkstätten',
+        slug: 'werkstatt-service',
+        icon: Wrench
+    },
+    {
+        id: 'conversions',
+        shortName: 'Camper-Ausbau',
+        slug: 'camper-ausbau',
+        icon: Hammer
+    },
+    {
+        id: 'accessories',
+        shortName: 'Zubehör & Shops',
+        slug: 'zubehoer-shop',
+        icon: ShoppingBag
+    }
+];
+
 function getCategoryIcon(iconName) {
     return CATEGORY_ICONS[iconName] || Building2;
 }
@@ -136,7 +175,12 @@ const ProviderCard = React.memo(({ partner, onPartnerClick, navigate }) => {
 
 ProviderCard.displayName = 'ProviderCard';
 
-export default function Providers({ onPartnerClick, initialProviders = null }) {
+export default function Providers({
+    onPartnerClick,
+    initialProviders = null,
+    showMobileOnly = false,
+    showDesktopOnly = false
+}) {
     const navigate = useNavigate();
     const rowRef = useRef(null);
     const [constraints, setConstraints] = useState(0);
@@ -150,6 +194,8 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
     const isDraggingRef = useRef(false);
 
     useEffect(() => {
+        if (showMobileOnly) return;
+
         const measureCard = () => {
             if (!rowRef.current) return;
             setConstraints(Math.max(0, rowRef.current.scrollWidth - rowRef.current.offsetWidth));
@@ -162,11 +208,13 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
             clearTimeout(timer);
             window.removeEventListener('resize', measureCard);
         };
-    }, [providersList]);
+    }, [providersList, showMobileOnly]);
 
     const shouldSlide = !isDesktop || providersList.length > 3;
 
     useEffect(() => {
+        if (showMobileOnly) return;
+
         let animationFrameId;
         let lastTime = performance.now();
 
@@ -195,7 +243,7 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
 
         animationFrameId = requestAnimationFrame(loop);
         return () => cancelAnimationFrame(animationFrameId);
-    }, [providersList.length, constraints, x, shouldSlide]);
+    }, [providersList.length, constraints, x, shouldSlide, showMobileOnly]);
 
     const handleCategoryNavigation = (slug) => {
         if (!slug || slug === 'all') {
@@ -205,10 +253,124 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
         }
     };
 
-    return (
+    // Compact Mobile Provider & Spotlight block (matching Image 2)
+    const renderMobileCompactView = () => (
+        <div id="anbieter" className="bg-white rounded-2xl border border-forest/10 p-3.5 sm:p-5 shadow-xs scroll-mt-24">
+            {/* 1. Header: Short headline and single-line description */}
+            <div className="mb-3">
+                <h2 className="font-display text-lg sm:text-xl font-bold text-charcoal tracking-tight">
+                    Camping-Anbieter entdecken
+                </h2>
+                <p className="font-sans text-xs text-charcoal/65 font-normal mt-0.5">
+                    Händler, Werkstätten, Vermieter und Campingplätze
+                </p>
+            </div>
+
+            {/* 2. Compact 6 Categories Grid (2 columns x 3 rows) */}
+            <div className="grid grid-cols-2 gap-2">
+                {SIX_MOBILE_CATEGORIES.map((cat) => {
+                    const Icon = cat.icon;
+                    return (
+                        <div
+                            key={cat.id}
+                            onClick={() => handleCategoryNavigation(cat.slug)}
+                            className="flex items-center justify-between p-2.5 rounded-xl bg-sand/35 hover:bg-sand/70 border border-gray-200/80 active:border-gold hover:border-gold transition-all cursor-pointer group"
+                        >
+                            <div className="flex items-center gap-2 min-w-0 pr-1">
+                                <div className="w-7 h-7 rounded-lg bg-forest/8 text-forest group-hover:bg-forest group-hover:text-gold flex items-center justify-center shrink-0 transition-colors">
+                                    <Icon className="w-3.5 h-3.5" />
+                                </div>
+                                <span className="text-xs font-semibold text-charcoal group-hover:text-forest transition-colors truncate">
+                                    {cat.shortName}
+                                </span>
+                            </div>
+                            <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-forest group-hover:translate-x-0.5 transition-all shrink-0" />
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* 3. Link to All Providers Button */}
+            <div className="mt-3">
+                <button
+                    type="button"
+                    onClick={() => navigate('/all_business')}
+                    className="w-full py-2.5 px-4 rounded-xl border border-forest/20 hover:border-forest bg-white hover:bg-forest/5 text-forest font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-[0.99] cursor-pointer"
+                >
+                    <span>Alle Camping-Anbieter ansehen</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-forest" />
+                </button>
+            </div>
+
+            {/* 4. Directly connected Spotlight */}
+            {providersList && providersList.length > 0 && (
+                <div id="campuna-spotlight" className="mt-5 pt-4 border-t border-forest/10 scroll-mt-24">
+                    <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-display text-sm sm:text-base font-bold text-forest">
+                            Camping-Profis im Spotlight
+                        </h3>
+                        <button
+                            type="button"
+                            onClick={() => navigate('/all_business')}
+                            aria-label="Alle Anbieter im Spotlight"
+                            className="text-forest hover:text-gold transition-colors p-1 cursor-pointer"
+                        >
+                            <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </div>
+
+                    {/* Horizontal 2-card gallery matching Image 2 */}
+                    <div className="flex overflow-x-auto gap-3 pb-1 no-scrollbar snap-x items-stretch">
+                        {providersList.map((partner) => {
+                            const badgeCategory = partner.providerCategory || 
+                                (partner.id === 'prov_4' ? 'Camping-Fachbetrieb' : 
+                                 partner.id === 'prov_2' ? 'Camper-Ausbau' : 
+                                 'Wohnmobil-Händler');
+
+                            return (
+                                <div
+                                    key={partner.id}
+                                    onClick={() => {
+                                        if (onPartnerClick) onPartnerClick(partner.name);
+                                        else navigate(`/all_business/${partner.slug || partner.id}`);
+                                    }}
+                                    className="group flex flex-col justify-between w-[155px] sm:w-[175px] shrink-0 snap-start cursor-pointer select-none"
+                                >
+                                    <div className="relative aspect-[16/11] w-full rounded-xl overflow-hidden bg-sand/30 border border-forest/10 group-hover:border-gold transition-all shadow-2xs group-hover:shadow-md mb-2">
+                                        <img
+                                            src={partner.coverImage}
+                                            alt={partner.name}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            loading="lazy"
+                                        />
+                                        {partner.isPioneer && (
+                                            <div className="absolute top-1.5 left-1.5">
+                                                <PioneerBadge size="xs" text="Pioneer" />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="px-0.5">
+                                        <p className="font-display text-xs font-bold text-charcoal group-hover:text-forest transition-colors line-clamp-1">
+                                            {badgeCategory}
+                                        </p>
+                                        <p className="font-sans text-[11px] text-charcoal/60 truncate mt-0.5">
+                                            {partner.name}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+
+    // Spacious Desktop/iPad View
+    const renderDesktopGenerousView = () => (
         <section id="anbieter" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden scroll-mt-24 border-t border-forest/5">
             <div className="max-w-8xl mx-auto px-6 md:px-12">
-
                 {/* 1. GENERAL PROVIDER DIRECTORY SECTION HEADER */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-5">
                     <div className="space-y-2 max-w-3xl">
@@ -297,7 +459,7 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
                     })}
                 </div>
 
-                {/* 3. SPOTLIGHT SUB-SECTION */}
+                {/* 3. SPOTLIGHT SUB-SECTION (Shortened non-repetitive headline as requested) */}
                 {Boolean(providersList && providersList.length > 0) && (
                     <div id="campuna-spotlight" className="pt-8 border-t border-forest/10 scroll-mt-24">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
@@ -307,10 +469,10 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
                                     <span>IM SPOTLIGHT</span>
                                 </div>
                                 <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-forest">
-                                    Ausgewählte Anbieter mit besonderer Präsenz auf Campuna
+                                    Camping-Profis im Spotlight
                                 </h3>
                                 <p className="font-sans text-xs sm:text-sm text-charcoal/60 font-light">
-                                    Ausgewählte Anbieter und Betriebe mit besonderer Präsenz auf Campuna.
+                                    Verifizierte Fachbetriebe, Händler und Servicepartner mit besonderer Präsenz auf Campuna.
                                 </p>
                             </div>
                         </div>
@@ -357,7 +519,7 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
                     </div>
                 )}
 
-                {/* 4. FOOTER ACTION BAR (Mobile Only) */}
+                {/* 4. FOOTER ACTION BAR (Tablet/Mobile fallback) */}
                 <div className="mt-8 pt-4 flex md:hidden items-center justify-center text-xs">
                     <button
                         type="button"
@@ -370,5 +532,24 @@ export default function Providers({ onPartnerClick, initialProviders = null }) {
                 </div>
             </div>
         </section>
+    );
+
+    if (showMobileOnly) {
+        return renderMobileCompactView();
+    }
+
+    if (showDesktopOnly) {
+        return renderDesktopGenerousView();
+    }
+
+    return (
+        <>
+            <div className="md:hidden">
+                {renderMobileCompactView()}
+            </div>
+            <div className="hidden md:block">
+                {renderDesktopGenerousView()}
+            </div>
+        </>
     );
 }

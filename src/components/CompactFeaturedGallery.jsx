@@ -59,9 +59,10 @@ export default function CompactFeaturedGallery({ listings = [] }) {
                                     loading="lazy"
                                 />
 
-                                {/* Subtle Featured Pill */}
-                                <div className="absolute top-1 left-1 bg-black/50 backdrop-blur-xs text-white text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded">
-                                    Top
+                                {/* Consistent Official Hervorgehoben Badge */}
+                                <div className="absolute top-1 left-1 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 text-[7px] sm:text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-2xs flex items-center gap-0.5 border border-yellow-100/90 select-none pointer-events-none">
+                                    <Sparkles className="w-2 h-2 text-slate-950 shrink-0" />
+                                    <span>Hervorgehoben</span>
                                 </div>
                             </div>
 
@@ -79,9 +80,9 @@ export default function CompactFeaturedGallery({ listings = [] }) {
                 })}
             </div>
 
-            {/* Caption note from user mockup */}
+            {/* Fair rotation caption */}
             <p className="text-[10px] sm:text-[11px] text-charcoal/45 mt-1 px-0.5">
-                Optionaler kompakter Einschub – nur für hervorgehobene Inserate.
+                Hervorgehobene Inserate mit fairer Rotation für gleichmäßige Sichtbarkeit.
             </p>
         </section>
     );

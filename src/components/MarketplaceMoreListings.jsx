@@ -14,6 +14,22 @@ export default function MarketplaceMoreListings({
 }) {
     const navigate = useNavigate();
     const [favorites, setFavorites] = useState(['lst_3', 'lst_7']);
+    const [isFeedbackDismissed, setIsFeedbackDismissed] = useState(() => {
+        try {
+            return sessionStorage.getItem('campuna_home_feedback_dismissed') === 'true';
+        } catch {
+            return false;
+        }
+    });
+
+    const handleDismissFeedback = () => {
+        setIsFeedbackDismissed(true);
+        try {
+            sessionStorage.setItem('campuna_home_feedback_dismissed', 'true');
+        } catch {
+            // ignore
+        }
+    };
 
     const handleToggleFavorite = (id) => {
         setFavorites(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -120,9 +136,9 @@ export default function MarketplaceMoreListings({
                     />
                 ))}
 
-                {/* Werbeblock 2: Feedback-Kachel zur Startseiten-Verbesserung */}
-                {remainingListings.length > 5 && (
-                    <MarketplaceAdTile type="feedback" />
+                {/* Werbeblock 2: Feedback-Kachel zur Startseiten-Verbesserung (Temporary during testing phase) */}
+                {!isFeedbackDismissed && remainingListings.length > 5 && (
+                    <MarketplaceAdTile type="feedback" onDismiss={handleDismissFeedback} />
                 )}
 
                 {/* Remaining Listings */}

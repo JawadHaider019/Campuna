@@ -16,6 +16,8 @@ import ScrollSectionWrapper from '../components/ScrollSectionWrapper';
 import HomePageOriginal from './HomePageOriginal';
 import { FEATURED_LISTINGS } from '../data';
 import { isListingSold } from '../utils/formatters';
+import { isListingBoosted } from '../utils/sellerBadge';
+import { rotateListingsFairly } from '../utils/highlighting';
 
 export default function HomePage({ isLoggedIn = false }) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -47,10 +49,15 @@ export default function HomePage({ isLoggedIn = false }) {
         setSelectedLocation('');
     }, []);
 
-    // Featured listings for the small horizontal gallery (Hervorgehobene Angebote)
+    // Featured listings for the small horizontal gallery (Hervorgehobene Angebote) with fair rotation
     const featuredGalleryListings = useMemo(() => {
-        const featured = FEATURED_LISTINGS.filter(l => !isListingSold(l) && (l.isFeatured || l.Featured || l.isExclusive));
-        return featured.length >= 3 ? featured.slice(0, 6) : FEATURED_LISTINGS.slice(4, 9);
+        const featuredPool = FEATURED_LISTINGS.filter(
+            l => !isListingSold(l) && (isListingBoosted(l) || l.isFeatured || l.Featured || l.isExclusive)
+        );
+        const activePool = featuredPool.length >= 3 ? featuredPool : FEATURED_LISTINGS.slice(4, 12);
+        // Fair rotation engine: rotates offset so all featured sellers receive equal visibility
+        const rotated = rotateListingsFairly(activePool, 'campuna_home_featured_gallery');
+        return rotated.slice(0, 6);
     }, []);
 
     // If user switched to original layout
@@ -138,6 +145,11 @@ export default function HomePage({ isLoggedIn = false }) {
                     listings={featuredGalleryListings}
                 />
 
+                {/* 4.5. On Mobile: Compact Provider & Spotlight Block directly visible earlier */}
+                <div className="md:hidden my-5">
+                    <Providers showMobileOnly={true} />
+                </div>
+
                 {/* 5. Second Two-Column Grid: "Weitere Camping-Inserate" with in-feed Werbeblock */}
                 <MarketplaceMoreListings
                     searchQuery={searchQuery}
@@ -149,10 +161,12 @@ export default function HomePage({ isLoggedIn = false }) {
 
             {/* Additional Sections further down the page */}
             <div className="mt-10 sm:mt-14 space-y-10 sm:space-y-14">
-                {/* Provider / Commercial Spotlight */}
-                <ScrollSectionWrapper delay={0.05}>
-                    <Providers />
-                </ScrollSectionWrapper>
+                {/* Provider / Commercial Spotlight (Desktop/iPad generous layout preserved) */}
+                <div className="hidden md:block">
+                    <ScrollSectionWrapper delay={0.05}>
+                        <Providers showDesktopOnly={true} />
+                    </ScrollSectionWrapper>
+                </div>
 
                 {/* Why Campuna (Trust Pillars) */}
                 <ScrollSectionWrapper delay={0.05}>
