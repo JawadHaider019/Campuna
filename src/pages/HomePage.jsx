@@ -115,11 +115,7 @@ export default function HomePage({ isLoggedIn = false }) {
 
             {/* Direct Marketplace Section Container */}
             <div className="max-w-7xl mx-auto pt-6  px-3 sm:px-6 md:px-8">
-                {/* 1. Categories at the very top (Compact Mini-Icon Bar) */}
-                <MarketplaceCategoriesSection
-                    selectedCategory={selectedCategory}
-                    onSelectCategory={(cat) => setSelectedCategory(cat)}
-                />
+
 
                 {/* 2. Compact Search Area */}
                 <CompactMarketplaceSearch
@@ -130,6 +126,11 @@ export default function HomePage({ isLoggedIn = false }) {
                     selectedLocation={selectedLocation}
                     setSelectedLocation={setSelectedLocation}
                     onSearchSubmit={handleSearchSubmit}
+                />
+                {/* 1. Categories at the very top (Compact Mini-Icon Bar) */}
+                <MarketplaceCategoriesSection
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={(cat) => setSelectedCategory(cat)}
                 />
 
                 {/* 3. Listings Grid: "Neu auf Campuna" (2-Columns on Mobile) */}
