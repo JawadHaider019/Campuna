@@ -46,41 +46,41 @@ export default function WhyCampuna() {
     }, [isPlaying]);
 
     return (
-        <section id="why-campuna" className="py-16 md:py-24 bg-forest relative overflow-hidden scroll-mt-24 border-t border-b border-white/10 text-white">
+        <section id="why-campuna" className="py-14 sm:py-16 md:py-24 bg-forest relative overflow-hidden scroll-mt-24 border-t border-b border-white/10 text-white">
             {/* Ambient Background Gradients */}
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
                 {/* Section Header */}
-                <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
-                    <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.4em] text-gold block">
-                        Vertrauen & Vorteile
-                    </span>
-                    <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.15]">
+                <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 relative z-10">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-gold text-[10px] sm:text-[11px] font-bold uppercase tracking-widest mb-3">
+                        <span>✦</span>
+                        <span>Vertrauen & Vorteile</span>
+                    </div>
+                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight mb-3">
                         Warum Campuna?
                     </h2>
-                    <div className="space-y-4 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-light">
-                        <p className="text-white/85">
-                            Camping findet heute an vielen verschiedenen Orten statt. Angebote hier, Tipps dort, Campingplätze wieder woanders.
-                        </p>
+                    <p className="text-white/80 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto font-light">
+                        Camping findet heute an vielen verschiedenen Orten statt. Wir bringen alles an einem zentralen Ort zusammen.
+                    </p>
 
-                        <p className="text-gold font-semibold">
-                            Unsere Idee ist einfach: Wir wollen Camping an einem Ort zusammenbringen.
-                        </p>
-
-                        <p className="text-white/85">
-                            Das Fundament steht. Jetzt wächst Campuna mit jedem Camper, jedem Inserat, jedem Anbieter und jedem Campingplatz weiter.
-                        </p>
-
-                        <p className="text-gold font-bold text-base sm:text-lg tracking-wide pt-1">
-                            Campuna wächst mit euch.
-                        </p>
+                    {/* 3 Quick Benefit Badges */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-[11px] sm:text-xs">
+                        <span className="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-white/90">
+                            ✓ 100% kostenlos inserieren
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-white/90">
+                            ✓ Geprüfte Camping-Inserate
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-gold font-medium">
+                            ✓ Wächst mit der Community
+                        </span>
                     </div>
                 </div>
 
                 {/* 2-Column Split Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch relative z-10">
                     {/* Left Column (7 cols): Core Trust Pillars */}
                     <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
                         <div className="space-y-4">

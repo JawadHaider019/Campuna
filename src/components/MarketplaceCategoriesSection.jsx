@@ -51,12 +51,12 @@ export default function MarketplaceCategoriesSection({
     };
 
     return (
-        <section className="my-4 sm:my-6 md:my-8" id="marketplace-categories">
+        <section className="mt-2 mb-3 sm:mt-3 sm:mb-4" id="marketplace-categories">
             {/* Header: Headline + "Alle ansehen" Link */}
-            <div className="flex items-center justify-between mb-3.5 px-0.5">
+            <div className="flex items-center justify-between mb-2 px-1">
                 <div className="flex items-center gap-2">
-                    <h2 className="font-display font-bold text-base sm:text-lg md:text-xl text-charcoal tracking-tight">
-                        Kategorien entdecken
+                    <h2 className="font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-charcoal/70">
+                        Kategorien
                     </h2>
                     {selectedCategory && (
                         <button
@@ -64,63 +64,57 @@ export default function MarketplaceCategoriesSection({
                             onClick={() => onSelectCategory('')}
                             className="text-[11px] font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 px-2 py-0.5 rounded-full transition-colors"
                         >
-                            Filter aufheben ✕
+                            {selectedCategory} ✕
                         </button>
                     )}
                 </div>
 
                 <Link
                     to="/category"
-                    className="text-xs sm:text-sm font-semibold text-forest hover:text-gold transition-colors flex items-center gap-1 group"
+                    className="text-[11px] sm:text-xs font-semibold text-forest hover:text-gold transition-colors flex items-center gap-0.5 group"
                 >
-                    <span>Alle ansehen</span>
+                    <span>Alle</span>
                     <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
             </div>
 
-            {/* All 9 Categories using the EXACT Card Design from the old design */}
-            <div className="flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-9 gap-2.5 sm:gap-3 pb-3 lg:pb-0 no-scrollbar snap-x items-stretch">
+            {/* Compact Mini-Icon Bar: Horizontal snap scroll on mobile, sleek 9-col on desktop */}
+            <div className="flex overflow-x-auto lg:grid lg:grid-cols-9 gap-2 sm:gap-2.5 pb-1 sm:pb-0 no-scrollbar snap-x items-start">
                 {CATEGORIES.map((cat, index) => {
                     const Icon = ICON_MAP[cat.name] || Tent;
-                    const slug = CATEGORY_SLUGS[cat.name] || cat.slug || '';
                     const isSelected = selectedCategory === cat.name;
 
                     return (
-                        <motion.div
+                        <motion.button
                             key={cat.id}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.02, duration: 0.3 }}
-                            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                            type="button"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.015, duration: 0.25 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => handleCategoryClick(cat.name)}
-                            className={`p-2.5 sm:p-3 xl:p-2.5 rounded-2xl transition-all duration-300 group flex flex-col items-center justify-center text-center cursor-pointer min-w-[104px] sm:min-w-[120px] lg:min-w-0 lg:w-full min-h-[105px] sm:min-h-[115px] xl:min-h-[110px] shrink-0 lg:shrink snap-start relative overflow-hidden select-none border ${
-                                isSelected
-                                    ? 'bg-forest/5 border-forest ring-2 ring-forest/20 shadow-md'
-                                    : 'bg-white border-forest/10 hover:border-gold shadow-xs hover:shadow-lg'
+                            className={`group flex flex-col items-center justify-start text-center shrink-0 w-[72px] sm:w-[84px] lg:w-full snap-start cursor-pointer transition-all duration-200 select-none ${
+                                isSelected ? 'opacity-100' : 'opacity-85 hover:opacity-100'
                             }`}
                         >
-                            {/* Subtle gold gradient hover overlay from old card design */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                            <div className="flex flex-col items-center justify-center text-center w-full h-full relative z-10">
-                                {/* Icon box matching old design 1:1 with green/gold hover */}
-                                <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl transition-all duration-300 mb-2 shrink-0 flex items-center justify-center shadow-2xs group-hover:scale-105 ${
-                                    isSelected
-                                        ? 'bg-forest text-gold scale-105'
-                                        : 'bg-forest/5 text-forest group-hover:bg-forest group-hover:text-gold'
-                                }`}>
-                                    <Icon className="w-5 h-5 transition-transform duration-300" />
-                                </div>
-
-                                {/* Typography matching old design 1:1 */}
-                                <span className={`font-display text-[10.5px] sm:text-xs font-semibold leading-tight tracking-tight transition-colors duration-300 line-clamp-2 h-[2.2em] flex items-center justify-center text-center ${
-                                    isSelected ? 'text-forest font-bold' : 'text-charcoal group-hover:text-forest'
-                                }`}>
-                                    {cat.name}
-                                </span>
+                            {/* Compact Icon Bubble */}
+                            <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs ${
+                                isSelected
+                                    ? 'bg-forest text-gold ring-2 ring-forest/30 shadow-sm scale-105'
+                                    : 'bg-white border border-forest/10 text-forest group-hover:border-forest/30 group-hover:bg-sand/40'
+                            }`}>
+                                <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 transition-transform duration-200 group-hover:scale-110" />
                             </div>
-                        </motion.div>
+
+                            {/* Crisp Compact Label */}
+                            <span className={`text-[10px] sm:text-[11px] leading-tight text-center line-clamp-2 px-0.5 transition-colors ${
+                                isSelected
+                                    ? 'font-bold text-forest underline underline-offset-2'
+                                    : 'font-medium text-charcoal/80 group-hover:text-forest'
+                            }`}>
+                                {cat.name}
+                            </span>
+                        </motion.button>
                     );
                 })}
             </div>

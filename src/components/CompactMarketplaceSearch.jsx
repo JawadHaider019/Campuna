@@ -9,6 +9,7 @@ const QUICK_SEARCH_LINKS = [
     { label: 'Campervan', to: '/category/wohnmobile-camper' },
     { label: 'Vorzelt', to: '/category/camping-zubehoer' },
     { label: 'Dachzelt', to: '/category/zelte-dachzelte' },
+    { label: 'Wohnmobil mieten', to: '/category/mieten-vermieten' },
     { label: 'Stellplatz', to: '/category/stellplaetze' },
     { label: 'Fahrradträger', to: '/category/fahrraeder-traeger' },
     { label: 'Campingstuhl', to: '/category/camping-zubehoer' }
@@ -117,7 +118,7 @@ export default function CompactMarketplaceSearch({
     };
 
     return (
-        <div className="relative rounded-2xl sm:rounded-3xl p-3 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
+        <div className="relative rounded-2xl sm:rounded-3xl p-2.5 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
             {/* Subtle background ambient radial glow contained inside rounded card */}
             <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(200,169,107,0.12),transparent_70%)]" />
@@ -125,10 +126,15 @@ export default function CompactMarketplaceSearch({
             </div>
 
             <div className="relative z-10">
-                {/* Main Headline (compact on mobile, spacious on desktop) */}
-                <h1 className="font-display font-bold text-[17px] sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug mb-2 sm:mb-3">
-                    Alles rund ums Camping entdecken
-                </h1>
+                {/* Main Headline (H1) & Subtitle (compact on mobile, spacious on desktop) */}
+                <div className="mb-2 sm:mb-3">
+                    <h1 className="font-display font-bold text-[15px] sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug">
+                        Dein Camping-Marktplatz für Wohnmobile, Wohnwagen & Zubehör
+                    </h1>
+                    <p className="text-[11px] sm:text-xs md:text-sm text-charcoal/70 leading-tight sm:leading-normal mt-0.5 sm:mt-1">
+                        Campingartikel kaufen und verkaufen, Stellplätze entdecken und passende Camping-Anbieter finden.
+                    </p>
+                </div>
 
                 {/* Form Search Console */}
                 <form onSubmit={handleFormSubmit}>

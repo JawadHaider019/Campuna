@@ -90,7 +90,7 @@ export default function HomePage({ isLoggedIn = false }) {
     return (
         <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-20 sm:pt-24 md:pt-28">
             {/* Design Test Preview Switcher Pill */}
-            <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-2.5">
+            {/* <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-2.5">
                 <div className="flex items-center justify-between bg-sand/60 border border-gold/30 rounded-xl px-3 sm:px-4 py-1.5 text-xs text-charcoal/80">
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -111,11 +111,17 @@ export default function HomePage({ isLoggedIn = false }) {
                         <span>Original anzeigen</span>
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             {/* Direct Marketplace Section Container */}
-            <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8">
-                {/* 1. Compact Search Area */}
+            <div className="max-w-7xl mx-auto pt-6  px-3 sm:px-6 md:px-8">
+                {/* 1. Categories at the very top (Compact Mini-Icon Bar) */}
+                <MarketplaceCategoriesSection
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={(cat) => setSelectedCategory(cat)}
+                />
+
+                {/* 2. Compact Search Area */}
                 <CompactMarketplaceSearch
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
@@ -124,12 +130,6 @@ export default function HomePage({ isLoggedIn = false }) {
                     selectedLocation={selectedLocation}
                     setSelectedLocation={setSelectedLocation}
                     onSearchSubmit={handleSearchSubmit}
-                />
-
-                {/* 2. Categories directly below search */}
-                <MarketplaceCategoriesSection
-                    selectedCategory={selectedCategory}
-                    onSelectCategory={(cat) => setSelectedCategory(cat)}
                 />
 
                 {/* 3. Listings Grid: "Neu auf Campuna" (2-Columns on Mobile) */}

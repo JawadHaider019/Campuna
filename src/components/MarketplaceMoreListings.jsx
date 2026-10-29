@@ -155,13 +155,13 @@ export default function MarketplaceMoreListings({
             </div>
 
             {/* View All Button */}
-            <div className="mt-6 text-center">
+            <div className="mt-8 mb-4 text-center">
                 <Link
                     to="/all_listings"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-sand/60 text-forest border border-forest/25 hover:border-forest font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-xs hover:shadow-sm"
+                    className="inline-flex items-center justify-center gap-2.5 bg-forest hover:bg-forest/90 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-sm hover:shadow-md group"
                 >
                     <span>Alle Camping-Inserate auf Campuna ansehen</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 text-gold transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
             </div>
         </section>
