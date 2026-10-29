@@ -58,13 +58,13 @@ export default function BlogSection() {
                 {/* Section Header with Tabs */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
                     <div className="space-y-2">
-                        <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+                        <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gold block">
                             Campuna Ratgeber & Praxiswissen
                         </span>
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">
+                        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-forest leading-tight">
                             Camping-Ratgeber & Tipps
                         </h2>
-                        <p className="font-sans text-xs sm:text-sm text-charcoal/70 max-w-2xl font-light">
+                        <p className="font-sans text-xs sm:text-sm md:text-base text-charcoal/70 max-w-2xl font-light leading-relaxed">
                             Kaufberatung, Verkaufstipps, Technik und Praxiswissen: Im Ratgeber beantworten wir die Fragen, die sich Camper wirklich stellen.
                         </p>
                     </div>

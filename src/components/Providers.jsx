@@ -322,10 +322,10 @@ export default function Providers({
                     {/* Horizontal 2-card gallery matching Image 2 */}
                     <div className="flex overflow-x-auto gap-3 pb-1 no-scrollbar snap-x items-stretch">
                         {providersList.map((partner) => {
-                            const badgeCategory = partner.providerCategory || 
-                                (partner.id === 'prov_4' ? 'Camping-Fachbetrieb' : 
-                                 partner.id === 'prov_2' ? 'Camper-Ausbau' : 
-                                 'Wohnmobil-Händler');
+                            const badgeCategory = partner.providerCategory ||
+                                (partner.id === 'prov_4' ? 'Camping-Fachbetrieb' :
+                                    partner.id === 'prov_2' ? 'Camper-Ausbau' :
+                                        'Wohnmobil-Händler');
 
                             return (
                                 <div
@@ -369,18 +369,18 @@ export default function Providers({
 
     // Spacious Desktop/iPad View
     const renderDesktopGenerousView = () => (
-        <section id="anbieter" className="py-10 sm:py-16 bg-sand relative overflow-x-hidden scroll-mt-24 border-t border-forest/5">
-            <div className="max-w-8xl mx-auto px-6 md:px-12">
+        <section id="anbieter" className="w-full py-8 sm:py-12 bg-sand relative overflow-x-hidden scroll-mt-24 border-t border-b border-forest/5">
+            <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16">
                 {/* 1. GENERAL PROVIDER DIRECTORY SECTION HEADER */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-5">
-                    <div className="space-y-2 max-w-3xl">
-                        <span className="font-sans text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] text-gold block">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-4">
+                    <div className="space-y-1.5 max-w-2xl">
+                        <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gold block">
                             CAMPUNA ANBIETER
                         </span>
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black">
+                        <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-forest leading-tight">
                             Camping-Anbieter entdecken
                         </h2>
-                        <p className="font-sans text-sm text-charcoal/65 leading-relaxed font-light">
+                        <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed font-light">
                             Finde verifizierte Händler, Werkstätten, Vermieter, Campingplätze und Fachbetriebe in ganz Deutschland oder präsentiere dein eigenes Unternehmen auf Campuna.
                         </p>
                     </div>
@@ -389,39 +389,36 @@ export default function Providers({
                         <button
                             type="button"
                             onClick={() => navigate('/all_business')}
-                            className="group flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-forest cursor-pointer"
+                            className="group flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-forest cursor-pointer hover:text-gold transition-colors"
                         >
-                            <span className="pb-0.5 border-b-2 border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
-                            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                            <span className="pb-0.5 border-b border-gold/50 group-hover:border-gold transition-colors">Alle Anbieter</span>
+                            <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                         </button>
                     </div>
                 </div>
 
-                {/* 2. GENERAL PROVIDER CATEGORIES */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3 mb-10 sm:mb-12 max-w-8xl mx-auto">
+                {/* 2. GENERAL PROVIDER CATEGORIES - Slimmer, compact cards */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-2.5 mb-8 w-full">
                     {/* "Alle Bereiche" Card */}
                     <div
                         onClick={() => handleCategoryNavigation('all')}
-                        className="group relative rounded-2xl bg-white border border-forest/10 hover:border-gold p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer select-none min-h-[96px] sm:min-h-[106px] overflow-hidden"
+                        className="group relative rounded-xl bg-white border border-forest/10 hover:border-gold p-2.5 sm:p-3 flex items-center justify-between gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm cursor-pointer select-none min-h-[64px] sm:min-h-[70px] overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                        <div className="flex items-center justify-between gap-2 relative z-10">
-                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-forest/5 text-forest flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-300">
-                                <Building2 className="w-4 h-4" />
-                            </div>
-                            <div className="w-5 h-5 rounded-full bg-forest/5 group-hover:bg-gold/20 text-charcoal/40 group-hover:text-forest flex items-center justify-center transition-colors">
-                                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                            </div>
-                        </div>
-
-                        <div className="relative z-10 pt-2">
-                            <h3 className="font-display text-xs sm:text-[13px] font-bold text-forest leading-snug line-clamp-1">
+                        {/* Left: Heading on top, Subtitle text below */}
+                        <div className="flex flex-col min-w-0 pr-1 relative z-10">
+                            <h3 className="font-display text-xs font-bold text-forest leading-snug truncate">
                                 Alle Bereiche
                             </h3>
                             <p className="font-sans text-[10px] text-charcoal/50 font-light truncate mt-0.5">
                                 Gesamtes Verzeichnis
                             </p>
+                        </div>
+
+                        {/* Right: Only the Icon */}
+                        <div className="w-8 h-8 rounded-lg bg-forest/5 text-forest flex items-center justify-center shrink-0 shadow-2xs group-hover:bg-forest group-hover:text-gold transition-colors relative z-10">
+                            <Building2 className="w-4 h-4" />
                         </div>
                     </div>
 
@@ -433,26 +430,23 @@ export default function Providers({
                             <div
                                 key={cat.id}
                                 onClick={() => handleCategoryNavigation(cat.slug)}
-                                className="group relative rounded-2xl bg-white border border-forest/10 hover:border-gold p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer select-none min-h-[96px] sm:min-h-[106px] overflow-hidden"
+                                className="group relative rounded-xl bg-white border border-forest/10 hover:border-gold p-2.5 sm:p-3 flex items-center justify-between gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm cursor-pointer select-none min-h-[64px] sm:min-h-[70px] overflow-hidden"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                                <div className="flex items-center justify-between gap-2 relative z-10">
-                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-forest/5 text-forest group-hover:bg-forest group-hover:text-gold flex items-center justify-center shadow-2xs group-hover:scale-105 transition-all duration-300">
-                                        <Icon className="w-4 h-4" />
-                                    </div>
-                                    <div className="w-5 h-5 rounded-full bg-forest/5 group-hover:bg-gold/20 text-charcoal/40 group-hover:text-forest flex items-center justify-center transition-colors">
-                                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                                    </div>
-                                </div>
-
-                                <div className="relative z-10 pt-2">
-                                    <h3 className="font-display text-xs sm:text-[13px] font-bold text-forest leading-snug line-clamp-1">
+                                {/* Left: Heading on top, Subtitle text below */}
+                                <div className="flex flex-col min-w-0 pr-1 relative z-10">
+                                    <h3 className="font-display text-xs font-bold text-forest leading-snug truncate">
                                         {cat.shortName || cat.name}
                                     </h3>
                                     <p className="font-sans text-[10px] text-charcoal/50 font-light truncate mt-0.5">
                                         {cat.name}
                                     </p>
+                                </div>
+
+                                {/* Right: Only the Icon */}
+                                <div className="w-8 h-8 rounded-lg bg-forest/5 text-forest group-hover:bg-forest group-hover:text-gold flex items-center justify-center shrink-0 shadow-2xs transition-colors relative z-10">
+                                    <Icon className="w-4 h-4" />
                                 </div>
                             </div>
                         );
@@ -461,17 +455,17 @@ export default function Providers({
 
                 {/* 3. SPOTLIGHT SUB-SECTION (Shortened non-repetitive headline as requested) */}
                 {Boolean(providersList && providersList.length > 0) && (
-                    <div id="campuna-spotlight" className="pt-8 border-t border-forest/10 scroll-mt-24">
-                        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+                    <div id="campuna-spotlight" className="pt-6 border-t border-forest/10 scroll-mt-24">
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
                             <div className="space-y-1">
                                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gold/15 text-forest border border-gold/30 text-[10px] font-bold uppercase tracking-wider">
                                     <Sparkles className="w-3 h-3 text-gold" />
                                     <span>IM SPOTLIGHT</span>
                                 </div>
-                                <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-forest">
+                                <h3 className="font-display text-lg sm:text-xl md:text-2xl font-bold text-forest">
                                     Camping-Profis im Spotlight
                                 </h3>
-                                <p className="font-sans text-xs sm:text-sm text-charcoal/60 font-light">
+                                <p className="font-sans text-xs text-charcoal/60 font-light">
                                     Verifizierte Fachbetriebe, Händler und Servicepartner mit besonderer Präsenz auf Campuna.
                                 </p>
                             </div>

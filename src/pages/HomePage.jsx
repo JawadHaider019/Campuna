@@ -161,7 +161,7 @@ export default function HomePage({ isLoggedIn = false }) {
             </div>
 
             {/* Additional Sections further down the page */}
-            <div className="mt-10 sm:mt-14 space-y-10 sm:space-y-14">
+            <div className="mt-8 sm:mt-12">
                 {/* Provider / Commercial Spotlight (Desktop/iPad generous layout preserved) */}
                 <div className="hidden md:block">
                     <ScrollSectionWrapper delay={0.05}>

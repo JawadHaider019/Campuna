@@ -20,13 +20,13 @@ export default function FAQSection() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 relative z-10">
                 {/* Section Header */}
                 <div className="text-center mb-10 sm:mb-12 space-y-3">
-                    <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+                    <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gold block">
                         Häufig gestellte Fragen
                     </span>
-                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-forest">
+                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-forest leading-tight">
                         Alles, was du über Campuna wissen musst
                     </h2>
-                    <p className="font-sans text-xs sm:text-sm text-charcoal/60 max-w-2xl mx-auto leading-relaxed">
+                    <p className="font-sans text-xs sm:text-sm md:text-base text-charcoal/65 max-w-2xl mx-auto leading-relaxed font-light">
                         Die häufigsten Fragen zu unserem Camping-Marktplatz, kurz beantwortet.
                     </p>
                 </div>

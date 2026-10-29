@@ -33,15 +33,15 @@ export default function CTASection({ onSellClick }) {
 
                         {/* Left Column: Headline and text */}
                         <div className="lg:col-span-8 space-y-4 text-center lg:text-left flex flex-col items-center lg:items-start">
-                            <span className="font-sans text-[10px] font-bold uppercase tracking-[0.4em] text-gold block">
+                            <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-gold block">
                                 COMMUNITY
                             </span>
 
-                            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+                            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
                                 Werde Teil von Campuna.
                             </h2>
 
-                            <p className="font-sans text-sm sm:text-base text-sand/85 font-light leading-relaxed max-w-xl pb-2">
+                            <p className="font-sans text-xs sm:text-sm md:text-base text-sand/85 font-light leading-relaxed max-w-xl pb-2">
                                 Ob du entdecken, verkaufen oder mit deinem Unternehmen sichtbar werden willst: Melde dich an und gestalte den Camping-Marktplatz von Anfang an mit.
                             </p>
 
