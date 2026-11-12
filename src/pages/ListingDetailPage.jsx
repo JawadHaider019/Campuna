@@ -27,6 +27,7 @@ import { FEATURED_LISTINGS } from '../data';
 import { parseListingId, buildListingSlug } from '../utils/slugify';
 import { formatLocation } from '../utils/location';
 import { navigateTo } from '../utils/navigation';
+import { addRecentlyViewedId } from '../utils/recentlyViewed';
 
 export default function ListingDetailPage() {
     const { slug } = useParams();
@@ -152,6 +153,7 @@ export default function ListingDetailPage() {
                 if (active && foundListing) {
                     setListing(foundListing);
                     setActiveImageIdx(0);
+                    addRecentlyViewedId(foundListing.id || slug);
 
                     // Load the specific 5 related listings for this category / detail view
                     const relatedIds = ['CP-1075', 'CP-1076', 'CP-1077', 'CP-1078', 'CP-1079'];

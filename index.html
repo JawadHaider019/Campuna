@@ -9,6 +9,65 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>Campuna | Camping-Marktplatz: Kaufen, Verkaufen, Entdecken</title>
+
+  <!-- 1. Google Consent Mode v2: Strict Default Denied (TTDSG & DSGVO Compliance) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    // Initialize all consent categories strictly to 'denied' BEFORE any tracking code runs
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage': 'granted',
+      'security_storage': 'granted',
+      'wait_for_update': 500
+    });
+    gtag('set', 'ads_data_redaction', true);
+    gtag('set', 'url_passthrough', false);
+  </script>
+
+  <!-- 2. Cookiebot CMP Script with Consent Mode v2 listener -->
+  <script
+    id="Cookiebot"
+    src="https://consent.cookiebot.com/uc.js"
+    data-cbid="%VITE_COOKIEBOT_ID%"
+    data-blockingmode="auto"
+    type="text/javascript"
+  ></script>
+
+  <!-- Dynamic Cookiebot to Google Consent Mode event synchronizer -->
+  <script>
+    function updateGoogleConsentFromCookiebot() {
+      if (typeof window.Cookiebot === 'undefined') return;
+      gtag('consent', 'update', {
+        'analytics_storage': window.Cookiebot.consent.statistics ? 'granted' : 'denied',
+        'ad_storage': window.Cookiebot.consent.marketing ? 'granted' : 'denied',
+        'ad_user_data': window.Cookiebot.consent.marketing ? 'granted' : 'denied',
+        'ad_personalization': window.Cookiebot.consent.marketing ? 'granted' : 'denied'
+      });
+    }
+    window.addEventListener('CookiebotOnAccept', updateGoogleConsentFromCookiebot);
+    window.addEventListener('CookiebotOnDecline', updateGoogleConsentFromCookiebot);
+  </script>
+
+  <!-- 3. Google Analytics (Consent-controlled via Cookiebot: statistics) -->
+  <script
+    type="text/plain"
+    data-cookieconsent="statistics"
+    src="https://www.googletagmanager.com/gtag/js?id=G-98VJ9VXPLH"
+  ></script>
+  <script type="text/plain" data-cookieconsent="statistics">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-98VJ9VXPLH', {
+      anonymize_ip: true,
+      send_page_view: true
+    });
+  </script>
 </head>
 
 <body>
