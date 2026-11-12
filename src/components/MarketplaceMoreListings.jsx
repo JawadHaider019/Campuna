@@ -1,98 +1,48 @@
-import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { FEATURED_LISTINGS } from '../data';
-import { ListingCard } from './FeaturedListings';
+import { isListingSold } from '../utils/formatters';
+import { isListingBoosted } from '../utils/sellerBadge';
+import { MarketplaceListingCard } from './MarketplaceNewListings';
 import MarketplaceAdTile from './MarketplaceAdTile';
-import { isListingSold, formatCleanLocation } from '../utils/formatters';
 
-export default function MarketplaceMoreListings({
-    searchQuery = '',
-    selectedCategory = '',
-    selectedLocation = '',
-    onResetFilters
-}) {
-    const navigate = useNavigate();
-    const [favorites, setFavorites] = useState(['lst_3', 'lst_7']);
-    const [isFeedbackDismissed, setIsFeedbackDismissed] = useState(() => {
-        try {
-            return sessionStorage.getItem('campuna_home_feedback_dismissed') === 'true';
-        } catch {
-            return false;
-        }
-    });
+export default function MarketplaceMoreListings({ listings = [], excludeIds = [] }) {
+    // Interweave boosted & regular listings naturally so boosted listings don't cluster all in one block
+    // Filter out items already shown in previous sections so users see fresh listings
+    const itemsToDisplay = useMemo(() => {
+        const excludeSet = new Set(excludeIds.map(String));
+        const pool = listings.filter((l) => !isListingSold(l) && !excludeSet.has(String(l.id)));
+        const fallbackPool = pool.length > 0 ? pool : listings.filter((l) => !isListingSold(l));
+        if (fallbackPool.length === 0) return [];
 
-    const handleDismissFeedback = () => {
-        setIsFeedbackDismissed(true);
-        try {
-            sessionStorage.setItem('campuna_home_feedback_dismissed', 'true');
-        } catch {
-            // ignore
-        }
-    };
+        const boosted = fallbackPool.filter(isListingBoosted);
+        const regular = fallbackPool.filter((item) => !isListingBoosted(item));
 
-    const handleToggleFavorite = (id) => {
-        setFavorites(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-    };
+        const interleaved = [];
+        const b = [...boosted];
+        const r = [...regular];
 
-    const handleCardClick = (item) => {
-        const slug = item.slug || item.id;
-        navigate(`/listing_details/${slug}`);
-    };
-
-    // Filter listings based on current search & category
-    const filteredListings = useMemo(() => {
-        let pool = FEATURED_LISTINGS.filter(l => !isListingSold(l));
-
-        return pool.filter(item => {
-            // Category filter
-            if (selectedCategory) {
-                if (selectedCategory === 'Wohnwagen') {
-                    const isWohnwagen = item.title?.toLowerCase().includes('wohnwagen') ||
-                        item.features?.some(f => f.toLowerCase().includes('wohnwagen')) ||
-                        item.category === 'Wohnmobile & Camper';
-                    if (!isWohnwagen) return false;
-                } else if (item.category !== selectedCategory) {
-                    return false;
-                }
+        // Ensure natural alternating cadence: 2 regular, 1 boosted, 2 regular, 1 boosted, etc.
+        while (b.length > 0 || r.length > 0) {
+            for (let i = 0; i < 2 && r.length > 0; i++) {
+                interleaved.push(r.shift());
             }
-
-            // Search query filter
-            if (searchQuery && searchQuery.trim()) {
-                const q = searchQuery.toLowerCase().trim();
-                const inTitle = item.title?.toLowerCase().includes(q);
-                const inCat = item.category?.toLowerCase().includes(q);
-                const inLoc = item.location?.toLowerCase().includes(q);
-                const inFeat = item.features?.some(f => f.toLowerCase().includes(q));
-                if (!inTitle && !inCat && !inLoc && !inFeat) return false;
+            if (b.length > 0) {
+                interleaved.push(b.shift());
             }
-
-            // Location filter
-            if (selectedLocation && selectedLocation.trim()) {
-                const loc = selectedLocation.toLowerCase().trim();
-                const itemLoc = (item.location || '').toLowerCase();
-                const cleanLoc = formatCleanLocation(item.location || '').toLowerCase();
-                if (!itemLoc.includes(loc) && !cleanLoc.includes(loc) && !loc.includes(itemLoc) && !loc.includes(cleanLoc)) return false;
+            if (b.length === 0) {
+                interleaved.push(...r);
+                break;
             }
-
-            return true;
-        });
-    }, [searchQuery, selectedCategory, selectedLocation]);
-
-    // Exclude the first 4 listings (which are displayed in "Neu auf Campuna") to avoid repetition
-    const remainingListings = useMemo(() => {
-        if (filteredListings.length <= 4) {
-            return [];
         }
-        return filteredListings.slice(4, 14);
-    }, [filteredListings]);
 
-    // If remaining listings is empty because of a specific search query, don't show an empty duplicate section
-    if (remainingListings.length === 0) return null;
+        return interleaved.slice(0, 10);
+    }, [listings, excludeIds]);
+
+    if (itemsToDisplay.length === 0) return null;
 
     return (
         <section className="my-5 sm:my-8" id="weitere-camping-inserate">
-            {/* Header: "Weitere Camping-Inserate" matching user mockup Image 3 */}
             <div className="flex items-center justify-between mb-3 px-0.5">
                 <h2 className="font-display font-bold text-base sm:text-lg md:text-xl text-charcoal tracking-tight">
                     Weitere Camping-Inserate
@@ -107,63 +57,31 @@ export default function MarketplaceMoreListings({
                 </Link>
             </div>
 
-            {/* Standard 2-Column Mobile Grid with listings and interstitial ad / feedback tiles */}
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-5">
-                {/* 1st Batch of Listings */}
-                {remainingListings.slice(0, 3).map((item) => (
-                    <ListingCard
-                        key={item.id}
-                        item={item}
-                        isFavorite={favorites.includes(item.id)}
-                        onToggleFavorite={handleToggleFavorite}
-                        onCardClick={handleCardClick}
-                        isGrid={true}
-                    />
+                {/* 1st Batch of Listings (mixed naturally) */}
+                {itemsToDisplay.slice(0, 3).map((item) => (
+                    <MarketplaceListingCard key={item.id} item={item} />
                 ))}
 
                 {/* Werbeblock 1: Bezahlte Werbung / Werbeplatz auf Campuna (Anzeige) */}
                 <MarketplaceAdTile type="sponsored" />
 
                 {/* 2nd Batch of Listings */}
-                {remainingListings.slice(3, 6).map((item) => (
-                    <ListingCard
-                        key={item.id}
-                        item={item}
-                        isFavorite={favorites.includes(item.id)}
-                        onToggleFavorite={handleToggleFavorite}
-                        onCardClick={handleCardClick}
-                        isGrid={true}
-                    />
+                {itemsToDisplay.slice(3, 6).map((item) => (
+                    <MarketplaceListingCard key={item.id} item={item} />
                 ))}
 
-                {/* Werbeblock 2: Feedback-Kachel zur Startseiten-Verbesserung (Temporary during testing phase) */}
-                {!isFeedbackDismissed && remainingListings.length > 5 && (
-                    <MarketplaceAdTile type="feedback" onDismiss={handleDismissFeedback} />
+                {/* Feedback & Community Kachel */}
+                {itemsToDisplay.length > 5 && (
+                    <MarketplaceAdTile type="feedback" />
                 )}
 
-                {/* Remaining Listings */}
-                {remainingListings.slice(6).map((item) => (
-                    <ListingCard
-                        key={item.id}
-                        item={item}
-                        isFavorite={favorites.includes(item.id)}
-                        onToggleFavorite={handleToggleFavorite}
-                        onCardClick={handleCardClick}
-                        isGrid={true}
-                    />
+                {/* Remaining items */}
+                {itemsToDisplay.slice(6).map((item) => (
+                    <MarketplaceListingCard key={item.id} item={item} />
                 ))}
-            </div>
-
-            {/* View All Button */}
-            <div className="mt-8 mb-4 text-center">
-                <Link
-                    to="/all_listings"
-                    className="inline-flex items-center justify-center gap-2.5 bg-forest hover:bg-forest/90 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-sm hover:shadow-md group"
-                >
-                    <span>Alle Camping-Inserate auf Campuna ansehen</span>
-                    <ArrowRight className="w-4 h-4 text-gold transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
             </div>
         </section>
     );
 }
+

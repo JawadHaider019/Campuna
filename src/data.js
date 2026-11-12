@@ -787,7 +787,7 @@ Egal ob du ein Wohnmobil, einen Wohnwagen, Campingzubehör, einen Stellplatz, ei
   {
     id: 'faq_4',
     question: 'Kostet das Inserieren auf Campuna etwas?',
-    answer: 'Ja, private Inserate auf Campuna sind kostenlos. Du kannst Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze und viele weitere Camping-Angebote kostenlos inserieren. Für zusätzliche Sichtbarkeit stehen auf Wunsch optionale Premium- und Spotlight-Funktionen zur Verfügung.'
+    answer: 'Nein, private Inserate auf Campuna sind kostenlos. Du kannst Wohnmobile, Wohnwagen, Campingzubehör, Stellplätze, Campingplätze und viele weitere Camping-Angebote kostenlos inserieren. Für zusätzliche Sichtbarkeit stehen auf Wunsch optionale Premium- und Spotlight-Funktionen zur Verfügung.'
   },
   {
     id: 'faq_5',

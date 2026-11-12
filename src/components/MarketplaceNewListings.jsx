@@ -1,84 +1,146 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { FEATURED_LISTINGS } from '../data';
-import { ListingCard } from './FeaturedListings';
-import { isListingSold, formatCleanLocation } from '../utils/formatters';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Heart, MapPin } from 'lucide-react';
+import { ListingBadgesRow } from './ListingBadge';
+import { formatCondition, formatListingPrice, formatCleanLocation, isListingSold } from '../utils/formatters';
+import { isListingBoosted } from '../utils/sellerBadge';
+import { getImageUrl } from '../utils/imageUrl';
 
-export default function MarketplaceNewListings({
-    searchQuery = '',
-    selectedCategory = '',
-    selectedLocation = '',
-    onResetFilters
-}) {
-    const navigate = useNavigate();
-    const [favorites, setFavorites] = useState(['lst_1', 'lst_5']);
+export function MarketplaceListingCard({ item, priority = false }) {
+    const [localFav, setLocalFav] = useState(false);
+    const isFavorite = localFav;
+    const toggleFavorite = () => setLocalFav(prev => !prev);
+    const [imgIdx, setImgIdx] = useState(0);
+    const [imgFailed, setImgFailed] = useState(false);
 
-    const handleToggleFavorite = (id) => {
-        setFavorites(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-    };
+    const isBoosted = isListingBoosted(item);
+    const isSold = isListingSold(item);
+    const images = Array.isArray(item.images) && item.images.length > 0 ? item.images : (item['Main Image'] ? [item['Main Image']] : []);
+    const hasImage = images.length > 0 && !imgFailed;
+    const targetSlug = item.slug || item.id;
+    const location = formatCleanLocation(item.location || item.displayLocation || 'Deutschland');
 
-    const handleCardClick = (item) => {
-        const slug = item.slug || item.id;
-        navigate(`/listing_details/${slug}`);
-    };
+    return (
+        <Link
+            to={`/listing_details/${encodeURIComponent(targetSlug)}`}
+            className="block h-full no-underline text-inherit focus:outline-none"
+        >
+            <div
+                className={`listing-card group relative flex flex-col h-full rounded-2xl sm:rounded-[20px] overflow-hidden transition-all duration-300 select-none cursor-pointer w-full ${
+                    isSold
+                        ? 'bg-slate-50 border border-slate-200 opacity-80 hover:opacity-100'
+                        : isBoosted
+                        ? 'bg-gradient-to-b from-[#fdfbf7] to-[#fbf7ee] border border-amber-300/60 hover:border-amber-400/80 shadow-[0_4px_18px_-4px_rgba(202,152,43,0.18)] hover:shadow-[0_6px_24px_-4px_rgba(202,152,43,0.28)]'
+                        : 'bg-white border border-forest/5 hover:border-forest/10 hover:shadow-md'
+                }`}
+            >
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-sand/20">
+                    {hasImage ? (
+                        <img
+                            src={getImageUrl(images[imgIdx], null, { width: 480, quality: 75 })}
+                            alt={item.title}
+                            loading={priority ? 'eager' : 'lazy'}
+                            className="w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-105 pointer-events-none"
+                            onError={() => {
+                                if (imgIdx < images.length - 1) {
+                                    setImgIdx((i) => i + 1);
+                                } else {
+                                    setImgFailed(true);
+                                }
+                            }}
+                        />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-sand/30 text-forest/40 text-xs">
+                            Kein Bild
+                        </div>
+                    )}
 
-    // Filter listings based on current search & category
-    const filteredListings = useMemo(() => {
-        let pool = FEATURED_LISTINGS.filter(l => !isListingSold(l));
+                    {/* Top Badges */}
+                    <div className="absolute top-2 inset-x-2 sm:top-2.5 sm:inset-x-2.5 flex items-center justify-between z-20 gap-1.5">
+                        <ListingBadgesRow item={item} size="xs" />
 
-        return pool.filter(item => {
-            // Category filter
-            if (selectedCategory) {
-                if (selectedCategory === 'Wohnwagen') {
-                    // Match listings with Wohnwagen in title/category/features
-                    const isWohnwagen = item.title?.toLowerCase().includes('wohnwagen') ||
-                                        item.features?.some(f => f.toLowerCase().includes('wohnwagen')) ||
-                                        item.category === 'Wohnmobile & Camper';
-                    if (!isWohnwagen) return false;
-                } else if (item.category !== selectedCategory) {
-                    return false;
-                }
-            }
+                        <button
+                            type="button"
+                            aria-label={isFavorite ? 'Von Merkzettel entfernen' : 'Auf den Merkzettel'}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleFavorite(item.id);
+                            }}
+                            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md cursor-pointer pointer-events-auto shrink-0 ${
+                                isFavorite
+                                    ? 'bg-rose-500 text-white hover:bg-rose-600 scale-110'
+                                    : 'bg-white/85 hover:bg-white text-forest hover:text-rose-500 hover:scale-110'
+                            }`}
+                        >
+                            <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFavorite ? 'fill-current text-white' : ''}`} />
+                        </button>
+                    </div>
 
-            // Search query filter
-            if (searchQuery && searchQuery.trim()) {
-                const q = searchQuery.toLowerCase().trim();
-                const inTitle = item.title?.toLowerCase().includes(q);
-                const inCat = item.category?.toLowerCase().includes(q);
-                const inLoc = item.location?.toLowerCase().includes(q);
-                const inFeat = item.features?.some(f => f.toLowerCase().includes(q));
-                if (!inTitle && !inCat && !inLoc && !inFeat) return false;
-            }
+                    {/* Location Chip */}
+                    <div className="absolute bottom-2.5 right-0 inset-x-2.5 sm:bottom-3 sm:inset-x-3 flex items-center justify-end pointer-events-none text-white/90 z-10">
+                        <div className="bg-black/45 backdrop-blur-md px-2.5 py-1 rounded-full text-[8px] sm:text-[9px] flex items-center gap-1 font-medium">
+                            <MapPin className="w-2.5 h-2.5 text-gold shrink-0" />
+                            <span className="truncate max-w-[110px]">{location}</span>
+                        </div>
+                    </div>
+                </div>
 
-            // Location filter
-            if (selectedLocation && selectedLocation.trim()) {
-                const loc = selectedLocation.toLowerCase().trim();
-                const itemLoc = (item.location || '').toLowerCase();
-                const cleanLoc = formatCleanLocation(item.location || '').toLowerCase();
-                if (!itemLoc.includes(loc) && !cleanLoc.includes(loc) && !loc.includes(itemLoc) && !loc.includes(cleanLoc)) return false;
-            }
+                {/* Content Body */}
+                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                    <div>
+                        <h3 className="font-display text-xs sm:text-sm md:text-[15px] font-semibold text-black group-hover:text-gold transition-colors duration-200 mb-1.5 line-clamp-1">
+                            {item.title}
+                        </h3>
 
-            return true;
-        });
-    }, [searchQuery, selectedCategory, selectedLocation]);
+                        {/* Features chips */}
+                        <div className="flex overflow-x-auto gap-1 no-scrollbar scroll-smooth mb-1.5">
+                            {(item.features && item.features.length > 0 ? item.features : [item.category || 'Camping']).slice(0, 3).map((feat, idx) => (
+                                <span
+                                    key={idx}
+                                    className="text-[9px] sm:text-[10px] text-charcoal/60 bg-sand px-1.5 sm:px-2 py-0.5 rounded-md border border-forest/5 whitespace-nowrap shrink-0 select-none"
+                                >
+                                    {formatCondition(feat)}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
 
-    // Show initial 4 listings for the top section (2 rows on mobile)
-    const displayListings = filteredListings.slice(0, 4);
+                    <div className="pt-2 border-t border-forest/5 flex items-center justify-between">
+                        <span className="block text-[8.5px] sm:text-[9.5px] uppercase tracking-wider text-charcoal/40 font-mono">
+                            {item.pricePeriod || (item.type_of_offer === 'RENTAL' ? 'pro Tag' : 'Kaufpreis')}
+                        </span>
+                        <span className="font-display text-sm sm:text-base font-bold text-forest">
+                            {formatListingPrice(item)}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    );
+}
+
+export default function MarketplaceNewListings({ listings = [] }) {
+    const activeListings = useMemo(() => {
+        return listings
+            .filter((l) => !isListingSold(l))
+            .sort((a, b) => {
+                const dateA = new Date(a.created_at || a.createdAt || a.publishedDate || 0).getTime();
+                const dateB = new Date(b.created_at || b.createdAt || b.publishedDate || 0).getTime();
+                return dateB - dateA;
+            })
+            .slice(0, 4);
+    }, [listings]);
+
+    if (activeListings.length === 0) return null;
 
     return (
         <section className="my-4 sm:my-6 md:my-8" id="neu-auf-campuna">
-            {/* Header: Headline matching user idea: "Neu auf Campuna" */}
             <div className="flex items-center justify-between mb-3 px-0.5">
                 <div>
                     <h2 className="font-display font-bold text-base sm:text-lg md:text-xl text-charcoal tracking-tight">
                         Neu auf Campuna
                     </h2>
-                    {(searchQuery || selectedCategory || selectedLocation) && (
-                        <p className="text-xs text-charcoal/60 mt-0.5">
-                            {filteredListings.length} {filteredListings.length === 1 ? 'Ergebnis' : 'Ergebnisse'} gefunden
-                        </p>
-                    )}
                 </div>
 
                 <Link
@@ -90,35 +152,12 @@ export default function MarketplaceNewListings({
                 </Link>
             </div>
 
-            {/* Empty state if filtered */}
-            {displayListings.length === 0 ? (
-                <div className="bg-[#F2F4F5] rounded-2xl p-8 text-center my-4">
-                    <p className="text-sm font-medium text-charcoal/80 mb-2">
-                        Keine passenden Inserate für deine Suchkriterien gefunden.
-                    </p>
-                    <button
-                        type="button"
-                        onClick={onResetFilters}
-                        className="text-xs font-semibold text-forest hover:underline"
-                    >
-                        Filter zurücksetzen
-                    </button>
-                </div>
-            ) : (
-                /* 2-Column Mobile Grid using identical ListingCard from FeaturedListings */
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-5">
-                    {displayListings.map((item) => (
-                        <ListingCard
-                            key={item.id}
-                            item={item}
-                            isFavorite={favorites.includes(item.id)}
-                            onToggleFavorite={handleToggleFavorite}
-                            onCardClick={handleCardClick}
-                            isGrid={true}
-                        />
-                    ))}
-                </div>
-            )}
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-5">
+                {activeListings.map((item, idx) => (
+                    <MarketplaceListingCard key={item.id} item={item} priority={idx < 2} />
+                ))}
+            </div>
         </section>
     );
 }
+

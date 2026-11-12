@@ -1,12 +1,11 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { Sparkles, ArrowLeftRight, CheckCircle2, RotateCcw } from 'lucide-react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { ArrowLeftRight } from 'lucide-react';
 import CompactMarketplaceSearch from '../components/CompactMarketplaceSearch';
 import MarketplaceCategoriesSection from '../components/MarketplaceCategoriesSection';
 import MarketplaceNewListings from '../components/MarketplaceNewListings';
 import CompactFeaturedGallery from '../components/CompactFeaturedGallery';
 import MarketplaceMoreListings from '../components/MarketplaceMoreListings';
-import FeaturedShowcaseSection from '../components/FeaturedShowcaseSection';
 import Providers from '../components/Providers';
 import WhyCampuna from '../components/WhyCampuna';
 import BlogSection from '../components/BlogSection';
@@ -17,7 +16,6 @@ import HomePageOriginal from './HomePageOriginal';
 import { FEATURED_LISTINGS } from '../data';
 import { isListingSold } from '../utils/formatters';
 import { isListingBoosted } from '../utils/sellerBadge';
-import { rotateListingsFairly } from '../utils/highlighting';
 
 export default function HomePage({ isLoggedIn = false }) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -26,39 +24,27 @@ export default function HomePage({ isLoggedIn = false }) {
     // Layout toggle state: 'marketplace' (default test) or 'original'
     const [layoutMode, setLayoutMode] = useState(urlLayout === 'original' ? 'original' : 'marketplace');
 
-    // Search and filter states
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedLocation, setSelectedLocation] = useState('');
-
-    const handleSearchSubmit = useCallback((filters) => {
-        setSearchQuery(filters.query || '');
-        setSelectedCategory(filters.category || '');
-        setSelectedLocation(filters.location || '');
-
-        // Smooth scroll down to listings
-        const element = document.getElementById('neu-auf-campuna');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
+    // All active listings pool
+    const activeListings = useMemo(() => {
+        return FEATURED_LISTINGS.filter((l) => !isListingSold(l));
     }, []);
 
-    const handleResetFilters = useCallback(() => {
-        setSearchQuery('');
-        setSelectedCategory('');
-        setSelectedLocation('');
-    }, []);
+    // Newest listings sorted by date DESC for "Neu auf Campuna"
+    const newestListings = useMemo(() => {
+        return [...activeListings].sort((a, b) => {
+            const timeA = new Date(a.created_at || a.createdAt || a.publishedDate || 0).getTime();
+            const timeB = new Date(b.created_at || b.createdAt || b.publishedDate || 0).getTime();
+            return timeB - timeA;
+        });
+    }, [activeListings]);
 
-    // Featured listings for the small horizontal gallery (Hervorgehobene Angebote) with fair rotation
-    const featuredGalleryListings = useMemo(() => {
-        const featuredPool = FEATURED_LISTINGS.filter(
-            l => !isListingSold(l) && (isListingBoosted(l) || l.isFeatured || l.Featured || l.isExclusive)
-        );
-        const activePool = featuredPool.length >= 3 ? featuredPool : FEATURED_LISTINGS.slice(4, 12);
-        // Fair rotation engine: rotates offset so all featured sellers receive equal visibility
-        const rotated = rotateListingsFairly(activePool, 'campuna_home_featured_gallery');
-        return rotated.slice(0, 6);
-    }, []);
+    // Boosted / featured listings pool for the compact gallery
+    const galleryListings = useMemo(() => {
+        const boosted = activeListings.filter(isListingBoosted);
+        const candidates = boosted.length > 0 ? boosted : activeListings.filter(item => item.featured || item.Featured || item.isExclusive);
+        const pool = candidates.length > 0 ? candidates : activeListings;
+        return pool.slice(0, 10);
+    }, [activeListings]);
 
     // If user switched to original layout
     if (layoutMode === 'original') {
@@ -74,7 +60,7 @@ export default function HomePage({ isLoggedIn = false }) {
                                 setLayoutMode('marketplace');
                                 setSearchParams({});
                             }}
-                            className="bg-forest hover:bg-forest/90 text-white font-semibold px-3 py-1 rounded-full transition-colors flex items-center gap-1.5"
+                            className="bg-forest hover:bg-forest/90 text-white font-semibold px-3 py-1 rounded-full transition-colors flex items-center gap-1.5 cursor-pointer"
                         >
                             <ArrowLeftRight className="w-3.5 h-3.5" />
                             <span>Zum Marktplatz-Layout wechseln</span>
@@ -88,107 +74,58 @@ export default function HomePage({ isLoggedIn = false }) {
     }
 
     return (
-        <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-20 sm:pt-24 md:pt-28">
-            {/* Design Test Preview Switcher Pill */}
-            {/* <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-2.5">
-                <div className="flex items-center justify-between bg-sand/60 border border-gold/30 rounded-xl px-3 sm:px-4 py-1.5 text-xs text-charcoal/80">
-                    <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                        <span className="font-medium text-forest">
-                            Design-Test: <strong>Direktes Marktplatz-Layout</strong>
-                        </span>
-                    </div>
+        <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-20 sm:pt-22 md:pt-24">
+            {/* Direct Marketplace Header Console (Compact Search & Categories) */}
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-4">
+                <CompactMarketplaceSearch listings={activeListings} />
+                <MarketplaceCategoriesSection />
 
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setLayoutMode('original');
-                            setSearchParams({ layout: 'original' });
-                        }}
-                        className="text-xs font-semibold text-charcoal hover:text-forest underline transition-colors flex items-center gap-1"
-                    >
-                        <RotateCcw className="w-3 h-3" />
-                        <span>Original anzeigen</span>
-                    </button>
-                </div>
-            </div> */}
+                {/* 1. Listings Grid: "Neu auf Campuna" (Strictly chronological newest listings) */}
+                <MarketplaceNewListings listings={newestListings && newestListings.length > 0 ? newestListings : activeListings} />
 
-            {/* Direct Marketplace Section Container */}
-            <div className="max-w-7xl mx-auto pt-6  px-3 sm:px-6 md:px-8">
+                {/* 2. Small Featured Listing Gallery ("Hervorgehobene Angebote" - Strictly paid/booked boosted listings) */}
+                {galleryListings.length > 0 && (
+                    <CompactFeaturedGallery listings={galleryListings} />
+                )}
 
-
-                {/* 2. Compact Search Area */}
-                <CompactMarketplaceSearch
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    selectedLocation={selectedLocation}
-                    setSelectedLocation={setSelectedLocation}
-                    onSearchSubmit={handleSearchSubmit}
-                />
-                {/* 1. Categories at the very top (Compact Mini-Icon Bar) */}
-                <MarketplaceCategoriesSection
-                    selectedCategory={selectedCategory}
-                    onSelectCategory={(cat) => setSelectedCategory(cat)}
-                />
-
-                {/* 3. Listings Grid: "Neu auf Campuna" (2-Columns on Mobile) */}
-                <MarketplaceNewListings
-                    searchQuery={searchQuery}
-                    selectedCategory={selectedCategory}
-                    selectedLocation={selectedLocation}
-                    onResetFilters={handleResetFilters}
-                />
-
-                {/* 4. Optional: Small Featured Listing Gallery ("Hervorgehobene Angebote") */}
-                <CompactFeaturedGallery
-                    listings={featuredGalleryListings}
-                />
-
-                {/* 4.5. On Mobile: Compact Provider & Spotlight Block directly visible earlier */}
+                {/* 3. On Mobile: Compact Provider & Spotlight Block directly visible earlier */}
                 <div className="md:hidden my-5">
                     <Providers showMobileOnly={true} />
                 </div>
 
-                {/* 5. Second Two-Column Grid: "Weitere Camping-Inserate" with in-feed Werbeblock */}
+                {/* 4. Second Two-Column Grid: "Weitere Camping-Inserate" with in-feed Werbeblock (excluding items already shown in "Neu auf Campuna") */}
                 <MarketplaceMoreListings
-                    searchQuery={searchQuery}
-                    selectedCategory={selectedCategory}
-                    selectedLocation={selectedLocation}
-                    onResetFilters={handleResetFilters}
+                    listings={activeListings}
+                    excludeIds={(newestListings && newestListings.length > 0 ? newestListings.slice(0, 8) : activeListings.slice(0, 8)).map(l => l.id)}
                 />
             </div>
 
-            {/* Additional Sections further down the page */}
-            <div className="mt-8 sm:mt-12">
-                {/* Provider / Commercial Spotlight (Desktop/iPad generous layout preserved) */}
-                <div className="hidden md:block">
-                    <ScrollSectionWrapper delay={0.05}>
-                        <Providers showDesktopOnly={true} />
-                    </ScrollSectionWrapper>
-                </div>
-
-                {/* Why Campuna (Trust Pillars) */}
+            {/* 5. Provider / Commercial Spotlight (Desktop layout) */}
+            <div className="hidden md:block">
                 <ScrollSectionWrapper delay={0.05}>
-                    <WhyCampuna />
-                </ScrollSectionWrapper>
-
-                {/* Blog & Camping Guides (Ratgeber & Tipps) */}
-                <ScrollSectionWrapper delay={0.05}>
-                    <BlogSection />
-                </ScrollSectionWrapper>
-
-                {/* Community & Sell CTA */}
-                <ScrollSectionWrapper delay={0.05}>
-                    <CTASection />
-                </ScrollSectionWrapper>
-
-                {/* FAQ Section */}
-                <ScrollSectionWrapper delay={0.05}>
-                    <FAQSection />
+                    <Providers showDesktopOnly={true} />
                 </ScrollSectionWrapper>
             </div>
+
+            {/* 6. Why Campuna (USP & Trust Pillars) */}
+            <ScrollSectionWrapper delay={0.05}>
+                <WhyCampuna />
+            </ScrollSectionWrapper>
+
+            {/* 7. Blog & Camping Guides */}
+            <ScrollSectionWrapper delay={0.05}>
+                <BlogSection />
+            </ScrollSectionWrapper>
+
+            {/* 8. Registration / Seller CTA */}
+            <ScrollSectionWrapper delay={0.05}>
+                <CTASection />
+            </ScrollSectionWrapper>
+
+            {/* 9. FAQ Section */}
+            <ScrollSectionWrapper delay={0.05}>
+                <FAQSection />
+            </ScrollSectionWrapper>
         </div>
     );
 }
