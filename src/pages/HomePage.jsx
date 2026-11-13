@@ -7,7 +7,6 @@ import CampingAccessoriesCtaCard from '../components/CampingAccessoriesCtaCard';
 import MarketplaceNewListings from '../components/MarketplaceNewListings';
 import CompactFeaturedGallery from '../components/CompactFeaturedGallery';
 import MarketplaceMoreListings from '../components/MarketplaceMoreListings';
-import CampunaPioneerCard from '../components/CampunaPioneerCard';
 import RecentlyViewedSection from '../components/RecentlyViewedSection';
 import Providers from '../components/Providers';
 import WhyCampuna from '../components/WhyCampuna';
@@ -78,64 +77,63 @@ export default function HomePage({ isLoggedIn = false }) {
 
     return (
         <div className="bg-white min-h-screen relative font-sans text-charcoal overflow-x-clip pt-20 sm:pt-22 md:pt-24">
-            {/* 7-Stage Homepage Conversion Flow Container */}
+            {/* Direct Marketplace Section Container */}
             <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 mb-4">
-                {/* Stage 1: Search Console + Visual Categories */}
-                <CompactMarketplaceSearch listings={activeListings} />
+                {/* 1. Clean Search Area without Large Hero Background Image */}
+                <CompactMarketplaceSearch />
+
+                {/* 2. Visual Categories Bar */}
                 <MarketplaceCategoriesSection />
 
-                {/* Stage 2: Quick Seller Activation ("Campingzubehör übrig?") */}
+                {/* 3. Compact Low-Barrier Seller Trigger ("Campingzubehör übrig?") */}
                 <CampingAccessoriesCtaCard />
 
-                {/* Stage 3: Chronologically Newest Listings ("Neu auf Campuna") */}
+                {/* 4. Listings Grid: "Neu auf Campuna" */}
                 <MarketplaceNewListings listings={newestListings && newestListings.length > 0 ? newestListings : activeListings} />
 
-                {/* Stage 4A: Featured Highlighted Listings Gallery */}
+                {/* 5. Horizontal Gallery: "Hervorgehobene Angebote" */}
                 {galleryListings.length > 0 && (
                     <CompactFeaturedGallery listings={galleryListings} />
                 )}
 
-                {/* Stage 4B: On Mobile: Compact Provider & Commercial Directory */}
+                {/* 6. On Mobile: Compact Provider & Commercial Directory */}
                 <div className="md:hidden my-5">
                     <Providers showMobileOnly={true} />
                 </div>
 
-                {/* Stage 5: Campuna Pioneer Incentive Engine ("Werde Campuna Pionier!") */}
-                <CampunaPioneerCard />
-
-                {/* Stage 6: Extended Catalog with In-Feed Ad and Feedback Tiles */}
+                {/* 7. Extended Two-Column Catalog: "Weitere Camping-Inserate" with In-Feed Pioneer & Ad Tiles */}
                 <MarketplaceMoreListings
                     listings={activeListings}
                     excludeIds={(newestListings && newestListings.length > 0 ? newestListings.slice(0, 8) : activeListings.slice(0, 8)).map(l => l.id)}
                 />
             </div>
 
-            {/* Stage 4 (Desktop): Commercial RV Dealers & Verified Campsites */}
+            {/* Desktop Commercial RV Dealers & Verified Campsites */}
             <div className="hidden md:block">
                 <ScrollSectionWrapper delay={0.05}>
                     <Providers showDesktopOnly={true} />
                 </ScrollSectionWrapper>
             </div>
 
-            {/* Stage 7A: Universal Recently Viewed History (Guests & Logged-in) */}
+            {/* Universal Recently Viewed History Slider (Renders ONLY when viewing history exists) */}
             <RecentlyViewedSection />
 
-            {/* Trust & Authority Pillars (Why Campuna) */}
+            {/* Why Campuna (Trust Pillars) */}
             <ScrollSectionWrapper delay={0.05}>
                 <WhyCampuna />
             </ScrollSectionWrapper>
 
-            {/* Editorial Advice & Camping Guides */}
+            {/* Editorial Advice & Camping Guides (Ratgeber & Tipps) */}
             <ScrollSectionWrapper delay={0.05}>
                 <BlogSection />
             </ScrollSectionWrapper>
 
-            {/* Community Registration CTA */}
+            {/* Community & Sell Registration CTA */}
             <ScrollSectionWrapper delay={0.05}>
                 <CTASection />
             </ScrollSectionWrapper>
 
-            {/* Stage 7B: FAQ Section */}
+            {/* FAQ Section */}
             <ScrollSectionWrapper delay={0.05}>
                 <FAQSection />
             </ScrollSectionWrapper>

@@ -1,6 +1,21 @@
 const STORAGE_KEY = 'campuna_recently_viewed_history';
 
+/**
+ * Checks if the user has given consent for functional preferences / storage.
+ * In Cookiebot CMP, functionality or preferences consent enables personalization storage.
+ * If Cookiebot is not active (e.g. during local dev or before banner load), returns true safely for standard local storage.
+ */
+function isStoragePermitted() {
+    if (typeof window === 'undefined') return false;
+    if (window.Cookiebot && window.Cookiebot.consent) {
+        // If Cookiebot is present, respect preference / functionality consent
+        return Boolean(window.Cookiebot.consent.preferences || window.Cookiebot.consent.necessary);
+    }
+    return true;
+}
+
 export function getRecentlyViewedIds() {
+    if (!isStoragePermitted()) return [];
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) return [];
@@ -12,7 +27,7 @@ export function getRecentlyViewedIds() {
 }
 
 export function addRecentlyViewedId(listingId) {
-    if (!listingId) return;
+    if (!listingId || !isStoragePermitted()) return;
     try {
         const current = getRecentlyViewedIds();
         const filtered = current.filter(id => String(id) !== String(listingId));
@@ -25,4 +40,3 @@ export function addRecentlyViewedId(listingId) {
         // LocalStorage blocked
     }
 }
-

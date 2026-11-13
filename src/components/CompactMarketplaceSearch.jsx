@@ -1,80 +1,53 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, MapPin, ChevronDown, Check, X, Layers } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { CATEGORIES } from '../data';
+import { useNavigate, Link } from 'react-router-dom';
+import { CATEGORIES, FEATURED_LISTINGS } from '../data';
 import { formatCleanLocation, isListingSold } from '../utils/formatters';
 
 const QUICK_SEARCH_LINKS = [
-    { label: 'Wohnwagen', to: '/kategorie/wohnmobile-camper' },
-    { label: 'Campervan', to: '/kategorie/wohnmobile-camper' },
-    { label: 'Vorzelt', to: '/kategorie/camping-zubehoer' },
-    { label: 'Dachzelt', to: '/kategorie/zelte-dachzelte' },
-    { label: 'Stellplatz', to: '/kategorie/stellplaetze' },
-    { label: 'Wohnmobil mieten', to: '/kategorie/mieten-vermieten' },
-    { label: 'Fahrradträger', to: '/kategorie/fahrraeder-traeger' },
-    { label: 'Campingstuhl', to: '/kategorie/camping-zubehoer' },
+    { label: 'Wohnwagen', to: '/category/wohnmobile-camper' },
+    { label: 'Campervan', to: '/category/wohnmobile-camper' },
+    { label: 'Vorzelt', to: '/category/camping-zubehoer' },
+    { label: 'Dachzelt', to: '/category/zelte-dachzelte' },
+    { label: 'Wohnmobil mieten', to: '/category/mieten-vermieten' },
+    { label: 'Stellplatz', to: '/category/stellplaetze' },
+    { label: 'Fahrradträger', to: '/category/fahrraeder-traeger' },
+    { label: 'Campingstuhl', to: '/category/camping-zubehoer' }
 ];
 
 export default function CompactMarketplaceSearch({
-    searchQuery: controlledSearchQuery,
-    setSearchQuery: setControlledSearchQuery,
-    selectedCategory: controlledCategory,
-    setSelectedCategory: setControlledCategory,
-    selectedLocation: controlledLocation,
-    setSelectedLocation: setControlledLocation,
-    onSearchSubmit,
-    listings = []
+    searchQuery,
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory,
+    selectedLocation,
+    setSelectedLocation,
+    onSearchSubmit
 }) {
     const navigate = useNavigate();
-
-    // Internal state if not controlled from parent
-    const [internalSearchQuery, setInternalSearchQuery] = useState('');
-    const [internalCategory, setInternalCategory] = useState('');
-    const [internalLocation, setInternalLocation] = useState('');
-
-    const searchQuery = controlledSearchQuery !== undefined ? controlledSearchQuery : internalSearchQuery;
-    const setSearchQuery = setControlledSearchQuery || setInternalSearchQuery;
-
-    const selectedCategory = controlledCategory !== undefined ? controlledCategory : internalCategory;
-    const setSelectedCategory = setControlledCategory || setInternalCategory;
-
-    const selectedLocation = controlledLocation !== undefined ? controlledLocation : internalLocation;
-    const setSelectedLocation = setControlledLocation || setInternalLocation;
-
     const [isCatDropdownOpen, setIsCatDropdownOpen] = useState(false);
     const [isLocDropdownOpen, setIsLocDropdownOpen] = useState(false);
 
     const catRef = useRef(null);
     const locRef = useRef(null);
 
-    // Dynamic locations extracted from active listings or German cities
+    // Extract unique German locations that actually have listings in Campuna
     const availableLocations = useMemo(() => {
         const locMap = new Map();
-
-        if (Array.isArray(listings) && listings.length > 0) {
-            listings.forEach((item) => {
-                if (!isListingSold(item) && item.location) {
-                    const loc = formatCleanLocation(item.location);
-                    if (loc && loc !== 'Deutschland') {
-                        locMap.set(loc, (locMap.get(loc) || 0) + 1);
-                    }
+        FEATURED_LISTINGS.forEach(item => {
+            if (!isListingSold(item) && item.location) {
+                const loc = formatCleanLocation(item.location);
+                if (loc && loc !== 'Deutschland') {
+                    locMap.set(loc, (locMap.get(loc) || 0) + 1);
                 }
-            });
-        }
-
-        // Fallback popular cities if listings pool is small
-        if (locMap.size === 0) {
-            const fallbackCities = ['Berlin', 'München', 'Hamburg', 'Köln', 'Frankfurt', 'Stuttgart', 'Düsseldorf', 'Dortmund', 'Leipzig', 'Nürnberg'];
-            fallbackCities.forEach(city => locMap.set(city, 1));
-        }
-
+            }
+        });
         return Array.from(locMap.entries())
             .map(([name, count]) => ({ name, count }))
             .sort((a, b) => a.name.localeCompare(b.name, 'de'));
-    }, [listings]);
+    }, []);
 
-    // Close dropdowns on outside click
+    // Close dropdowns when clicking outside
     useEffect(() => {
         function handleClickOutside(e) {
             if (catRef.current && !catRef.current.contains(e.target)) {
@@ -88,69 +61,85 @@ export default function CompactMarketplaceSearch({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const executeSearch = useCallback((overrideQuery, overrideCategory, overrideLoc) => {
-        const q = overrideQuery !== undefined ? overrideQuery : searchQuery;
-        const c = overrideCategory !== undefined ? overrideCategory : selectedCategory;
-        const l = overrideLoc !== undefined ? overrideLoc : selectedLocation;
-
-        if (onSearchSubmit) {
-            onSearchSubmit({ query: q, category: c, location: l });
-            return;
-        }
-
-        const params = new URLSearchParams();
-        if (q?.trim()) params.set('kw', q.trim());
-        if (c?.trim()) params.set('cat', c.trim());
-        if (l?.trim()) params.set('loc', l.trim());
-
-        const qs = params.toString();
-        navigate(qs ? `/all_listings?${qs}` : '/all_listings');
-    }, [searchQuery, selectedCategory, selectedLocation, onSearchSubmit, navigate]);
-
     const handleFormSubmit = (e) => {
         if (e) e.preventDefault();
         setIsCatDropdownOpen(false);
         setIsLocDropdownOpen(false);
-        executeSearch();
+
+        if (onSearchSubmit) {
+            onSearchSubmit({
+                query: searchQuery,
+                category: selectedCategory,
+                location: selectedLocation
+            });
+        } else {
+            const params = new URLSearchParams();
+            if (searchQuery.trim()) params.set('kw', searchQuery.trim());
+            if (selectedCategory.trim()) params.set('cat', selectedCategory.trim());
+            if (selectedLocation.trim()) params.set('loc', selectedLocation.trim());
+            const qs = params.toString();
+            navigate(qs ? `/all_listings?${qs}` : '/all_listings');
+        }
     };
 
     const handleSelectCategory = (catName) => {
         setSelectedCategory(catName);
         setIsCatDropdownOpen(false);
-        executeSearch(searchQuery, catName, selectedLocation);
+        if (onSearchSubmit) {
+            onSearchSubmit({
+                query: searchQuery,
+                category: catName,
+                location: selectedLocation
+            });
+        }
     };
 
     const handleSelectLocation = (locName) => {
         setSelectedLocation(locName);
         setIsLocDropdownOpen(false);
-        executeSearch(searchQuery, selectedCategory, locName);
+        if (onSearchSubmit) {
+            onSearchSubmit({
+                query: searchQuery,
+                category: selectedCategory,
+                location: locName
+            });
+        }
+    };
+
+    const handleQuickTagClick = (tag) => {
+        setSearchQuery(tag);
+        if (onSearchSubmit) {
+            onSearchSubmit({
+                query: tag,
+                category: selectedCategory,
+                location: selectedLocation
+            });
+        }
     };
 
     return (
-        <div className="relative rounded-2xl sm:rounded-3xl mt-10 p-2 sm:p-3.5 md:p-4 border border-forest/15 shadow-[0_4px_20px_-8px_rgba(0,40,10,0.06)] z-30">
-            {/* Background hero image layer */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-2xl sm:rounded-3xl">
-                <img src="/hero.webp" alt="Camping Hintergrund" className="w-full h-full object-cover object-[center_50%]" />
-                {/* Soft natural tint: keeps the camping landscape visible while ensuring the text has strong contrast */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/35" />
-                <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px]" />
+        <div className="relative rounded-2xl sm:rounded-3xl p-2.5 sm:p-5 md:p-6 bg-gradient-to-b from-[#FAF8F5] via-[#F6F3EC] to-[#FAF8F5] border border-forest/10 shadow-[0_8px_30px_-10px_rgba(0,40,10,0.05)] z-20">
+            {/* Subtle background ambient radial glow contained inside rounded card */}
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(200,169,107,0.12),transparent_70%)]" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[radial-gradient(circle,rgba(0,99,13,0.05),transparent_70%)]" />
             </div>
 
             <div className="relative z-10">
-                {/* Main Headline & Subtitle */}
-                <div className="mb-2 sm:mb-2.5 text-center sm:text-left">
-                    <h1 className="font-display font-bold text-lg sm:text-2xl md:text-3xl lg:text-4xl text-white tracking-tight leading-tight drop-shadow-xs">
-                        Dein Marktplatz rund ums Camping
+                {/* Main Headline (H1) & Subtitle (compact on mobile, spacious on desktop) */}
+                <div className="mb-2 sm:mb-3">
+                    <h1 className="font-display font-bold text-[15px] sm:text-2xl md:text-3xl text-charcoal tracking-tight leading-snug">
+                        Dein Camping-Marktplatz für Wohnmobile, Wohnwagen & Zubehör
                     </h1>
-                    <p className="font-sans text-[11px] sm:text-xs md:text-sm text-white/85 tracking-normal leading-relaxed mt-1 max-w-3xl drop-shadow-xs font-normal">
-                        Kaufen, verkaufen, mieten: Fahrzeuge, Zubehör, Stellplätze und Anbieter an einem Ort. Angebote von privat und von Profis aus ganz Deutschland.
+                    <p className="text-[11px] sm:text-xs md:text-sm text-charcoal/70 leading-tight sm:leading-normal mt-0.5 sm:mt-1">
+                        Campingartikel kaufen und verkaufen, Stellplätze entdecken und passende Camping-Anbieter finden.
                     </p>
                 </div>
 
                 {/* Form Search Console */}
                 <form onSubmit={handleFormSubmit}>
-                    {/* DESKTOP UNIFIED BAR (lg and up) - Frosted Glass & Transparency */}
-                    <div className="hidden lg:flex items-center bg-white/70 hover:bg-white/80 focus-within:bg-white/90 backdrop-blur-md rounded-4xl border border-white/60 shadow-lg hover:shadow-xl focus-within:shadow-xl focus-within:border-forest/40 focus-within:ring-2 focus-within:ring-forest/15 p-2 transition-all">
+                    {/* DESKTOP & TABLET UNIFIED BAR (md and up) */}
+                    <div className="hidden md:flex items-center bg-white rounded-4xl border border-gray-200/90 shadow-sm hover:shadow-md focus-within:shadow-md focus-within:border-forest/50 focus-within:ring-2 focus-within:ring-forest/10 p-2 transition-all">
                         {/* 1. Main Search Field */}
                         <div className="flex-1 flex items-center px-3.5 py-1 min-w-[200px]">
                             <Search className="w-5 h-5 text-forest shrink-0 mr-3" />
@@ -171,7 +160,6 @@ export default function CompactMarketplaceSearch({
                                     type="button"
                                     onClick={() => setSearchQuery('')}
                                     className="p-1 text-gray-400 hover:text-charcoal cursor-pointer"
-                                    aria-label="Eingabe löschen"
                                 >
                                     <X className="w-3.5 h-3.5" />
                                 </button>
@@ -186,7 +174,7 @@ export default function CompactMarketplaceSearch({
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setIsCatDropdownOpen((prev) => !prev);
+                                    setIsCatDropdownOpen(prev => !prev);
                                     setIsLocDropdownOpen(false);
                                 }}
                                 className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[210px] hover:bg-sand/40 rounded-xl transition-colors cursor-pointer"
@@ -200,10 +188,7 @@ export default function CompactMarketplaceSearch({
                                         {selectedCategory || 'Alle Kategorien'}
                                     </span>
                                 </div>
-                                <ChevronDown
-                                    className={`w-3.5 h-3.5 text-gray-400 shrink-0 ml-2 transition-transform ${isCatDropdownOpen ? 'rotate-180 text-forest' : ''
-                                        }`}
-                                />
+                                <ChevronDown className={`w-3.5 h-3.5 text-gray-400 shrink-0 ml-2 transition-transform ${isCatDropdownOpen ? 'rotate-180 text-forest' : ''}`} />
                             </button>
 
                             {/* Dropdown Menu */}
@@ -212,19 +197,17 @@ export default function CompactMarketplaceSearch({
                                     <button
                                         type="button"
                                         onClick={() => handleSelectCategory('')}
-                                        className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${!selectedCategory ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                            }`}
+                                        className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${!selectedCategory ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                     >
                                         <span>Alle Kategorien</span>
                                         {!selectedCategory && <Check className="w-4 h-4 text-forest shrink-0" />}
                                     </button>
-                                    {CATEGORIES.map((cat) => (
+                                    {CATEGORIES.map(cat => (
                                         <button
                                             key={cat.id}
                                             type="button"
                                             onClick={() => handleSelectCategory(cat.name)}
-                                            className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${selectedCategory === cat.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                }`}
+                                            className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${selectedCategory === cat.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                         >
                                             <span className="truncate">{cat.name}</span>
                                             {selectedCategory === cat.name && <Check className="w-4 h-4 text-forest shrink-0" />}
@@ -237,12 +220,12 @@ export default function CompactMarketplaceSearch({
                         {/* Divider */}
                         <div className="w-px h-10 bg-gray-200 shrink-0 mx-1" />
 
-                        {/* 3. Location Dropdown */}
+                        {/* 3. Simple Location Dropdown (Germany locations that have listings) */}
                         <div className="relative" ref={locRef}>
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setIsLocDropdownOpen((prev) => !prev);
+                                    setIsLocDropdownOpen(prev => !prev);
                                     setIsCatDropdownOpen(false);
                                 }}
                                 className="flex items-center px-4 py-1 text-left min-w-[170px] max-w-[220px] hover:bg-sand/40 rounded-xl transition-colors cursor-pointer"
@@ -256,10 +239,7 @@ export default function CompactMarketplaceSearch({
                                         {selectedLocation || 'Ganz Deutschland'}
                                     </span>
                                 </div>
-                                <ChevronDown
-                                    className={`w-3.5 h-3.5 text-gray-400 shrink-0 ml-2 transition-transform ${isLocDropdownOpen ? 'rotate-180 text-forest' : ''
-                                        }`}
-                                />
+                                <ChevronDown className={`w-3.5 h-3.5 text-gray-400 shrink-0 ml-2 transition-transform ${isLocDropdownOpen ? 'rotate-180 text-forest' : ''}`} />
                             </button>
 
                             {/* Location Dropdown Menu */}
@@ -268,25 +248,21 @@ export default function CompactMarketplaceSearch({
                                     <button
                                         type="button"
                                         onClick={() => handleSelectLocation('')}
-                                        className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${!selectedLocation ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                            }`}
+                                        className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${!selectedLocation ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                     >
                                         <span>Ganz Deutschland</span>
                                         {!selectedLocation && <Check className="w-4 h-4 text-forest shrink-0" />}
                                     </button>
-                                    {availableLocations.map((loc) => (
+                                    {availableLocations.map(loc => (
                                         <button
                                             key={loc.name}
                                             type="button"
                                             onClick={() => handleSelectLocation(loc.name)}
-                                            className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${selectedLocation === loc.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                }`}
+                                            className={`w-full text-left px-3.5 py-2 text-xs sm:text-sm flex items-center justify-between hover:bg-sand/60 transition-colors ${selectedLocation === loc.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                         >
                                             <span className="truncate">{loc.name}</span>
                                             <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                                                {loc.count > 1 && (
-                                                    <span className="text-[10px] text-charcoal/40 font-mono">({loc.count})</span>
-                                                )}
+                                                <span className="text-[10px] text-charcoal/40 font-mono">({loc.count})</span>
                                                 {selectedLocation === loc.name && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
                                             </div>
                                         </button>
@@ -298,168 +274,15 @@ export default function CompactMarketplaceSearch({
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="bg-forest hover:bg-forest/90 text-white font-semibold text-sm px-6 py-3 rounded-3xl flex items-center gap-2 shadow-xs hover:shadow-md transition-all shrink-0 cursor-pointer ml-1"
+                            className="bg-forest hover:bg-forest/90 text-white font-semibold text-sm px-6 py-3 rounded-3xl flex items-center gap-2 shadow-sm hover:shadow-md transition-all shrink-0 cursor-pointer ml-1"
                         >
                             <Search className="w-4 h-4 text-gold" />
                             <span>Finden</span>
                         </button>
                     </div>
 
-                    {/* TABLET CONSOLE (md to lg): Frosted glass console */}
-                    <div className="hidden md:flex lg:hidden flex-col bg-white/70 hover:bg-white/80 focus-within:bg-white/90 backdrop-blur-md rounded-2xl border border-white/60 p-2.5 shadow-md space-y-2">
-                        {/* Row 1: Search Query Input with Search Icon */}
-                        <div className="flex items-center bg-[#FAF8F5] rounded-xl border border-gray-200/90 px-3.5 py-2 focus-within:border-forest/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-forest/10 transition-all">
-                            <Search className="w-4 h-4 text-forest shrink-0 mr-2.5" />
-                            <div className="flex-1 min-w-0">
-                                <label className="block text-[9.5px] font-bold uppercase tracking-wider text-charcoal/40 leading-none mb-0.5">
-                                    Was suchst du?
-                                </label>
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="z.B. Wohnwagen, Campervan, Vorzelt..."
-                                    className="w-full bg-transparent text-sm text-charcoal placeholder-gray-400 font-medium focus:outline-none"
-                                />
-                            </div>
-                            {searchQuery && (
-                                <button
-                                    type="button"
-                                    onClick={() => setSearchQuery('')}
-                                    className="p-1 text-gray-400 hover:text-charcoal cursor-pointer"
-                                    aria-label="Eingabe löschen"
-                                >
-                                    <X className="w-3.5 h-3.5" />
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Row 2: Category, Location & Action Button */}
-                        <div className="grid grid-cols-12 gap-2 items-center">
-                            {/* Category Dropdown */}
-                            <div className="col-span-5 relative" ref={catRef}>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsCatDropdownOpen((prev) => !prev);
-                                        setIsLocDropdownOpen(false);
-                                    }}
-                                    className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-3 py-2 text-xs font-medium transition-all cursor-pointer ${selectedCategory
-                                        ? 'border-forest text-forest bg-forest/5 font-semibold'
-                                        : 'border-gray-200/90 text-charcoal/80 hover:bg-white'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-2 truncate pr-1">
-                                        <Layers className="w-3.5 h-3.5 text-forest shrink-0" />
-                                        <div className="text-left truncate">
-                                            <span className="block text-[9px] font-bold uppercase text-charcoal/40 leading-none">Kategorie</span>
-                                            <span className="truncate text-xs">{selectedCategory || 'Alle Kategorien'}</span>
-                                        </div>
-                                    </div>
-                                    <ChevronDown
-                                        className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isCatDropdownOpen ? 'rotate-180 text-forest' : ''
-                                            }`}
-                                    />
-                                </button>
-
-                                {isCatDropdownOpen && (
-                                    <div className="absolute top-full left-0 mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-gray-150 py-1.5 z-50 max-h-64 overflow-y-auto">
-                                        <button
-                                            type="button"
-                                            onClick={() => handleSelectCategory('')}
-                                            className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${!selectedCategory ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                }`}
-                                        >
-                                            <span>Alle Kategorien</span>
-                                            {!selectedCategory && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
-                                        </button>
-                                        {CATEGORIES.map((cat) => (
-                                            <button
-                                                key={cat.id}
-                                                type="button"
-                                                onClick={() => handleSelectCategory(cat.name)}
-                                                className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${selectedCategory === cat.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                    }`}
-                                            >
-                                                <span className="truncate">{cat.name}</span>
-                                                {selectedCategory === cat.name && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Location Dropdown */}
-                            <div className="col-span-4 relative" ref={locRef}>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsLocDropdownOpen((prev) => !prev);
-                                        setIsCatDropdownOpen(false);
-                                    }}
-                                    className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-3 py-2 text-xs font-medium transition-all cursor-pointer ${selectedLocation
-                                        ? 'border-forest text-forest bg-forest/5 font-semibold'
-                                        : 'border-gray-200/90 text-charcoal/80 hover:bg-white'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-2 truncate pr-1">
-                                        <MapPin className="w-3.5 h-3.5 text-gold shrink-0" />
-                                        <div className="text-left truncate">
-                                            <span className="block text-[9px] font-bold uppercase text-charcoal/40 leading-none">Standort</span>
-                                            <span className="truncate text-xs">{selectedLocation || 'Ganz Deutschland'}</span>
-                                        </div>
-                                    </div>
-                                    <ChevronDown
-                                        className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isLocDropdownOpen ? 'rotate-180 text-forest' : ''
-                                            }`}
-                                    />
-                                </button>
-
-                                {isLocDropdownOpen && (
-                                    <div className="absolute top-full right-0 mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-gray-150 py-1.5 z-50 max-h-64 overflow-y-auto">
-                                        <button
-                                            type="button"
-                                            onClick={() => handleSelectLocation('')}
-                                            className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${!selectedLocation ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                }`}
-                                        >
-                                            <span>Ganz Deutschland</span>
-                                            {!selectedLocation && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
-                                        </button>
-                                        {availableLocations.map((loc) => (
-                                            <button
-                                                key={loc.name}
-                                                type="button"
-                                                onClick={() => handleSelectLocation(loc.name)}
-                                                className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${selectedLocation === loc.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                    }`}
-                                            >
-                                                <span className="truncate">{loc.name}</span>
-                                                <div className="flex items-center gap-1.5 shrink-0 ml-1.5">
-                                                    {loc.count > 1 && (
-                                                        <span className="text-[10px] text-charcoal/40 font-mono">({loc.count})</span>
-                                                    )}
-                                                    {selectedLocation === loc.name && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
-                                                </div>
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="col-span-3 h-full bg-forest hover:bg-forest/90 text-white font-semibold text-xs sm:text-sm py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs hover:shadow-md transition-all cursor-pointer"
-                            >
-                                <Search className="w-3.5 h-3.5 text-gold shrink-0" />
-                                <span>Finden</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* MOBILE CONSOLE (under md): Frosted glass, compact & elegant */}
-                    <div className="md:hidden bg-white/70 backdrop-blur-md rounded-2xl border border-white/60 p-2.5 shadow-md space-y-2">
+                    {/* MOBILE CONSOLE (under md): Ultra-sleek, compact, elegant */}
+                    <div className="md:hidden bg-white/95 backdrop-blur-xs rounded-2xl border border-gray-200/90 p-2.5 shadow-2xs space-y-2">
                         {/* 1. Main Search Field */}
                         <div className="relative flex items-center bg-[#FAF8F5] rounded-xl border border-gray-200/90 px-3 py-1.5 focus-within:border-forest/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-forest/10 transition-all">
                             <Search className="w-4 h-4 text-forest shrink-0 mr-2" />
@@ -475,7 +298,6 @@ export default function CompactMarketplaceSearch({
                                     type="button"
                                     onClick={() => setSearchQuery('')}
                                     className="p-1 text-gray-400 hover:text-charcoal cursor-pointer"
-                                    aria-label="Löschen"
                                 >
                                     <X className="w-3.5 h-3.5" />
                                 </button>
@@ -489,7 +311,7 @@ export default function CompactMarketplaceSearch({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setIsCatDropdownOpen((prev) => !prev);
+                                        setIsCatDropdownOpen(prev => !prev);
                                         setIsLocDropdownOpen(false);
                                     }}
                                     className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-2.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${selectedCategory
@@ -503,10 +325,7 @@ export default function CompactMarketplaceSearch({
                                             {selectedCategory || 'Kategorie'}
                                         </span>
                                     </div>
-                                    <ChevronDown
-                                        className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isCatDropdownOpen ? 'rotate-180 text-forest' : ''
-                                            }`}
-                                    />
+                                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isCatDropdownOpen ? 'rotate-180 text-forest' : ''}`} />
                                 </button>
 
                                 {isCatDropdownOpen && (
@@ -520,7 +339,7 @@ export default function CompactMarketplaceSearch({
                                             <span>Alle Kategorien</span>
                                             {!selectedCategory && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
                                         </button>
-                                        {CATEGORIES.map((cat) => (
+                                        {CATEGORIES.map(cat => (
                                             <button
                                                 key={cat.id}
                                                 type="button"
@@ -536,12 +355,12 @@ export default function CompactMarketplaceSearch({
                                 )}
                             </div>
 
-                            {/* Location Dropdown (Mobile) */}
+                            {/* Simple Location Dropdown (Mobile) */}
                             <div className="relative" ref={locRef}>
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setIsLocDropdownOpen((prev) => !prev);
+                                        setIsLocDropdownOpen(prev => !prev);
                                         setIsCatDropdownOpen(false);
                                     }}
                                     className={`w-full flex items-center justify-between bg-[#FAF8F5] rounded-xl border px-2.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${selectedLocation
@@ -555,10 +374,7 @@ export default function CompactMarketplaceSearch({
                                             {selectedLocation || 'Standort'}
                                         </span>
                                     </div>
-                                    <ChevronDown
-                                        className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isLocDropdownOpen ? 'rotate-180 text-forest' : ''
-                                            }`}
-                                    />
+                                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform ${isLocDropdownOpen ? 'rotate-180 text-forest' : ''}`} />
                                 </button>
 
                                 {isLocDropdownOpen && (
@@ -566,25 +382,21 @@ export default function CompactMarketplaceSearch({
                                         <button
                                             type="button"
                                             onClick={() => handleSelectLocation('')}
-                                            className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${!selectedLocation ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                }`}
+                                            className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${!selectedLocation ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                         >
                                             <span>Ganz Deutschland</span>
                                             {!selectedLocation && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
                                         </button>
-                                        {availableLocations.map((loc) => (
+                                        {availableLocations.map(loc => (
                                             <button
                                                 key={loc.name}
                                                 type="button"
                                                 onClick={() => handleSelectLocation(loc.name)}
-                                                className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${selectedLocation === loc.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'
-                                                    }`}
+                                                className={`w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-sand/60 ${selectedLocation === loc.name ? 'text-forest font-semibold bg-forest/5' : 'text-charcoal'}`}
                                             >
                                                 <span className="truncate">{loc.name}</span>
                                                 <div className="flex items-center gap-1.5 shrink-0 ml-1.5">
-                                                    {loc.count > 1 && (
-                                                        <span className="text-[10px] text-charcoal/40 font-mono">({loc.count})</span>
-                                                    )}
+                                                    <span className="text-[10px] text-charcoal/40 font-mono">({loc.count})</span>
                                                     {selectedLocation === loc.name && <Check className="w-3.5 h-3.5 text-forest shrink-0" />}
                                                 </div>
                                             </button>
@@ -604,8 +416,25 @@ export default function CompactMarketplaceSearch({
                         </button>
                     </div>
                 </form>
+
+                {/* Popular Quick Search Chips */}
+                <div className="mt-2 sm:mt-2.5 flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-charcoal/50 uppercase tracking-wider shrink-0 mr-0.5">
+                        Häufig gesucht:
+                    </span>
+                    <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+                        {QUICK_SEARCH_LINKS.map(item => (
+                            <Link
+                                key={item.label}
+                                to={item.to}
+                                className="text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full border bg-white/90 hover:bg-white text-charcoal/80 hover:text-forest border-gray-200/80 hover:border-forest/30 shadow-2xs transition-colors"
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
 }
-

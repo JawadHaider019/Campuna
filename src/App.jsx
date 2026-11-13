@@ -17,6 +17,7 @@ const CampingHelferPage = lazy(() => import('./pages/CampingHelferPage'));
 const ZuladungsrechnerPage = lazy(() => import('./pages/ZuladungsrechnerPage'));
 const ReisekostenrechnerPage = lazy(() => import('./pages/ReisekostenrechnerPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const PionierPage = lazy(() => import('./pages/PionierPage'));
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -154,6 +155,8 @@ const App = () => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/about_us" element={<AboutPage />} />
             <Route path="/uber_campuna" element={<AboutPage />} />
+            <Route path="/pionier" element={<PionierPage />} />
+            <Route path="/pioneer" element={<PionierPage />} />
             <Route path="/testing" element={<HomePage isLoggedIn={loggedIn} />} />
             <Route path="/auth" element={<LoginSignupPage />} />
             <Route path="/category" element={<CategoryPage />} />

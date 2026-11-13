@@ -7,8 +7,7 @@ import { MarketplaceListingCard } from './MarketplaceNewListings';
 import MarketplaceAdTile from './MarketplaceAdTile';
 
 export default function MarketplaceMoreListings({ listings = [], excludeIds = [] }) {
-    // Interweave boosted & regular listings naturally so boosted listings don't cluster all in one block
-    // Filter out items already shown in previous sections so users see fresh listings
+    // Interweave boosted & regular listings naturally across a deeper catalog feed
     const itemsToDisplay = useMemo(() => {
         const excludeSet = new Set(excludeIds.map(String));
         const pool = listings.filter((l) => !isListingSold(l) && !excludeSet.has(String(l.id)));
@@ -22,7 +21,7 @@ export default function MarketplaceMoreListings({ listings = [], excludeIds = []
         const b = [...boosted];
         const r = [...regular];
 
-        // Ensure natural alternating cadence: 2 regular, 1 boosted, 2 regular, 1 boosted, etc.
+        // Ensure natural alternating cadence: 2-3 regular, 1 boosted
         while (b.length > 0 || r.length > 0) {
             for (let i = 0; i < 2 && r.length > 0; i++) {
                 interleaved.push(r.shift());
@@ -36,7 +35,8 @@ export default function MarketplaceMoreListings({ listings = [], excludeIds = []
             }
         }
 
-        return interleaved.slice(0, 10);
+        // Expanded feed up to 16 items for deeper browsing
+        return interleaved.slice(0, 16);
     }, [listings, excludeIds]);
 
     if (itemsToDisplay.length === 0) return null;
@@ -58,7 +58,7 @@ export default function MarketplaceMoreListings({ listings = [], excludeIds = []
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-5">
-                {/* 1st Batch of Listings (mixed naturally) */}
+                {/* 1st Batch of Listings (Items 0 to 3) */}
                 {itemsToDisplay.slice(0, 3).map((item) => (
                     <MarketplaceListingCard key={item.id} item={item} />
                 ))}
@@ -66,22 +66,29 @@ export default function MarketplaceMoreListings({ listings = [], excludeIds = []
                 {/* Werbeblock 1: Bezahlte Werbung / Werbeplatz auf Campuna (Anzeige) */}
                 <MarketplaceAdTile type="sponsored" />
 
-                {/* 2nd Batch of Listings */}
+                {/* 2nd Batch of Listings (Items 3 to 6) */}
                 {itemsToDisplay.slice(3, 6).map((item) => (
                     <MarketplaceListingCard key={item.id} item={item} />
                 ))}
 
-                {/* Feedback & Community Kachel */}
-                {itemsToDisplay.length > 5 && (
+                {/* Werbeblock 2: Campuna Pioneer Promotion Card */}
+                <MarketplaceAdTile type="pioneer" />
+
+                {/* 3rd Batch of Listings (Items 6 to 9) */}
+                {itemsToDisplay.slice(6, 9).map((item) => (
+                    <MarketplaceListingCard key={item.id} item={item} />
+                ))}
+
+                {/* Werbeblock 3: Feedback & Community Kachel */}
+                {itemsToDisplay.length > 9 && (
                     <MarketplaceAdTile type="feedback" />
                 )}
 
-                {/* Remaining items */}
-                {itemsToDisplay.slice(6).map((item) => (
+                {/* Remaining items (Items 9+) */}
+                {itemsToDisplay.slice(9).map((item) => (
                     <MarketplaceListingCard key={item.id} item={item} />
                 ))}
             </div>
         </section>
     );
 }
-

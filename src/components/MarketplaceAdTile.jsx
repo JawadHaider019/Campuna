@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Megaphone, MessageSquare, Tent, Sparkles } from 'lucide-react';
+import { Megaphone, MessageSquare, Tent, Sparkles, Crown, ArrowRight } from 'lucide-react';
+import PioneerBadge from './PioneerBadge';
 
 export default function MarketplaceAdTile({
-    type = 'sponsored', // 'sponsored' | 'feedback'
+    type = 'sponsored', // 'sponsored' | 'feedback' | 'pioneer'
     className = ''
 }) {
     const isLoggedIn = false;
@@ -13,9 +14,60 @@ export default function MarketplaceAdTile({
         setMounted(true);
     }, []);
 
-    // If logged in -> Account Feedback tab; if guest/logged out -> public contact form with feedback preselected
-    const feedbackHref = (mounted && isLoggedIn) ? '/mein-konto?tab=feedback' : '/kontakt?thema=feedback';
+    // ── 1. PIONEER IN-FEED CARD ──
+    if (type === 'pioneer') {
+        return (
+            <div className={`listing-card group relative flex flex-col justify-between h-full rounded-2xl sm:rounded-[20px] overflow-hidden bg-gradient-to-b from-[#FDFBF7] via-[#FAF6EA] to-[#F5EED9] border border-gold/50 hover:border-gold shadow-2xs hover:shadow-md transition-all duration-300 select-none w-full ${className}`}>
+                {/* Top Creative Area matching 16/8 ratio */}
+                <div className="relative aspect-[16/8] w-full shrink-0 overflow-hidden bg-gradient-to-br from-forest via-[#051f0b] to-[#011405] flex items-center justify-center border-b border-gold/30">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/95 backdrop-blur-sm border border-gold/40 shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                        <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-gold-dark" />
+                    </div>
 
+                    <div className="absolute top-2 left-2">
+                        <span className="bg-black/75 backdrop-blur-xs text-gold text-[7.5px] sm:text-[8.5px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-2xs border border-gold/30 flex items-center gap-1">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            <span>Aktion</span>
+                        </span>
+                    </div>
+
+                    <div className="absolute top-2 right-2">
+                        <PioneerBadge size="xs" variant="forest" text="Pioneer" />
+                    </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between">
+                    <div>
+                        <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-bold text-gold uppercase tracking-wider mb-0.5">
+                            <span>1.000 Credits Prämie</span>
+                        </div>
+
+                        <h3 className="font-display text-xs sm:text-sm md:text-[15px] font-bold text-charcoal leading-snug group-hover:text-forest transition-colors line-clamp-1">
+                            Werde Campuna Pionier
+                        </h3>
+
+                        <p className="text-[9.5px] sm:text-[10.5px] text-charcoal/65 mt-0.5 line-clamp-2 leading-tight">
+                            Gehöre zu den ersten 300 Mitgliedern: dauerhafter Pioneer-Badge & 1.000 Credits sichern.
+                        </p>
+                    </div>
+
+                    {/* CTA Button */}
+                    <div className="pt-2 border-t border-gold/25 mt-1.5">
+                        <Link
+                            to="/pionier"
+                            className="inline-flex items-center justify-center gap-1.5 w-full bg-forest hover:bg-forest/90 text-white text-[10.5px] sm:text-xs font-semibold py-1.5 sm:py-2 px-3 rounded-lg sm:rounded-xl transition-all shadow-2xs hover:shadow-xs"
+                        >
+                            <span>Mehr erfahren</span>
+                            <ArrowRight className="w-3 h-3 text-gold" />
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // ── 2. FEEDBACK TILE ──
     if (type === 'feedback') {
         return (
             <div className={`listing-card group relative flex flex-col justify-between h-full rounded-2xl sm:rounded-[20px] bg-[#F0F7F0] border border-forest/15 hover:border-forest/30 p-3 sm:p-3.5 md:p-4 shadow-2xs hover:shadow-md transition-all duration-300 select-none w-full ${className}`}>
@@ -50,10 +102,10 @@ export default function MarketplaceAdTile({
         );
     }
 
-    // Default: 'sponsored' (Bezahlte Werbung / Werbeplatz auf Campuna)
+    // ── 3. DEFAULT: SPONSORED AD TILE ──
     return (
         <div className={`listing-card group relative flex flex-col justify-between h-full rounded-2xl sm:rounded-[20px] overflow-hidden bg-gradient-to-b from-[#FDFBF7] via-[#F8F5EC] to-[#F1ECE0] border border-gold/40 hover:border-gold shadow-2xs hover:shadow-md transition-all duration-300 select-none w-full ${className}`}>
-            {/* Top Creative Area (Locked to exact 16/10 aspect ratio and shrink-0 matching listing cards) */}
+            {/* Top Creative Area */}
             <div className="relative aspect-[16/8] w-full shrink-0 overflow-hidden bg-gradient-to-br from-forest via-[#051f0b] to-black flex items-center justify-center border-b border-gold/30">
                 <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/95 backdrop-blur-sm border border-gold/40 shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                     <Tent className="w-5 h-5 sm:w-7 sm:h-7 text-forest" />
@@ -99,4 +151,3 @@ export default function MarketplaceAdTile({
         </div>
     );
 }
-
